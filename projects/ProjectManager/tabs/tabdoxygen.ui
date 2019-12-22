@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TabDoxygen</class>
+ <widget class="QWidget" name="TabDoxygen">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>529</width>
+    <height>331</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>5</number>
+   </property>
+   <property name="topMargin">
+    <number>5</number>
+   </property>
+   <property name="rightMargin">
+    <number>5</number>
+   </property>
+   <property name="bottomMargin">
+    <number>5</number>
+   </property>
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>517</width>
+        <height>319</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <property name="leftMargin">
+        <number>5</number>
+       </property>
+       <property name="topMargin">
+        <number>5</number>
+       </property>
+       <property name="rightMargin">
+        <number>5</number>
+       </property>
+       <property name="bottomMargin">
+        <number>5</number>
+       </property>
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QToolBox" name="toolBox">
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <widget class="QWidget" name="page_projectConf">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>-15</y>
+            <width>493</width>
+            <height>231</height>
+           </rect>
+          </property>
+          <attribute name="label">
+           <string>Configuration du projet</string>
+          </attribute>
+          <layout class="QFormLayout" name="formLayout">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_encoding">
+             <property name="toolTip">
+              <string>Encodage utilisé pour tous les
+textes de la documentation
+Par défaut UTF-8</string>
+             </property>
+             <property name="text">
+              <string>Encodage</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QComboBox" name="comboBox_encoding">
+             <item>
+              <property name="text">
+               <string>UTF-8</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>UTF-16</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>UTF-32</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>ASCII</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_projectName">
+             <property name="toolTip">
+              <string>Nom du projet en cours
+Par défaut : &quot;My Project&quot;</string>
+             </property>
+             <property name="text">
+              <string>Nom du projet</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="lineEdit_projectName"/>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLineEdit" name="lineEdit_projectNumber"/>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_projectNumber">
+             <property name="toolTip">
+              <string>Numéro du projet dans le cas de
+l'utilisation d'un gestionnaire de
+versions</string>
+             </property>
+             <property name="text">
+              <string>Numéro du projet</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_projectBrief">
+             <property name="toolTip">
+              <string>Courte description du projet ajoutée
+en début de chaque page</string>
+             </property>
+             <property name="text">
+              <string>Résumé du projet</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLineEdit" name="lineEdit_brief"/>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="label_projectLogo">
+             <property name="toolTip">
+              <string>Chemin vers le logo du projet
+200x55px maximum</string>
+             </property>
+             <property name="text">
+              <string>Logo du projet</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+              <widget class="QLineEdit" name="lineEdit_projectLogo"/>
+             </item>
+             <item>
+              <widget class="QToolButton" name="toolButton_projectLogo">
+               <property name="text">
+                <string>...</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="5" column="0">
+            <widget class="QLabel" name="label_outputDir">
+             <property name="toolTip">
+              <string>Répertoire où sera créée la
+documentation
+Si vide, la documentation sera créée
+dans le répertoire courant</string>
+             </property>
+             <property name="text">
+              <string>Répertoire de sortie</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1">
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <widget class="QLineEdit" name="lineEdit_outputDir"/>
+             </item>
+             <item>
+              <widget class="QToolButton" name="toolButton_outputDir">
+               <property name="text">
+                <string>...</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="6" column="0" colspan="2">
+            <widget class="QCheckBox" name="checkBox">
+             <property name="toolTip">
+              <string>Si coché, créé 4096 sous-répertoires
+pour organiser la documentation.
+Utile si beaucoup de fichiers sont
+fournis en entrée (peut causer des
+problème de performances si trop
+de fichiers sont dans le même
+dossier).</string>
+             </property>
+             <property name="text">
+              <string>Créer des sous-répertoires</string>
+             </property>
+             <property name="tristate">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="page_3">
+          <attribute name="label">
+           <string>Page</string>
+          </attribute>
+         </widget>
+         <widget class="QWidget" name="page_2">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>507</width>
+            <height>216</height>
+           </rect>
+          </property>
+          <attribute name="label">
+           <string>Page 2</string>
+          </attribute>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

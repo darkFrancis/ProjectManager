@@ -25,16 +25,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        context.cpp \
         main.cpp \
         mainwindow.cpp \
-        parser.cpp
+        parser.cpp \
+        tabs/tabdoxygen.cpp
 
 HEADERS += \
+        context.hpp \
         mainwindow.hpp \
-        parser.hpp
+        parser.hpp \
+        tabs/tabdoxygen.hpp
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+        tabs/tabdoxygen.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

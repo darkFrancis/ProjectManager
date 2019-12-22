@@ -6,6 +6,7 @@
 #include <QMessageBox>
 
 #include "parser.hpp"
+#include "context.hpp"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -52,8 +53,17 @@ void MainWindow::init()
         int h = parser->get("height").toInt(&ok);if(!ok) h = INIT_H;
         this->setGeometry(x, y, w, h);
 
+        // Init Context
+        QString project = parser->get("project");
+        if(project != QString(""))
+        {
+            Context::Instance()->setProject(project);
+        }
+
         // Init Tab Widget
         m_tabWidget = new QTabWidget(this);
+        m_tab_doxygen = new TabDoxygen();
+        m_tabWidget->addTab(m_tab_doxygen, "Doxygen");
         ui->centralWidget->layout()->addWidget(m_tabWidget);
     }
     else
@@ -74,6 +84,10 @@ void MainWindow::createInit()
         stream << "y=" << INIT_Y << endl;
         stream << "width=" << INIT_W << endl;
         stream << "height=" << INIT_H << endl;
+        stream << endl;
+        // Project
+        stream << "# Project" << endl;
+        stream << "project=" << endl;
         file.close();
     }
     else
@@ -94,6 +108,10 @@ void MainWindow::saveInit()
         stream << "y=" << this->y() << endl;
         stream << "width=" << this->width() << endl;
         stream << "height=" << this->height() << endl;
+        stream << endl;
+        // Project
+        stream << "# Project" << endl;
+        stream << "project=" << Context::Instance()->project() << endl;
         file.close();
     }
     else

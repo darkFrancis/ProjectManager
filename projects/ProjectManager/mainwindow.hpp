@@ -2,6 +2,7 @@
 #define MAINWINDOW_HPP
 
     #include <QMainWindow>
+    #include "tabs/tabdoxygen.hpp"
 
     #define STATUS_DEFAULT_TIMEOUT 5
 
@@ -35,6 +36,8 @@
             void status(QString msg, int timeout = 0);
             void createInit();
             void saveInit();
+            // Tabs
+            TabDoxygen* m_tab_doxygen;
     };
 
 #endif // MAINWINDOW_HPP

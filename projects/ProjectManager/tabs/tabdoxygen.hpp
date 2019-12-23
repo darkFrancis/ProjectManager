@@ -14,9 +14,13 @@
         public:
             explicit TabDoxygen(QWidget *parent = nullptr);
             ~TabDoxygen();
+            void init();
+            void save();
+            void createDoxyfile();
 
         private:
             Ui::TabDoxygen *ui;
+            QString m_doxyfile;
     };
 
 #endif // TABDOXYGEN_HPP

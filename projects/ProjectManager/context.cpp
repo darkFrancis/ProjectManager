@@ -22,3 +22,8 @@ QString Context::project()
 {
     return m_project_file;
 }
+
+QString Context::doxyfile()
+{
+    return m_doxyfile;
+}

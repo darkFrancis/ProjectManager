@@ -23,7 +23,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-1094</y>
+        <y>-707</y>
         <width>538</width>
         <height>1419</height>
        </rect>
@@ -132,7 +132,7 @@ en début de chaque page.</string>
         </widget>
        </item>
        <item row="3" column="1">
-        <widget class="QLineEdit" name="lineEdit_brief">
+        <widget class="QLineEdit" name="lineEdit_projectBrief">
          <property name="statusTip">
           <string>PROJECT_BRIEF</string>
          </property>
@@ -1758,7 +1758,7 @@ automatiquement.</string>
             <string>LAYOUT_FILE</string>
            </property>
            <property name="text">
-            <string>Générer</string>
+            <string>...</string>
            </property>
           </widget>
          </item>
@@ -3045,7 +3045,7 @@ Par défaut : 80</string>
            </widget>
           </item>
           <item row="11" column="0" colspan="2">
-           <widget class="QCheckBox" name="checkBox_timestamp">
+           <widget class="QCheckBox" name="checkBox_htmlTimestamp">
             <property name="toolTip">
              <string>Si coché, ajoute la date et l'heure de
 compilation de la documentation en
@@ -3140,7 +3140,7 @@ docs</string>
               </widget>
              </item>
              <item row="0" column="1">
-              <widget class="QLineEdit" name="lineEdit_feedname">
+              <widget class="QLineEdit" name="lineEdit_docsetFeedname">
                <property name="statusTip">
                 <string>DOCSET_FEEDNAME</string>
                </property>
@@ -5375,7 +5375,7 @@ Par défaut : coché</string>
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QLabel" name="label_msggenPath">
+        <widget class="QLabel" name="label_mscgenPath">
          <property name="toolTip">
           <string>Permet de spécifier le chemin vers
 le dossier contenant msggen tool
@@ -5387,21 +5387,21 @@ par défaut est assumé.</string>
           <string>MSCGEN_PATH</string>
          </property>
          <property name="text">
-          <string>Dossier de MSGgen tool</string>
+          <string>Dossier de MSCgen tool</string>
          </property>
         </widget>
        </item>
        <item row="1" column="1">
         <layout class="QHBoxLayout" name="horizontalLayout_26">
          <item>
-          <widget class="QLineEdit" name="lineEdit_msggenPath">
+          <widget class="QLineEdit" name="lineEdit_mscgenPath">
            <property name="statusTip">
             <string>MSCGEN_PATH</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QToolButton" name="toolButton_msggenPath">
+          <widget class="QToolButton" name="toolButton_mscgenPath">
            <property name="statusTip">
             <string>MSCGEN_PATH</string>
            </property>
@@ -6139,7 +6139,7 @@ Par défaut : coché</string>
         </widget>
        </item>
        <item row="6" column="0">
-        <widget class="QLabel" name="label_mscfilePath">
+        <widget class="QLabel" name="label_mscfileDirs">
          <property name="toolTip">
           <string>Permet d'ajouter des dossiers qui
 contiennent des fichiers MSC à
@@ -6154,7 +6154,7 @@ ajouter à la documentation.</string>
         </widget>
        </item>
        <item row="6" column="1">
-        <widget class="QLineEdit" name="lineEdit_mscfilePath">
+        <widget class="QLineEdit" name="lineEdit_mscfileDirs">
          <property name="statusTip">
           <string>MSCFILE_DIRS</string>
          </property>

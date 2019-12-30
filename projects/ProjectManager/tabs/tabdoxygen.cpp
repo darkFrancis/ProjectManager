@@ -1,7 +1,11 @@
 #include "tabdoxygen.hpp"
 #include "ui_tabdoxygen.h"
 #include <QFile>
+#include <QDir>
 #include <QTextStream>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QProcess>
 #include "context.hpp"
 #include "parser.hpp"
 
@@ -10,6 +14,8 @@ TabDoxygen::TabDoxygen(QWidget *parent) :
     ui(new Ui::TabDoxygen)
 {
     ui->setupUi(this);
+
+    connect(this, SIGNAL(foundPath(QString,QLineEdit*)), this, SLOT(writePath(QString,QLineEdit*)));
 }
 
 TabDoxygen::~TabDoxygen()
@@ -54,6 +60,16 @@ void TabDoxygen::save()
             delete m_stream;
         }
         m_stream = new QTextStream(&file);
+        save_tabProject();
+        save_tabBuild();
+        save_tabMsg();
+        save_tabInput();
+        save_tabSource();
+        save_tabHtml();
+        save_tabOutput();
+        save_tabProcessor();
+        save_tabExternRef();
+        save_tabGraph();
         file.close();
     }
     else
@@ -1109,74 +1125,98 @@ void TabDoxygen::save_tabOutput()
 {
     *m_stream << "# Configuration de sortie LaTeX" << endl;
     saveGroupbox("GENERATE_LATEX", ui->groupBox_generateLatex, true);
-    saveLineedit("LATEX_OUTPUT", ui->lineEdit_latexOutput, "latex");
-    saveLineedit("LATEX_CMD_NAME", ui->lineEdit_latexCmdName, "latex");
-    saveLineedit("MAKEINDEX_CMD_NAME", ui->lineEdit_makeindexCmdName, "makeindex");
-    stream << "COMPACT_LATEX=NO" << endl;
-    stream << "PAPER_TYPE=a4" << endl;
-    stream << "EXTRA_PACKAGES=" << endl;
-    stream << "LATEX_HEADER=" << endl;
-    stream << "LATEX_FOOTER=" << endl;
-    stream << "LATEX_EXTRA_STYLESHEET=" << endl;
-    stream << "LATEX_EXTRA_FILES=" << endl;
-    stream << "PDF_HYPERLINKS=YES" << endl;
-    stream << "USE_PDFLATEX=YES" << endl;
-    stream << "LATEX_BATCHMODE=NO" << endl;
-    stream << "LATEX_HIDE_INDICES=NO" << endl;
-    stream << "LATEX_SOURCE_CODE=NO" << endl;
-    stream << "LATEX_BIB_STYLE=plain" << endl;
-    stream << "LATEX_TIMESTAMP=NO" << endl;
-    stream << endl;
-    stream << "# Configuration de sortie RTF" << endl;
-    stream << "GENERATE_RTF=NO" << endl;
-    stream << "RTF_OUTPUT=rtf" << endl;
-    stream << "COMPACT_RTF=NO" << endl;
-    stream << "RTF_HYPERLINKS=NO" << endl;
-    stream << "RTF_STYLESHEET_FILE=" << endl;
-    stream << "RTF_EXTENSIONS_FILE=" << endl;
-    stream << "RTF_SOURCE_CODE=NO" << endl;
-    stream << endl;
-    stream << "# Configuration de sortie MAN" << endl;
-    stream << "GENERATE_MAN=NO" << endl;
-    stream << "MAN_OUTPUT=man" << endl;
-    stream << "MAN_EXTENSION=.3" << endl;
-    stream << "MAN_SUBDIR=" << endl;
-    stream << "MAN_LINKS=NO" << endl;
-    stream << endl;
-    stream << "# Configuration de sortie XML" << endl;
-    stream << "GENERATE_XML=NO" << endl;
-    stream << "XML_OUTPUT=xml" << endl;
-    stream << "XML_PROGRAMLISTING=YES" << endl;
-    stream << endl;
-    stream << "# Configuration de sortie DocBook" << endl;
-    stream << "GENERATE_DOCBOOK=NO" << endl;
-    stream << "DOCBOOK_OUTPUT=docbook" << endl;
-    stream << "DOCBOOK_PROGRAMLISTING=NO" << endl;
-    stream << endl;
-    stream << "# Configuration des définitions AutoGen" << endl;
-    stream << "GENERATE_AUTOGEN_DEF=NO" << endl;
-    stream << endl;
-    stream << "# Configuration du module Perl" << endl;
-    stream << "GENERATE_PERLMOD=NO" << endl;
-    stream << "PERLMOD_LATEX=NO" << endl;
-    stream << "PERLMOD_PRETTY=YES" << endl;
-    stream << "PERLMOD_MAKEVAR_PREFIX=" << endl;
-    stream << endl;
+    if(ui->groupBox_generateLatex->isChecked())
+    {
+        saveLineedit("LATEX_OUTPUT", ui->lineEdit_latexOutput, "latex");
+        saveLineedit("LATEX_CMD_NAME", ui->lineEdit_latexCmdName, "latex");
+        saveLineedit("MAKEINDEX_CMD_NAME", ui->lineEdit_makeindexCmdName, "makeindex");
+        saveCheckbox("COMPACT_LATEX", ui->checkBox_compatLatex, false);
+        saveCombobox("PAPER_TYPE", ui->comboBox_paperType, "a4");
+        saveLineedit("EXTRA_PACKAGES", ui->lineEdit_extraPackages);
+        saveLineedit("LATEX_HEADER", ui->lineEdit_latexHeader);
+        saveLineedit("LATEX_FOOTER", ui->lineEdit_latexFooter);
+        saveLineedit("LATEX_EXTRA_STYLESHEET", ui->lineEdit_latexExtraStylesheet);
+        saveLineedit("LATEX_EXTRA_FILES", ui->lineEdit_latexExtraFiles);
+        saveCheckbox("PDF_HYPERLINKS", ui->checkBox_pdfHyperlinks, true);
+        saveCheckbox("USE_PDFLATEX", ui->checkBox_usePdflatex, true);
+        saveCheckbox("LATEX_BATCHMODE", ui->checkBox_latexBatchmode, false);
+        saveCheckbox("LATEX_HIDE_INDICES", ui->checkBox_latexHideIndices, false);
+        saveCheckbox("LATEX_SOURCE_CODE", ui->checkBox_latexSourceCode, false);
+        saveLineedit("LATEX_BIB_STYLE", ui->lineEdit_latexBibStyle, "plain");
+        saveCheckbox("LATEX_TIMESTAMP", ui->checkBox_latexTimestamp, false);
+    }
+    *m_stream << endl;
+    *m_stream << "# Configuration de sortie RTF" << endl;
+    saveGroupbox("GENERATE_RTF", ui->groupBox_generateRtf, false);
+    if(ui->groupBox_generateRtf->isChecked())
+    {
+        saveLineedit("RTF_OUTPUT", ui->lineEdit_rtfOutput, "rtf");
+        saveCheckbox("COMPACT_RTF", ui->checkBox_compactRtf, false);
+        saveCheckbox("RTF_HYPERLINKS", ui->checkBox_rtfHyperlinks, false);
+        saveLineedit("RTF_STYLESHEET_FILE", ui->lineEdit_rtfStylesheetFile);
+        saveLineedit("RTF_EXTENSIONS_FILE", ui->lineEdit_rtfExtensionsFile);
+        saveCheckbox("RTF_SOURCE_CODE", ui->checkBox_rtfSourceCode, false);
+    }
+    *m_stream << endl;
+    *m_stream << "# Configuration de sortie MAN" << endl;
+    saveGroupbox("GENERATE_MAN", ui->groupBox_generateMan, false);
+    if(ui->groupBox_generateMan->isChecked())
+    {
+        saveLineedit("MAN_OUTPUT", ui->lineEdit_manOutput, "man");
+        saveLineedit("MAN_EXTENSION", ui->lineEdit_manExtension, ".3");
+        saveLineedit("MAN_SUBDIR", ui->lineEdit_manSubdir);
+        saveCheckbox("MAN_LINKS", ui->checkBox_manLinks, false);
+    }
+    *m_stream << endl;
+    *m_stream << "# Configuration de sortie XML" << endl;
+    saveGroupbox("GENERATE_XML", ui->groupBox_generateXml, false);
+    if(ui->groupBox_generateXml->isChecked())
+    {
+        saveLineedit("XML_OUTPUT", ui->lineEdit_xmlOutput, "xml");
+        saveCheckbox("XML_PROGRAMLISTING", ui->checkBox_xmlProgramlisting, true);
+    }
+    *m_stream << endl;
+    *m_stream << "# Configuration de sortie DocBook" << endl;
+    saveGroupbox("GENERATE_DOCBOOK", ui->groupBox_generateDocbook, false);
+    if(ui->groupBox_generateDocbook->isChecked())
+    {
+        saveLineedit("DOCBOOK_OUTPUT", ui->lineEdit_docbookOutput, "docbook");
+        saveCheckbox("DOCBOOK_PROGRAMLISTING", ui->checkBox_docbookProgramlisting, false);
+    }
+    *m_stream << endl;
+    *m_stream << "# Configuration des définitions AutoGen" << endl;
+    saveCheckbox("GENERATE_AUTOGEN_DEF", ui->checkBox_generateAutogenDef, false);
+    *m_stream << endl;
+    *m_stream << "# Configuration du module Perl" << endl;
+    saveGroupbox("GENERATE_PERLMOD", ui->groupBox_generatePerlmod, false);
+    if(ui->groupBox_generateXml->isChecked())
+    {
+        saveCheckbox("PERLMOD_LATEX", ui->checkBox_perlmodLatex, false);
+        saveCheckbox("PERLMOD_PRETTY", ui->checkBox_perlmodPretty, true);
+        saveLineedit("PERLMOD_MAKEVAR_PREFIX", ui->lineEdit_perlmodMakevarPrefix);
+    }
+    *m_stream << endl;
 }
 
-void TabDoxygen::save_tabProcessor(QTextStream stream)
+void TabDoxygen::save_tabProcessor()
 {
-    stream << "# Configuration du processeur" << endl;
-    stream << "ENABLE_PREPROCESSING=YES" << endl;
-    stream << "MACRO_EXPANSION=NO" << endl;
-    stream << "EXPAND_ONLY_PREDEF=NO" << endl;
-    stream << "SEARCH_INCLUDES=YES" << endl;
-    stream << "INCLUDE_PATH=" << endl;
-    stream << "INCLUDE_FILE_PATTERNS=" << endl;
-    stream << "PREDEFINED=" << endl;
-    stream << "EXPAND_AS_DEFINED=" << endl;
-    stream << "SKIP_FUNCTION_MACROS=YES" << endl;
-    stream << endl;
+    *m_stream << "# Configuration du processeur" << endl;
+    saveGroupbox("ENABLE_PREPROCESSING", ui->groupBox_enablePreprocessing, true);
+    if(ui->groupBox_enablePreprocessing->isChecked())
+    {
+        saveCheckbox("MACRO_EXPANSION", ui->checkBox_macroExpansion, false);
+        saveCheckbox("EXPAND_ONLY_PREDEF", ui->checkBox_expandOnlyPredef, false);
+        saveCheckbox("SEARCH_INCLUDES", ui->checkBox_searchIncludes, true);
+        if(ui->checkBox_searchIncludes->isChecked())
+        {
+            saveLineedit("INCLUDE_PATH", ui->lineEdit_includePath);
+        }
+        saveLineedit("INCLUDE_FILE_PATTERNS", ui->lineEdit_includeFilePatterns);
+        saveLineedit("PREDEFINED", ui->lineEdit_predefined);
+        saveLineedit("EXPAND_AS_DEFINED", ui->lineEdit_expandAsDefined);
+        saveCheckbox("SKIP_FUNCTION_MACROS", ui->checkBox_skipFunctionMacros, true);
+    }
+    *m_stream << endl;
 }
 
 void TabDoxygen::save_tabExternRef()
@@ -1191,45 +1231,49 @@ void TabDoxygen::save_tabExternRef()
     *m_stream << endl;
 }
 
-void TabDoxygen::save_tabGraph(QTextStream stream)
+void TabDoxygen::save_tabGraph()
 {
-    stream << "# Configuration de l'outil DOT" << endl;
-    stream << "CLASS_DIAGRAMS=YES" << endl;
-    stream << "MSCGEN_PATH=" << endl;
-    stream << "DIA_PATH=" << endl;
-    stream << "HIDE_UNDOC_RELATIONS=YES" << endl;
-    stream << "HAVE_DOT=YES" << endl;
-    stream << "DOT_NUM_THREADS=0" << endl;
-    stream << "DOT_FONTNAME=Helvetica" << endl;
-    stream << "DOT_FONTSIZE=10" << endl;
-    stream << "DOT_FONTPATH=" << endl;
-    stream << "CLASS_GRAPH=YES" << endl;
-    stream << "COLLABORATION_GRAPH=YES" << endl;
-    stream << "GROUP_GRAPHS=YES" << endl;
-    stream << "UML_LOOK=NO" << endl;
-    stream << "UML_LIMIT_NUM_FIELDS=10" << endl;
-    stream << "TEMPLATE_RELATIONS=NO" << endl;
-    stream << "INCLUDE_GRAPH=YES" << endl;
-    stream << "INCLUDED_BY_GRAPH=YES" << endl;
-    stream << "CALL_GRAPH=NO" << endl;
-    stream << "CALLER_GRAPH=NO" << endl;
-    stream << "GRAPHICAL_HIERARCHY=YES" << endl;
-    stream << "DIRECTORY_GRAPH=YES" << endl;
-    stream << "DOT_IMAGE_FORMAT=png" << endl;
-    stream << "INTERACTIVE_SVG=NO" << endl;
-    stream << "DOT_PATH=" << endl;
-    stream << "DOTFILE_DIRS=" << endl;
-    stream << "MSCFILE_DIRS=" << endl;
-    stream << "DIAFILE_DIRS=" << endl;
-    stream << "PLANTUML_JAR_PATH=" << endl;
-    stream << "PLANTUML_CFG_FILE=" << endl;
-    stream << "PLANTUML_INCLUDE_PATH=" << endl;
-    stream << "DOT_GRAPH_MAX_NODES=50" << endl;
-    stream << "MAX_DOT_GRAPH_DEPTH=0" << endl;
-    stream << "DOT_TRANSPARENT=NO" << endl;
-    stream << "DOT_MULTI_TARGETS=NO" << endl;
-    stream << "GENERATE_LEGEND=YES" << endl;
-    stream << "DOT_CLEANUP=YES" << endl;
+    *m_stream << "# Configuration de l'outil DOT" << endl;
+    saveCheckbox("CLASS_DIAGRAMS", ui->checkBox_classDiagrams, true);
+    saveLineedit("MSCGEN_PATH", ui->lineEdit_mscgenPath);
+    saveLineedit("DIA_PATH", ui->lineEdit_diaPath);
+    saveCheckbox("HIDE_UNDOC_RELATIONS", ui->checkBox_hideUndocRelations, true);
+    saveGroupbox("HAVE_DOT", ui->groupBox_haveDot, true);
+    if(ui->groupBox_haveDot->isChecked())
+    {
+        saveSpinbox_("DOT_NUM_THREADS", ui->spinBox_dotNumThreads, 0);
+        saveFontCbox("DOT_FONTNAME", ui->fontComboBox_dotFontName, "Helvetica");
+        saveSpinbox_("DOT_FONTSIZE", ui->spinBox_dotFontsize, 10);
+        saveLineedit("DOT_FONTPATH", ui->lineEdit_dotFontpath);
+        saveCheckbox("CLASS_GRAPH", ui->checkBox_classGraph, true);
+        saveCheckbox("COLLABORATION_GRAPH", ui->checkBox_collaborationGraph, true);
+        saveCheckbox("GROUP_GRAPHS", ui->checkBox_groupGraphs, true);
+        saveCheckbox("UML_LOOK", ui->checkBox_umlLook, false);
+        saveSpinbox_("UML_LIMIT_NUM_FIELDS", ui->spinBox_umlLimitNumFields, 10);
+        saveCheckbox("TEMPLATE_RELATIONS", ui->checkBox_templateRelations, false);
+        saveCheckbox("INCLUDE_GRAPH", ui->checkBox_includeGraph, true);
+        saveCheckbox("INCLUDED_BY_GRAPH", ui->checkBox_includedByGraph, true);
+        saveCheckbox("CALL_GRAPH", ui->checkBox_callGraph, false);
+        saveCheckbox("CALLER_GRAPH", ui->checkBox_callerGraph, false);
+        saveCheckbox("GRAPHICAL_HIERARCHY", ui->checkBox_graphicalHierarchy, true);
+        saveCheckbox("DIRECTORY_GRAPH", ui->checkBox_directoryGraph, true);
+        saveCombobox("DOT_IMAGE_FORMAT", ui->comboBox_dotImageFormat, "png");
+        saveCheckbox("INTERACTIVE_SVG", ui->checkBox_interactiveSvg, false);
+        saveLineedit("DOT_PATH", ui->lineEdit_dotPath);
+        saveLineedit("DOTFILE_DIRS", ui->lineEdit_dotfileDirs);
+        saveSpinbox_("DOT_GRAPH_MAX_NODES", ui->spinBox_dotGraphMaxNodes, 50);
+        saveSpinbox_("MAX_DOT_GRAPH_DEPTH", ui->spinBox_maxDotGraphDepth);
+        saveCheckbox("DOT_TRANSPARENT", ui->checkBox_dotTransparent, false);
+        saveCheckbox("DOT_MULTI_TARGETS", ui->checkBox_dotMultiTargets, false);
+        saveCheckbox("GENERATE_LEGEND", ui->checkBox_generateLegend, true);
+        saveCheckbox("DOT_CLEANUP", ui->checkBox_dotCleanup, true);
+    }
+    saveLineedit("MSCFILE_DIRS", ui->lineEdit_mscfileDirs);
+    saveLineedit("DIAFILE_DIRS", ui->lineEdit_diafileDirs);
+    saveLineedit("PLANTUML_JAR_PATH", ui->lineEdit_plantumlJarPath);
+    saveLineedit("PLANTUML_CFG_FILE", ui->lineEdit_plantumlCfgFile);
+    saveLineedit("PLANTUML_INCLUDE_PATH", ui->lineEdit_plantumlIncludePath);
+    *m_stream << endl;
 }
 
 void TabDoxygen::saveCheckbox(QString key, QCheckBox* checkbox, bool default_value)
@@ -1305,4 +1349,272 @@ void TabDoxygen::saveSpinbox_(QString key, QSpinBox* spinbox, int default_value 
     {
         *m_stream << key << "=" << spinbox->value() << endl;
     }
+}
+
+void TabDoxygen::on_toolButton_projectLogo_clicked()
+{
+    getOpenFile(ui->lineEdit_projectLogo);
+}
+
+void TabDoxygen::on_toolButton_outputDir_clicked()
+{
+    getDir(ui->lineEdit_outputDir);
+}
+
+void TabDoxygen::on_toolButton_fileVersionFilter_clicked()
+{
+    getOpenFile(ui->lineEdit_fileVersionFilter);
+}
+
+void TabDoxygen::on_toolButton_layoutFile_clicked()
+{
+    getOpenFile(ui->lineEdit_layoutFile);
+}
+
+void TabDoxygen::on_toolButton_citeBibFiles_clicked()
+{
+    getOpenFiles(ui->lineEdit_citeBibFiles);
+}
+
+void TabDoxygen::on_toolButton_warnLogfile_clicked()
+{
+    getSaveFile(ui->lineEdit_warnLogfile);
+}
+
+void TabDoxygen::on_toolButton_examplePath_clicked()
+{
+    getOpenFiles(ui->lineEdit_examplePath);
+}
+
+void TabDoxygen::on_toolButton_imagePath_clicked()
+{
+    getOpenFiles(ui->lineEdit_imagePath);
+}
+
+void TabDoxygen::on_toolButton_inputFilter_clicked()
+{
+    getOpenFile(ui->lineEdit_inputFilter);
+}
+
+void TabDoxygen::on_toolButton_useMdfileAsMainpage_clicked()
+{
+    getOpenFile(ui->lineEdit_useMdfileAsMainpage);
+}
+
+void TabDoxygen::on_toolButton_htmlHeader_clicked()
+{
+    getOpenFile(ui->lineEdit_htmlHeader);
+}
+
+void TabDoxygen::on_toolButton_htmlFooter_clicked()
+{
+    getOpenFile(ui->lineEdit_htmlFooter);
+}
+
+void TabDoxygen::on_toolButton_htmlStylesheet_clicked()
+{
+    getOpenFile(ui->lineEdit_htmlStylesheet);
+}
+
+void TabDoxygen::on_toolButton_htmlExtraStylesheet_clicked()
+{
+    getOpenFile(ui->lineEdit_htmlExtraStylesheet);
+}
+
+void TabDoxygen::on_toolButton_hhcLocation_clicked()
+{
+    getOpenFile(ui->lineEdit_hhcLocation);
+}
+
+void TabDoxygen::on_toolButton_qhgLocation_clicked()
+{
+    getOpenFile(ui->lineEdit_qhgLocation);
+}
+
+void TabDoxygen::on_toolButton_mathjaxCodefile_clicked()
+{
+    getOpenFile(ui->lineEdit_mathjaxCodefile);
+}
+
+void TabDoxygen::on_toolButton_latexHeader_clicked()
+{
+    getOpenFile(ui->lineEdit_latexHeader);
+}
+
+void TabDoxygen::on_toolButton_latexFooter_clicked()
+{
+    getOpenFile(ui->lineEdit_latexFooter);
+}
+
+void TabDoxygen::on_toolButton_latexExtraStylesheet_clicked()
+{
+    getOpenFile(ui->lineEdit_latexExtraStylesheet);
+}
+
+void TabDoxygen::on_toolButton_latexExtraFiles_clicked()
+{
+    getOpenFiles(ui->lineEdit_latexExtraFiles);
+}
+
+void TabDoxygen::on_toolButton_rtfStylesheetFile_clicked()
+{
+    getOpenFile(ui->lineEdit_rtfStylesheetFile);
+}
+
+void TabDoxygen::on_toolButton_rtfExtensionsFile_clicked()
+{
+    getOpenFile(ui->lineEdit_rtfExtensionsFile);
+}
+
+void TabDoxygen::on_toolButton_perlPath_clicked()
+{
+    getDir(ui->lineEdit_perlPath);
+}
+
+void TabDoxygen::on_toolButton_mscgenPath_clicked()
+{
+    getDir(ui->lineEdit_mscgenPath);
+}
+
+void TabDoxygen::on_toolButton_diaPath_clicked()
+{
+    getDir(ui->lineEdit_diaPath);
+}
+
+void TabDoxygen::on_toolButton_dotFontpath_clicked()
+{
+    getDir(ui->lineEdit_dotFontpath);
+}
+
+void TabDoxygen::on_toolButton_dotPath_clicked()
+{
+    getDir(ui->lineEdit_dotPath);
+}
+
+void TabDoxygen::on_toolButton_plantumlJarPath_clicked()
+{
+    getOpenFile(ui->lineEdit_plantumlJarPath);
+}
+
+void TabDoxygen::on_toolButton_plantumlCfgFile_clicked()
+{
+    getOpenFile(ui->lineEdit_plantumlCfgFile);
+}
+
+void TabDoxygen::getSaveFile(QLineEdit* lineedit)
+{
+    QString result = "";
+    result = QFileDialog::getSaveFileName(this,
+                                          "Enregistrer sous",
+                                          Context::Instance()->lastSearch());
+    if(result != QString(""))
+    {
+        QFileInfo fileInfo(result);
+        Context::Instance()->setLastSearch(fileInfo.absoluteDir().path());
+        emit foundPath(fileInfo.absoluteFilePath(), lineedit);
+    }
+}
+
+void TabDoxygen::getOpenFile(QLineEdit* lineedit)
+{
+    QString result = "";
+    result = QFileDialog::getOpenFileName(this,
+                                          "Fichier",
+                                          Context::Instance()->lastSearch());
+    if(result != QString(""))
+    {
+        QFileInfo fileInfo(result);
+        Context::Instance()->setLastSearch(fileInfo.absoluteDir().path());
+        emit foundPath(fileInfo.absoluteFilePath(), lineedit);
+    }
+}
+
+void TabDoxygen::getOpenFiles(QLineEdit* lineedit)
+{
+    QStringList result;
+    result = QFileDialog::getOpenFileNames(this,
+                                           "Fichiers",
+                                           Context::Instance()->lastSearch());
+    if(result.length() > 0)
+    {
+        for(int i = 0; i < result.length(); i++)
+        {
+            QString tmp = result[i];
+            QFileInfo fileInfo(tmp);
+            tmp = fileInfo.absolutePath();
+            if(tmp.contains(QChar(' ')))
+            {
+                tmp.prepend(QChar('"'));
+                tmp.append(QChar('"'));
+            }
+            result[i] = tmp;
+            Context::Instance()->setLastSearch(fileInfo.absolutePath());
+        }
+        emit foundPath(result.join(QChar(' ')), lineedit);
+    }
+}
+
+void TabDoxygen::getDir(QLineEdit* lineedit)
+{
+    QString result = "";
+    result = QFileDialog::getExistingDirectory(this,
+                                               "Dossier",
+                                               Context::Instance()->lastSearch());
+    if(result != QString(""))
+    {
+        QFileInfo fileInfo(result);
+        Context::Instance()->setLastSearch(fileInfo.absoluteDir().absolutePath());
+        emit foundPath(fileInfo.absoluteFilePath(), lineedit);
+    }
+}
+
+void TabDoxygen::writePath(QString path, QLineEdit* lineedit)
+{
+    lineedit->setText(path);
+}
+
+void TabDoxygen::on_pushButton_apply_clicked()
+{
+    save();
+}
+
+void TabDoxygen::on_pushButton_default_clicked()
+{
+    QMessageBox::StandardButton res;
+    res = QMessageBox::question(this,
+                                "Remise à zéro",
+                                "Êtes vous sûr de vouloir réinitialiser\nle fihcier Doxygen ?",
+                                QMessageBox::Yes | QMessageBox::No,
+                                QMessageBox::Yes);
+    if(res == QMessageBox::Yes)
+    {
+        createDoxyfile();
+        init();
+    }
+}
+
+void TabDoxygen::on_pushButton_generateFiles_clicked()
+{
+    QFileInfo infos(m_doxyfile);
+    QDir dir(infos.absoluteDir().absolutePath() + "/doxygen_templates/");
+    QProcess process;
+    QString cmd;
+    // Move dir
+    if(!dir.exists())
+    {
+        cmd = "cd " + infos.absoluteDir().absolutePath() + ";mkdir doxygen_templates";
+        process.startDetached(cmd);
+    }
+    cmd = "cd " + dir.absolutePath();
+    // Create
+    cmd += "mkdir rtf html latex;";
+    cmd += "doxygen -l;";
+    cmd += "doxygen -w rtf/styleSheetFile;";
+    cmd += "doxygen -e rtf/extensionsFile;";
+    cmd += "doxygen -w html/header.html html/footer.html html/stylesheet.css;";
+    cmd += "doxygen -w latex/header.html latex/footer.html latex/stylesheet.css;";
+    process.startDetached(cmd);
+    QMessageBox::information(this,
+                             "Création des templates",
+                             "Les templates ont été créés dans le dossier\n" + dir.absolutePath());
 }

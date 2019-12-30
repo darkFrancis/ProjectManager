@@ -27,6 +27,52 @@
             void save();
             void createDoxyfile();
 
+        signals:
+            void foundPath(QString path, QLineEdit* lineedit);
+
+        private slots:
+            // Click ToolButtons
+            void on_toolButton_projectLogo_clicked();
+            void on_toolButton_outputDir_clicked();
+            void on_toolButton_fileVersionFilter_clicked();
+            void on_toolButton_layoutFile_clicked();
+            void on_toolButton_citeBibFiles_clicked();
+            void on_toolButton_warnLogfile_clicked();
+            void on_toolButton_examplePath_clicked();
+            void on_toolButton_imagePath_clicked();
+            void on_toolButton_inputFilter_clicked();
+            void on_toolButton_useMdfileAsMainpage_clicked();
+            void on_toolButton_htmlHeader_clicked();
+            void on_toolButton_htmlFooter_clicked();
+            void on_toolButton_htmlStylesheet_clicked();
+            void on_toolButton_htmlExtraStylesheet_clicked();
+            void on_toolButton_hhcLocation_clicked();
+            void on_toolButton_qhgLocation_clicked();
+            void on_toolButton_mathjaxCodefile_clicked();
+            void on_toolButton_latexHeader_clicked();
+            void on_toolButton_latexFooter_clicked();
+            void on_toolButton_latexExtraStylesheet_clicked();
+            void on_toolButton_latexExtraFiles_clicked();
+            void on_toolButton_rtfStylesheetFile_clicked();
+            void on_toolButton_rtfExtensionsFile_clicked();
+            void on_toolButton_perlPath_clicked();
+            void on_toolButton_mscgenPath_clicked();
+            void on_toolButton_diaPath_clicked();
+            void on_toolButton_dotFontpath_clicked();
+            void on_toolButton_dotPath_clicked();
+            void on_toolButton_plantumlJarPath_clicked();
+            void on_toolButton_plantumlCfgFile_clicked();
+            // Path Finder
+            void getSaveFile(QLineEdit* lineedit);
+            void getOpenFile(QLineEdit* lineedit);
+            void getOpenFiles(QLineEdit* lineedit);
+            void getDir(QLineEdit* lineedit);
+            void writePath(QString path, QLineEdit* lineedit);
+            // Click PushButtons
+            void on_pushButton_apply_clicked();
+            void on_pushButton_default_clicked();
+            void on_pushButton_generateFiles_clicked();
+
         private:
             Ui::TabDoxygen *ui;
             QString m_doxyfile;

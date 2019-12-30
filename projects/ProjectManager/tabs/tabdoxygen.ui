@@ -14,16 +14,43 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+   <item row="1" column="0">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="2">
+    <widget class="QPushButton" name="pushButton_default">
+     <property name="text">
+      <string>Défaut</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="3">
+    <widget class="QPushButton" name="pushButton_apply">
+     <property name="text">
+      <string>Appliquer</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="4">
     <widget class="QToolBox" name="toolBox">
      <property name="currentIndex">
-      <number>9</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="page_projectConf">
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-707</y>
+        <y>0</y>
         <width>538</width>
         <height>1419</height>
        </rect>
@@ -1142,7 +1169,7 @@ Par défaut : 0</string>
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-789</y>
+        <y>0</y>
         <width>538</width>
         <height>1114</height>
        </rect>
@@ -1829,7 +1856,7 @@ citations avec le tag @cite.</string>
         <x>0</x>
         <y>0</y>
         <width>552</width>
-        <height>325</height>
+        <height>294</height>
        </rect>
       </property>
       <attribute name="label">
@@ -1993,7 +2020,7 @@ standard des erreurs.</string>
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-250</y>
+        <y>-281</y>
         <width>538</width>
         <height>575</height>
        </rect>
@@ -2446,7 +2473,7 @@ principale (index.html).</string>
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-121</y>
+        <y>-152</y>
         <width>538</width>
         <height>446</height>
        </rect>
@@ -2719,7 +2746,7 @@ alphabétique.</string>
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-1556</y>
+        <y>-1587</y>
         <width>538</width>
         <height>1881</height>
        </rect>
@@ -4089,7 +4116,7 @@ tagname=loc.</string>
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-1070</y>
+        <y>0</y>
         <width>538</width>
         <height>1395</height>
        </rect>
@@ -5010,9 +5037,9 @@ MakeFile.</string>
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
-        <width>552</width>
-        <height>325</height>
+        <y>-14</y>
+        <width>538</width>
+        <height>308</height>
        </rect>
       </property>
       <attribute name="label">
@@ -5205,7 +5232,7 @@ Par défaut : coché</string>
         <x>0</x>
         <y>0</y>
         <width>552</width>
-        <height>325</height>
+        <height>294</height>
        </rect>
       </property>
       <attribute name="label">
@@ -5350,9 +5377,9 @@ Par défaut : /usr/bin/perl</string>
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-863</y>
+        <y>0</y>
         <width>538</width>
-        <height>1188</height>
+        <height>1182</height>
        </rect>
       </property>
       <attribute name="label">
@@ -6280,6 +6307,13 @@ dans un bloc UML.</string>
        </item>
       </layout>
      </widget>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QPushButton" name="pushButton_generateFiles">
+     <property name="text">
+      <string>Générer Templates</string>
+     </property>
     </widget>
    </item>
   </layout>

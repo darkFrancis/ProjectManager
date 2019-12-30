@@ -54,11 +54,9 @@ void MainWindow::init()
         this->setGeometry(x, y, w, h);
 
         // Init Context
-        QString project = parser->get("project");
-        if(project != QString(""))
-        {
-            Context::Instance()->setProject(project);
-        }
+        Context* ctx = Context::Instance();
+        ctx->setProject(parser->get("project"));
+        ctx->setLastSearch(parser->get("last_search"));
 
         // Init Tab Widget
         m_tabWidget = new QTabWidget(this);
@@ -88,6 +86,10 @@ void MainWindow::createInit()
         // Project
         stream << "# Project" << endl;
         stream << "project=" << endl;
+        stream << endl;
+        // Last
+        stream << "# Last" << endl;
+        stream << "last_search=" << endl;
         file.close();
     }
     else
@@ -112,6 +114,10 @@ void MainWindow::saveInit()
         // Project
         stream << "# Project" << endl;
         stream << "project=" << Context::Instance()->project() << endl;
+        stream << endl;
+        // Last
+        stream << "# Last" << endl;
+        stream << "last_search=" << Context::Instance()->lastSearch() << endl;
         file.close();
     }
     else

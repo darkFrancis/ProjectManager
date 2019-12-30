@@ -12,10 +12,14 @@ Parser* Parser::Instance()
 Parser::Parser()
 {
     m_map.clear();
+    m_used = false;
 }
 
 bool Parser::load(QString filename)
 {
+    if(m_used)
+        return false;
+
     m_map.clear();
     QFile file(filename);
     if(file.open(QIODevice::Text | QIODevice::ReadOnly))
@@ -36,6 +40,7 @@ bool Parser::load(QString filename)
             }
         }
         file.close();
+        m_used = true;
         return true;
     }
     return false;
@@ -48,4 +53,14 @@ QString Parser::get(QString key)
         return m_map.value(key);
     }
     return "";
+}
+
+void Parser::close()
+{
+    m_used = false;
+}
+
+bool Parser::isUsed()
+{
+    return m_used;
 }

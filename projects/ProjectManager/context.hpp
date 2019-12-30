@@ -8,14 +8,21 @@
         public:
             static Context* Instance();
             void setProject(QString project_file);
+            void setLastSearch(QString last_search);
+            void loadProject();
             QString project();
+            QString lastSearch();
             QString doxyfile();
 
         private:
             Context();
             static Context* m_instance;
+            // Files
             QString m_project_file;
             QString m_doxyfile;
+            // Options
+            // Last
+            QString m_last_search;
     };
 
 #endif // CONTEXT_HPP

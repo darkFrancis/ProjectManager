@@ -11,8 +11,11 @@ Context* Context::Instance()
 }
 
 Context::Context() :
-    m_project_file("")
-{}
+    m_project_file(""),
+    m_doxyfile("")
+{
+    m_open = false;
+}
 
 void Context::setProject(QString project_file)
 {
@@ -29,7 +32,8 @@ void Context::loadProject()
     Parser* parser = Parser::Instance();
     if(parser->load(m_project_file))
     {
-
+        parser->close();
+        m_open = true;
     }
     else
     {
@@ -50,4 +54,9 @@ QString Context::lastSearch()
 QString Context::doxyfile()
 {
     return m_doxyfile;
+}
+
+bool Context::isOpen()
+{
+    return m_open;
 }

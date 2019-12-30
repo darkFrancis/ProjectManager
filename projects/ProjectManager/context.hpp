@@ -13,6 +13,7 @@
             QString project();
             QString lastSearch();
             QString doxyfile();
+            bool isOpen();
 
         private:
             Context();
@@ -20,6 +21,7 @@
             // Files
             QString m_project_file;
             QString m_doxyfile;
+            bool m_open;
             // Options
             // Last
             QString m_last_search;

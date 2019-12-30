@@ -28,17 +28,20 @@ SOURCES += \
         context.cpp \
         main.cpp \
         mainwindow.cpp \
+        newproject.cpp \
         parser.cpp \
         tabs/tabdoxygen.cpp
 
 HEADERS += \
         context.hpp \
         mainwindow.hpp \
+        newproject.hpp \
         parser.hpp \
         tabs/tabdoxygen.hpp
 
 FORMS += \
         mainwindow.ui \
+        newproject.ui \
         tabs/tabdoxygen.ui
 
 # Default rules for deployment.

@@ -4,6 +4,8 @@
 #include <QFile>
 #include <QTextStream>
 #include <QMessageBox>
+#include <QFileDialog>
+#include <QDebug>
 
 #include "parser.hpp"
 #include "context.hpp"
@@ -58,15 +60,34 @@ void MainWindow::init()
         ctx->setProject(parser->get("project"));
         ctx->setLastSearch(parser->get("last_search"));
 
-        // Init Tab Widget
-        m_tabWidget = new QTabWidget(this);
-        m_tab_doxygen = new TabDoxygen();
-        m_tabWidget->addTab(m_tab_doxygen, "Doxygen");
-        ui->centralWidget->layout()->addWidget(m_tabWidget);
+        parser->close();
     }
     else
     {
         throw(QString("Erreur, impossible d'ouvrir le fichier d'initialisation"));
+    }
+
+    // Init Tab Widget
+    m_tabWidget = new QTabWidget(this);
+    m_tab_doxygen = new TabDoxygen();
+    m_tabWidget->addTab(m_tab_doxygen, "Doxygen");
+    ui->centralWidget->layout()->addWidget(m_tabWidget);
+
+    // Last Session
+    if(QFile::exists(Context::Instance()->project()))
+    {
+        try
+        {
+            Context::Instance()->loadProject();
+        }
+        catch (QString msq)
+        {
+
+        }
+    }
+    else
+    {
+        m_tabWidget->setEnabled(false);
     }
 }
 
@@ -131,7 +152,29 @@ void MainWindow::status(QString msg, int timeout)
     ui->statusBar->showMessage(msg, timeout * 1000);
 }
 
-void MainWindow::openFileClicked()
+void MainWindow::on_actionNouveau_triggered()
 {
-    status("OK");
+    Context* ctx = Context::Instance();
+    if(ctx->isOpen())
+    {
+        QMessageBox::StandardButton res;
+        res = QMessageBox::question(this, "Attention", "Attention ! Si un nouveau fichier est ouvert, tout ce qui n'est pas enregistré sera supprimé.\nVoulez vous continuer ?");
+        if(res == QMessageBox::No)
+        {
+            return;
+        }
+    }
+    QString file_path = QFileDialog::getSaveFileName(this,
+                                                     "Nouveau Projet",
+                                                     ctx->lastSearch(),
+                                                     "Project File (*.pm)");
+    if(file_path != QString(""))
+    {
+        QFileInfo infos(file_path);
+        ctx->setLastSearch(infos.absoluteDir().absolutePath());
+        if(file_path.right(3) != QString(".pm"))
+        {
+            file_path += ".pm";
+        }
+    }
 }

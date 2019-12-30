@@ -1597,24 +1597,50 @@ void TabDoxygen::on_pushButton_generateFiles_clicked()
 {
     QFileInfo infos(m_doxyfile);
     QDir dir(infos.absoluteDir().absolutePath() + "/doxygen_templates/");
-    QProcess process;
+    QString pwd = dir.absolutePath() + "/";
     QString cmd;
-    // Move dir
-    if(!dir.exists())
+
+    try
     {
-        cmd = "cd " + infos.absoluteDir().absolutePath() + ";mkdir doxygen_templates";
-        process.startDetached(cmd);
+        // Move dir
+        if(!dir.exists())
+        {
+            cmd = "mkdir " + infos.absoluteDir().absolutePath() + "/doxygen_templates";
+            command(cmd);
+        }
+        // Create
+        cmd = "mkdir " + pwd + "rtf";
+        command(cmd);
+        cmd = "mkdir " + pwd + "html";
+        command(cmd);
+        cmd = "mkdir " + pwd + "latex";
+        command(cmd);
+        cmd = "doxygen -l " + pwd + "layout.xml";
+        command(cmd);
+        cmd = "doxygen -w rtf " + pwd + "rtf/styleSheetFile";
+        command(cmd);
+        cmd = "doxygen -e rtf " + pwd + "rtf/extensionsFile";
+        command(cmd);
+        cmd = "doxygen -w latex " + pwd + "html/header.html " + pwd + "html/footer.html " + pwd + "html/stylesheet.css";
+        command(cmd);
+        cmd = "doxygen -w html " + pwd + "latex/header.html " + pwd + "latex/footer.html " + pwd + "latex/stylesheet.css";
+        command(cmd);
     }
-    cmd = "cd " + dir.absolutePath();
-    // Create
-    cmd += "mkdir rtf html latex;";
-    cmd += "doxygen -l;";
-    cmd += "doxygen -w rtf/styleSheetFile;";
-    cmd += "doxygen -e rtf/extensionsFile;";
-    cmd += "doxygen -w html/header.html html/footer.html html/stylesheet.css;";
-    cmd += "doxygen -w latex/header.html latex/footer.html latex/stylesheet.css;";
-    process.startDetached(cmd);
+    catch(QString msg)
+    {
+        QMessageBox::critical(this, "Erreur", msg);
+        return;
+    }
     QMessageBox::information(this,
                              "Création des templates",
                              "Les templates ont été créés dans le dossier\n" + dir.absolutePath());
+}
+
+void TabDoxygen::command(QString cmd)
+{
+    QProcess process(this);
+    if(!process.startDetached(cmd))
+    {
+        throw(QString("Impossible d'exécuter la commande:\n" + cmd));
+    }
 }

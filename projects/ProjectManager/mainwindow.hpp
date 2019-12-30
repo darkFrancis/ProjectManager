@@ -27,7 +27,7 @@
             void init();
 
         private slots:
-            void openFileClicked();
+            void on_actionNouveau_triggered();
 
         private:
             // UI

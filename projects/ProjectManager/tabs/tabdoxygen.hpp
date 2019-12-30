@@ -117,6 +117,9 @@
             void saveFontCbox(QString key, QFontComboBox* fontcombobox, QString default_value = "");
             void saveLineedit(QString key, QLineEdit* lineedit, QString default_value = "");
             void saveSpinbox_(QString key, QSpinBox* spinbox, int default_value = 0);
+
+            // Templates
+            void command(QString cmd);
     };
 
 #endif // TABDOXYGEN_HPP

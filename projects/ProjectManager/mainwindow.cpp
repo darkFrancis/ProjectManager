@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QDebug>
+#include <QProcess>
 
 #include "parser.hpp"
 #include "context.hpp"
@@ -39,6 +40,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::init()
 {
+    QDir::setCurrent(qApp->applicationDirPath());
     if(!QFile::exists(INIT_FILE))
     {
         status("Génaration du fichier d'initialisation", STATUS_DEFAULT_TIMEOUT);
@@ -70,7 +72,7 @@ void MainWindow::init()
     // Init Tab Widget
     m_tabWidget = new QTabWidget(this);
     m_tab_doxygen = new TabDoxygen();
-    m_tabWidget->addTab(m_tab_doxygen, "Doxygen");
+    m_tabWidget->addTab(m_tab_doxygen, "Configuration Doxygen");
     ui->centralWidget->layout()->addWidget(m_tabWidget);
 
     // Last Session
@@ -93,6 +95,7 @@ void MainWindow::init()
 
 void MainWindow::createInit()
 {
+    QDir::setCurrent(qApp->applicationDirPath());
     QFile file(INIT_FILE);
     if(file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
     {
@@ -121,6 +124,7 @@ void MainWindow::createInit()
 
 void MainWindow::saveInit()
 {
+    QDir::setCurrent(qApp->applicationDirPath());
     QFile file(INIT_FILE);
     if(file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
     {

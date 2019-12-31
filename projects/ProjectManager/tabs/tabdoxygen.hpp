@@ -120,6 +120,7 @@
 
             // Templates
             void command(QString cmd);
+            void move(QString path);
     };
 
 #endif // TABDOXYGEN_HPP

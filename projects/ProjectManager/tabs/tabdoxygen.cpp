@@ -1596,35 +1596,35 @@ void TabDoxygen::on_pushButton_default_clicked()
 void TabDoxygen::on_pushButton_generateFiles_clicked()
 {
     QFileInfo infos(m_doxyfile);
-    QDir dir(infos.absoluteDir().absolutePath() + "/doxygen_templates/");
+    QDir dir(infos.absoluteDir().absolutePath());
+    QDir current = QDir::current();
     QString pwd = dir.absolutePath() + "/";
     QString cmd;
 
+
+
     try
     {
-        // Move dir
-        if(!dir.exists())
+        // Move
+        move(infos.absoluteDir().absolutePath());
+        // Create Dir
+        if(!dir.exists("doxygen_templates"))
         {
-            cmd = "mkdir " + infos.absoluteDir().absolutePath() + "/doxygen_templates";
-            command(cmd);
+            command("mkdir doxygen_templates");
         }
-        // Create
-        cmd = "mkdir " + pwd + "rtf";
-        command(cmd);
-        cmd = "mkdir " + pwd + "html";
-        command(cmd);
-        cmd = "mkdir " + pwd + "latex";
-        command(cmd);
-        cmd = "doxygen -l " + pwd + "layout.xml";
-        command(cmd);
-        cmd = "doxygen -w rtf " + pwd + "rtf/styleSheetFile";
-        command(cmd);
-        cmd = "doxygen -e rtf " + pwd + "rtf/extensionsFile";
-        command(cmd);
-        cmd = "doxygen -w latex " + pwd + "html/header.html " + pwd + "html/footer.html " + pwd + "html/stylesheet.css";
-        command(cmd);
-        cmd = "doxygen -w html " + pwd + "latex/header.html " + pwd + "latex/footer.html " + pwd + "latex/stylesheet.css";
-        command(cmd);
+        move("doxygen_templates");
+        command("mkdir rtf");
+        command("mkdir html");
+        command("mkdir latex");
+        command("doxygen -l layout.xml");
+        move("rtf");
+        command("doxygen -w rtf styleSheetFile");
+        command("doxygen -e rtf extensionsFile");
+        move("../html");
+        command("doxygen -w html heder.html footer.html stylesheet.css");
+        move("../latex");
+        command("doxygen -w latex heder.html footer.html stylesheet.css");
+        move(current.path());
     }
     catch(QString msg)
     {
@@ -1642,5 +1642,21 @@ void TabDoxygen::command(QString cmd)
     if(!process.startDetached(cmd))
     {
         throw(QString("Impossible d'exécuter la commande:\n" + cmd));
+    }
+}
+
+void TabDoxygen::move(QString path)
+{
+    if(path == "")
+    {
+        return;
+    }
+    if(path[0] != QChar('/') && path[0] != QChar('.'))
+    {
+        path.prepend("./");
+    }
+    if(!QDir::setCurrent(path))
+    {
+        throw(QString("Impossible de se déplacer à :\n" + path));
     }
 }

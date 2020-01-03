@@ -30,6 +30,7 @@ SOURCES += \
         mainwindow.cpp \
         newproject.cpp \
         parser.cpp \
+        tabs/git/gitstatus.cpp \
         tabs/git/gitview.cpp \
         tabs/tabcompiler.cpp \
         tabs/tabdoxygen.cpp \
@@ -40,6 +41,7 @@ HEADERS += \
         mainwindow.hpp \
         newproject.hpp \
         parser.hpp \
+        tabs/git/gitstatus.hpp \
         tabs/git/gitview.hpp \
         tabs/tabcompiler.hpp \
         tabs/tabdoxygen.hpp \
@@ -48,7 +50,7 @@ HEADERS += \
 FORMS += \
         mainwindow.ui \
         newproject.ui \
-        tabs/git/gitview.ui \
+        tabs/git/gitstatus.ui \
         tabs/tabcompiler.ui \
         tabs/tabdoxygen.ui \
         tabs/tabgit.ui

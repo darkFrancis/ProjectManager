@@ -1596,67 +1596,38 @@ void TabDoxygen::on_pushButton_default_clicked()
 void TabDoxygen::on_pushButton_generateFiles_clicked()
 {
     QFileInfo infos(m_doxyfile);
-    QDir dir(infos.absoluteDir().absolutePath());
-    QDir current = QDir::current();
-    QString pwd = dir.absolutePath() + "/";
-    QString cmd;
-
-
+    QString dir = infos.absoluteDir().absolutePath();
 
     try
     {
-        // Move
-        move(infos.absoluteDir().absolutePath());
         // Create Dir
-        if(!dir.exists("doxygen_templates"))
-        {
-            command("mkdir doxygen_templates");
-        }
-        move("doxygen_templates");
-        command("mkdir rtf");
-        command("mkdir html");
-        command("mkdir latex");
-        command("doxygen -l layout.xml");
-        move("rtf");
-        command("doxygen -w rtf styleSheetFile");
-        command("doxygen -e rtf extensionsFile");
-        move("../html");
-        command("doxygen -w html heder.html footer.html stylesheet.css");
-        move("../latex");
-        command("doxygen -w latex heder.html footer.html stylesheet.css");
-        move(current.path());
+        command("mkdir doxygen_templates", dir);
+        dir += "/doxygen_templates/";
+        command("mkdir rtf", dir);
+        command("mkdir html", dir);
+        command("mkdir latex", dir);
+        command("doxygen -l layout.xml", dir);
+        command("doxygen -w rtf styleSheetFile", dir + "rtf");
+        command("doxygen -e rtf extensionsFile", dir + "rtf");
+        command("doxygen -w html heder.html footer.html stylesheet.css", dir + "html");
+        command("doxygen -w latex heder.html footer.html stylesheet.css", dir + "latex");
+        QMessageBox::information(this,
+                                 "Création des templates",
+                                 "Les templates ont été créés dans le dossier\n" + dir);
     }
     catch(QString msg)
     {
         QMessageBox::critical(this, "Erreur", msg);
-        return;
-    }
-    QMessageBox::information(this,
-                             "Création des templates",
-                             "Les templates ont été créés dans le dossier\n" + dir.absolutePath());
-}
-
-void TabDoxygen::command(QString cmd)
-{
-    QProcess process(this);
-    if(!process.startDetached(cmd))
-    {
-        throw(QString("Impossible d'exécuter la commande:\n" + cmd));
     }
 }
 
-void TabDoxygen::move(QString path)
+void TabDoxygen::command(QString cmd, QString workingDir)
 {
-    if(path == "")
+    QProcess process;
+    process.setWorkingDirectory(workingDir);
+    process.start(cmd);
+    if(!process.waitForFinished())
     {
-        return;
-    }
-    if(path[0] != QChar('/') && path[0] != QChar('.'))
-    {
-        path.prepend("./");
-    }
-    if(!QDir::setCurrent(path))
-    {
-        throw(QString("Impossible de se déplacer à :\n" + path));
+        throw(QString("Erreur pour la commande : " + cmd));
     }
 }

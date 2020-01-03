@@ -119,8 +119,7 @@
             void saveSpinbox_(QString key, QSpinBox* spinbox, int default_value = 0);
 
             // Templates
-            void command(QString cmd);
-            void move(QString path);
+            void command(QString cmd, QString workingDir = ".");
     };
 
 #endif // TABDOXYGEN_HPP

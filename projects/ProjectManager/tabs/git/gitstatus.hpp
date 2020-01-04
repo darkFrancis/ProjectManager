@@ -2,62 +2,40 @@
 #define GITSTATUS_HPP
 
     #include <QWidget>
-
-    #define GIT_NOTUPDATED
-    #define GIT_INDEXUPDATED
-    #define GIT_NOTUPDATED
-    #define GIT_NOTUPDATED
-    #define GIT_NOTUPDATED
-    #define GIT_NOTUPDATED
-
+    #include <QLabel>
 
     namespace Ui {
         class GitStatus;
     }
 
-    enum eGitStatus
+    struct sGitStatus
     {
-        NotUpdated,
-        IndexUpdated,
-        IndexAdded,
-        IndexDeleted,
-        IndexRenamed,
-        IndexCopied,
-        IndexAndWorkTreeMatches,
-        WorkTreeChanged,
-        WorkTreeDeleted,
-        WorkTreeRenamed,
-        WorkTreeCopied,
-        UnmergedBothDeleted,
-        UnmergedAddedByUs,
-        UnmergedDeletedByThem,
-        UnmergedAddedByThem,
-        UnmergedDeletedByUs,
-        UnmergedBothAdded,
-        UnmergedBothModified,
-        Untracked,
-        Ignored
+        char status_index;
+        char status_worktree;
     };
+    typedef struct sGitStatus sGitStatus;
 
     class GitStatus : public QWidget
     {
         Q_OBJECT
 
         public:
-            explicit GitStatus(QWidget *parent = nullptr);
+            explicit GitStatus(QWidget *parent = nullptr, QString line = "");
             ~GitStatus();
-            void setFile(QString file);
+            void newLine(QString line);
             QString file();
-            void setStatus(QString status);
             QString statusStr();
-            eGitStatus status();
+            sGitStatus status();
             void setChecked(bool checked = true);
             bool isChecked();
 
         private:
             Ui::GitStatus *ui;
-            eGitStatus m_status;
+            sGitStatus m_status;
             QString m_status_str;
+            void setFile(QString file);
+            void setStatus(QString status);
+            void setStatusName(char status, QLabel* label);
     };
 
 #endif // GITSTATUS_HPP

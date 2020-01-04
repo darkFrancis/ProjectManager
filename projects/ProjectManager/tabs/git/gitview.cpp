@@ -11,11 +11,12 @@ GitView::~GitView()
 
 void GitView::clean()
 {
-    for(QObject* obj : m_layout->children())
+    QLayoutItem* item;
+    while((item = m_layout->itemAt(0)))
     {
-        delete obj;
+        delete item;
     }
-    delete m_layout;
+    m_status_list.clear();
 }
 
 void GitView::viewStatus(QString status)
@@ -26,7 +27,10 @@ void GitView::viewStatus(QString status)
     {
         if(lign != "")
         {
-
+            m_status_list.append(GitStatus(this, lign));
+            m_layout->addWidget(&m_status_list.last());
         }
     }
+    /// TODO : add buttons
+    this->setLayout(m_layout);
 }

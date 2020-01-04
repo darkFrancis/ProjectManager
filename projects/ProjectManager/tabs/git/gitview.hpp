@@ -4,6 +4,8 @@
     #include <QWidget>
     #include <QTableWidget>
     #include <QGridLayout>
+    #include <QList>
+    #include "gitstatus.hpp"
 
     class GitView : public QWidget
     {
@@ -17,6 +19,7 @@
 
         private:
             QGridLayout* m_layout;
+            QList<GitStatus> m_status_list;
     };
 
 #endif // GITVIEW_HPP

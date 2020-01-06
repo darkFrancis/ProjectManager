@@ -40,14 +40,91 @@ void GitStatus::setStatus(QString status)
     if(status.length() == 2)
     {
         m_status_str = status;
-        m_status.status_index = status[0].toLatin1();
-        m_status.status_worktree = status[1].toLatin1();
-        setStatusName(m_status.status_index, ui->label_status_index);
-        setStatusName(m_status.status_worktree, ui->label_status_worktree);
+        if(status == "!!")
+        {
+            m_type = GitStatusType::Ignored;
+        }
+        else if(status == "??")
+        {
+            m_type = GitStatusType::Untracked;
+        }
+        else if(status[0] == ' ')
+        {
+            m_type = GitStatusType::WorkTree;
+        }
+        else if(status[1] == ' ')
+        {
+            m_type = GitStatusType::Index;
+        }
+        else
+        {
+            m_type = GitStatusType::IndexAndWorkTree;
+        }
     }
     else
     {
         throw(QString("Erreur, le status doit être codé sur 2 caractères"));
+    }
+}
+
+void GitStatus::setNameFor(GitStatusType type)
+{
+    switch (type)
+    {
+        case GitStatusType::Ignored:
+            ui->checkBox->setVisible(false);
+            if(m_status_str == "!!")
+            {
+                ui->label_status->setText(getStatusName('!'));
+            }
+            else
+            {
+                ui->label_status->setText(getStatusName('X'));
+                throw(QString("Erreur, mauvaise catégorie : " + m_status_str + " != Ignored"));
+            }
+            break;
+        case GitStatusType::Untracked:
+            if(m_status_str == "??")
+            {
+                ui->label_status->setText(getStatusName('?'));
+                ui->checkBox->setVisible(true);
+            }
+            else
+            {
+                ui->label_status->setText(getStatusName('X'));
+                ui->checkBox->setVisible(false);
+                throw(QString("Erreur, mauvaise catégorie : " + m_status_str + " != Untracked"));
+            }
+            break;
+        case GitStatusType::Index:
+            ui->checkBox->setVisible(false);
+            if(m_type == GitStatusType::Index || m_type == GitStatusType::IndexAndWorkTree)
+            {
+                ui->label_status->setText(getStatusName(m_status_str[0]));
+                ui->label_file->setText("<a href=\"" + ui->label_file->text() + "\">" + ui->label_file->text() + "</a>");
+            }
+            else
+            {
+                ui->label_status->setText(getStatusName('X'));
+                throw(QString("Erreur, mauvaise catégorie : " + m_status_str + " != Index"));
+            }
+            break;
+        case GitStatusType::WorkTree:
+            if(m_type == GitStatusType::WorkTree || m_type == GitStatusType::IndexAndWorkTree)
+            {
+                ui->label_status->setText(getStatusName(m_status_str[1]));
+                ui->checkBox->setVisible(true);
+            }
+            else
+            {
+                ui->label_status->setText(getStatusName('X'));
+                ui->checkBox->setVisible(false);
+                throw(QString("Erreur, mauvaise catégorie : " + m_status_str + " != WorkTree"));
+            }
+            break;
+        case GitStatusType::IndexAndWorkTree:
+            ui->checkBox->setVisible(false);
+            throw(QString("Impossible d'affecter à IndexAndWorkTree"));
     }
 }
 
@@ -56,9 +133,9 @@ QString GitStatus::statusStr()
     return m_status_str;
 }
 
-sGitStatus GitStatus::status()
+GitStatusType GitStatus::statusType()
 {
-    return m_status;
+    return m_type;
 }
 
 void GitStatus::setChecked(bool checked /*= true*/)
@@ -71,47 +148,51 @@ bool GitStatus::isChecked()
     return ui->checkBox->isChecked();
 }
 
-void GitStatus::setStatusName(char status, QLabel *label)
+QString GitStatus::getStatusName(QChar status)
 {
     if(status == ' ')
     {
-        label->setText("Non modifié");
+        return "Non modifié";
     }
     else if(status == 'M')
     {
-        label->setText("Modifié");
+        return "Modifié";
     }
     else if(status == 'A')
     {
-        label->setText("Ajouté");
+        return "Ajouté";
     }
     else if(status == 'D')
     {
-        label->setText("Supprimé");
+        return "Supprimé";
     }
     else if(status == 'R')
     {
-        label->setText("Renommé");
+        return "Renommé";
     }
     else if(status == 'C')
     {
-        label->setText("Copié");
+        return "Copié";
     }
     else if(status == 'U')
     {
-        label->setText("Non fusionné");
+        return "Non fusionné";
     }
     else if(status == '!')
     {
-        label->setText("Ignoré");
+        return "Ignoré";
     }
     else if(status == '?')
     {
-        label->setText("Non suivi");
+        return "Non suivi";
     }
     else
     {
-        label->setText("###Unknow###");
-        throw(QString("Erreur, status inconnu : ") + status);
+        return "###Unknow###";
     }
+}
+
+void GitStatus::on_label_file_linkActivated(const QString &link)
+{
+    emit diff(link);
 }

@@ -8,12 +8,14 @@
         class GitStatus;
     }
 
-    struct sGitStatus
+    enum GitStatusType
     {
-        char status_index;
-        char status_worktree;
+        Index,
+        WorkTree,
+        IndexAndWorkTree,
+        Ignored,
+        Untracked
     };
-    typedef struct sGitStatus sGitStatus;
 
     class GitStatus : public QWidget
     {
@@ -25,17 +27,25 @@
             void newLine(QString line);
             QString file();
             QString statusStr();
-            sGitStatus status();
+            GitStatusType statusType();
             void setChecked(bool checked = true);
             bool isChecked();
+            void setNameFor(GitStatusType type);
+
+        signals:
+            void diff(QString);
+
+        private slots:
+            void on_label_file_linkActivated(const QString &link);
 
         private:
             Ui::GitStatus *ui;
-            sGitStatus m_status;
             QString m_status_str;
+            GitStatusType m_type;
+
             void setFile(QString file);
             void setStatus(QString status);
-            void setStatusName(char status, QLabel* label);
+            QString getStatusName(QChar status);
     };
 
 #endif // GITSTATUS_HPP

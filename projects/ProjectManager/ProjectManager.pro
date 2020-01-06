@@ -31,7 +31,6 @@ SOURCES += \
         newproject.cpp \
         parser.cpp \
         tabs/git/gitstatus.cpp \
-        tabs/git/gitview.cpp \
         tabs/tabcompiler.cpp \
         tabs/tabdoxygen.cpp \
         tabs/tabgit.cpp
@@ -42,7 +41,6 @@ HEADERS += \
         newproject.hpp \
         parser.hpp \
         tabs/git/gitstatus.hpp \
-        tabs/git/gitview.hpp \
         tabs/tabcompiler.hpp \
         tabs/tabdoxygen.hpp \
         tabs/tabgit.hpp

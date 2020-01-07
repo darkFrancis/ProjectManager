@@ -6,63 +6,18 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>478</width>
-    <height>415</height>
+    <width>231</width>
+    <height>154</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="0">
-    <widget class="QStackedWidget" name="view">
-     <property name="currentIndex">
-      <number>0</number>
-     </property>
-     <widget class="QWidget" name="page_statusView">
-      <layout class="QGridLayout" name="gridLayout_2">
-       <item row="2" column="0">
-        <widget class="QGroupBox" name="groupBox_untracked">
-         <property name="title">
-          <string>Non suivi</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QGroupBox" name="groupBox_index">
-         <property name="title">
-          <string>Index</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QGroupBox" name="groupBox_workTree">
-         <property name="title">
-          <string>Poste de travail</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QGroupBox" name="groupBox_ignored">
-         <property name="title">
-          <string>Ignorés</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </widget>
-   </item>
    <item row="0" column="0">
     <widget class="QPushButton" name="pushButton">
      <property name="text">
-      <string>Status</string>
+      <string>Lancer GitKraken</string>
      </property>
     </widget>
    </item>

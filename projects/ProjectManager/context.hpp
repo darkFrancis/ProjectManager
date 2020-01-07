@@ -10,10 +10,13 @@
             void setProject(QString project_file);
             void setLastSearch(QString last_search);
             void loadProject();
+            void reloadProject();
             QString project();
             QString lastSearch();
             QString doxyfile();
+            QString gitPath();
             bool isOpen();
+            void close();
 
         private:
             Context();
@@ -22,6 +25,7 @@
             QString m_project_file;
             QString m_doxyfile;
             bool m_open;
+            QString m_git_path;
             // Options
             // Last
             QString m_last_search;

@@ -32,23 +32,27 @@ SOURCES += \
         parser.cpp \
         tabs/tabcompiler.cpp \
         tabs/tabdoxygen.cpp \
-        tabs/tabgit.cpp
+        tabs/tabgit.cpp \
+        tabs/tabproject.cpp
 
 HEADERS += \
         context.hpp \
         mainwindow.hpp \
         newproject.hpp \
         parser.hpp \
+        tabs/tab.hpp \
         tabs/tabcompiler.hpp \
         tabs/tabdoxygen.hpp \
-        tabs/tabgit.hpp
+        tabs/tabgit.hpp \
+        tabs/tabproject.hpp
 
 FORMS += \
         mainwindow.ui \
         newproject.ui \
         tabs/tabcompiler.ui \
         tabs/tabdoxygen.ui \
-        tabs/tabgit.ui
+        tabs/tabgit.ui \
+        tabs/tabproject.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -1,31 +1,33 @@
 #ifndef NEWPROJECT_HPP
 #define NEWPROJECT_HPP
 
-#include <QMainWindow>
+    #include <QMainWindow>
 
-namespace Ui {
-    class NewProject;
-}
+    #define FILE_EXTENSION QString(".pm")
 
-class NewProject : public QMainWindow
-{
-        Q_OBJECT
+    namespace Ui {
+        class NewProject;
+    }
 
-    public:
-        explicit NewProject(QWidget *parent, QString file);
-        ~NewProject();
+    class NewProject : public QMainWindow
+    {
+            Q_OBJECT
 
-    signals:
+        public:
+            explicit NewProject(QWidget *parent);
+            ~NewProject();
 
-    private slots:
-        void on_toolButton_mainGitDir_clicked();
-        void on_toolButton_doxyfile_clicked();
-        void on_pushButton_cancel_clicked();
-        void on_pushButton_create_clicked();
+        signals:
+            void created(QString project_file);
 
-    private:
-        Ui::NewProject *ui;
-        QString m_file;
-};
+        private slots:
+            void on_toolButton_mainGitDir_clicked();
+            void on_toolButton_doxyfile_clicked();
+            void on_pushButton_cancel_clicked();
+            void on_pushButton_create_clicked();
+
+        private:
+            Ui::NewProject *ui;
+    };
 
 #endif // NEWPROJECT_HPP

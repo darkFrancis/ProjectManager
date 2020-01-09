@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>430</width>
-    <height>117</height>
+    <height>142</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -44,17 +44,21 @@
     </item>
     <item row="0" column="0" colspan="3">
      <layout class="QFormLayout" name="formLayout">
-      <item row="0" column="0">
+      <item row="1" column="0">
        <widget class="QLabel" name="label_mainGitDir">
         <property name="text">
          <string>Répertoire git principal</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
+      <item row="1" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QLineEdit" name="lineEdit_mainGitDir"/>
+         <widget class="QLineEdit" name="lineEdit_mainGitDir">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QToolButton" name="toolButton_mainGitDir">
@@ -65,10 +69,14 @@
         </item>
        </layout>
       </item>
-      <item row="1" column="1">
+      <item row="2" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QLineEdit" name="lineEdit_doxyfile"/>
+         <widget class="QLineEdit" name="lineEdit_doxyfile">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QToolButton" name="toolButton_doxyfile">
@@ -79,21 +87,21 @@
         </item>
        </layout>
       </item>
-      <item row="1" column="0">
+      <item row="2" column="0">
        <widget class="QLabel" name="label_doxyfile">
         <property name="text">
          <string>Doxyfile</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="3" column="0">
        <widget class="QLabel" name="label_projectType">
         <property name="text">
          <string>Type de projet</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="3" column="1">
        <widget class="QComboBox" name="comboBox_projectType">
         <item>
          <property name="text">
@@ -111,6 +119,16 @@
          </property>
         </item>
        </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_projectName">
+        <property name="text">
+         <string>Nom du projet</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="lineEdit_projectName"/>
       </item>
      </layout>
     </item>

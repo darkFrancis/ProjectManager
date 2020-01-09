@@ -1,7 +1,7 @@
 #ifndef TABDOXYGEN_HPP
 #define TABDOXYGEN_HPP
 
-    #include <QWidget>
+    #include "tab.hpp"
     #include <QCheckBox>
     #include <QComboBox>
     #include <QLineEdit>
@@ -16,16 +16,17 @@
         class TabDoxygen;
     }
 
-    class TabDoxygen : public QWidget
+    class TabDoxygen : public Tab
     {
         Q_OBJECT
 
         public:
-            explicit TabDoxygen(QWidget *parent = nullptr);
+            TabDoxygen(QWidget *parent = nullptr);
             ~TabDoxygen();
             void init();
             void save();
             void createDoxyfile();
+            void clean();
 
         signals:
             void foundPath(QString path, QLineEdit* lineedit);

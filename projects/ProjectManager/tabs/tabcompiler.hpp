@@ -1,22 +1,23 @@
 #ifndef TABCOMPILER_HPP
 #define TABCOMPILER_HPP
 
-#include <QWidget>
+    #include "tab.hpp"
 
-namespace Ui {
-    class TabCompiler;
-}
+    namespace Ui {
+        class TabCompiler;
+    }
 
-class TabCompiler : public QWidget
-{
+    class TabCompiler : public Tab
+    {
         Q_OBJECT
 
-    public:
-        explicit TabCompiler(QWidget *parent = nullptr);
-        ~TabCompiler();
+        public:
+            TabCompiler(QWidget *parent = nullptr);
+            ~TabCompiler();
+            void clean();
 
-    private:
-        Ui::TabCompiler *ui;
-};
+        private:
+            Ui::TabCompiler *ui;
+    };
 
 #endif // TABCOMPILER_HPP

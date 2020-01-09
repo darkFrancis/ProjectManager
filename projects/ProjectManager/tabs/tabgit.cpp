@@ -6,7 +6,7 @@
 #include "context.hpp"
 
 TabGit::TabGit(QWidget *parent) :
-    QWidget(parent),
+    Tab(parent),
     ui(new Ui::TabGit)
 {
     ui->setupUi(this);

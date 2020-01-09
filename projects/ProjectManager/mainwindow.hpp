@@ -2,7 +2,11 @@
 #define MAINWINDOW_HPP
 
     #include <QMainWindow>
+    #include <QList>
+    #include "tabs/tabcompiler.hpp"
     #include "tabs/tabdoxygen.hpp"
+    #include "tabs/tabgit.hpp"
+    #include "tabs/tabproject.hpp"
 
     #define STATUS_DEFAULT_TIMEOUT 5
 
@@ -37,7 +41,7 @@
             void createInit();
             void saveInit();
             // Tabs
-            TabDoxygen* m_tab_doxygen;
+            QList<Tab*> m_tablist;
     };
 
 #endif // MAINWINDOW_HPP

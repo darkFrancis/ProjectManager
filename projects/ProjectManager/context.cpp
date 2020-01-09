@@ -56,6 +56,11 @@ QString Context::doxyfile()
     return m_doxyfile;
 }
 
+QString Context::gitPath()
+{
+    return m_git_path;
+}
+
 bool Context::isOpen()
 {
     return m_open;

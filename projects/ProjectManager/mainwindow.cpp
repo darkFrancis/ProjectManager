@@ -71,8 +71,9 @@ void MainWindow::init()
 
     // Init Tab Widget
     m_tabWidget = new QTabWidget(this);
-    m_tab_doxygen = new TabDoxygen();
-    m_tabWidget->addTab(m_tab_doxygen, "Configuration Doxygen");
+    Tab *tab_doxygen = new TabDoxygen();
+    m_tabWidget->addTab(tab_doxygen, "Configuration Doxygen");
+    m_tablist.append(tab_doxygen);
     ui->centralWidget->layout()->addWidget(m_tabWidget);
 
     // Last Session

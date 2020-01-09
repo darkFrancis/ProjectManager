@@ -23,8 +23,8 @@
             static Context* m_instance;
             // Files
             QString m_project_file;
-            QString m_doxyfile;
             bool m_open;
+            QString m_doxyfile;
             QString m_git_path;
             // Options
             // Last

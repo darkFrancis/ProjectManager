@@ -2,7 +2,7 @@
 #include "ui_tabcompiler.h"
 
 TabCompiler::TabCompiler(QWidget *parent) :
-    QWidget(parent),
+    Tab(parent),
     ui(new Ui::TabCompiler)
 {
     ui->setupUi(this);

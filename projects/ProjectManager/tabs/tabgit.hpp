@@ -1,18 +1,18 @@
 #ifndef TABGIT_HPP
 #define TABGIT_HPP
 
-    #include <QWidget>
+    #include "tab.hpp"
 
     namespace Ui {
         class TabGit;
     }
 
-    class TabGit : public QWidget
+    class TabGit : public Tab
     {
-            Q_OBJECT
+        Q_OBJECT
 
         public:
-            explicit TabGit(QWidget *parent = nullptr);
+            TabGit(QWidget *parent = nullptr);
             ~TabGit();
 
         private slots:

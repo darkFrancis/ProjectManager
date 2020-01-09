@@ -10,7 +10,7 @@
 #include "parser.hpp"
 
 TabDoxygen::TabDoxygen(QWidget *parent) :
-    QWidget(parent),
+    Tab(parent),
     ui(new Ui::TabDoxygen)
 {
     ui->setupUi(this);

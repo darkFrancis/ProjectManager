@@ -39,3 +39,13 @@ void TabProject::clean()
     ui->lineEdit_projectName->setText("My Project");
     ui->textEdit->setText("Description du projet");
 }
+
+QStringList TabProject::getInfo()
+{
+    QStringList ret;
+    ret << "projectname=" + ui->lineEdit_projectName->text();
+    ret << "author=" + ui->lineEdit_author->text();
+    ret << "version=" + ui->lineEdit_version->text();
+    ret << "description=" + ui->textEdit->toPlainText();
+    return ret;
+}

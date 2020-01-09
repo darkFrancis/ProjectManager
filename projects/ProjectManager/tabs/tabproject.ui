@@ -56,16 +56,16 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_apply">
+      <widget class="QPushButton" name="pushButton_default">
        <property name="text">
-        <string>Appliquer</string>
+        <string>Défault</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_default">
+      <widget class="QPushButton" name="pushButton_apply">
        <property name="text">
-        <string>Défault</string>
+        <string>Appliquer</string>
        </property>
       </widget>
      </item>

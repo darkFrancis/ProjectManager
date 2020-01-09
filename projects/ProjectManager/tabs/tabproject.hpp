@@ -15,6 +15,7 @@
             explicit TabProject(QWidget *parent = nullptr);
             ~TabProject();
             void clean();
+            QStringList getInfo();
 
         private slots:
             void on_pushButton_default_clicked();

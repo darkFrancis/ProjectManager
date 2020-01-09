@@ -15,6 +15,7 @@
             TabCompiler(QWidget *parent = nullptr);
             ~TabCompiler();
             void clean();
+            QStringList getInfo();
 
         private:
             Ui::TabCompiler *ui;

@@ -71,9 +71,18 @@ void MainWindow::init()
 
     // Init Tab Widget
     m_tabWidget = new QTabWidget(this);
+    Tab *tab_project = new TabProject();
+    m_tabWidget->addTab(tab_project, "Configuration du projet");
+    m_tablist.append(tab_project);
     Tab *tab_doxygen = new TabDoxygen();
     m_tabWidget->addTab(tab_doxygen, "Configuration Doxygen");
     m_tablist.append(tab_doxygen);
+    Tab *tab_compiler = new TabCompiler();
+    m_tabWidget->addTab(tab_compiler, "Configuration du compilateur");
+    m_tablist.append(tab_compiler);
+    Tab *tab_git = new TabGit();
+    m_tabWidget->addTab(tab_git, "Git");
+    m_tablist.append(tab_git);
     ui->centralWidget->layout()->addWidget(m_tabWidget);
 
     // Last Session
@@ -90,7 +99,7 @@ void MainWindow::init()
     }
     else
     {
-        m_tabWidget->setEnabled(false);
+        m_tabWidget->setEnabled(true);
     }
 }
 

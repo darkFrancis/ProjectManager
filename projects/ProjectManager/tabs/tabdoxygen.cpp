@@ -1631,3 +1631,8 @@ void TabDoxygen::command(QString cmd, QString workingDir)
         throw(QString("Erreur pour la commande : " + cmd));
     }
 }
+
+void TabDoxygen::clean()
+{
+    init();
+}

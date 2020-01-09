@@ -10,6 +10,7 @@
             Tab(QWidget *parent = nullptr) : QWidget(parent){}
             ~Tab(){clean();}
             void clean(){}
+            QStringList getInfo();
 
         signals:
             void apply(Tab*);

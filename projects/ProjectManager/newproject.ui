@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>430</width>
-    <height>142</height>
+    <height>173</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -105,12 +105,27 @@
        <widget class="QComboBox" name="comboBox_projectType">
         <item>
          <property name="text">
+          <string>Application C</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
           <string>Application C++</string>
          </property>
         </item>
         <item>
          <property name="text">
+          <string>Librairie statique C</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
           <string>Librairie statique C++</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Librairie Dynamique C</string>
          </property>
         </item>
         <item>

@@ -1,3 +1,9 @@
+/**
+ * @file parser.hpp
+ * @brief Description de la classe Parser
+ * @author Dark Francis
+ * @date 21/12/2019
+ */
 #ifndef PARSER_HPP
 #define PARSER_HPP
 

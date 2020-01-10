@@ -1,3 +1,9 @@
+/**
+ * @file context.hpp
+ * @brief Description de la classe Context
+ * @author Dark Francis
+ * @date 21/12/2019
+ */
 #ifndef CONTEXT_HPP
 #define CONTEXT_HPP
 

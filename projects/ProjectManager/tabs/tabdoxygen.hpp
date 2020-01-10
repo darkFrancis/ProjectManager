@@ -1,3 +1,9 @@
+/**
+ * @file tabdoxygen.hpp
+ * @brief Description de la classe TabDoxygen
+ * @author Dark Francis
+ * @date 21/12/2019
+ */
 #ifndef TABDOXYGEN_HPP
 #define TABDOXYGEN_HPP
 
@@ -16,6 +22,10 @@
         class TabDoxygen;
     }
 
+    /**
+     * @class TabDoxygen
+     * @brief La classe TabDoxygen défini l'onglet de configuration de Doxygen
+     */
     class TabDoxygen : public Tab
     {
         Q_OBJECT

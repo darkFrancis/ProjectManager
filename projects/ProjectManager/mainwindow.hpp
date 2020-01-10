@@ -1,3 +1,9 @@
+/**
+ * @file mainwindow.hpp
+ * @brief Description de la classe MainWindow
+ * @author Dark Francis
+ * @date 21/12/2019
+ */
 #ifndef MAINWINDOW_HPP
 #define MAINWINDOW_HPP
 
@@ -29,6 +35,10 @@
             explicit MainWindow(QWidget *parent = nullptr);
             ~MainWindow();
             void init();
+            void clean();
+
+        public slots:
+            void loadProject(QString file_name);
 
         private slots:
             void on_actionNouveau_triggered();

@@ -1,3 +1,9 @@
+/**
+ * @file newproject.hpp
+ * @brief Description de la classe NewProject
+ * @author Dark Francis
+ * @date 21/12/2019
+ */
 #ifndef NEWPROJECT_HPP
 #define NEWPROJECT_HPP
 

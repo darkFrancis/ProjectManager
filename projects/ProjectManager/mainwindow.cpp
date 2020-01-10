@@ -10,6 +10,7 @@
 
 #include "parser.hpp"
 #include "context.hpp"
+#include "newproject.hpp"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -103,6 +104,14 @@ void MainWindow::init()
     }
 }
 
+void MainWindow::clean()
+{
+    for(int i = 0; i < m_tablist.length(); i++)
+    {
+        m_tablist[i]->clean();
+    }
+}
+
 void MainWindow::createInit()
 {
     QDir::setCurrent(qApp->applicationDirPath());
@@ -178,17 +187,17 @@ void MainWindow::on_actionNouveau_triggered()
             return;
         }
     }
-    QString file_path = QFileDialog::getSaveFileName(this,
-                                                     "Nouveau Projet",
-                                                     ctx->lastSearch(),
-                                                     "Project File (*.pm)");
-    if(file_path != QString(""))
+    NewProject* p = new NewProject(this);
+    p->show();
+}
+
+void MainWindow::loadProject(QString file_name)
+{
+    Context::Instance()->setProject(file_name);
+    clean();
+    Context::Instance()->loadProject();
+    for(int i = 0; i < m_tablist.length(); i++)
     {
-        QFileInfo infos(file_path);
-        ctx->setLastSearch(infos.absoluteDir().absolutePath());
-        if(file_path.right(3) != QString(".pm"))
-        {
-            file_path += ".pm";
-        }
+        m_tablist[i]->init();
     }
 }

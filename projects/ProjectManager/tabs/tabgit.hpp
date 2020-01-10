@@ -1,3 +1,9 @@
+/**
+ * @file tabgit.hpp
+ * @brief Description de la classe TabGit
+ * @author Dark Francis
+ * @date 21/12/2019
+ */
 #ifndef TABGIT_HPP
 #define TABGIT_HPP
 

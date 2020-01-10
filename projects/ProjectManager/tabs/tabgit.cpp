@@ -43,6 +43,6 @@ void TabGit::on_pushButton_clicked()
     else
     {
         QProcess process;
-        process.startDetached("gitkraken -p " + Context::Instance()->gitPath());
+        process.startDetached("gitkraken -p " + Context::Instance()->gitPath() + " &");
     }
 }

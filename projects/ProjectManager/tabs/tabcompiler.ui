@@ -1,21 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <author/>
- <comment/>
- <exportmacro/>
  <class>TabCompiler</class>
- <widget name="TabCompiler" class="QWidget">
+ <widget class="QWidget" name="TabCompiler">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>461</width>
+    <height>422</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="1">
+    <widget class="QComboBox" name="comboBox_projectType">
+     <item>
+      <property name="text">
+       <string>Application C</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Application C++</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Librairie statique C</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Librairie statique C++</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Librairie dynamique C</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Librairie dynamique C++</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="label_projectTyper">
+     <property name="text">
+      <string>Type de projet</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="label_action">
+     <property name="text">
+      <string>Action</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_output">
+     <property name="text">
+      <string>Sortie</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QComboBox" name="comboBox_action">
+       <item>
+        <property name="text">
+         <string>build&amp;run</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>build</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>run</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>clean</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>install</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>uninstall</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_action">
+       <property name="text">
+        <string>Appliquer</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="1">
+    <widget class="QFrame" name="frame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QRadioButton" name="radioButton_release">
+        <property name="toolTip">
+         <string>Défini la macro NDEBUG</string>
+        </property>
+        <property name="text">
+         <string>Release</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="radioButton_debug">
+        <property name="toolTip">
+         <string>Défini la macro _DEBUG</string>
+        </property>
+        <property name="text">
+         <string>Debug</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_compilationMode">
+     <property name="text">
+      <string>Mode de compilation</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_buildDir">
+     <property name="text">
+      <string>Dossier de build</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QLineEdit" name="lineEdit_output"/>
+   </item>
+   <item row="2" column="1">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLineEdit" name="lineEdit_buildDir"/>
+     </item>
+     <item>
+      <widget class="QToolButton" name="toolButton_buildDir">
+       <property name="text">
+        <string>...</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="6" column="0" colspan="2">
+    <widget class="QGroupBox" name="groupBox_status">
+     <property name="title">
+      <string>Status</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QTextEdit" name="textEdit_status">
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(0, 0, 0);</string>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="label_gestion">
+     <property name="text">
+      <string>Gestion</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QComboBox" name="comboBox_gestion">
+       <item>
+        <property name="text">
+         <string>Defines</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Linkage</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Sources</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="toolButton_gestion">
+       <property name="text">
+        <string>...</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
- <pixmapfunction/>
+ <resources/>
  <connections/>
 </ui>

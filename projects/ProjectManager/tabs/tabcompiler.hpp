@@ -7,11 +7,15 @@
 #ifndef TABCOMPILER_HPP
 #define TABCOMPILER_HPP
 
-    /**
-     * @todo Faire l'onglet de compilation
-     */
-
     #include "tab.hpp"
+
+    #define TEXT_BUILDRUN    QString("build&run")
+    #define TEXT_BUILD       QString("build")
+    #define TEXT_RUN         QString("run")
+    #define TEXT_MAKEFILE    QString("makefile")
+    #define TEXT_CLEAN       QString("clean")
+    #define TEXT_INSTALL     QString("install")
+    #define TEXT_UNINSTALL   QString("uninstall")
 
     namespace Ui {
         class TabCompiler;
@@ -26,6 +30,8 @@
      * @li des defines à appliquer à la compilation
      * @li les librairie à importer
      * @li le mode de compilation : release (défini NDEBUG) ou debug (défini _DEBUG)
+     *
+     * @todo finir la classe TabCompiler
      */
     class TabCompiler : public Tab
     {
@@ -37,8 +43,21 @@
             /*void clean();
             QStringList getInfo();*/
 
+        private slots:
+            void on_toolButton_buildDir_clicked();
+            void on_toolButton_gestion_clicked();
+            void on_pushButton_action_clicked();
+
         private:
             Ui::TabCompiler *ui;
+
+            // Actions
+            void action_build();
+            void action_run();
+            void action_clean();
+            void action_makefile();
+            void action_install();
+            void action_uninstall();
     };
 
 #endif // TABCOMPILER_HPP

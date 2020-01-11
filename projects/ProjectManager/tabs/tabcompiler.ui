@@ -90,6 +90,11 @@
        </item>
        <item>
         <property name="text">
+         <string>makefile</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>clean</string>
         </property>
        </item>
@@ -108,7 +113,7 @@
      <item>
       <widget class="QPushButton" name="pushButton_action">
        <property name="text">
-        <string>Appliquer</string>
+        <string>Executer</string>
        </property>
       </widget>
      </item>

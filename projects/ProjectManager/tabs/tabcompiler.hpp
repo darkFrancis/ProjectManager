@@ -1,5 +1,5 @@
 /**
- * @headerfile tabcompiler.hpp "tabcompiler.hpp"
+ * @file tabcompiler.hpp
  * @brief Description de la classe TabCompiler
  * @author Dark Francis
  * @date 21/12/2019
@@ -9,20 +9,24 @@
 
     #include "tab.hpp"
 
-    #define TEXT_BUILDRUN    QString("build&run")
-    #define TEXT_BUILD       QString("build")
-    #define TEXT_RUN         QString("run")
-    #define TEXT_MAKEFILE    QString("makefile")
-    #define TEXT_CLEAN       QString("clean")
-    #define TEXT_INSTALL     QString("install")
-    #define TEXT_UNINSTALL   QString("uninstall")
+    #define TEXT_BUILDRUN   QString("build&run")
+    #define TEXT_BUILD      QString("build")
+    #define TEXT_RUN        QString("run")
+    #define TEXT_MAKEFILE   QString("makefile")
+    #define TEXT_CLEAN      QString("clean")
+    #define TEXT_INSTALL    QString("install")
+    #define TEXT_UNINSTALL  QString("uninstall")
+
+    #define TEXT_SOURCES    QString("Sources")
+    #define TEXT_DEFINE     QString("Defines")
+    #define TEXT_LINKAGE    QString("Linkages")
 
     namespace Ui {
         class TabCompiler;
     }
 
     /**
-     * @class TabCompiler tabcompiler.hpp "tabcompiler.hpp"
+     * @class TabCompiler tabcompiler.hpp
      * @brief La classe TabCompiler défini l'onglet de compilation
      *
      * Elle permet avec de définir :

@@ -7,6 +7,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include "context.hpp"
+#include "compiler/sourceswindow.hpp"
 
 TabCompiler::TabCompiler(QWidget *parent) :
     Tab(parent),
@@ -51,8 +52,13 @@ void TabCompiler::on_toolButton_buildDir_clicked()
 void TabCompiler::on_toolButton_gestion_clicked()
 {
     /**
-     * @todo
+     * @todo ajout gestion define et linkage
      */
+    if(ui->comboBox_gestion->currentText() == TEXT_SOURCES)
+    {
+        SourcesWindow* w = new SourcesWindow(this);
+        w->show();
+    }
 }
 
 void TabCompiler::on_pushButton_action_clicked()

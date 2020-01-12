@@ -26,15 +26,36 @@ bool Parser::load(QString filename)
     {
         QString text = file.readAll();
         QStringList ligns = text.split(QChar('\n'));
-        for(QString lign : ligns)
+        for(int i = 0; i < ligns.length(); i++)
         {
+            QString lign = ligns[i];
+
+            // Comments
+            int idx = lign.indexOf(QChar('#'));
+            if(idx > -1)
+            {
+                lign = lign.left(idx);
+            }
             lign = lign.simplified();
-            if(lign.length() > 0
-               && lign[0] != QChar('#'))
+
+            if(lign.length() > 0)
             {
                 QStringList param = lign.split(QChar('='));
                 if(param.length() > 1)
                 {
+                    while(param[1].right(2) == " \\")
+                    {
+                        param[1] = param[1].left(param[1].length()-2);
+                        i++;
+                        QString new_param = ligns[i];
+                        idx = new_param.indexOf(QChar('#'));
+                        if(idx > -1)
+                        {
+                            new_param = new_param.left(idx);
+                        }
+                        new_param = new_param.simplified();
+                        param[1] += " " + new_param;
+                    }
                     m_map.insert(param[0], param[1]);
                 }
             }

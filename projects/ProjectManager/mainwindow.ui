@@ -58,6 +58,7 @@
     <addaction name="actionOptions"/>
     <addaction name="separator"/>
     <addaction name="actionA_propos"/>
+    <addaction name="actionA_propos_de_Qt"/>
    </widget>
    <addaction name="menuFichier"/>
    <addaction name="menuOutils"/>
@@ -67,20 +68,32 @@
    <property name="text">
     <string>Nouveau</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
   </action>
   <action name="actionOuvrir">
    <property name="text">
     <string>Ouvrir</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
    </property>
   </action>
   <action name="actionEnregistrer">
    <property name="text">
     <string>Enregistrer</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
   </action>
   <action name="actionQuitter">
    <property name="text">
     <string>Quitter</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
    </property>
   </action>
   <action name="actionOptions">
@@ -91,6 +104,11 @@
   <action name="actionA_propos">
    <property name="text">
     <string>A propos</string>
+   </property>
+  </action>
+  <action name="actionA_propos_de_Qt">
+   <property name="text">
+    <string>A propos de Qt</string>
    </property>
   </action>
  </widget>

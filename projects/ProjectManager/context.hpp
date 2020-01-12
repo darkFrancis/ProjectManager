@@ -8,6 +8,7 @@
 #define CONTEXT_HPP
 
     #include <QString>
+    #include <QStringList>
 
     class Context
     {
@@ -32,7 +33,12 @@
             bool m_open;
             QString m_doxyfile;
             QString m_git_path;
-            // Options
+            // Project
+            QString m_project_name;
+            QString m_project_type;
+            QStringList m_sources;
+            QStringList m_headers;
+            QStringList m_ressources;
             // Last
             QString m_last_search;
     };

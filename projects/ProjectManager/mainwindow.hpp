@@ -42,6 +42,12 @@
 
         private slots:
             void on_actionNouveau_triggered();
+            void on_actionOuvrir_triggered();
+            void on_actionEnregistrer_triggered();
+            void on_actionQuitter_triggered();
+            void on_actionOptions_triggered();
+            void on_actionA_propos_triggered();
+            void on_actionA_propos_de_Qt_triggered();
 
         private:
             // UI

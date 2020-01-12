@@ -93,7 +93,7 @@ void MainWindow::init()
         {
             Context::Instance()->loadProject();
         }
-        catch (QString msq)
+        catch (QString msg)
         {
 
         }
@@ -200,4 +200,34 @@ void MainWindow::loadProject(QString file_name)
     {
         m_tablist[i]->init();
     }
+}
+
+void MainWindow::on_actionOuvrir_triggered()
+{
+
+}
+
+void MainWindow::on_actionEnregistrer_triggered()
+{
+
+}
+
+void MainWindow::on_actionQuitter_triggered()
+{
+
+}
+
+void MainWindow::on_actionOptions_triggered()
+{
+
+}
+
+void MainWindow::on_actionA_propos_triggered()
+{
+
+}
+
+void MainWindow::on_actionA_propos_de_Qt_triggered()
+{
+    QMessageBox::aboutQt(this, "A propos de Qt");
 }

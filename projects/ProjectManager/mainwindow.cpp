@@ -11,6 +11,7 @@
 #include "parser.hpp"
 #include "context.hpp"
 #include "newproject.hpp"
+#include "settings/settingswindow.hpp"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -214,17 +215,25 @@ void MainWindow::on_actionEnregistrer_triggered()
 
 void MainWindow::on_actionQuitter_triggered()
 {
-
+    qApp->quit();
 }
 
 void MainWindow::on_actionOptions_triggered()
 {
-
+    SettingsWindow* w = new SettingsWindow();
+    w->show();
 }
 
 void MainWindow::on_actionA_propos_triggered()
 {
-
+    QMessageBox::about(this,
+                       "A propos de ProjectManager",
+                       "Version 0.0\n"
+                       "Auteur : Dark Francis\n"
+                       "Date de création : 21/12/2019\n"
+                       "Date de release : 01/01/2020\n\n"
+                       "Ce logiciel sert à la gestion de projets C/C++ "
+                       "à l'aide des outils externe Doxygen et GitKraken.");
 }
 
 void MainWindow::on_actionA_propos_de_Qt_triggered()

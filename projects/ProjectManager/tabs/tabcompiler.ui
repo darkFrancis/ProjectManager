@@ -242,6 +242,11 @@
          <string>Sources</string>
         </property>
        </item>
+       <item>
+        <property name="text">
+         <string>Options</string>
+        </property>
+       </item>
       </widget>
      </item>
      <item>

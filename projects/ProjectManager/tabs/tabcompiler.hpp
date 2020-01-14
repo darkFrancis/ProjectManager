@@ -47,6 +47,10 @@
             /*void clean();
             QStringList getInfo();*/
 
+        public slots:
+            void updateStandardOutput();
+            void updateStandardError();
+
         private slots:
             void on_toolButton_buildDir_clicked();
             void on_toolButton_gestion_clicked();
@@ -62,6 +66,7 @@
             void action_makefile();
             void action_install();
             void action_uninstall();
+            void send_cmd(QString cmd, QStringList param = QStringList(), QString dir = ".");
     };
 
 #endif // TABCOMPILER_HPP

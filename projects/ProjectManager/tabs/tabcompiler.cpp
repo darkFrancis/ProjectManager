@@ -6,6 +6,8 @@
 #include "ui_tabcompiler.h"
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QProcess>
+#include "settings/settings.hpp"
 #include "context.hpp"
 #include "compiler/sourceswindow.hpp"
 
@@ -105,6 +107,7 @@ void TabCompiler::action_build()
     /**
      * @todo
      */
+    send_cmd("tree");
 }
 
 void TabCompiler::action_run()
@@ -112,6 +115,7 @@ void TabCompiler::action_run()
     /**
      * @todo
      */
+    send_cmd("ping 192.168.1.254");
 }
 
 void TabCompiler::action_clean()
@@ -143,4 +147,42 @@ void TabCompiler::action_uninstall()
     /**
      * @todo
      */
+}
+
+void TabCompiler::send_cmd(QString cmd, QStringList param /*= QStringList()*/, QString dir /*= "."*/)
+{
+    if(Settings::Instance()->clearScreen())
+    {
+        ui->textEdit_status->clear();
+    }
+    QProcess* p = new QProcess(this);
+    p->setWorkingDirectory(dir);
+    p->start(cmd, param);
+    connect(p, SIGNAL(readyReadStandardOutput()), this, SLOT(updateStandardOutput()));
+    connect(p, SIGNAL(readyReadStandardError()), this, SLOT(updateStandardError()));
+    p->waitForFinished(-1);
+}
+
+void TabCompiler::updateStandardOutput()
+{
+    QProcess* process = qobject_cast<QProcess*>(sender());
+    process->setReadChannel(QProcess::StandardOutput);
+    //ui->textEdit_status->append("<div style=\"color:white\">");
+    while(process->canReadLine())
+    {
+        ui->textEdit_status->append(process->readLine());
+    }
+    //ui->textEdit_status->append("</div>");
+}
+
+void TabCompiler::updateStandardError()
+{
+    QProcess* process = qobject_cast<QProcess*>(sender());
+    process->setReadChannel(QProcess::StandardError);
+    //ui->textEdit_status->append("<div style=\"color:red\">");
+    while(process->canReadLine())
+    {
+        ui->textEdit_status->append(process->readLine());
+    }
+    //ui->textEdit_status->append("</div>");
 }

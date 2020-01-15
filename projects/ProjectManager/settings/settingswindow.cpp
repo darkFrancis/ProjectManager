@@ -5,6 +5,13 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::SettingsWindow)
 {
+     QList<Color>* colors = Settings::Instance()->colors();
+    for(int i = 0; i < colors->length(); i++)
+    {
+        ui->comboBox_colorNormal->addItem(colors->at(i).name);
+        //ui->comboBox_colorNormal->setItemData(i, colors->at(i).hex_name, Qt::DecorationRole);
+    }
+
     ui->setupUi(this);
 }
 

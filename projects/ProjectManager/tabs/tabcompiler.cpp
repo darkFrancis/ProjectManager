@@ -65,10 +65,13 @@ void TabCompiler::on_toolButton_gestion_clicked()
 
 void TabCompiler::on_pushButton_action_clicked()
 {
+    if(Settings::Instance()->clearScreen())
+    {
+        ui->textEdit_status->clear();
+    }
     if(ui->comboBox_action->currentText() == TEXT_BUILDRUN)
     {
-        action_build();
-        action_run();
+        action_build_run();
     }
     else if(ui->comboBox_action->currentText() == TEXT_BUILD)
     {
@@ -102,12 +105,20 @@ void TabCompiler::on_pushButton_action_clicked()
     }
 }
 
+void TabCompiler::action_build_run()
+{
+    /**
+     * @todo
+     */
+    send_cmd("ping", QStringList() << "-c 4" << "riot.de");
+}
+
 void TabCompiler::action_build()
 {
     /**
      * @todo
      */
-    send_cmd("tree");
+    send_cmd("ping", QStringList() << "--help");
 }
 
 void TabCompiler::action_run()
@@ -115,7 +126,7 @@ void TabCompiler::action_run()
     /**
      * @todo
      */
-    send_cmd("ping 192.168.1.254");
+    send_cmd("doxygen", QStringList() << "-w" << "rtgbd" << "iufjdh");
 }
 
 void TabCompiler::action_clean()
@@ -123,6 +134,7 @@ void TabCompiler::action_clean()
     /**
      * @todo
      */
+    send_cmd("echo", QStringList() << "accents:éàèê");
 }
 
 void TabCompiler::action_makefile()
@@ -151,38 +163,66 @@ void TabCompiler::action_uninstall()
 
 void TabCompiler::send_cmd(QString cmd, QStringList param /*= QStringList()*/, QString dir /*= "."*/)
 {
-    if(Settings::Instance()->clearScreen())
-    {
-        ui->textEdit_status->clear();
-    }
-    QProcess* p = new QProcess(this);
-    p->setWorkingDirectory(dir);
-    p->start(cmd, param);
-    connect(p, SIGNAL(readyReadStandardOutput()), this, SLOT(updateStandardOutput()));
-    connect(p, SIGNAL(readyReadStandardError()), this, SLOT(updateStandardError()));
-    p->waitForFinished(-1);
+    m_process = new QProcess(this);
+    ui->textEdit_status->append("> " + cmd + " " + param.join(' '));
+    m_process->setWorkingDirectory(dir);
+    m_process->start(cmd, param);
+    connect(m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(updateStandardOutput()));
+    connect(m_process, SIGNAL(readyReadStandardError()), this, SLOT(updateStandardError()));
+    connect(m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(endCmd(int,QProcess::ExitStatus)));
 }
 
 void TabCompiler::updateStandardOutput()
 {
-    QProcess* process = qobject_cast<QProcess*>(sender());
-    process->setReadChannel(QProcess::StandardOutput);
-    //ui->textEdit_status->append("<div style=\"color:white\">");
-    while(process->canReadLine())
-    {
-        ui->textEdit_status->append(process->readLine());
-    }
-    //ui->textEdit_status->append("</div>");
+    m_process->setReadChannel(QProcess::StandardOutput);
+    readProcess();
 }
 
 void TabCompiler::updateStandardError()
 {
-    QProcess* process = qobject_cast<QProcess*>(sender());
-    process->setReadChannel(QProcess::StandardError);
-    //ui->textEdit_status->append("<div style=\"color:red\">");
-    while(process->canReadLine())
+    m_process->setReadChannel(QProcess::StandardError);
+    readProcess();
+}
+
+void TabCompiler::readProcess()
+{
+    QString to_write = "";
+    if(m_process->readChannel() == QProcess::StandardOutput)
     {
-        ui->textEdit_status->append(process->readLine());
+        to_write += "<p style=\"color:gold\">";
     }
-    //ui->textEdit_status->append("</div>");
+    else // QProcess::StandardError
+    {
+        to_write += "<p style=\"color:red\">";
+    }
+
+    QString line = "";
+    bool first = true;
+    while(m_process->canReadLine())
+    {
+        if(first)
+            first = false;
+        else
+            to_write += "<br/>";
+        line = m_process->readLine();
+        // Format
+        line = line.left(line.length()-1);
+        line = line.replace('<', "&lt;").replace('>', "&gt;").replace(' ', "&nbsp;");
+        to_write.append(line);
+    }
+    to_write += "</p>";
+    ui->textEdit_status->append(to_write);
+}
+
+void TabCompiler::endCmd(int exitCode, QProcess::ExitStatus exitStatus)
+{
+    bool ok = exitStatus == QProcess::NormalExit;
+    QString result = "<p style=\"color:";
+    result += (ok ? "lime" : "red");
+    result += "\">";
+    result += (ok ? "OK" : "Crash");
+    result += " (exit_code=" + QString::number(exitCode) + ")";
+    result += "</p><br/><br/>";
+    ui->textEdit_status->append(result);
+    m_process->deleteLater();
 }

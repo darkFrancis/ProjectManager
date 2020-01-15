@@ -69,3 +69,17 @@ void Settings::create()
         throw(QString("Erreur, impossible d'ouvrir le fichier des options !"));
     }
 }
+
+void Settings::init_color()
+{
+    add_color("IndianRed", "#CD5C5C");
+    add_color("LightCoral", "#F08080");
+}
+
+void Settings::add_color(QString name, QString hex_name)
+{
+    Color color;
+    color.name = name;
+    color.hex_name = hex_name;
+    m_colors.append(color);
+}

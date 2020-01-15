@@ -8,6 +8,7 @@
 #define TABCOMPILER_HPP
 
     #include "tab.hpp"
+    #include <QProcess>
 
     #define TEXT_BUILDRUN   QString("build&run")
     #define TEXT_BUILD      QString("build")
@@ -50,6 +51,7 @@
         public slots:
             void updateStandardOutput();
             void updateStandardError();
+            void endCmd(int exitCode, QProcess::ExitStatus exitStatus);
 
         private slots:
             void on_toolButton_buildDir_clicked();
@@ -60,6 +62,8 @@
             Ui::TabCompiler *ui;
 
             // Actions
+            QProcess* m_process;
+            void action_build_run();
             void action_build();
             void action_run();
             void action_clean();
@@ -67,6 +71,7 @@
             void action_install();
             void action_uninstall();
             void send_cmd(QString cmd, QStringList param = QStringList(), QString dir = ".");
+            void readProcess();
     };
 
 #endif // TABCOMPILER_HPP

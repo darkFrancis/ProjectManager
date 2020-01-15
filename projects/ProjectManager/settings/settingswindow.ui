@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>527</width>
-    <height>298</height>
+    <width>545</width>
+    <height>392</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -55,12 +55,42 @@
        <string>Compilateur</string>
       </property>
       <layout class="QGridLayout" name="gridLayout_3">
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_colorNormal">
+         <property name="text">
+          <string>Couleur par défaut</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_colorSuccess">
+         <property name="text">
+          <string>Couleur de succès</string>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="0">
         <widget class="QCheckBox" name="checkBox_autoclearScreen">
          <property name="text">
           <string>Effacer l'écran entre deux actions</string>
          </property>
         </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_colorError">
+         <property name="text">
+          <string>Couleur d'erreur</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QComboBox" name="comboBox_colorNormal"/>
+       </item>
+       <item row="3" column="1">
+        <widget class="QComboBox" name="comboBox_colorSuccess"/>
+       </item>
+       <item row="4" column="1">
+        <widget class="QComboBox" name="comboBox_colorError"/>
        </item>
       </layout>
      </widget>

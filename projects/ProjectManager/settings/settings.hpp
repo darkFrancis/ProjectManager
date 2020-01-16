@@ -5,11 +5,14 @@
     #include <QList>
 
     #define SETTINGS_FILE QString("settings.conf")
+    #define COLORS_FILE QString("colors.conf")
 
     struct Color
     {
         QString name;
-        QString hex_name;
+        int red;
+        int green;
+        int blue;
     };
     typedef struct Color Color;
 
@@ -38,10 +41,10 @@
             void setColorError(QString color){m_color_error = color;}
 
         private:
-            Settings(){load();}
+            Settings(){load();init_color();}
             void create();
             void init_color();
-            void add_color(QString name, QString hex_name);
+            void add_color(QString name, int red, int green, int blue);
             static Settings* m_instance;
             // View
             QString m_style;

@@ -22,6 +22,9 @@ void Settings::save()
         stream << "keep_size=" << (m_keep_size ? "true" : "false") << endl;
         stream << "doxygen_template_dir=" << m_doxygen_template_dir << endl;
         stream << "clear_screen=" << (m_clear_screen ? "true" : "false") << endl;
+        stream << "color_normal=" << m_color_normal << endl;
+        stream << "color_success=" << m_color_success << endl;
+        stream << "color_error=" << m_color_error << endl;
         file.close();
     }
     else
@@ -45,6 +48,9 @@ void Settings::load()
         m_keep_size = (parser->get("keep_size") == QString("true"));
         m_doxygen_template_dir = parser->get("doxygen_template_dir");
         m_clear_screen = (parser->get("clear_screen") == QString("true"));
+        m_color_normal = parser->get("color_normal");
+        m_color_error = parser->get("color_error");
+        m_color_success = parser->get("color_success");
     }
     else
     {
@@ -62,6 +68,9 @@ void Settings::create()
         stream << "keep_size=true" << endl;
         stream << "doxygen_template_dir=doxygen_templates" << endl;
         stream << "clear_screen=true" << endl;
+        stream << "color_normal=Gold" << endl;
+        stream << "color_success=Lime" << endl;
+        stream << "color_error=Red" << endl;
         file.close();
     }
     else
@@ -72,14 +81,59 @@ void Settings::create()
 
 void Settings::init_color()
 {
-    add_color("IndianRed", "#CD5C5C");
-    add_color("LightCoral", "#F08080");
+    QFile color_file(COLORS_FILE);
+    if(color_file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        int idx;
+        int red;
+        int green;
+        int blue;
+        bool ok_r = true;
+        bool ok_g = true;
+        bool ok_b = true;
+        QString lign;
+        QString text = color_file.readAll();
+        QStringList ligns = text.split('\n');
+        for(int i = 0; i < ligns.length(); i++)
+        {
+            QString lign = ligns[i];
+            // Gestion commentaires ou ligne vide
+            idx = lign.indexOf(QChar('#'));
+            if(idx >= 0)
+            {
+                lign = lign.left(idx);
+            }
+            lign = lign.simplified();
+
+            if(lign != QString(""))
+            {
+                QStringList data = lign.split(QChar(' '));
+                if(data.length() != 4)
+                {
+                    throw(QString("Erreur : fichier " + COLORS_FILE + " corrompu ligne " + QString::number(i)));
+                }
+                red = data[1].toInt(&ok_r);
+                green = data[2].toInt(&ok_g);
+                blue = data[3].toInt(&ok_b);
+                if(ok_b && ok_g && ok_r)
+                {
+                    add_color(data[0], red, green, blue);
+                }
+                else
+                {
+                    throw(QString("Erreur : fichier " + COLORS_FILE + " corrompu ligne " + QString::number(i)));
+                }
+            }
+        }
+    }
 }
 
-void Settings::add_color(QString name, QString hex_name)
+void Settings::add_color(QString name, int red, int green, int blue)
 {
     Color color;
     color.name = name;
-    color.hex_name = hex_name;
+    color.red = red;
+    color.green = green;
+    color.blue = blue;
     m_colors.append(color);
 }

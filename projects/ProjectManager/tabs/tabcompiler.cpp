@@ -187,14 +187,9 @@ void TabCompiler::updateStandardError()
 void TabCompiler::readProcess()
 {
     QString to_write = "";
-    if(m_process->readChannel() == QProcess::StandardOutput)
-    {
-        to_write += "<p style=\"color:gold\">";
-    }
-    else // QProcess::StandardError
-    {
-        to_write += "<p style=\"color:red\">";
-    }
+    to_write += "<p style=\"color:";
+    to_write += (m_process->readChannel() == QProcess::StandardOutput ? Settings::Instance()->colorNormal() : Settings::Instance()->colorError());
+    to_write += "\">";
 
     QString line = "";
     bool first = true;
@@ -216,9 +211,10 @@ void TabCompiler::readProcess()
 
 void TabCompiler::endCmd(int exitCode, QProcess::ExitStatus exitStatus)
 {
+    Settings* setting = Settings::Instance();
     bool ok = exitStatus == QProcess::NormalExit;
     QString result = "<p style=\"color:";
-    result += (ok ? "lime" : "red");
+    result += (ok ? setting->colorSuccess() : setting->colorError());
     result += "\">";
     result += (ok ? "OK" : "Crash");
     result += " (exit_code=" + QString::number(exitCode) + ")";

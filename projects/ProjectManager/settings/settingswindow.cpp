@@ -1,18 +1,42 @@
 #include "settingswindow.hpp"
 #include "ui_settingswindow.h"
+#include <QMessageBox>
 
 SettingsWindow::SettingsWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::SettingsWindow)
 {
-     QList<Color>* colors = Settings::Instance()->colors();
-    for(int i = 0; i < colors->length(); i++)
+    ui->setupUi(this);
+
+    QList<Color>* colors;
+
+    try
     {
-        ui->comboBox_colorNormal->addItem(colors->at(i).name);
-        //ui->comboBox_colorNormal->setItemData(i, colors->at(i).hex_name, Qt::DecorationRole);
+       colors = Settings::Instance()->colors();
+    }
+    catch (QString msg)
+    {
+        QMessageBox::critical(this, "Erreur", msg);
     }
 
-    ui->setupUi(this);
+    QPixmap pixmap(20, 15);
+    for(int i = 0; i < colors->length(); i++)
+    {
+        pixmap.fill(QColor::fromRgb(colors->at(i).red, colors->at(i).green, colors->at(i).blue));
+        ui->comboBox_colorNormal->addItem(QIcon(pixmap), colors->at(i).name);
+        ui->comboBox_colorError->addItem(QIcon(pixmap), colors->at(i).name);
+        ui->comboBox_colorSuccess->addItem(QIcon(pixmap), colors->at(i).name);
+    }
+
+    // Set values
+    Settings* settings = Settings::Instance();
+    ui->comboBox_viewStyle->setCurrentIndex(ui->comboBox_viewStyle->findText(settings->style()));
+    ui->checkBox_keepViewSize->setChecked(settings->keepSize());
+    ui->lineEdit_doxygenTemplate->setText(settings->doxygenTemplateDir());
+    ui->checkBox_autoclearScreen->setChecked(settings->clearScreen());
+    ui->comboBox_colorNormal->setCurrentIndex(ui->comboBox_colorNormal->findText(settings->colorNormal()));
+    ui->comboBox_colorError->setCurrentIndex(ui->comboBox_colorError->findText(settings->colorError()));
+    ui->comboBox_colorSuccess->setCurrentIndex(ui->comboBox_colorSuccess->findText(settings->colorSuccess()));
 }
 
 SettingsWindow::~SettingsWindow()
@@ -43,5 +67,8 @@ void SettingsWindow::save()
     setting->setKeepSize(ui->checkBox_keepViewSize->isChecked());
     setting->setDoxygenTemplateDir(ui->lineEdit_doxygenTemplate->text());
     setting->setClearScreen(ui->checkBox_autoclearScreen->isChecked());
+    setting->setColorNormal(ui->comboBox_colorNormal->currentText());
+    setting->setColorSuccess(ui->comboBox_colorSuccess->currentText());
+    setting->setColorError(ui->comboBox_colorError->currentText());
     setting->save();
 }

@@ -4,8 +4,8 @@
     #include <QString>
     #include <QList>
 
-    #define SETTINGS_FILE QString("settings.conf")
-    #define COLORS_FILE QString("colors.conf")
+    #define SETTINGS_FILE QString("config/settings.conf")
+    #define COLORS_FILE QString("config/colors.conf")
 
     struct Color
     {

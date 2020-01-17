@@ -17,7 +17,7 @@
     #define STATUS_DEFAULT_TIMEOUT 5
 
     // Init
-    #define INIT_FILE   "projectmanager.ini"
+    #define INIT_FILE   QString("config/projectmanager.ini")
     #define INIT_X      200
     #define INIT_Y      200
     #define INIT_W      400

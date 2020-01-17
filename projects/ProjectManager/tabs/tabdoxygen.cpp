@@ -1600,6 +1600,7 @@ void TabDoxygen::on_pushButton_generateFiles_clicked()
 
     try
     {
+        QApplication::setOverrideCursor(Qt::WaitCursor);
         // Create Dir
         command("mkdir doxygen_templates", dir);
         dir += "/doxygen_templates/";
@@ -1611,6 +1612,7 @@ void TabDoxygen::on_pushButton_generateFiles_clicked()
         command("doxygen -e rtf extensionsFile", dir + "rtf");
         command("doxygen -w html heder.html footer.html stylesheet.css", dir + "html");
         command("doxygen -w latex heder.html footer.html stylesheet.css", dir + "latex");
+        QApplication::restoreOverrideCursor();
         QMessageBox::information(this,
                                  "Création des templates",
                                  "Les templates ont été créés dans le dossier\n" + dir);

@@ -7,6 +7,8 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QProcess>
+#include <QShortcut>
+#include <QDebug>
 #include "settings/settings.hpp"
 #include "context.hpp"
 #include "compiler/sourceswindow.hpp"
@@ -20,6 +22,13 @@ TabCompiler::TabCompiler(QWidget *parent) :
      * @param parent Le QWidget parent
      */
     ui->setupUi(this);
+
+    QShortcut* shortcut_terminate = new QShortcut(QKeySequence("Ctrl+X"), this);
+    connect(shortcut_terminate, &QShortcut::activated, this, &TabCompiler::forceEnd);
+    QShortcut* shortcut_clear = new QShortcut(QKeySequence("Ctrl+E"), this);
+    connect(shortcut_clear, &QShortcut::activated, ui->textEdit_status, &QTextEdit::clear);
+
+    m_process = nullptr;
 }
 TabCompiler::~TabCompiler()
 {
@@ -28,6 +37,7 @@ TabCompiler::~TabCompiler()
      * @brief Destructeur de TabCompiler
      */
     delete ui;
+    delete m_process;
 }
 
 /**
@@ -111,6 +121,8 @@ void TabCompiler::action_build_run()
      * @todo
      */
     send_cmd("ping", QStringList() << "-c 4" << "riot.de");
+    send_cmd("ping", QStringList() << "-c 4" << "riot.de");
+    send_cmd("ping", QStringList() << "-c 5" << "riot.de");
 }
 
 void TabCompiler::action_build()
@@ -161,15 +173,29 @@ void TabCompiler::action_uninstall()
      */
 }
 
-void TabCompiler::send_cmd(QString cmd, QStringList param /*= QStringList()*/, QString dir /*= "."*/)
+void TabCompiler::send_cmd(QString cmd, QStringList param /*= QStringList()*/, QString dir /*= "."*/, bool force /*= false*/)
 {
-    m_process = new QProcess(this);
-    ui->textEdit_status->append("> " + cmd + " " + param.join(' '));
-    m_process->setWorkingDirectory(dir);
-    m_process->start(cmd, param);
-    connect(m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(updateStandardOutput()));
-    connect(m_process, SIGNAL(readyReadStandardError()), this, SLOT(updateStandardError()));
-    connect(m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(endCmd(int,QProcess::ExitStatus)));
+    if(m_process == nullptr)
+    {
+        m_process = new QProcess(this);
+        ui->textEdit_status->append("> " + cmd + " " + param.join(' '));
+        m_process->setWorkingDirectory(dir);
+        m_process->start(cmd, param);
+        connect(m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(updateStandardOutput()));
+        connect(m_process, SIGNAL(readyReadStandardError()), this, SLOT(updateStandardError()));
+        connect(m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(endCmd(int,QProcess::ExitStatus)));
+    }
+    else
+    {
+        try
+        {
+            addCommand(cmd, param, dir, force);
+        }
+        catch(QString msg)
+        {
+            QMessageBox::information(this, "Information", msg);
+        }
+    }
 }
 
 void TabCompiler::updateStandardOutput()
@@ -220,5 +246,56 @@ void TabCompiler::endCmd(int exitCode, QProcess::ExitStatus exitStatus)
     result += " (exit_code=" + QString::number(exitCode) + ")";
     result += "</p><br/><br/>";
     ui->textEdit_status->append(result);
-    m_process->deleteLater();
+    delete m_process;
+    m_process = nullptr;
+
+    // Next command
+    if(m_commands.length() > 0)
+    {
+        Command cmd = m_commands.takeFirst();
+        send_cmd(cmd.programm, cmd.params, cmd.dir);
+    }
+}
+
+void TabCompiler::addCommand(QString cmd, QStringList param, QString dir, bool force)
+{
+    bool not_found = true;
+    if(!force)
+    {
+        QString err_msg = "Cette commande a déjà été prise en compte";
+        if(cmd == m_process->program() &&
+           param == m_process->arguments() &&
+           dir == m_process->workingDirectory())
+        {
+            throw(err_msg);
+        }
+
+        QString global_cmd = cmd + " " + param.join(' ');
+        QString tmp_cmd;
+        for(int i = 0; i < m_commands.length() && not_found; i++)
+        {
+            tmp_cmd = m_commands[i].programm + " " + m_commands[i].params.join(' ');
+            if(global_cmd == tmp_cmd &&
+               dir == m_commands[i].dir)
+            {
+                throw(err_msg);
+            }
+        }
+    }
+
+    // Add command
+    if(not_found)
+    {
+        Command command;
+        command.programm = cmd;
+        command.params = param;
+        command.dir = dir;
+        m_commands.append(command);
+    }
+}
+
+void TabCompiler::forceEnd()
+{
+    m_commands.clear();
+    m_process->kill();
 }

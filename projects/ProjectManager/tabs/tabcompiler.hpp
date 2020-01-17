@@ -26,6 +26,14 @@
         class TabCompiler;
     }
 
+    struct Command
+    {
+        QString programm;
+        QStringList params;
+        QString dir;
+    };
+    typedef struct Command Command;
+
     /**
      * @class TabCompiler tabcompiler.hpp
      * @brief La classe TabCompiler défini l'onglet de compilation
@@ -52,6 +60,7 @@
             void updateStandardOutput();
             void updateStandardError();
             void endCmd(int exitCode, QProcess::ExitStatus exitStatus);
+            void forceEnd();
 
         private slots:
             void on_toolButton_buildDir_clicked();
@@ -70,8 +79,12 @@
             void action_makefile();
             void action_install();
             void action_uninstall();
-            void send_cmd(QString cmd, QStringList param = QStringList(), QString dir = ".");
+
+            // Commandes
+            void send_cmd(QString cmd, QStringList param = QStringList(), QString dir = ".", bool force = false);
             void readProcess();
+            QList<Command> m_commands;
+            void addCommand(QString cmd, QStringList param, QString dir, bool force);
     };
 
 #endif // TABCOMPILER_HPP

@@ -49,4 +49,4 @@ FORMS += \
         tabs/tabproject.ui
 
 QMAKE_CLEAN += $$OUT_PWD/build/*
-QMAKE_POST_LINK += $$quote(cp -r $$PWD/config $$OUT_PWD/$$escape_expand(\n\t))
+QMAKE_POST_LINK += $$quote(cp -rn $$PWD/config $$OUT_PWD/$$escape_expand(\n\t))

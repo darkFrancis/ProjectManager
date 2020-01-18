@@ -37,6 +37,8 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
     ui->comboBox_colorNormal->setCurrentIndex(ui->comboBox_colorNormal->findText(settings->colorNormal()));
     ui->comboBox_colorError->setCurrentIndex(ui->comboBox_colorError->findText(settings->colorError()));
     ui->comboBox_colorSuccess->setCurrentIndex(ui->comboBox_colorSuccess->findText(settings->colorSuccess()));
+    ui->lineEdit_sourcesExt->setText(settings->sourcesExtensions().join(' '));
+    ui->lineEdit_headersExt->setText(settings->headersExtensions().join(' '));
 }
 
 SettingsWindow::~SettingsWindow()
@@ -70,5 +72,7 @@ void SettingsWindow::save()
     setting->setColorNormal(ui->comboBox_colorNormal->currentText());
     setting->setColorSuccess(ui->comboBox_colorSuccess->currentText());
     setting->setColorError(ui->comboBox_colorError->currentText());
+    setting->setSourcesExtensions(ui->lineEdit_sourcesExt->text().split(' '));
+    setting->setHeadersExtensions(ui->lineEdit_headersExt->text().split(' '));
     setting->save();
 }

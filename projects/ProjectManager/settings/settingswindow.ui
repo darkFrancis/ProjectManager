@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>545</width>
-    <height>392</height>
+    <width>568</width>
+    <height>450</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -62,19 +62,18 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="label_colorSuccess">
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_sourcesExt">
          <property name="text">
-          <string>Couleur de succès</string>
+          <string>Extensions des sources</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="0">
-        <widget class="QCheckBox" name="checkBox_autoclearScreen">
-         <property name="text">
-          <string>Effacer l'écran entre deux actions</string>
-         </property>
-        </widget>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="lineEdit_sourcesExt"/>
+       </item>
+       <item row="4" column="1">
+        <widget class="QComboBox" name="comboBox_colorError"/>
        </item>
        <item row="4" column="0">
         <widget class="QLabel" name="label_colorError">
@@ -83,14 +82,35 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
-        <widget class="QComboBox" name="comboBox_colorNormal"/>
-       </item>
        <item row="3" column="1">
         <widget class="QComboBox" name="comboBox_colorSuccess"/>
        </item>
-       <item row="4" column="1">
-        <widget class="QComboBox" name="comboBox_colorError"/>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_colorSuccess">
+         <property name="text">
+          <string>Couleur de succès</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QComboBox" name="comboBox_colorNormal"/>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_headersExt">
+         <property name="text">
+          <string>Extensions des headers</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QLineEdit" name="lineEdit_headersExt"/>
+       </item>
+       <item row="0" column="0" colspan="2">
+        <widget class="QCheckBox" name="checkBox_autoclearScreen">
+         <property name="text">
+          <string>Effacer l'écran entre deux actions</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>

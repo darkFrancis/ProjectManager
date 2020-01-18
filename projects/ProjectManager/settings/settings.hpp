@@ -20,6 +20,7 @@
     {
         public:
             static Settings* Instance();
+            void init(){}
             void save();
             void load();
             // Get
@@ -31,6 +32,8 @@
             QString colorSuccess(){return m_color_success;}
             QString colorError(){return m_color_error;}
             QList<Color>* colors(){return &m_colors;}
+            QStringList sourcesExtensions(){return m_sources_extensions;}
+            QStringList headersExtensions(){return m_headers_extensions;}
             // Set
             void setStyle(QString val){m_style = val;}
             void setKeepSize(bool val){m_keep_size = val;}
@@ -39,6 +42,8 @@
             void setColorNormal(QString color){m_color_normal = color;}
             void setColorSuccess(QString color){m_color_success = color;}
             void setColorError(QString color){m_color_error = color;}
+            void setSourcesExtensions(QStringList exts){m_sources_extensions = exts;}
+            void setHeadersExtensions(QStringList exts){m_headers_extensions = exts;}
 
         private:
             Settings(){load();init_color();}
@@ -57,6 +62,8 @@
             QString m_color_normal;
             QString m_color_success;
             QString m_color_error;
+            QStringList m_sources_extensions;
+            QStringList m_headers_extensions;
     };
 
 #endif // SETTINGS_HPP

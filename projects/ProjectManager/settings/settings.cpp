@@ -25,6 +25,8 @@ void Settings::save()
         stream << "color_normal=" << m_color_normal << endl;
         stream << "color_success=" << m_color_success << endl;
         stream << "color_error=" << m_color_error << endl;
+        stream << "sources_ext=" << m_sources_extensions.join(' ') << endl;
+        stream << "headers_ext=" << m_headers_extensions.join(' ') << endl;
         file.close();
     }
     else
@@ -51,6 +53,8 @@ void Settings::load()
         m_color_normal = parser->get("color_normal");
         m_color_error = parser->get("color_error");
         m_color_success = parser->get("color_success");
+        m_sources_extensions = parser->get("sources_ext").split(' ');
+        m_headers_extensions = parser->get("headers_ext").split(' ');
     }
     else
     {
@@ -71,6 +75,8 @@ void Settings::create()
         stream << "color_normal=Gold" << endl;
         stream << "color_success=Lime" << endl;
         stream << "color_error=Red" << endl;
+        stream << "sources_ext=c i ii cc cp cxx cpp CPP c++ C" << endl;
+        stream << "headers_ext=h hh H hp hxx hpp HPP h++ tcc" << endl;
         file.close();
     }
     else

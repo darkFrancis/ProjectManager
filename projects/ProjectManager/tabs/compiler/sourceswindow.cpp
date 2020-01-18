@@ -2,6 +2,7 @@
 #include "ui_sourceswindow.h"
 #include <QFileDialog>
 #include "context.hpp"
+#include "settings/settings.hpp"
 
 SourcesWindow::SourcesWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -183,9 +184,7 @@ void SourcesWindow::addItem(QString text, QListWidget* widget)
  */
 bool SourcesWindow::isSource(QString extension)
 {
-    return (extension == "cpp" ||
-            extension == "c" ||
-            extension == "c++");
+    return Settings::Instance()->sourcesExtensions().contains(extension);
 }
 
 /**
@@ -196,7 +195,5 @@ bool SourcesWindow::isSource(QString extension)
  */
 bool SourcesWindow::isHeader(QString extension)
 {
-    return (extension == "hpp" ||
-            extension == "h" ||
-            extension == "h++");
+    return Settings::Instance()->headersExtensions().contains(extension);
 }

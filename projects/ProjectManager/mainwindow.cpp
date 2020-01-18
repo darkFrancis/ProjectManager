@@ -12,6 +12,7 @@
 #include "context.hpp"
 #include "newproject.hpp"
 #include "settings/settingswindow.hpp"
+#include "settings/settings.hpp"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -23,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     try
     {
         init();
+        Settings::Instance()->init();
         status("Initialisation terminée avec succès", STATUS_DEFAULT_TIMEOUT);
     }
     catch(QString msg)
@@ -189,6 +191,7 @@ void MainWindow::on_actionNouveau_triggered()
         }
     }
     NewProject* p = new NewProject(this);
+    connect(this, &MainWindow::destroyed, p, &NewProject::close);
     p->show();
 }
 
@@ -221,6 +224,7 @@ void MainWindow::on_actionQuitter_triggered()
 void MainWindow::on_actionOptions_triggered()
 {
     SettingsWindow* w = new SettingsWindow();
+    connect(this, &MainWindow::destroyed, w, &NewProject::close);
     w->show();
 }
 

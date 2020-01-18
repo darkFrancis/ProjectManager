@@ -192,13 +192,12 @@ void MainWindow::on_actionNouveau_triggered()
     }
     NewProject* p = new NewProject(this);
     connect(this, &MainWindow::destroyed, p, &NewProject::close);
-    connect(p, &NewProject::created, ctx, &Context::loadProject);
+    connect(p, &NewProject::created, this, &MainWindow::loadProject);
     p->show();
 }
 
-void MainWindow::loadProject(QString file_name)
+void MainWindow::loadProject()
 {
-    Context::Instance()->setProjectFile(file_name);
     clean();
     Context::Instance()->loadProject();
     for(int i = 0; i < m_tablist.length(); i++)

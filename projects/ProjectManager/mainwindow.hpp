@@ -38,7 +38,7 @@
             void clean();
 
         public slots:
-            void loadProject(QString file_name);
+            void loadProject();
 
         private slots:
             void on_actionNouveau_triggered();

@@ -1,5 +1,6 @@
 #include "context.hpp"
 #include "parser.hpp"
+#include <QFileInfo>
 
 Context* Context::m_instance = nullptr;
 
@@ -46,4 +47,45 @@ void Context::save()
     /**
       @todo
       */
+}
+
+QString relativePath(QString absolute_path, QString ref_dir)
+{
+    QStringList ref_dirs = ref_dir.split('/');
+    QStringList abs_dirs = absolute_path.split('/');
+    // Remove empty
+    while(ref_dirs.contains(""))
+    {
+        ref_dirs.removeAt(ref_dirs.indexOf(""));
+    }
+    while(abs_dirs.contains(""))
+    {
+        abs_dirs.removeAt(abs_dirs.indexOf(""));
+    }
+
+    // Remove same
+    while(ref_dirs.length() > 0 &&
+          abs_dirs.length() > 0 &&
+          ref_dirs.first() == abs_dirs.first())
+    {
+        abs_dirs.removeFirst();
+        ref_dirs.removeFirst();
+    }
+    // Add ..
+    while(ref_dirs.length() > 0)
+    {
+        abs_dirs.prepend("..");
+        ref_dirs.removeFirst();
+    }
+    return abs_dirs.join('/');
+}
+
+QString absolutePath(QString relative_path, QString ref_dir)
+{
+    if(ref_dir.at(ref_dir.length()-1) != QChar('/'))
+    {
+        ref_dir.append('/');
+    }
+    QFileInfo info(ref_dir + relative_path);
+    return info.absoluteFilePath();
 }

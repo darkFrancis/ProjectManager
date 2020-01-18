@@ -85,4 +85,7 @@
             QStringList m_ressources;
     };
 
+    QString relativePath(QString absolute_path, QString ref_dir);
+    QString absolutePath(QString relative_path, QString ref_dir);
+
 #endif // CONTEXT_HPP

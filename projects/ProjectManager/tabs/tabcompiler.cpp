@@ -134,9 +134,11 @@ void TabCompiler::action_build_run()
     /**
      * @todo
      */
-    send_cmd("ping", QStringList() << "-c 4" << "riot.de");
-    send_cmd("ping", QStringList() << "-c 4" << "riot.de");
-    send_cmd("ping", QStringList() << "-c 5" << "riot.de");
+    QString dir = "/usr/etc/home/";
+    QString file = "/usr/test/file.txt";
+    ui->textEdit_status->append(relativePath(file, dir));
+    file = "../test/hey.txt";
+    ui->textEdit_status->append(absolutePath(file, dir));
 }
 
 void TabCompiler::action_build()

@@ -24,10 +24,6 @@
             virtual ~Tab(){clean();}
             virtual void init(){}
             virtual void clean(){}
-            virtual QStringList getInfo(){return QStringList();}
-
-        signals:
-            void apply(Tab*);
     };
 
 #endif // TAB_HPP

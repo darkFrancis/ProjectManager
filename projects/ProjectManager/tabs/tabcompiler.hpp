@@ -52,8 +52,6 @@
         public:
             TabCompiler(QWidget *parent = nullptr);
             ~TabCompiler();
-            /*void clean();
-            QStringList getInfo();*/
 
         public slots:
             void updateStandardOutput();
@@ -80,10 +78,10 @@
             void action_uninstall();
 
             // Commandes
-            void send_cmd(QString cmd, QStringList param = QStringList(), QString dir = ".", bool force = false);
+            void send_cmd(QString cmd, QStringList param = QStringList(), QString dir = ".");
             void readProcess();
             QList<Command> m_commands;
-            void addCommand(QString cmd, QStringList param, QString dir, bool force);
+            void addCommand(QString cmd, QStringList param, QString dir);
     };
 
 #endif // TABCOMPILER_HPP

@@ -63,7 +63,7 @@ void MainWindow::init()
 
         // Init Context
         Context* ctx = Context::Instance();
-        ctx->setProject(parser->get("project"));
+        ctx->setProjectFile(parser->get("project"));
         ctx->setLastSearch(parser->get("last_search"));
 
         parser->close();
@@ -90,7 +90,7 @@ void MainWindow::init()
     ui->centralWidget->layout()->addWidget(m_tabWidget);
 
     // Last Session
-    if(QFile::exists(Context::Instance()->project()))
+    if(QFile::exists(Context::Instance()->projectFile()))
     {
         try
         {
@@ -160,7 +160,7 @@ void MainWindow::saveInit()
         stream << endl;
         // Project
         stream << "# Project" << endl;
-        stream << "project=" << Context::Instance()->project() << endl;
+        stream << "project=" << Context::Instance()->projectFile() << endl;
         stream << endl;
         // Last
         stream << "# Last" << endl;
@@ -192,12 +192,13 @@ void MainWindow::on_actionNouveau_triggered()
     }
     NewProject* p = new NewProject(this);
     connect(this, &MainWindow::destroyed, p, &NewProject::close);
+    connect(p, &NewProject::created, ctx, &Context::loadProject);
     p->show();
 }
 
 void MainWindow::loadProject(QString file_name)
 {
-    Context::Instance()->setProject(file_name);
+    Context::Instance()->setProjectFile(file_name);
     clean();
     Context::Instance()->loadProject();
     for(int i = 0; i < m_tablist.length(); i++)

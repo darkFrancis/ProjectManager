@@ -1,6 +1,8 @@
 #include "tabproject.hpp"
 #include "ui_tabproject.h"
 #include <QMessageBox>
+#include <QFileDialog>
+#include "context.hpp"
 
 TabProject::TabProject(QWidget *parent) :
     Tab(parent),
@@ -29,7 +31,15 @@ void TabProject::on_pushButton_default_clicked()
 
 void TabProject::on_pushButton_apply_clicked()
 {
-    emit apply(this);
+    /**
+      @todo
+      */
+}
+
+void TabProject::init()
+{
+    Context* ctx = Context::Instance();
+    ui->lineEdit_author->setText(ctx->projectAuthor());
 }
 
 void TabProject::clean()
@@ -37,15 +47,23 @@ void TabProject::clean()
     ui->lineEdit_author->setText("Unknow");
     ui->lineEdit_version->setText("0.0");
     ui->lineEdit_projectName->setText("My Project");
+    ui->lineEdit_doxyfile->setText("");
+    ui->lineEdit_git->setText("");
     ui->textEdit->setText("Description du projet");
 }
 
-QStringList TabProject::getInfo()
+void TabProject::on_toolButton_doxyfile_clicked()
 {
-    QStringList ret;
-    ret << "projectname=" + ui->lineEdit_projectName->text();
-    ret << "author=" + ui->lineEdit_author->text();
-    ret << "version=" + ui->lineEdit_version->text();
-    ret << "description=" + ui->textEdit->toPlainText();
-    return ret;
+    QString file_name = QFileDialog::getSaveFileName(this, "Doxyfile", Context::Instance()->lastSearch());
+    QFileInfo file(file_name);
+    ui->lineEdit_doxyfile->setText(file.absolutePath());
+    Context::Instance()->setLastSearch(file.absoluteDir().absolutePath());
+}
+
+void TabProject::on_toolButton_git_clicked()
+{
+    QString dir_name = QFileDialog::getExistingDirectory(this, "Dossier GIT", Context::Instance()->lastSearch());
+    QDir dir(dir_name);
+    ui->lineEdit_git->setText(dir.absolutePath());
+    Context::Instance()->setLastSearch(dir.absolutePath());
 }

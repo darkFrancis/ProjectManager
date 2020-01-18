@@ -36,16 +36,6 @@
         public slots:
             void setChecked(QListWidgetItem* item);
 
-        signals:
-            /**
-             * @brief Le signal changed permet d'avertir de changements
-             * @param window définie cette fenêtre pour le changement
-             *
-             * Si un ajout/retrait de sources est effectué, ce signal est émit.@n
-             * Les listes peuvent être récupérées via les fonctions get de la classe SourcesWindow.
-             */
-            void changed(SourcesWindow* window);
-
         private slots:
             void on_pushButton_add_clicked();
             void on_pushButton_remove_clicked();

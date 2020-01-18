@@ -24,7 +24,7 @@
             ~NewProject();
 
         signals:
-            void created(QString project_file);
+            void created();
 
         private slots:
             void on_toolButton_mainGitDir_clicked();

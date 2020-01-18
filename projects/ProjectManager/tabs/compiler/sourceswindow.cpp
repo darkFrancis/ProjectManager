@@ -100,8 +100,6 @@ void SourcesWindow::on_pushButton_add_clicked()
         ui->listWidget_sources->sortItems();
         ui->listWidget_headers->sortItems();
         ui->listWidget_ressources->sortItems();
-
-        emit changed(this);
     }
 }
 
@@ -145,8 +143,6 @@ void SourcesWindow::on_pushButton_remove_clicked()
     {
         delete rem_ressources[i];
     }
-
-    emit changed(this);
 }
 
 /**

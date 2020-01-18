@@ -185,8 +185,9 @@ void TabCompiler::action_uninstall()
      */
 }
 
-void TabCompiler::send_cmd(QString cmd, QStringList param /*= QStringList()*/, QString dir /*= "."*/, bool force /*= false*/)
+void TabCompiler::send_cmd(QString cmd, QStringList param /*= QStringList()*/, QString dir /*= "."*/)
 {
+    ui->pushButton_action->setEnabled(false);
     if(m_process == nullptr)
     {
         m_process = new QProcess(this);
@@ -199,14 +200,7 @@ void TabCompiler::send_cmd(QString cmd, QStringList param /*= QStringList()*/, Q
     }
     else
     {
-        try
-        {
-            addCommand(cmd, param, dir, force);
-        }
-        catch(QString msg)
-        {
-            QMessageBox::information(this, "Information", msg);
-        }
+        addCommand(cmd, param, dir);
     }
 }
 
@@ -256,7 +250,7 @@ void TabCompiler::endCmd(int exitCode, QProcess::ExitStatus exitStatus)
     result += "\">";
     result += (ok ? "OK" : "Crash");
     result += " (exit_code=" + QString::number(exitCode) + ")";
-    result += "</p><br/><br/>";
+    result += "<br/></p>";
     ui->textEdit_status->append(result);
     delete m_process;
     m_process = nullptr;
@@ -267,43 +261,19 @@ void TabCompiler::endCmd(int exitCode, QProcess::ExitStatus exitStatus)
         Command cmd = m_commands.takeFirst();
         send_cmd(cmd.programm, cmd.params, cmd.dir);
     }
+    else
+    {
+        ui->pushButton_action->setEnabled(true);
+    }
 }
 
-void TabCompiler::addCommand(QString cmd, QStringList param, QString dir, bool force)
+void TabCompiler::addCommand(QString cmd, QStringList param, QString dir)
 {
-    bool not_found = true;
-    if(!force)
-    {
-        QString err_msg = "Cette commande a déjà été prise en compte";
-        if(cmd == m_process->program() &&
-           param == m_process->arguments() &&
-           dir == m_process->workingDirectory())
-        {
-            throw(err_msg);
-        }
-
-        QString global_cmd = cmd + " " + param.join(' ');
-        QString tmp_cmd;
-        for(int i = 0; i < m_commands.length() && not_found; i++)
-        {
-            tmp_cmd = m_commands[i].programm + " " + m_commands[i].params.join(' ');
-            if(global_cmd == tmp_cmd &&
-               dir == m_commands[i].dir)
-            {
-                throw(err_msg);
-            }
-        }
-    }
-
-    // Add command
-    if(not_found)
-    {
-        Command command;
-        command.programm = cmd;
-        command.params = param;
-        command.dir = dir;
-        m_commands.append(command);
-    }
+    Command command;
+    command.programm = cmd;
+    command.params = param;
+    command.dir = dir;
+    m_commands.append(command);
 }
 
 void TabCompiler::forceEnd()

@@ -64,15 +64,44 @@ void NewProject::on_pushButton_create_clicked()
     QFile file(dir + file_name);
     if(file.open(QIODevice::Text | QIODevice::Truncate | QIODevice::WriteOnly))
     {
+
+        QString type;
+        switch(ui->comboBox_projectType->currentIndex())
+        {
+            case 0:
+                type = TYPE_C;
+                break;
+            case 1:
+                type = TYPE_CXX;
+                break;
+            case 2:
+                type = TYPE_LIBC;
+                break;
+            case 3:
+                type = TYPE_LIBCXX;
+                break;
+            case 4:
+                type = TYPE_SHAREDC;
+                break;
+            case 5:
+                type = TYPE_SHAREDCXX;
+                break;
+            default:
+                break;
+        }
         QTextStream stream(&file);
         stream << "# Project file" << endl;
-        stream << "doxyfile=" << ui->lineEdit_doxyfile->text() << endl;
-        stream << "git_dir=" << ui->lineEdit_mainGitDir->text() << endl;
+        stream << KW_PROJECT_NAME << "=" << ui->lineEdit_projectName->text() << endl;
+        stream << KW_PROJECT_TYPE << "=" << type << endl;
+        stream << KW_GIT_PATH << "=" << ui->lineEdit_mainGitDir->text() << endl;
+        stream << KW_DOXYFILE << "=" << ui->lineEdit_doxyfile->text() << endl;
         stream << endl;
-        stream << "#Next infos to add with ProjectManager";
+        stream << "#Next infos will be added by ProjectManager";
 
         file.close();
-        emit created(dir + file_name);
+
+        Context::Instance()->setProjectFile(dir + file_name);
+        emit created();
         this->close();
     }
     else

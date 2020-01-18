@@ -17,21 +17,21 @@ Context::Context() :
     m_open = false;
 }
 
-void Context::setProject(QString project_file)
-{
-    m_project_file = project_file;
-}
-
-void Context::setLastSearch(QString last_search)
-{
-    m_last_search = last_search;
-}
-
 void Context::loadProject()
 {
     Parser* parser = Parser::Instance();
     if(parser->load(m_project_file))
     {
+        m_project_name = parser->get(KW_PROJECT_NAME);
+        m_project_type = parser->get(KW_PROJECT_TYPE);
+        m_project_version = parser->get(KW_PROJECT_VESRION);
+        m_project_desc = parser->get(KW_PROJECT_DESC);
+        m_author = parser->get(KW_AUTHOR);
+        m_git_path = parser->get(KW_GIT_PATH);
+        m_doxyfile = parser->get(KW_DOXYFILE);
+        m_sources = parser->get(KW_SOURCES).split(' ');
+        m_headers = parser->get(KW_HEADERS).split(' ');
+        m_ressources = parser->get(KW_RESSOURCES).split(' ');
         parser->close();
         m_open = true;
     }
@@ -41,27 +41,9 @@ void Context::loadProject()
     }
 }
 
-QString Context::project()
+void Context::save()
 {
-    return m_project_file;
-}
-
-QString Context::lastSearch()
-{
-    return m_last_search;
-}
-
-QString Context::doxyfile()
-{
-    return m_doxyfile;
-}
-
-QString Context::gitPath()
-{
-    return m_git_path;
-}
-
-bool Context::isOpen()
-{
-    return m_open;
+    /**
+      @todo
+      */
 }

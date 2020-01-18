@@ -12,6 +12,7 @@
 #include "settings/settings.hpp"
 #include "context.hpp"
 #include "compiler/sourceswindow.hpp"
+#include "compiler/compilerparamwindow.hpp"
 
 TabCompiler::TabCompiler(QWidget *parent) :
     Tab(parent),
@@ -69,7 +70,20 @@ void TabCompiler::on_toolButton_gestion_clicked()
     if(ui->comboBox_gestion->currentText() == TEXT_SOURCES)
     {
         SourcesWindow* w = new SourcesWindow(this);
+        connect(this, &TabCompiler::destroyed, w, &SourcesWindow::close);
         w->show();
+    }
+    else if(ui->comboBox_gestion->currentText() == TEXT_PARAM)
+    {
+        CompilerParamWindow* w = new CompilerParamWindow(this);
+        connect(this, &TabCompiler::destroyed, w, &SourcesWindow::close);
+        w->show();
+    }
+    else
+    {
+        QMessageBox::critical(this,
+                              "Erreur",
+                              "Action non reconnue !");
     }
 }
 
@@ -154,8 +168,6 @@ void TabCompiler::action_makefile()
     /**
      * @todo
      */
-    QFileInfo project_file(Context::Instance()->project());
-    QDir project_dir(project_file.absoluteDir());
 
 }
 

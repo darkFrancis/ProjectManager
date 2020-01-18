@@ -18,6 +18,7 @@ SOURCES += \
         parser.cpp \
         settings/settings.cpp \
         settings/settingswindow.cpp \
+        tabs/compiler/compilerparamwindow.cpp \
         tabs/compiler/sourceswindow.cpp \
         tabs/tabcompiler.cpp \
         tabs/tabdoxygen.cpp \
@@ -31,6 +32,7 @@ HEADERS += \
         parser.hpp \
         settings/settings.hpp \
         settings/settingswindow.hpp \
+        tabs/compiler/compilerparamwindow.hpp \
         tabs/compiler/sourceswindow.hpp \
         tabs/tab.hpp \
         tabs/tabcompiler.hpp \
@@ -42,6 +44,7 @@ FORMS += \
         mainwindow.ui \
         newproject.ui \
         settings/settingswindow.ui \
+        tabs/compiler/compilerparamwindow.ui \
         tabs/compiler/sourceswindow.ui \
         tabs/tabcompiler.ui \
         tabs/tabdoxygen.ui \

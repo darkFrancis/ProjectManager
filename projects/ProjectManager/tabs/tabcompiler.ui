@@ -230,22 +230,12 @@ color: rgb(255, 255, 255);</string>
       <widget class="QComboBox" name="comboBox_gestion">
        <item>
         <property name="text">
-         <string>Defines</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Linkage</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
          <string>Sources</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Options</string>
+         <string>Paramètres</string>
         </property>
        </item>
       </widget>

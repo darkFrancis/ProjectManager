@@ -32,7 +32,6 @@ void Context::loadProject()
     Parser* parser = Parser::Instance();
     if(parser->load(m_project_file))
     {
-
         parser->close();
         m_open = true;
     }

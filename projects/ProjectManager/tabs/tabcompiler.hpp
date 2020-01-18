@@ -19,8 +19,7 @@
     #define TEXT_UNINSTALL  QString("uninstall")
 
     #define TEXT_SOURCES    QString("Sources")
-    #define TEXT_DEFINE     QString("Defines")
-    #define TEXT_LINKAGE    QString("Linkages")
+    #define TEXT_PARAM      QString("Paramètres")
 
     namespace Ui {
         class TabCompiler;

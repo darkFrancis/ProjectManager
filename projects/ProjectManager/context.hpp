@@ -10,6 +10,14 @@
     #include <QString>
     #include <QStringList>
 
+    #define KW_PROJECT_NAME QString("PROJECT_NAME")
+    #define KW_PROJECT_TYPE QString("PROJECT_TYPE")
+    #define KW_GIT_PATH     QString("GIT_PATH")
+    #define KW_DOXYFILE     QString("DOXYFILE")
+    #define KW_SOURCES      QString("SOURCES")
+    #define KW_HEADERS      QString("HEADERS")
+    #define KW_RESSOURCES   QString("RESSOURCES")
+
     class Context
     {
         public:

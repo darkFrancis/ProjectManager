@@ -19,6 +19,7 @@ SOURCES += \
         settings/settings.cpp \
         settings/settingswindow.cpp \
         tabs/compiler/compilerparamwindow.cpp \
+        tabs/compiler/paramselectionwindow.cpp \
         tabs/compiler/sourceswindow.cpp \
         tabs/tabcompiler.cpp \
         tabs/tabdoxygen.cpp \
@@ -33,6 +34,7 @@ HEADERS += \
         settings/settings.hpp \
         settings/settingswindow.hpp \
         tabs/compiler/compilerparamwindow.hpp \
+        tabs/compiler/paramselectionwindow.hpp \
         tabs/compiler/sourceswindow.hpp \
         tabs/tab.hpp \
         tabs/tabcompiler.hpp \
@@ -45,6 +47,7 @@ FORMS += \
         newproject.ui \
         settings/settingswindow.ui \
         tabs/compiler/compilerparamwindow.ui \
+        tabs/compiler/paramselectionwindow.ui \
         tabs/compiler/sourceswindow.ui \
         tabs/tabcompiler.ui \
         tabs/tabdoxygen.ui \

@@ -12,6 +12,13 @@ Settings* Settings::Instance()
     return m_instance;
 }
 
+Settings::Settings()
+{
+    load();
+    init_color();
+    init_compiler_options();
+}
+
 void Settings::save()
 {
     QFile file(SETTINGS_FILE);
@@ -132,6 +139,54 @@ void Settings::init_color()
             }
         }
     }
+    else
+    {
+        throw(QString("Erreur : fichier " + COLORS_FILE + " impossible à lire."));
+    }
+}
+
+void Settings::init_compiler_options()
+{
+    QStringList kw = QStringList() << COMPILE_OVERALL
+                                   << COMPILE_LANGUAGE_C
+                                   << COMPILE_LANGUAGE_CXX;
+    QFile file(COMPILER_FILE);
+    if(file.open(QIODevice::Text | QIODevice::ReadOnly))
+    {
+        QString text = file.readAll();
+        QStringList ligns = text.split(QChar('\n'));
+        QString current_kw = "";
+        QString lign;
+        QStringList option;
+
+        for(int i = 0; i < ligns.length(); i++)
+        {
+            lign = ligns[i].simplified();
+            if(ligns[i].simplified() != "")
+            {
+                if(ligns.contains(lign))
+                {
+                    current_kw = lign;
+                }
+                else
+                {
+                    option = lign.split(QChar('|'));
+                    if(option.length() == 3)
+                    {
+                        add_compiler_option(current_kw, option[0], option[1], option[2]);
+                    }
+                    else
+                    {
+                        throw(QString("Erreur : fichier " + COMPILER_FILE + " corrompu ligne " + QString::number(i)));
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        throw(QString("Erreur : fichier " + COMPILER_FILE + " impossible à lire."));
+    }
 }
 
 void Settings::add_color(QString name, int red, int green, int blue)
@@ -142,4 +197,28 @@ void Settings::add_color(QString name, int red, int green, int blue)
     color.green = green;
     color.blue = blue;
     m_colors.append(color);
+}
+
+void Settings::add_compiler_option(QString key_word, QString option, QString brief, QString tooltip)
+{
+    CompilerOption comp;
+    comp.option = option;
+    comp.brief = brief;
+    comp.tooltip = tooltip;
+    if(key_word == COMPILE_OVERALL)
+    {
+        m_overall_options.append(comp);
+    }
+    else if(key_word == COMPILE_LANGUAGE_C)
+    {
+        m_language_c_options.append(comp);
+    }
+    else if(key_word == COMPILE_LANGUAGE_CXX)
+    {
+        m_language_cxx_options.append(comp);
+    }
+    else
+    {
+        throw(QString("Erreur de paramètre pour l'ajout d'option de compilateur."));
+    }
 }

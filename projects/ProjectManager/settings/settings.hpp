@@ -12,6 +12,9 @@
     #define COMPILE_LANGUAGE_C      QString("c_language")
     #define COMPILE_LANGUAGE_CXX    QString("cxx_language")
 
+    #define HTML_BEGIN              QString("<html><head><style>i{color:green;}</style></head><body><p>")
+    #define HTML_END                QString("</p></body></html>")
+
     struct Color
     {
         QString name;

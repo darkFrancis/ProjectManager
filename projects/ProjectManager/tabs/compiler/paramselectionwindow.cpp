@@ -40,10 +40,10 @@ ParamSelectionWindow::ParamSelectionWindow(QWidget *parent, QString param_type) 
         {
             current_option = option_list->at(i);
             item = new QStandardItem(current_option.option);
-            item->setToolTip("<html><head/><body><p>" + current_option.tooltip + "</html></body></p>");
+            item->setToolTip(HTML_BEGIN + current_option.tooltip + HTML_END);
             model->setItem(i, 0, item);
             item = new QStandardItem(current_option.brief);
-            item->setToolTip("<html><head/><body><p>" + current_option.tooltip + "</html></body></p>");
+            item->setToolTip(HTML_BEGIN + current_option.tooltip + HTML_END);
             model->setItem(i, 1, item);
         }
     }

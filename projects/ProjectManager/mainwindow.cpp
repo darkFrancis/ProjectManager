@@ -224,7 +224,10 @@ void MainWindow::on_actionQuitter_triggered()
 void MainWindow::on_actionOptions_triggered()
 {
     SettingsWindow* w = new SettingsWindow();
-    connect(this, &MainWindow::destroyed, w, &NewProject::close);
+    connect(this, &MainWindow::destroyed, w, &SettingsWindow::close);
+    /**
+      @bug Le connect ne fonctionne pas
+      */
     w->show();
 }
 

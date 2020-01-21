@@ -71,12 +71,16 @@ void TabCompiler::on_toolButton_gestion_clicked()
     {
         SourcesWindow* w = new SourcesWindow(this);
         connect(this, &TabCompiler::destroyed, w, &SourcesWindow::close);
+        w->setAttribute(Qt::WA_QuitOnClose, false);
+        w->setWindowModality(Qt::ApplicationModal);
         w->show();
     }
     else if(ui->comboBox_gestion->currentText() == TEXT_PARAM)
     {
         CompilerParamWindow* w = new CompilerParamWindow(this);
         connect(this, &TabCompiler::destroyed, w, &SourcesWindow::close);
+        w->setAttribute(Qt::WA_QuitOnClose, false);
+        w->setWindowModality(Qt::ApplicationModal);
         w->show();
     }
     else

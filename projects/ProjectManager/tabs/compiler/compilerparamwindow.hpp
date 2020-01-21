@@ -18,15 +18,14 @@
 
         private slots:
             void on_toolButton_overallOptions_clicked();
-            void overall_selected(QString option);
             void on_toolButton_languageCOptions_clicked();
-            void language_c_selected(QString option);
             void on_toolButton_languageCxxOptions_clicked();
-            void language_cxx_selected(QString option);
+            void selected(QString kw, QString option);
 
         private:
             Ui::CompilerParamWindow *ui;
             void add_option(QLineEdit* line_edit, QString option);
+            void open_param(QString kw);
     };
 
 #endif // COMPILERPARAMWINDOW_HPP

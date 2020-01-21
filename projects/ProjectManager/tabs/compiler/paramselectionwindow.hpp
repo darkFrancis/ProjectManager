@@ -16,7 +16,7 @@
             ~ParamSelectionWindow();
 
         signals:
-            void selected(QString);
+            void selected(QString kw, QString option);
 
         private slots:
             void on_pushButton_close_clicked();
@@ -24,6 +24,7 @@
 
         private:
             Ui::ParamSelectionWindow *ui;
+            QString m_kw;
     };
 
 #endif // PARAMSELECTIONWINDOW_HPP

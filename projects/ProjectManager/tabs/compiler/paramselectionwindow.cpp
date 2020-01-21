@@ -9,19 +9,20 @@ ParamSelectionWindow::ParamSelectionWindow(QWidget *parent, QString param_type) 
     ui(new Ui::ParamSelectionWindow)
 {
     ui->setupUi(this);
+    m_kw = param_type;
 
     QList<CompilerOption>* option_list = nullptr;
     QStandardItemModel* model = new QStandardItemModel();
     model->setHorizontalHeaderLabels(QStringList() << "Option" << "Description");
-    if(param_type == COMPILE_OVERALL)
+    if(m_kw == COMPILE_OVERALL)
     {
         option_list = Settings::Instance()->overallOptions();
     }
-    else if(param_type == COMPILE_LANGUAGE_C)
+    else if(m_kw == COMPILE_LANGUAGE_C)
     {
         option_list = Settings::Instance()->languageCOptions();
     }
-    else if(param_type == COMPILE_LANGUAGE_CXX)
+    else if(m_kw == COMPILE_LANGUAGE_CXX)
     {
         option_list = Settings::Instance()->languageCxxOptions();
     }
@@ -66,6 +67,6 @@ void ParamSelectionWindow::on_pushButton_close_clicked()
 
 void ParamSelectionWindow::on_pushButton_ok_clicked()
 {
-    emit selected(ui->tableView->model()->index(ui->tableView->currentIndex().row(), 0).data().toString());
+    emit selected(m_kw, ui->tableView->model()->index(ui->tableView->currentIndex().row(), 0).data().toString());
     this->close();
 }

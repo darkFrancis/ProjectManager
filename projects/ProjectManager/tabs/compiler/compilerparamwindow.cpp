@@ -19,41 +19,39 @@ CompilerParamWindow::~CompilerParamWindow()
 
 void CompilerParamWindow::on_toolButton_overallOptions_clicked()
 {
-    ParamSelectionWindow* w = new ParamSelectionWindow(this, COMPILE_OVERALL);
-    connect(this, &CompilerParamWindow::destroyed, w, &ParamSelectionWindow::close);
-    connect(w, &ParamSelectionWindow::selected, this, &CompilerParamWindow::overall_selected);
-    w->show();
-}
-
-void CompilerParamWindow::overall_selected(QString option)
-{
-    add_option(ui->lineEdit_overallOptions, option);
+    open_param(COMPILE_OVERALL);
 }
 
 void CompilerParamWindow::on_toolButton_languageCOptions_clicked()
 {
-    ParamSelectionWindow* w = new ParamSelectionWindow(this, COMPILE_LANGUAGE_C);
-    connect(this, &CompilerParamWindow::destroyed, w, &ParamSelectionWindow::close);
-    connect(w, &ParamSelectionWindow::selected, this, &CompilerParamWindow::language_c_selected);
-    w->show();
-}
-
-void CompilerParamWindow::language_c_selected(QString option)
-{
-    add_option(ui->lineEdit_languageCOptions, option);
+    open_param(COMPILE_LANGUAGE_C);
 }
 
 void CompilerParamWindow::on_toolButton_languageCxxOptions_clicked()
 {
-    ParamSelectionWindow* w = new ParamSelectionWindow(this, COMPILE_LANGUAGE_CXX);
-    connect(this, &CompilerParamWindow::destroyed, w, &ParamSelectionWindow::close);
-    connect(w, &ParamSelectionWindow::selected, this, &CompilerParamWindow::language_cxx_selected);
-    w->show();
+    open_param(COMPILE_LANGUAGE_CXX);
 }
 
-void CompilerParamWindow::language_cxx_selected(QString option)
+void CompilerParamWindow::selected(QString kw, QString option)
 {
-    add_option(ui->lineEdit_languageCxxOptions, option);
+    if(kw == COMPILE_OVERALL)
+    {
+        add_option(ui->lineEdit_overallOptions, option);
+    }
+    else if(kw == COMPILE_LANGUAGE_C)
+    {
+        add_option(ui->lineEdit_languageCOptions, option);
+    }
+    else if(kw == COMPILE_LANGUAGE_CXX)
+    {
+        add_option(ui->lineEdit_languageCxxOptions, option);
+    }
+    else
+    {
+        QMessageBox::critical(this,
+                              "Erreur",
+                              "Mot clé non reconnu !");
+    }
 }
 
 void CompilerParamWindow::add_option(QLineEdit *line_edit, QString option)
@@ -66,4 +64,13 @@ void CompilerParamWindow::add_option(QLineEdit *line_edit, QString option)
                              "Attention, cette option est présente en plsieurs exemplaires.");
     }
     line_edit->setText(line_edit->text() + " " + option);
+}
+
+void CompilerParamWindow::open_param(QString kw)
+{
+    ParamSelectionWindow* w = new ParamSelectionWindow(this, kw);
+    connect(w, &ParamSelectionWindow::selected, this, &CompilerParamWindow::selected);
+    w->setAttribute(Qt::WA_QuitOnClose, false);
+    w->setWindowModality(Qt::ApplicationModal);
+    w->show();
 }

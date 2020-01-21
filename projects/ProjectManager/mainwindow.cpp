@@ -191,8 +191,9 @@ void MainWindow::on_actionNouveau_triggered()
         }
     }
     NewProject* p = new NewProject(this);
-    p->setAttribute(Qt::WA_QuitOnClose, false);
     connect(p, &NewProject::created, this, &MainWindow::loadProject);
+    p->setAttribute(Qt::WA_QuitOnClose, false);
+    p->setWindowModality(Qt::ApplicationModal);
     p->show();
 }
 
@@ -225,6 +226,7 @@ void MainWindow::on_actionOptions_triggered()
 {
     SettingsWindow* w = new SettingsWindow(this);
     w->setAttribute(Qt::WA_QuitOnClose, false);
+    w->setWindowModality(Qt::ApplicationModal);
     w->show();
 }
 

@@ -191,7 +191,7 @@ void MainWindow::on_actionNouveau_triggered()
         }
     }
     NewProject* p = new NewProject(this);
-    connect(this, &MainWindow::destroyed, p, &NewProject::close);
+    p->setAttribute(Qt::WA_QuitOnClose, false);
     connect(p, &NewProject::created, this, &MainWindow::loadProject);
     p->show();
 }
@@ -223,11 +223,8 @@ void MainWindow::on_actionQuitter_triggered()
 
 void MainWindow::on_actionOptions_triggered()
 {
-    SettingsWindow* w = new SettingsWindow();
-    connect(this, &MainWindow::destroyed, w, &SettingsWindow::close);
-    /**
-      @bug Le connect ne fonctionne pas
-      */
+    SettingsWindow* w = new SettingsWindow(this);
+    w->setAttribute(Qt::WA_QuitOnClose, false);
     w->show();
 }
 

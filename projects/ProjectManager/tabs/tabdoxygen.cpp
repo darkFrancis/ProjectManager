@@ -1610,8 +1610,8 @@ void TabDoxygen::on_pushButton_generateFiles_clicked()
         command("doxygen -l layout.xml", dir);
         command("doxygen -w rtf styleSheetFile", dir + "rtf");
         command("doxygen -e rtf extensionsFile", dir + "rtf");
-        command("doxygen -w html heder.html footer.html stylesheet.css", dir + "html");
-        command("doxygen -w latex heder.html footer.html stylesheet.css", dir + "latex");
+        command("doxygen -w html header.html footer.html stylesheet.css", dir + "html");
+        command("doxygen -w latex header.html footer.html stylesheet.css", dir + "latex");
         QApplication::restoreOverrideCursor();
         QMessageBox::information(this,
                                  "Création des templates",

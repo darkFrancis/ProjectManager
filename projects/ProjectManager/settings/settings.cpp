@@ -170,7 +170,7 @@ void Settings::init_compiler_options()
                 }
                 else
                 {
-                    option = lign.split(QChar('|'));
+                    option = lign.split(QChar(';'));
                     if(option.length() == 3)
                     {
                         add_compiler_option(current_kw, option[0], option[1], option[2]);

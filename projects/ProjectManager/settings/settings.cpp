@@ -149,7 +149,18 @@ void Settings::init_compiler_options()
 {
     QStringList kw = QStringList() << COMPILE_OVERALL
                                    << COMPILE_LANGUAGE_C
-                                   << COMPILE_LANGUAGE_CXX;
+                                   << COMPILE_LANGUAGE_CXX
+                                   << COMPILE_DIAGNOSTIC
+                                   << COMPILE_WARNINGS
+                                   << COMPILE_DEBUG
+                                   << COMPILE_OPTI
+                                   << COMPILE_INSTRU
+                                   << COMPILE_PREPROCESSOR
+                                   << COMPILE_ASSEMBLER
+                                   << COMPILE_LINKER
+                                   << COMPILE_DIRS
+                                   << COMPILE_CODE_CONV;
+
     QFile file(COMPILER_FILE);
     if(file.open(QIODevice::Text | QIODevice::ReadOnly))
     {
@@ -216,6 +227,46 @@ void Settings::add_compiler_option(QString key_word, QString option, QString bri
     else if(key_word == COMPILE_LANGUAGE_CXX)
     {
         m_language_cxx_options.append(comp);
+    }
+    else if(key_word == COMPILE_DIAGNOSTIC)
+    {
+        m_diagnostic_options.append(comp);
+    }
+    else if(key_word == COMPILE_WARNINGS)
+    {
+        m_warnings_options.append(comp);
+    }
+    else if(key_word == COMPILE_DEBUG)
+    {
+        m_debug_options.append(comp);
+    }
+    else if(key_word == COMPILE_OPTI)
+    {
+        m_opti_options.append(comp);
+    }
+    else if(key_word == COMPILE_INSTRU)
+    {
+        m_instru_options.append(comp);
+    }
+    else if(key_word == COMPILE_PREPROCESSOR)
+    {
+        m_preprocessor_options.append(comp);
+    }
+    else if(key_word == COMPILE_ASSEMBLER)
+    {
+        m_assembler_options.append(comp);
+    }
+    else if(key_word == COMPILE_LINKER)
+    {
+        m_linker_options.append(comp);
+    }
+    else if(key_word == COMPILE_DIRS)
+    {
+        m_dirs_options.append(comp);
+    }
+    else if(key_word == COMPILE_CODE_CONV)
+    {
+        m_code_conv_options.append(comp);
     }
     else
     {

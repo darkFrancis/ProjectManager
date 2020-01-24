@@ -33,6 +33,20 @@ void Context::loadProject()
         m_sources = parser->get(KW_SOURCES).split(' ');
         m_headers = parser->get(KW_HEADERS).split(' ');
         m_ressources = parser->get(KW_RESSOURCES).split(' ');
+        m_flag_overall = parser->get(KW_FLAG_OVERALL).split(' ');
+        m_flag_c = parser->get(KW_FLAG_LANGUAGE_C).split(' ');
+        m_flag_cxx = parser->get(KW_FLAG_LANGUAGE_CXX).split(' ');
+        m_flag_diag = parser->get(KW_FLAG_DIAGNOSTIC).split(' ');
+        m_flag_warn = parser->get(KW_FLAG_WARNINGS).split(' ');
+        m_flag_debug = parser->get(KW_FLAG_DEBUG).split(' ');
+        m_flag_opt = parser->get(KW_FLAG_OPTI).split(' ');
+        m_flag_inst = parser->get(KW_FLAG_INSTRU).split(' ');
+        m_flag_preprocess = parser->get(KW_FLAG_PREPROCESSOR).split(' ');
+        m_flag_assembler = parser->get(KW_FLAG_ASSEMBLER).split(' ');
+        m_flag_linker = parser->get(KW_FLAG_LINKER).split(' ');
+        m_flag_dirs = parser->get(KW_FLAG_DIRS).split(' ');
+        m_flag_convention = parser->get(KW_FLAG_CODE_CONV).split(' ');
+        m_flag_other = parser->get(KW_FLAG_OTHER).split(' ');
         parser->close();
         m_open = true;
     }
@@ -44,9 +58,126 @@ void Context::loadProject()
 
 void Context::save()
 {
-    /**
-      @todo
-      */
+    QFile file(m_project_file);
+    if(file.open(QIODevice::Text | QIODevice::WriteOnly | QIODevice::Truncate))
+    {
+        QTextStream stream(&file);
+        stream << "# Fichier de configuration de projet" << endl
+               << "# Produit automatiquement par ProjectManager" << endl
+               << endl
+               << "# Projet " << m_project_name << endl
+               << KW_PROJECT_NAME << "=" << m_project_name << endl
+               << KW_PROJECT_TYPE << "=" << m_project_type << endl
+               << KW_AUTHOR << "=" << m_author << endl
+               << KW_PROJECT_VESRION << "=" << m_project_version << endl;
+        save_description(&stream);
+
+        stream << "# Gestion Git et Doxygen" << endl
+               << KW_GIT_PATH << "=" << m_git_path << endl
+               << KW_DOXYFILE << "=" << m_doxyfile << endl
+               << endl;
+
+        stream << "# FLAGS pour compilateur GCC" << endl;
+        save_flags(KW_FLAG_OVERALL, &stream);
+        save_flags(KW_FLAG_LANGUAGE_C, &stream);
+        save_flags(KW_FLAG_LANGUAGE_CXX, &stream);
+        save_flags(KW_FLAG_DIAGNOSTIC, &stream);
+        save_flags(KW_FLAG_WARNINGS, &stream);
+        save_flags(KW_FLAG_DEBUG, &stream);
+        save_flags(KW_FLAG_OPTI, &stream);
+        save_flags(KW_FLAG_INSTRU, &stream);
+        save_flags(KW_FLAG_PREPROCESSOR, &stream);
+        save_flags(KW_FLAG_ASSEMBLER, &stream);
+        save_flags(KW_FLAG_LINKER, &stream);
+        save_flags(KW_FLAG_DIRS, &stream);
+        save_flags(KW_FLAG_CODE_CONV, &stream);
+        save_flags(KW_FLAG_OTHER, &stream);
+    }
+}
+
+void Context::save_description(QTextStream *stream)
+{
+    *stream << KW_PROJECT_DESC << "=";
+    int idx;
+    QString desc = m_project_desc.simplified();
+    while(desc.length() > 0)
+    {
+        if(desc.length() <= DESC_WIDTH)
+        {
+            *stream << desc << endl;
+            desc = "";
+        }
+        else
+        {
+            idx = desc.left(DESC_WIDTH).lastIndexOf(' ');
+            if(idx > -1)
+            {
+                *stream << desc.left(idx) << " \\" << endl << INDENT_SPACES;
+                desc = desc.right(desc.length() - idx).simplified();
+            }
+            else
+            {
+                *stream << desc << endl;
+                desc = "";
+            }
+        }
+    }
+    *stream << endl;
+}
+
+void Context::save_sources(QString kw, QTextStream* stream)
+{
+    QStringList* tmp_list;
+    if(kw == KW_SOURCES) tmp_list = &m_sources;
+    else if(kw == KW_HEADERS) tmp_list = &m_headers;
+    else tmp_list = &m_ressources;
+
+    if(tmp_list->length() > 0)
+    {
+        *stream << kw << " = " << tmp_list->first();
+        for(int i = 1; i < tmp_list->length(); i++)
+        {
+            *stream << " \\" << endl << INDENT_SPACES << tmp_list->at(i);
+        }
+        *stream << endl << endl;
+    }
+}
+
+void Context::save_flags(QString kw, QTextStream* stream)
+{
+    QStringList* tmp_list;
+    if(kw == KW_FLAG_OVERALL) tmp_list = &m_flag_overall;
+    else if(kw == KW_FLAG_LANGUAGE_C) tmp_list = &m_flag_c;
+    else if(kw == KW_FLAG_LANGUAGE_CXX) tmp_list = &m_flag_cxx;
+    else if(kw == KW_FLAG_DIAGNOSTIC) tmp_list = &m_flag_diag;
+    else if(kw == KW_FLAG_WARNINGS) tmp_list = &m_flag_warn;
+    else if(kw == KW_FLAG_DEBUG) tmp_list = &m_flag_debug;
+    else if(kw == KW_FLAG_OPTI) tmp_list = &m_flag_opt;
+    else if(kw == KW_FLAG_INSTRU) tmp_list = &m_flag_inst;
+    else if(kw == KW_FLAG_PREPROCESSOR) tmp_list = &m_flag_preprocess;
+    else if(kw == KW_FLAG_ASSEMBLER) tmp_list = &m_flag_assembler;
+    else if(kw == KW_FLAG_LINKER) tmp_list = &m_flag_linker;
+    else if(kw == KW_FLAG_DIRS) tmp_list = &m_flag_dirs;
+    else if(kw == KW_FLAG_CODE_CONV) tmp_list = &m_flag_convention;
+    else /* KW_FLAG_OTHER */ tmp_list = &m_flag_other;
+
+    if(tmp_list->length() > 0)
+    {
+        *stream << kw << " = " << tmp_list->first();
+        for(int i = 1; i < tmp_list->length(); i++)
+        {
+            if(tmp_list->at(i).length() > 0 &&
+               tmp_list->at(i).at(0) == QChar('-'))
+            {
+                *stream << " \\" << endl << INDENT_SPACES << tmp_list->at(i);
+            }
+            else
+            {
+                *stream << " " << tmp_list->at(i);
+            }
+        }
+        *stream << endl << endl;
+    }
 }
 
 QString relativePath(QString absolute_path, QString ref_dir)

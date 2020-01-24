@@ -26,6 +26,46 @@ ParamSelectionWindow::ParamSelectionWindow(QWidget *parent, QString param_type) 
     {
         option_list = Settings::Instance()->languageCxxOptions();
     }
+    else if(m_kw == COMPILE_DIAGNOSTIC)
+    {
+        option_list = Settings::Instance()->diagnosticOptions();
+    }
+    else if(m_kw == COMPILE_WARNINGS)
+    {
+        option_list = Settings::Instance()->warningsOptions();
+    }
+    else if(m_kw == COMPILE_DEBUG)
+    {
+        option_list = Settings::Instance()->debugOptions();
+    }
+    else if(m_kw == COMPILE_OPTI)
+    {
+        option_list = Settings::Instance()->optimizationOptions();
+    }
+    else if(m_kw == COMPILE_INSTRU)
+    {
+        option_list = Settings::Instance()->instrumentationOptions();
+    }
+    else if(m_kw == COMPILE_PREPROCESSOR)
+    {
+        option_list = Settings::Instance()->preprocessorOptions();
+    }
+    else if(m_kw == COMPILE_ASSEMBLER)
+    {
+        option_list = Settings::Instance()->assemblerOptions();
+    }
+    else if(m_kw == COMPILE_LINKER)
+    {
+        option_list = Settings::Instance()->linkerOptions();
+    }
+    else if(m_kw == COMPILE_DIRS)
+    {
+        option_list = Settings::Instance()->dirsOptions();
+    }
+    else if(m_kw == COMPILE_CODE_CONV)
+    {
+        option_list = Settings::Instance()->codeConvOptions();
+    }
     else
     {
         QMessageBox::warning(this,

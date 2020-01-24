@@ -8,9 +8,19 @@
     #define COLORS_FILE             QString("config/colors.conf")
     #define COMPILER_FILE           QString("config/compiler.conf")
 
-    #define COMPILE_OVERALL         QString("overall_options")
+    #define COMPILE_OVERALL         QString("overall")
     #define COMPILE_LANGUAGE_C      QString("c_language")
     #define COMPILE_LANGUAGE_CXX    QString("cxx_language")
+    #define COMPILE_DIAGNOSTIC      QString("diagnostic")
+    #define COMPILE_WARNINGS        QString("warnings")
+    #define COMPILE_DEBUG           QString("debug_options")
+    #define COMPILE_OPTI            QString("optimization")
+    #define COMPILE_INSTRU          QString("instrumentation")
+    #define COMPILE_PREPROCESSOR    QString("preprocessor")
+    #define COMPILE_ASSEMBLER       QString("assembler")
+    #define COMPILE_LINKER          QString("linker")
+    #define COMPILE_DIRS            QString("dirs_options")
+    #define COMPILE_CODE_CONV       QString("convention_code")
 
     #define HTML_BEGIN              QString("<html><head><style>i{color:green;}</style></head><body><p>")
     #define HTML_END                QString("</p></body></html>")
@@ -54,6 +64,16 @@
             QList<CompilerOption>* overallOptions(){return &m_overall_options;}
             QList<CompilerOption>* languageCOptions(){return &m_language_c_options;}
             QList<CompilerOption>* languageCxxOptions(){return &m_language_cxx_options;}
+            QList<CompilerOption>* diagnosticOptions(){return &m_diagnostic_options;}
+            QList<CompilerOption>* warningsOptions(){return &m_warnings_options;}
+            QList<CompilerOption>* debugOptions(){return &m_debug_options;}
+            QList<CompilerOption>* optimizationOptions(){return &m_opti_options;}
+            QList<CompilerOption>* instrumentationOptions(){return &m_instru_options;}
+            QList<CompilerOption>* preprocessorOptions(){return &m_preprocessor_options;}
+            QList<CompilerOption>* assemblerOptions(){return &m_assembler_options;}
+            QList<CompilerOption>* linkerOptions(){return &m_linker_options;}
+            QList<CompilerOption>* dirsOptions(){return &m_dirs_options;}
+            QList<CompilerOption>* codeConvOptions(){return &m_code_conv_options;}
             // Set
             void setStyle(QString val){m_style = val;}
             void setKeepSize(bool val){m_keep_size = val;}
@@ -90,6 +110,16 @@
             QList<CompilerOption> m_overall_options;
             QList<CompilerOption> m_language_c_options;
             QList<CompilerOption> m_language_cxx_options;
+            QList<CompilerOption> m_diagnostic_options;
+            QList<CompilerOption> m_warnings_options;
+            QList<CompilerOption> m_debug_options;
+            QList<CompilerOption> m_opti_options;
+            QList<CompilerOption> m_instru_options;
+            QList<CompilerOption> m_preprocessor_options;
+            QList<CompilerOption> m_assembler_options;
+            QList<CompilerOption> m_linker_options;
+            QList<CompilerOption> m_dirs_options;
+            QList<CompilerOption> m_code_conv_options;
     };
 
 #endif // SETTINGS_HPP

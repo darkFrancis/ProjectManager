@@ -2,6 +2,7 @@
 #include "ui_compilerparamwindow.h"
 #include "paramselectionwindow.hpp"
 #include "settings/settings.hpp"
+#include "context.hpp"
 #include <QMessageBox>
 
 CompilerParamWindow::CompilerParamWindow(QWidget *parent) :
@@ -9,7 +10,7 @@ CompilerParamWindow::CompilerParamWindow(QWidget *parent) :
     ui(new Ui::CompilerParamWindow)
 {
     ui->setupUi(this);
-
+    init();
 }
 
 CompilerParamWindow::~CompilerParamWindow()
@@ -17,34 +18,140 @@ CompilerParamWindow::~CompilerParamWindow()
     delete ui;
 }
 
-void CompilerParamWindow::on_toolButton_overallOptions_clicked()
+void CompilerParamWindow::on_toolButton_overall_clicked()
 {
     open_param(COMPILE_OVERALL);
 }
 
-void CompilerParamWindow::on_toolButton_languageCOptions_clicked()
+void CompilerParamWindow::on_toolButton_languageC_clicked()
 {
     open_param(COMPILE_LANGUAGE_C);
 }
 
-void CompilerParamWindow::on_toolButton_languageCxxOptions_clicked()
+void CompilerParamWindow::on_toolButton_languageCxx_clicked()
 {
     open_param(COMPILE_LANGUAGE_CXX);
+}
+
+void CompilerParamWindow::on_toolButton_diagnostic_clicked()
+{
+    open_param(COMPILE_DIAGNOSTIC);
+}
+
+void CompilerParamWindow::on_toolButton_warnings_clicked()
+{
+    open_param(COMPILE_WARNINGS);
+}
+
+void CompilerParamWindow::on_toolButton_debug_clicked()
+{
+    open_param(COMPILE_DEBUG);
+}
+
+void CompilerParamWindow::on_toolButton_optimization_clicked()
+{
+    open_param(COMPILE_OPTI);
+}
+
+void CompilerParamWindow::on_toolButton_instrumentation_clicked()
+{
+    open_param(COMPILE_INSTRU);
+}
+
+void CompilerParamWindow::on_toolButton_preprocessor_clicked()
+{
+    open_param(COMPILE_PREPROCESSOR);
+}
+
+void CompilerParamWindow::on_toolButton_assembler_clicked()
+{
+    open_param(COMPILE_ASSEMBLER);
+}
+
+void CompilerParamWindow::on_toolButton_linker_clicked()
+{
+    open_param(COMPILE_LINKER);
+}
+
+void CompilerParamWindow::on_toolButton_dirs_clicked()
+{
+    open_param(COMPILE_DIRS);
+}
+
+void CompilerParamWindow::on_toolButton_codeConvention_clicked()
+{
+    open_param(COMPILE_CODE_CONV);
+}
+
+void CompilerParamWindow::on_pushButton_apply_clicked()
+{
+    apply();
+}
+
+void CompilerParamWindow::on_pushButton_ok_clicked()
+{
+    apply();
+    this->close();
+}
+
+void CompilerParamWindow::on_pushButton_close_clicked()
+{
+    this->close();
 }
 
 void CompilerParamWindow::selected(QString kw, QString option)
 {
     if(kw == COMPILE_OVERALL)
     {
-        add_option(ui->lineEdit_overallOptions, option);
+        add_option(ui->lineEdit_overall, option);
     }
     else if(kw == COMPILE_LANGUAGE_C)
     {
-        add_option(ui->lineEdit_languageCOptions, option);
+        add_option(ui->lineEdit_languageC, option);
     }
     else if(kw == COMPILE_LANGUAGE_CXX)
     {
-        add_option(ui->lineEdit_languageCxxOptions, option);
+        add_option(ui->lineEdit_languageCxx, option);
+    }
+    else if(kw == COMPILE_DIAGNOSTIC)
+    {
+        add_option(ui->lineEdit_diagnostic, option);
+    }
+    else if(kw == COMPILE_WARNINGS)
+    {
+        add_option(ui->lineEdit_warnings, option);
+    }
+    else if(kw == COMPILE_DEBUG)
+    {
+        add_option(ui->lineEdit_debug, option);
+    }
+    else if(kw == COMPILE_OPTI)
+    {
+        add_option(ui->lineEdit_optimization, option);
+    }
+    else if(kw == COMPILE_INSTRU)
+    {
+        add_option(ui->lineEdit_instrumentation, option);
+    }
+    else if(kw == COMPILE_PREPROCESSOR)
+    {
+        add_option(ui->lineEdit_preprocessor, option);
+    }
+    else if(kw == COMPILE_ASSEMBLER)
+    {
+        add_option(ui->lineEdit_assembler, option);
+    }
+    else if(kw == COMPILE_LINKER)
+    {
+        add_option(ui->lineEdit_linker, option);
+    }
+    else if(kw == COMPILE_DIRS)
+    {
+        add_option(ui->lineEdit_dirs, option);
+    }
+    else if(kw == COMPILE_CODE_CONV)
+    {
+        add_option(ui->lineEdit_codeConvention, option);
     }
     else
     {
@@ -73,4 +180,42 @@ void CompilerParamWindow::open_param(QString kw)
     w->setAttribute(Qt::WA_QuitOnClose, false);
     w->setWindowModality(Qt::ApplicationModal);
     w->show();
+}
+
+void CompilerParamWindow::init()
+{
+    Context* ctx = Context::Instance();
+    ui->lineEdit_overall->setText(ctx->flagOverall().join(' '));
+    ui->lineEdit_languageC->setText(ctx->flagC().join(' '));
+    ui->lineEdit_languageCxx->setText(ctx->flagCxx().join(' '));
+    ui->lineEdit_diagnostic->setText(ctx->flagDiag().join(' '));
+    ui->lineEdit_warnings->setText(ctx->flagWarn().join(' '));
+    ui->lineEdit_debug->setText(ctx->flagDebug().join(' '));
+    ui->lineEdit_optimization->setText(ctx->flagOpt().join(' '));
+    ui->lineEdit_instrumentation->setText(ctx->flagInst().join(' '));
+    ui->lineEdit_preprocessor->setText(ctx->flagPreprocess().join(' '));
+    ui->lineEdit_assembler->setText(ctx->flagAssembler().join(' '));
+    ui->lineEdit_linker->setText(ctx->flagLinker().join(' '));
+    ui->lineEdit_dirs->setText(ctx->flagDirs().join(' '));
+    ui->lineEdit_codeConvention->setText(ctx->flagConvention().join(' '));
+    ui->lineEdit_other->setText(ctx->flagOther().join(' '));
+}
+
+void CompilerParamWindow::apply()
+{
+    Context* ctx = Context::Instance();
+    ctx->setFlagOverall(ui->lineEdit_overall->text().split(' '));
+    ctx->setFlagC(ui->lineEdit_languageC->text().split(' '));
+    ctx->setFlagCxx(ui->lineEdit_languageCxx->text().split(' '));
+    ctx->setFlagDiag(ui->lineEdit_diagnostic->text().split(' '));
+    ctx->setFlagWarn(ui->lineEdit_warnings->text().split(' '));
+    ctx->setFlagDebug(ui->lineEdit_debug->text().split(' '));
+    ctx->setFlagOpt(ui->lineEdit_optimization->text().split(' '));
+    ctx->setFlagInst(ui->lineEdit_instrumentation->text().split(' '));
+    ctx->setFlagPreprocess(ui->lineEdit_preprocessor->text().split(' '));
+    ctx->setFlagAssembler(ui->lineEdit_assembler->text().split(' '));
+    ctx->setFlagLinker(ui->lineEdit_linker->text().split(' '));
+    ctx->setFlagDirs(ui->lineEdit_dirs->text().split(' '));
+    ctx->setFlagConvention(ui->lineEdit_codeConvention->text().split(' '));
+    ctx->setFlagOther(ui->lineEdit_other->text().split(' '));
 }

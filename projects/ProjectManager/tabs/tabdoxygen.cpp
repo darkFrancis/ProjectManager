@@ -61,10 +61,6 @@ void TabDoxygen::save()
     QFile file(m_doxyfile);
     if(file.open(QIODevice::Text | QIODevice::WriteOnly | QIODevice::Truncate))
     {
-        if(m_stream)
-        {
-            delete m_stream;
-        }
         m_stream = new QTextStream(&file);
         save_tabProject();
         save_tabBuild();

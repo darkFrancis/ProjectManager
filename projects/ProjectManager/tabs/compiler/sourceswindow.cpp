@@ -3,6 +3,7 @@
 #include <QFileDialog>
 #include "context.hpp"
 #include "settings/settings.hpp"
+#include "settings/logger.hpp"
 
 SourcesWindow::SourcesWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -10,6 +11,7 @@ SourcesWindow::SourcesWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    logger(__PRETTY_FUNCTION__);
     connect(ui->listWidget_sources, &QListWidget::itemClicked, this, &SourcesWindow::setChecked);
     connect(ui->listWidget_headers, &QListWidget::itemClicked, this, &SourcesWindow::setChecked);
     connect(ui->listWidget_ressources, &QListWidget::itemClicked, this, &SourcesWindow::setChecked);
@@ -17,11 +19,13 @@ SourcesWindow::SourcesWindow(QWidget *parent) :
 
 SourcesWindow::~SourcesWindow()
 {
+    logger(__PRETTY_FUNCTION__);
     delete ui;
 }
 
 QStringList SourcesWindow::getSources()
 {
+    logger(__PRETTY_FUNCTION__);
     QStringList source_list;
     for(int i = 0; i < ui->listWidget_sources->count(); i++)
     {
@@ -32,6 +36,7 @@ QStringList SourcesWindow::getSources()
 
 QStringList SourcesWindow::getHeaders()
 {
+    logger(__PRETTY_FUNCTION__);
     QStringList header_list;
     for(int i = 0; i < ui->listWidget_headers->count(); i++)
     {
@@ -42,6 +47,7 @@ QStringList SourcesWindow::getHeaders()
 
 QStringList SourcesWindow::getRessources()
 {
+    logger(__PRETTY_FUNCTION__);
     QStringList ressource_list;
     for(int i = 0; i < ui->listWidget_ressources->count(); i++)
     {
@@ -52,6 +58,7 @@ QStringList SourcesWindow::getRessources()
 
 void SourcesWindow::on_pushButton_add_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     QStringList file_list = QFileDialog::getOpenFileNames(this,
                                                           "Ajout de fichiers",
                                                           Context::Instance()->lastSearch());
@@ -105,6 +112,7 @@ void SourcesWindow::on_pushButton_add_clicked()
 
 void SourcesWindow::on_pushButton_remove_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     QList<QListWidgetItem*> rem_sources;
     QList<QListWidgetItem*> rem_headers;
     QList<QListWidgetItem*> rem_ressources;
@@ -156,16 +164,19 @@ void SourcesWindow::setChecked(QListWidgetItem* item)
 {
     if(item->checkState() == Qt::Checked)
     {
+        logger("    set_check false");
         item->setCheckState(Qt::Unchecked);
     }
     else
     {
+        logger("    set_check true");
         item->setCheckState(Qt::Checked);
     }
 }
 
 void SourcesWindow::addItem(QString text, QListWidget* widget)
 {
+    logger("    add_item " + text);
     QListWidgetItem* item = new QListWidgetItem(text);
     item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
     item->setCheckState(Qt::Unchecked);

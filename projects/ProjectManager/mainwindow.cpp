@@ -13,6 +13,7 @@
 #include "newproject.hpp"
 #include "settings/settingswindow.hpp"
 #include "settings/settings.hpp"
+#include "settings/logger.hpp"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -20,11 +21,12 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    logger(__PRETTY_FUNCTION__);
+
     this->setWindowTitle("Project Manager");
     try
     {
         init();
-        Settings::Instance()->init();
         status("Initialisation terminée avec succès", STATUS_DEFAULT_TIMEOUT);
     }
     catch(QString msg)
@@ -38,12 +40,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    logger(__PRETTY_FUNCTION__);
     saveInit();
     delete ui;
 }
 
 void MainWindow::init()
 {
+    logger(__PRETTY_FUNCTION__);
+    Settings::Instance()->init();
     QDir::setCurrent(qApp->applicationDirPath());
     if(!QFile::exists(INIT_FILE))
     {
@@ -105,12 +110,13 @@ void MainWindow::init()
     }
     else
     {
-        m_tabWidget->setEnabled(true);
+        m_tabWidget->setEnabled(false);
     }
 }
 
 void MainWindow::clean()
 {
+    logger(__PRETTY_FUNCTION__);
     for(int i = 0; i < m_tablist.length(); i++)
     {
         m_tablist[i]->clean();
@@ -119,6 +125,7 @@ void MainWindow::clean()
 
 void MainWindow::save()
 {
+    logger(__PRETTY_FUNCTION__);
     for(int i = 0; i < m_tablist.length(); i++)
     {
         m_tablist[0]->save();
@@ -127,6 +134,7 @@ void MainWindow::save()
 
 void MainWindow::createInit()
 {
+    logger(__PRETTY_FUNCTION__);
     QDir::setCurrent(qApp->applicationDirPath());
     QFile file(INIT_FILE);
     if(file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
@@ -156,6 +164,7 @@ void MainWindow::createInit()
 
 void MainWindow::saveInit()
 {
+    logger(__PRETTY_FUNCTION__);
     QDir::setCurrent(qApp->applicationDirPath());
     QFile file(INIT_FILE);
     if(file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
@@ -185,11 +194,13 @@ void MainWindow::saveInit()
 
 void MainWindow::status(QString msg, int timeout)
 {
+    logger(__PRETTY_FUNCTION__);
     ui->statusBar->showMessage(msg, timeout * 1000);
 }
 
 void MainWindow::on_actionNouveau_triggered()
 {
+    logger(__PRETTY_FUNCTION__);
     Context* ctx = Context::Instance();
     if(ctx->isOpen())
     {
@@ -209,16 +220,25 @@ void MainWindow::on_actionNouveau_triggered()
 
 void MainWindow::loadProject()
 {
-    clean();
-    Context::Instance()->loadProject();
-    for(int i = 0; i < m_tablist.length(); i++)
+    logger(__PRETTY_FUNCTION__);
+    try
     {
-        m_tablist[i]->init();
+        clean();
+        Context::Instance()->loadProject();
+        for(int i = 0; i < m_tablist.length(); i++)
+        {
+            m_tablist[i]->init();
+        }
+    }
+    catch(QString msg)
+    {
+        QMessageBox::critical(this, "Erreur", msg);
     }
 }
 
 void MainWindow::on_actionOuvrir_triggered()
 {
+    logger(__PRETTY_FUNCTION__);
     Context* ctx = Context::Instance();
     if(ctx->isOpen())
     {
@@ -235,6 +255,8 @@ void MainWindow::on_actionOuvrir_triggered()
                                                 "ProjectFile *." + FILE_EXTENSION);
     if(file != "")
     {
+        QFileInfo info(file);
+        ctx->setLastSearch(info.absoluteDir().absolutePath());
         ctx->close();
         loadProject();
     }
@@ -242,16 +264,36 @@ void MainWindow::on_actionOuvrir_triggered()
 
 void MainWindow::on_actionEnregistrer_triggered()
 {
+    logger(__PRETTY_FUNCTION__);
     save();
+}
+
+void MainWindow::on_actionFermer_triggered()
+{
+    logger(__PRETTY_FUNCTION__);
+    Context* ctx = Context::Instance();
+    if(ctx->isOpen())
+    {
+        QMessageBox::StandardButton res;
+        res = QMessageBox::question(this, "Attention", "Attention ! Si vous fermez ce fichier, tout ce qui n'est pas enregistré sera supprimé.\nVoulez vous continuer ?");
+        if(res == QMessageBox::Yes)
+        {
+            clean();
+            m_tabWidget->setEnabled(false);
+            ctx->close();
+        }
+    }
 }
 
 void MainWindow::on_actionQuitter_triggered()
 {
+    logger(__PRETTY_FUNCTION__);
     qApp->quit();
 }
 
 void MainWindow::on_actionOptions_triggered()
 {
+    logger(__PRETTY_FUNCTION__);
     SettingsWindow* w = new SettingsWindow(this);
     w->setAttribute(Qt::WA_QuitOnClose, false);
     w->setWindowModality(Qt::ApplicationModal);
@@ -260,6 +302,7 @@ void MainWindow::on_actionOptions_triggered()
 
 void MainWindow::on_actionA_propos_triggered()
 {
+    logger(__PRETTY_FUNCTION__);
     QMessageBox::about(this,
                        "A propos de ProjectManager",
                        QString("Version : ") + VERSION + "\n"
@@ -272,5 +315,6 @@ void MainWindow::on_actionA_propos_triggered()
 
 void MainWindow::on_actionA_propos_de_Qt_triggered()
 {
+    logger(__PRETTY_FUNCTION__);
     QMessageBox::aboutQt(this, "A propos de Qt");
 }

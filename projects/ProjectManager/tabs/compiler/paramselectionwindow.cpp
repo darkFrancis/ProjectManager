@@ -1,6 +1,7 @@
 #include "paramselectionwindow.hpp"
 #include "ui_paramselectionwindow.h"
 #include "settings/settings.hpp"
+#include "settings/logger.hpp"
 #include <QMessageBox>
 #include <QStandardItemModel>
 
@@ -9,6 +10,7 @@ ParamSelectionWindow::ParamSelectionWindow(QWidget *parent, QString param_type) 
     ui(new Ui::ParamSelectionWindow)
 {
     ui->setupUi(this);
+    logger(__PRETTY_FUNCTION__);
     m_kw = param_type;
 
     QList<CompilerOption>* option_list = nullptr;
@@ -97,16 +99,19 @@ ParamSelectionWindow::ParamSelectionWindow(QWidget *parent, QString param_type) 
 
 ParamSelectionWindow::~ParamSelectionWindow()
 {
+    logger(__PRETTY_FUNCTION__);
     delete ui;
 }
 
 void ParamSelectionWindow::on_pushButton_close_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     this->close();
 }
 
 void ParamSelectionWindow::on_pushButton_ok_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     emit selected(m_kw, ui->tableView->model()->index(ui->tableView->currentIndex().row(), 0).data().toString());
     this->close();
 }

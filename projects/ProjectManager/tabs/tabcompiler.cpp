@@ -13,6 +13,7 @@
 #include "context.hpp"
 #include "compiler/sourceswindow.hpp"
 #include "compiler/compilerparamwindow.hpp"
+#include "settings/logger.hpp"
 
 TabCompiler::TabCompiler(QWidget *parent) :
     Tab(parent),
@@ -23,6 +24,7 @@ TabCompiler::TabCompiler(QWidget *parent) :
      * @param parent Le QWidget parent
      */
     ui->setupUi(this);
+    logger(__PRETTY_FUNCTION__);
 
     QShortcut* shortcut_terminate = new QShortcut(QKeySequence("Ctrl+X"), this);
     connect(shortcut_terminate, &QShortcut::activated, this, &TabCompiler::forceEnd);
@@ -33,17 +35,22 @@ TabCompiler::TabCompiler(QWidget *parent) :
 }
 TabCompiler::~TabCompiler()
 {
-
     /**
      * @brief Destructeur de TabCompiler
      */
+    logger(__PRETTY_FUNCTION__);
     delete ui;
     delete m_process;
 }
 
 void TabCompiler::save()
 {
-
+    logger(__PRETTY_FUNCTION__);
+    Context* ctx = Context::Instance();
+    QString dir = ui->lineEdit_buildDir->text();
+    if(dir.at(dir.length()-1) != QChar('/')) dir.append('/');
+    ctx->setBuildDir(dir);
+    ctx->setOutput(ui->lineEdit_output->text());
 }
 
 /**
@@ -55,7 +62,7 @@ void TabCompiler::save()
  */
 void TabCompiler::on_toolButton_buildDir_clicked()
 {
-
+    logger(__PRETTY_FUNCTION__);
     QString dir_path = QFileDialog::getExistingDirectory(this,
                                                          "Dossier de build",
                                                          Context::Instance()->lastSearch());
@@ -69,9 +76,7 @@ void TabCompiler::on_toolButton_buildDir_clicked()
 
 void TabCompiler::on_toolButton_gestion_clicked()
 {
-    /**
-     * @todo ajout gestion define et linkage
-     */
+    logger(__PRETTY_FUNCTION__);
     if(ui->comboBox_gestion->currentText() == TEXT_SOURCES)
     {
         SourcesWindow* w = new SourcesWindow(this);
@@ -98,7 +103,7 @@ void TabCompiler::on_toolButton_gestion_clicked()
 
 void TabCompiler::on_pushButton_action_clicked()
 {
-    ui->pushButton_action->setEnabled(false);
+    logger(__PRETTY_FUNCTION__);
     if(Settings::Instance()->clearScreen())
     {
         ui->textEdit_status->clear();
@@ -133,25 +138,35 @@ void TabCompiler::on_pushButton_action_clicked()
                               "Erreur",
                               "Action non reconnue !");
     }
-    ui->pushButton_action->setEnabled(true);
 }
 
 void TabCompiler::action_build_run()
 {
+    logger(__PRETTY_FUNCTION__);
     action_build();
     action_run();
 }
 
 void TabCompiler::action_build()
 {
+    logger(__PRETTY_FUNCTION__);
     /**
      * @todo
      */
-    send_cmd("ping", QStringList() << "--help");
+    Context* ctx = Context::Instance();
+    QString compiler = (ctx->projectType()[ctx->projectType().length()-1] == QChar('x') ? "g++" : "gcc");
+    // Preprocess + Assembleur
+    for(int i = 0; i < ctx->sources().length(); i++)
+    {
+        QStringList param;
+        param << "-c";
+    }
+    // Linkage
 }
 
 void TabCompiler::action_run()
 {
+    logger(__PRETTY_FUNCTION__);
     Context* ctx = Context::Instance();
     QFileInfo info(ctx->buildDir() + ctx->output());
     send_cmd("./" + info.fileName(), QStringList(), info.absoluteDir().absolutePath());
@@ -159,10 +174,8 @@ void TabCompiler::action_run()
 
 void TabCompiler::action_clean()
 {
-    /**
-     * @todo rm .o
-     */
-    send_cmd("echo", QStringList() << "accents:éàèê");
+    logger(__PRETTY_FUNCTION__);
+    send_cmd("rm", QStringList() << "-rf" << "*.o", Context::Instance()->buildDir());
 }
 
 void TabCompiler::action_install()
@@ -170,17 +183,20 @@ void TabCompiler::action_install()
     /**
      * @todo utiliser commande install
      */
+    logger(__PRETTY_FUNCTION__);
 }
 
 void TabCompiler::action_uninstall()
 {
     /**
-     * @todo
+     * @todo fonction de désinstallation
      */
+    logger(__PRETTY_FUNCTION__);
 }
 
 void TabCompiler::send_cmd(QString cmd, QStringList param /*= QStringList()*/, QString dir /*= "."*/)
 {
+    logger("    cmd: " + cmd + " " + param.join(' '));
     ui->pushButton_action->setEnabled(false);
     if(m_process == nullptr)
     {
@@ -237,6 +253,7 @@ void TabCompiler::readProcess()
 
 void TabCompiler::endCmd(int exitCode, QProcess::ExitStatus exitStatus)
 {
+    logger("    end_cmd: " + QString::number(exitCode));
     Settings* setting = Settings::Instance();
     bool ok = exitStatus == QProcess::NormalExit;
     QString result = "<p style=\"color:";
@@ -272,12 +289,14 @@ void TabCompiler::addCommand(QString cmd, QStringList param, QString dir)
 
 void TabCompiler::forceEnd()
 {
+    logger(__PRETTY_FUNCTION__);
     m_commands.clear();
     m_process->kill();
 }
 
 void TabCompiler::on_pushButton_default_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     QFileInfo info(Context::Instance()->projectFile());
     QString dir = info.absoluteDir().absolutePath();
     if(dir.at(dir.length()-1) != QChar('/')) dir.append('/');
@@ -287,9 +306,6 @@ void TabCompiler::on_pushButton_default_clicked()
 
 void TabCompiler::on_pushButton_apply_clicked()
 {
-    Context* ctx = Context::Instance();
-    QString dir = ui->lineEdit_buildDir->text();
-    if(dir.at(dir.length()-1) != QChar('/')) dir.append('/');
-    ctx->setBuildDir(dir);
-    ctx->setOutput(ui->lineEdit_output->text());
+    logger(__PRETTY_FUNCTION__);
+    save();
 }

@@ -4,12 +4,14 @@
 #include <QDir>
 #include <QProcess>
 #include "context.hpp"
+#include "settings/logger.hpp"
 
 TabGit::TabGit(QWidget *parent) :
     Tab(parent),
     ui(new Ui::TabGit)
 {
     ui->setupUi(this);
+    logger(__PRETTY_FUNCTION__);
     QDir git_dir(Context::Instance()->gitPath());
     if(!git_dir.exists())
     {
@@ -24,11 +26,13 @@ TabGit::TabGit(QWidget *parent) :
 
 TabGit::~TabGit()
 {
+    logger(__PRETTY_FUNCTION__);
     delete ui;
 }
 
 void TabGit::on_pushButton_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     if(!m_git_exists)
     {
         QProcess process;

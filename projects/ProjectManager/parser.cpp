@@ -1,4 +1,5 @@
 #include "parser.hpp"
+#include "settings/logger.hpp"
 
 Parser* Parser::m_instance = nullptr;
 
@@ -11,12 +12,14 @@ Parser* Parser::Instance()
 
 Parser::Parser()
 {
+    logger(__PRETTY_FUNCTION__);
     m_map.clear();
     m_used = false;
 }
 
 bool Parser::load(QString filename)
 {
+    logger(__PRETTY_FUNCTION__);
     if(m_used)
         return false;
 
@@ -69,6 +72,7 @@ bool Parser::load(QString filename)
 
 QString Parser::get(QString key)
 {
+    logger("    get_value " + key);
     if(m_map.contains(key))
     {
         return m_map.value(key);
@@ -78,6 +82,7 @@ QString Parser::get(QString key)
 
 void Parser::close()
 {
+    logger(__PRETTY_FUNCTION__);
     m_used = false;
 }
 

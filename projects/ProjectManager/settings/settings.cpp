@@ -1,5 +1,6 @@
 #include "settings.hpp"
 #include "parser.hpp"
+#include "logger.hpp"
 #include <QFile>
 #include <QTextStream>
 
@@ -14,6 +15,7 @@ Settings* Settings::Instance()
 
 Settings::Settings()
 {
+    logger(__PRETTY_FUNCTION__);
     load();
     init_color();
     init_compiler_options();
@@ -21,6 +23,7 @@ Settings::Settings()
 
 void Settings::save()
 {
+    logger(__PRETTY_FUNCTION__);
     QFile file(SETTINGS_FILE);
     if(file.open(QIODevice::Text | QIODevice::WriteOnly | QIODevice::Truncate))
     {
@@ -44,6 +47,7 @@ void Settings::save()
 
 void Settings::load()
 {
+    logger(__PRETTY_FUNCTION__);
     Parser* parser = Parser::Instance();
     QFile file(SETTINGS_FILE);
     if(!file.exists())
@@ -62,6 +66,7 @@ void Settings::load()
         m_color_success = parser->get("color_success");
         m_sources_extensions = parser->get("sources_ext").split(' ');
         m_headers_extensions = parser->get("headers_ext").split(' ');
+        parser->close();
     }
     else
     {
@@ -71,6 +76,7 @@ void Settings::load()
 
 void Settings::create()
 {
+    logger(__PRETTY_FUNCTION__);
     QFile file(SETTINGS_FILE);
     if(file.open(QIODevice::Text | QIODevice::WriteOnly | QIODevice::Truncate))
     {
@@ -94,6 +100,7 @@ void Settings::create()
 
 void Settings::init_color()
 {
+    logger(__PRETTY_FUNCTION__);
     QFile color_file(COLORS_FILE);
     if(color_file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -147,6 +154,7 @@ void Settings::init_color()
 
 void Settings::init_compiler_options()
 {
+    logger(__PRETTY_FUNCTION__);
     QStringList kw = QStringList() << COMPILE_OVERALL
                                    << COMPILE_LANGUAGE_C
                                    << COMPILE_LANGUAGE_CXX
@@ -202,6 +210,7 @@ void Settings::init_compiler_options()
 
 void Settings::add_color(QString name, int red, int green, int blue)
 {
+    logger("    add_color " + name);
     Color color;
     color.name = name;
     color.red = red;
@@ -212,6 +221,7 @@ void Settings::add_color(QString name, int red, int green, int blue)
 
 void Settings::add_compiler_option(QString key_word, QString option, QString brief, QString tooltip)
 {
+    logger("    add_flag " + key_word + " | " + option);
     CompilerOption comp;
     comp.option = option;
     comp.brief = brief;

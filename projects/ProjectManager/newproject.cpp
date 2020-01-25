@@ -1,6 +1,7 @@
 #include "newproject.hpp"
 #include "ui_newproject.h"
 #include "context.hpp"
+#include "settings/logger.hpp"
 #include <QFileDialog>
 #include <QTextStream>
 #include <QMessageBox>
@@ -10,17 +11,24 @@ NewProject::NewProject(QWidget *parent) :
     ui(new Ui::NewProject)
 {
     ui->setupUi(this);
+    logger(__PRETTY_FUNCTION__);
 
-    this->setWindowTitle("Nouveau Projet");
+    Context* ctx = Context::Instance();
+    ui->lineEdit_projectName->setText("Project");
+    QString dir = ctx->lastSearch();
+    ui->lineEdit_mainGitDir->setText(dir);
+    ui->lineEdit_doxyfile->setText(dir + "Doxyfile");
 }
 
 NewProject::~NewProject()
 {
+    logger(__PRETTY_FUNCTION__);
     delete ui;
 }
 
 void NewProject::on_toolButton_mainGitDir_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     QString dir_name = QFileDialog::getExistingDirectory(this, "Dossier GIT", Context::Instance()->lastSearch());
     QDir dir(dir_name);
     ui->lineEdit_mainGitDir->setText(dir.absolutePath());
@@ -29,19 +37,22 @@ void NewProject::on_toolButton_mainGitDir_clicked()
 
 void NewProject::on_toolButton_doxyfile_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     QString file_name = QFileDialog::getSaveFileName(this, "Doxyfile", Context::Instance()->lastSearch());
     QFileInfo file(file_name);
-    ui->lineEdit_doxyfile->setText(file.absolutePath());
+    ui->lineEdit_doxyfile->setText(file.absoluteFilePath());
     Context::Instance()->setLastSearch(file.absoluteDir().absolutePath());
 }
 
 void NewProject::on_pushButton_cancel_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     this->close();
 }
 
 void NewProject::on_pushButton_create_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     if(ui->lineEdit_doxyfile->text().isEmpty() ||
        ui->lineEdit_mainGitDir->text().isEmpty() ||
        ui->lineEdit_projectName->text().isEmpty())
@@ -49,6 +60,7 @@ void NewProject::on_pushButton_create_clicked()
         QMessageBox::information(this,
                                  "Attention",
                                  "Les champs doivent tous être complétés");
+        return;
     }
 
     QString dir = ui->lineEdit_mainGitDir->text();

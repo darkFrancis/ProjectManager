@@ -16,6 +16,7 @@ SOURCES += \
         mainwindow.cpp \
         newproject.cpp \
         parser.cpp \
+        settings/logger.cpp \
         settings/settings.cpp \
         settings/settingswindow.cpp \
         tabs/compiler/compilerparamwindow.cpp \
@@ -31,6 +32,7 @@ HEADERS += \
         mainwindow.hpp \
         newproject.hpp \
         parser.hpp \
+        settings/logger.hpp \
         settings/settings.hpp \
         settings/settingswindow.hpp \
         tabs/compiler/compilerparamwindow.hpp \

@@ -45,6 +45,7 @@
             void on_actionNouveau_triggered();
             void on_actionOuvrir_triggered();
             void on_actionEnregistrer_triggered();
+            void on_actionFermer_triggered();
             void on_actionQuitter_triggered();
             void on_actionOptions_triggered();
             void on_actionA_propos_triggered();

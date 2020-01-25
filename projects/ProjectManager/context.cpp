@@ -1,5 +1,6 @@
 #include "context.hpp"
 #include "parser.hpp"
+#include "settings/logger.hpp"
 #include <QFileInfo>
 
 Context* Context::m_instance = nullptr;
@@ -15,11 +16,13 @@ Context::Context() :
     m_project_file(""),
     m_doxyfile("")
 {
+    logger(__PRETTY_FUNCTION__);
     m_open = false;
 }
 
 void Context::loadProject()
 {
+    logger(__PRETTY_FUNCTION__);
     Parser* parser = Parser::Instance();
     if(parser->load(m_project_file))
     {
@@ -60,6 +63,7 @@ void Context::loadProject()
 
 void Context::save()
 {
+    logger(__PRETTY_FUNCTION__);
     QFile file(m_project_file);
     if(file.open(QIODevice::Text | QIODevice::WriteOnly | QIODevice::Truncate))
     {
@@ -104,6 +108,7 @@ void Context::save()
 
 void Context::save_description(QTextStream *stream)
 {
+    logger(__PRETTY_FUNCTION__);
     *stream << KW_PROJECT_DESC << "=";
     int idx;
     QString desc = m_project_desc.simplified();
@@ -134,6 +139,7 @@ void Context::save_description(QTextStream *stream)
 
 void Context::save_sources(QString kw, QTextStream* stream)
 {
+    logger(__PRETTY_FUNCTION__);
     QStringList* tmp_list;
     if(kw == KW_SOURCES) tmp_list = &m_sources;
     else if(kw == KW_HEADERS) tmp_list = &m_headers;
@@ -152,6 +158,7 @@ void Context::save_sources(QString kw, QTextStream* stream)
 
 void Context::save_flags(QString kw, QTextStream* stream)
 {
+    logger(__PRETTY_FUNCTION__);
     QStringList* tmp_list;
     if(kw == KW_FLAG_OVERALL) tmp_list = &m_flag_overall;
     else if(kw == KW_FLAG_LANGUAGE_C) tmp_list = &m_flag_c;

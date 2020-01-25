@@ -1,5 +1,6 @@
 #include "settingswindow.hpp"
 #include "ui_settingswindow.h"
+#include "logger.hpp"
 #include <QMessageBox>
 
 SettingsWindow::SettingsWindow(QWidget *parent) :
@@ -7,6 +8,8 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
     ui(new Ui::SettingsWindow)
 {
     ui->setupUi(this);
+
+    logger(__PRETTY_FUNCTION__);
 
     QList<Color>* colors;
 
@@ -43,27 +46,32 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
 
 SettingsWindow::~SettingsWindow()
 {
+    logger(__PRETTY_FUNCTION__);
     delete ui;
 }
 
 void SettingsWindow::on_pushButton_ok_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     save();
     this->close();
 }
 
 void SettingsWindow::on_pushButton_apply_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     save();
 }
 
 void SettingsWindow::on_pushButton_cancel_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     this->close();
 }
 
 void SettingsWindow::save()
 {
+    logger(__PRETTY_FUNCTION__);
     Settings* setting = Settings::Instance();
     setting->setStyle(ui->comboBox_viewStyle->currentText());
     setting->setKeepSize(ui->checkBox_keepViewSize->isChecked());

@@ -46,8 +46,10 @@
      <string>Fichier</string>
     </property>
     <addaction name="actionNouveau"/>
+    <addaction name="separator"/>
     <addaction name="actionOuvrir"/>
     <addaction name="actionEnregistrer"/>
+    <addaction name="actionFermer"/>
     <addaction name="separator"/>
     <addaction name="actionQuitter"/>
    </widget>
@@ -109,6 +111,11 @@
   <action name="actionA_propos_de_Qt">
    <property name="text">
     <string>A propos de Qt</string>
+   </property>
+  </action>
+  <action name="actionFermer">
+   <property name="text">
+    <string>Fermer</string>
    </property>
   </action>
  </widget>

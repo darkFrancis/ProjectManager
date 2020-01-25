@@ -3,6 +3,7 @@
 #include "paramselectionwindow.hpp"
 #include "settings/settings.hpp"
 #include "context.hpp"
+#include "settings/logger.hpp"
 #include <QMessageBox>
 
 CompilerParamWindow::CompilerParamWindow(QWidget *parent) :
@@ -10,97 +11,116 @@ CompilerParamWindow::CompilerParamWindow(QWidget *parent) :
     ui(new Ui::CompilerParamWindow)
 {
     ui->setupUi(this);
+    logger(__PRETTY_FUNCTION__);
     init();
 }
 
 CompilerParamWindow::~CompilerParamWindow()
 {
+    logger(__PRETTY_FUNCTION__);
     delete ui;
 }
 
 void CompilerParamWindow::on_toolButton_overall_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     open_param(COMPILE_OVERALL);
 }
 
 void CompilerParamWindow::on_toolButton_languageC_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     open_param(COMPILE_LANGUAGE_C);
 }
 
 void CompilerParamWindow::on_toolButton_languageCxx_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     open_param(COMPILE_LANGUAGE_CXX);
 }
 
 void CompilerParamWindow::on_toolButton_diagnostic_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     open_param(COMPILE_DIAGNOSTIC);
 }
 
 void CompilerParamWindow::on_toolButton_warnings_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     open_param(COMPILE_WARNINGS);
 }
 
 void CompilerParamWindow::on_toolButton_debug_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     open_param(COMPILE_DEBUG);
 }
 
 void CompilerParamWindow::on_toolButton_optimization_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     open_param(COMPILE_OPTI);
 }
 
 void CompilerParamWindow::on_toolButton_instrumentation_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     open_param(COMPILE_INSTRU);
 }
 
 void CompilerParamWindow::on_toolButton_preprocessor_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     open_param(COMPILE_PREPROCESSOR);
 }
 
 void CompilerParamWindow::on_toolButton_assembler_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     open_param(COMPILE_ASSEMBLER);
 }
 
 void CompilerParamWindow::on_toolButton_linker_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     open_param(COMPILE_LINKER);
 }
 
 void CompilerParamWindow::on_toolButton_dirs_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     open_param(COMPILE_DIRS);
 }
 
 void CompilerParamWindow::on_toolButton_codeConvention_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     open_param(COMPILE_CODE_CONV);
 }
 
 void CompilerParamWindow::on_pushButton_apply_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     apply();
 }
 
 void CompilerParamWindow::on_pushButton_ok_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     apply();
     this->close();
 }
 
 void CompilerParamWindow::on_pushButton_close_clicked()
 {
+    logger(__PRETTY_FUNCTION__);
     this->close();
 }
 
 void CompilerParamWindow::selected(QString kw, QString option)
 {
+    logger("    selected " + kw + " | " + option);
     if(kw == COMPILE_OVERALL)
     {
         add_option(ui->lineEdit_overall, option);
@@ -163,6 +183,7 @@ void CompilerParamWindow::selected(QString kw, QString option)
 
 void CompilerParamWindow::add_option(QLineEdit *line_edit, QString option)
 {
+    logger("    add_option " + option);
     QStringList options = line_edit->text().split(QChar(' '));
     if(options.contains(option))
     {
@@ -175,6 +196,7 @@ void CompilerParamWindow::add_option(QLineEdit *line_edit, QString option)
 
 void CompilerParamWindow::open_param(QString kw)
 {
+    logger("    open_param " + kw);
     ParamSelectionWindow* w = new ParamSelectionWindow(this, kw);
     connect(w, &ParamSelectionWindow::selected, this, &CompilerParamWindow::selected);
     w->setAttribute(Qt::WA_QuitOnClose, false);
@@ -184,6 +206,7 @@ void CompilerParamWindow::open_param(QString kw)
 
 void CompilerParamWindow::init()
 {
+    logger(__PRETTY_FUNCTION__);
     Context* ctx = Context::Instance();
     ui->lineEdit_overall->setText(ctx->flagOverall().join(' '));
     ui->lineEdit_languageC->setText(ctx->flagC().join(' '));
@@ -203,6 +226,7 @@ void CompilerParamWindow::init()
 
 void CompilerParamWindow::apply()
 {
+    logger(__PRETTY_FUNCTION__);
     Context* ctx = Context::Instance();
     ctx->setFlagOverall(ui->lineEdit_overall->text().split(' '));
     ctx->setFlagC(ui->lineEdit_languageC->text().split(' '));

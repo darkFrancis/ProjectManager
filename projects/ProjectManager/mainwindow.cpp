@@ -98,7 +98,9 @@ void MainWindow::init()
         }
         catch (QString msg)
         {
-
+            QMessageBox::critical(this,
+                                  QString("Erreur"),
+                                  msg);
         }
     }
     else
@@ -209,12 +211,34 @@ void MainWindow::loadProject()
 
 void MainWindow::on_actionOuvrir_triggered()
 {
-
+    Context* ctx = Context::Instance();
+    if(ctx->isOpen())
+    {
+        QMessageBox::StandardButton res;
+        res = QMessageBox::question(this, "Attention", "Attention ! Si un nouveau fichier est ouvert, tout ce qui n'est pas enregistré sera supprimé.\nVoulez vous continuer ?");
+        if(res == QMessageBox::No)
+        {
+            return;
+        }
+    }
+    QString file = QFileDialog::getOpenFileName(this,
+                                                "Ouvrir",
+                                                ctx->lastSearch(),
+                                                "ProjectFile *." + FILE_EXTENSION);
+    if(file != "")
+    {
+        ctx->close();
+        ctx->setProjectFile(file);
+        ctx->loadProject();
+    }
 }
 
 void MainWindow::on_actionEnregistrer_triggered()
 {
-
+    for(int i = 0; i < m_tablist.length(); i++)
+    {
+        m_tablist[0]->save();
+    }
 }
 
 void MainWindow::on_actionQuitter_triggered()
@@ -234,10 +258,10 @@ void MainWindow::on_actionA_propos_triggered()
 {
     QMessageBox::about(this,
                        "A propos de ProjectManager",
-                       "Version 0.0\n"
+                       QString("Version : ") + VERSION + "\n"
                        "Auteur : Dark Francis\n"
-                       "Date de création : 21/12/2019\n"
-                       "Date de release : 01/01/2020\n\n"
+                       "Date de création : " + CREATE_DATE + "\n"
+                       "Date de release : " + BUILD_DATE + "\n\n"
                        "Ce logiciel sert à la gestion de projets C/C++ "
                        "à l'aide des outils externe Doxygen et GitKraken.");
 }

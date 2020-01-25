@@ -19,6 +19,8 @@
     #define KW_PROJECT_VESRION  QString("PROJECT_VERSION")
     #define KW_PROJECT_DESC     QString("PROJECT_DESCRIPTION")
     #define KW_AUTHOR           QString("AUTHOR")
+    #define KW_BUILD_DIR        QString("BUILD_DIR")
+    #define KW_OUTPUT           QString("OUTPUT")
     #define KW_GIT_PATH         QString("GIT_PATH")
     #define KW_DOXYFILE         QString("DOXYFILE")
     #define KW_SOURCES          QString("SOURCES")
@@ -63,6 +65,8 @@
             void setProjectVersion(QString version){m_project_version = version;}
             void setProjectDescription(QString description){m_project_desc = description;}
             void setProjectAuthor(QString author){m_author = author;}
+            void setBuildDir(QString dir){m_build_dir = dir;}
+            void setOutput(QString dir){m_output = dir;}
             void setSources(QStringList sources){m_sources = sources;}
             void setHeaders(QStringList headers){m_headers = headers;}
             void setRessources(QStringList ressources){m_ressources = ressources;}
@@ -91,6 +95,8 @@
             QString projectVersion(){return m_project_version;}
             QString projectDescription(){return m_project_desc;}
             QString projectAuthor(){return m_author;}
+            QString buildDir(){return m_build_dir;}
+            QString output(){return m_output;}
             QStringList sources(){return m_sources;}
             QStringList headers(){return m_headers;}
             QStringList ressources(){return m_ressources;}
@@ -132,6 +138,8 @@
             QString m_project_version;
             QString m_project_desc;
             QString m_author;
+            QString m_build_dir;
+            QString m_output;
             // Sources
             QStringList m_sources;
             QStringList m_headers;

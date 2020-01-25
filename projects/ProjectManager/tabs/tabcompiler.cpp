@@ -41,6 +41,11 @@ TabCompiler::~TabCompiler()
     delete m_process;
 }
 
+void TabCompiler::save()
+{
+
+}
+
 /**
  * @brief Ce SLOT est appelé en cas de clic sur le bouton de recherche de dossier de build
  *
@@ -93,6 +98,7 @@ void TabCompiler::on_toolButton_gestion_clicked()
 
 void TabCompiler::on_pushButton_action_clicked()
 {
+    ui->pushButton_action->setEnabled(false);
     if(Settings::Instance()->clearScreen())
     {
         ui->textEdit_status->clear();
@@ -108,10 +114,6 @@ void TabCompiler::on_pushButton_action_clicked()
     else if(ui->comboBox_action->currentText() == TEXT_RUN)
     {
         action_run();
-    }
-    else if(ui->comboBox_action->currentText() == TEXT_MAKEFILE)
-    {
-        action_makefile();
     }
     else if(ui->comboBox_action->currentText() == TEXT_CLEAN)
     {
@@ -131,18 +133,13 @@ void TabCompiler::on_pushButton_action_clicked()
                               "Erreur",
                               "Action non reconnue !");
     }
+    ui->pushButton_action->setEnabled(true);
 }
 
 void TabCompiler::action_build_run()
 {
-    /**
-     * @todo
-     */
-    QString dir = "/usr/etc/home/";
-    QString file = "/usr/test/file.txt";
-    ui->textEdit_status->append(relativePath(file, dir));
-    file = "../test/hey.txt";
-    ui->textEdit_status->append(absolutePath(file, dir));
+    action_build();
+    action_run();
 }
 
 void TabCompiler::action_build()
@@ -155,32 +152,23 @@ void TabCompiler::action_build()
 
 void TabCompiler::action_run()
 {
-    /**
-     * @todo
-     */
-    send_cmd("doxygen", QStringList() << "-w" << "rtgbd" << "iufjdh");
+    Context* ctx = Context::Instance();
+    QFileInfo info(ctx->buildDir() + ctx->output());
+    send_cmd("./" + info.fileName(), QStringList(), info.absoluteDir().absolutePath());
 }
 
 void TabCompiler::action_clean()
 {
     /**
-     * @todo
+     * @todo rm .o
      */
     send_cmd("echo", QStringList() << "accents:éàèê");
-}
-
-void TabCompiler::action_makefile()
-{
-    /**
-     * @todo
-     */
-
 }
 
 void TabCompiler::action_install()
 {
     /**
-     * @todo
+     * @todo utiliser commande install
      */
 }
 
@@ -286,4 +274,22 @@ void TabCompiler::forceEnd()
 {
     m_commands.clear();
     m_process->kill();
+}
+
+void TabCompiler::on_pushButton_default_clicked()
+{
+    QFileInfo info(Context::Instance()->projectFile());
+    QString dir = info.absoluteDir().absolutePath();
+    if(dir.at(dir.length()-1) != QChar('/')) dir.append('/');
+    ui->lineEdit_buildDir->setText(dir + "build/");
+    ui->lineEdit_output->setText("bin/" + Context::Instance()->projectName());
+}
+
+void TabCompiler::on_pushButton_apply_clicked()
+{
+    Context* ctx = Context::Instance();
+    QString dir = ui->lineEdit_buildDir->text();
+    if(dir.at(dir.length()-1) != QChar('/')) dir.append('/');
+    ctx->setBuildDir(dir);
+    ctx->setOutput(ui->lineEdit_output->text());
 }

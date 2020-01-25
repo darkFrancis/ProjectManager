@@ -9,6 +9,9 @@
 
     #include <QWidget>
 
+    #define MOUSE_WAIT QApplication::setOverrideCursor (Qt :: WaitCursor);
+    #define MOUSE_RESTORE QApplication::restoreOverrideCursor ();
+
     /**
      * @class Tab tab.hpp tab.hpp
      * @brief La classe Tab est une classe abstraite pour les onglets principaux
@@ -24,6 +27,7 @@
             virtual ~Tab(){clean();}
             virtual void init(){}
             virtual void clean(){}
+            virtual void save(){}
     };
 
 #endif // TAB_HPP

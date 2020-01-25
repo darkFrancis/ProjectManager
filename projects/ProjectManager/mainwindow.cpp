@@ -94,7 +94,7 @@ void MainWindow::init()
     {
         try
         {
-            Context::Instance()->loadProject();
+            loadProject();
         }
         catch (QString msg)
         {
@@ -114,6 +114,14 @@ void MainWindow::clean()
     for(int i = 0; i < m_tablist.length(); i++)
     {
         m_tablist[i]->clean();
+    }
+}
+
+void MainWindow::save()
+{
+    for(int i = 0; i < m_tablist.length(); i++)
+    {
+        m_tablist[0]->save();
     }
 }
 
@@ -228,17 +236,13 @@ void MainWindow::on_actionOuvrir_triggered()
     if(file != "")
     {
         ctx->close();
-        ctx->setProjectFile(file);
-        ctx->loadProject();
+        loadProject();
     }
 }
 
 void MainWindow::on_actionEnregistrer_triggered()
 {
-    for(int i = 0; i < m_tablist.length(); i++)
-    {
-        m_tablist[0]->save();
-    }
+    save();
 }
 
 void MainWindow::on_actionQuitter_triggered()

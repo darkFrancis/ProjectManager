@@ -39,6 +39,7 @@
 
         public slots:
             void loadProject();
+            void save();
 
         private slots:
             void on_actionNouveau_triggered();

@@ -22,6 +22,7 @@
             ~TabProject();
             void init();
             void clean();
+            void save();
 
         private slots:
             void on_pushButton_default_clicked();

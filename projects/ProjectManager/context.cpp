@@ -28,6 +28,8 @@ void Context::loadProject()
         m_project_version = parser->get(KW_PROJECT_VESRION);
         m_project_desc = parser->get(KW_PROJECT_DESC);
         m_author = parser->get(KW_AUTHOR);
+        m_build_dir = parser->get(KW_BUILD_DIR);
+        m_output = parser->get(KW_OUTPUT);
         m_git_path = parser->get(KW_GIT_PATH);
         m_doxyfile = parser->get(KW_DOXYFILE);
         m_sources = parser->get(KW_SOURCES).split(' ');
@@ -75,6 +77,11 @@ void Context::save()
         stream << "# Gestion Git et Doxygen" << endl
                << KW_GIT_PATH << "=" << m_git_path << endl
                << KW_DOXYFILE << "=" << m_doxyfile << endl
+               << endl;
+
+        stream << "# Gestion de sortie du compilateur" << endl
+               << KW_BUILD_DIR << "=" << m_build_dir << endl
+               << KW_OUTPUT << "=" << m_output << endl
                << endl;
 
         stream << "# FLAGS pour compilateur GCC" << endl;

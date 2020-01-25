@@ -42,6 +42,13 @@ void TabProject::init()
     ui->lineEdit_author->setText(ctx->projectAuthor());
 }
 
+void TabProject::save()
+{
+    /**
+      @todo
+      */
+}
+
 void TabProject::clean()
 {
     ui->lineEdit_author->setText("Unknow");

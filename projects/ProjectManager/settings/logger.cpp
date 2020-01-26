@@ -1,3 +1,9 @@
+/**
+ * @file logger.cpp
+ * @brief Définition des fonctions de log
+ * @author Dark Francis
+ * @date 21/12/2019
+ */
 #include "logger.hpp"
 
 void logger(QString msg)

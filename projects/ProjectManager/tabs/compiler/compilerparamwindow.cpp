@@ -1,3 +1,9 @@
+/**
+ * @file compilerparamwindow.cpp
+ * @brief Définition de la classe CompilerParamWindow
+ * @author Dark Francis
+ * @date 21/12/2019
+ */
 #include "compilerparamwindow.hpp"
 #include "ui_compilerparamwindow.h"
 #include "paramselectionwindow.hpp"

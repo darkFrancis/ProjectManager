@@ -1,3 +1,9 @@
+/**
+ * @file settingswindow.hpp
+ * @brief Description de la classe SettingWindow
+ * @author Dark Francis
+ * @date 21/12/2019
+ */
 #ifndef SETTINGSWINDOW_HPP
 #define SETTINGSWINDOW_HPP
 
@@ -8,9 +14,13 @@
     class SettingsWindow;
     }
 
+    /**
+     * @class SettingsWindow
+     * @brief La classe SettingsWindow défini la fenêtre de gestion des options.
+     */
     class SettingsWindow : public QMainWindow
     {
-            Q_OBJECT
+        Q_OBJECT
 
         public:
             explicit SettingsWindow(QWidget *parent = nullptr);
@@ -22,7 +32,7 @@
             void on_pushButton_cancel_clicked();
 
         private:
-            Ui::SettingsWindow *ui;
+            Ui::SettingsWindow *ui;/**< @brief UI de la classe SettingsWindow */
             void save();
     };
 

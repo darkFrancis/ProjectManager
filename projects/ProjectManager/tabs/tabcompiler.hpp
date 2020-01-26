@@ -21,22 +21,25 @@
         class TabCompiler;
     }
 
+    /**
+     * @struct Command
+     * @brief La structure Command défini une commande à appeler avec un QProcess.
+     */
     struct Command
     {
-        QString programm;
-        QStringList params;
-        QString dir;
+        QString programm;/**< Nom du programme à appeler */
+        QStringList params;/**< Liste des paramètres à passer au programme */
+        QString dir;/**< Répertoire dans lequel exécuter le programme */
     };
     typedef struct Command Command;
 
     /**
-     * @class TabCompiler tabcompiler.hpp
-     * @brief La classe TabCompiler défini l'onglet de compilation
+     * @class TabCompiler
+     * @brief La classe TabCompiler défini l'onglet de compilation.
      *
      * Elle permet avec de définir :
      * @li les options de compilation
-     * @li des defines à appliquer à la compilation
-     * @li les librairie à importer
+     * @li les dossiers de build et de sortie
      * @li le mode de compilation : release (défini NDEBUG) ou debug (défini _DEBUG)
      *
      * @todo finir la classe TabCompiler
@@ -66,10 +69,10 @@
             void on_pushButton_apply_clicked();
 
         private:
-            Ui::TabCompiler *ui;
+            Ui::TabCompiler *ui;/**< UI de la classe TabCompiler */
 
             // Actions
-            QProcess* m_process;
+            QProcess* m_process;/**< Processus en cours */
             void action_build_run();
             void action_build();
             void action_run();
@@ -80,8 +83,8 @@
             // Commandes
             void send_cmd(QString cmd, QStringList param = QStringList(), QString dir = ".");
             void readProcess();
-            QList<Command> m_commands;
             void addCommand(QString cmd, QStringList param, QString dir);
+            QList<Command> m_commands;/**< Liste des commandes à exécuter */
     };
 
 #endif // TABCOMPILER_HPP

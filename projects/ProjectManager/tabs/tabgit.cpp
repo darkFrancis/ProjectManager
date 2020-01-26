@@ -1,3 +1,9 @@
+/**
+ * @file tabgit.cpp
+ * @brief Définition de la classe TabGit
+ * @author Dark Francis
+ * @date 21/12/2019
+ */
 #include "tabgit.hpp"
 #include "ui_tabgit.h"
 

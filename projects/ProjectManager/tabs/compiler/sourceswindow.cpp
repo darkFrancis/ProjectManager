@@ -1,3 +1,9 @@
+/**
+ * @file sourceswindow.cpp
+ * @brief Définition de la classe SourcesWindow
+ * @author Dark Francis
+ * @date 21/12/2019
+ */
 #include "sourceswindow.hpp"
 #include "ui_sourceswindow.h"
 #include <QFileDialog>
@@ -158,6 +164,7 @@ void SourcesWindow::on_pushButton_remove_clicked()
  *
  * @li Si l'item est coché, le décoche
  * @li Sinon, le coche
+ *
  * @param item L'item à définir
  */
 void SourcesWindow::setChecked(QListWidgetItem* item)

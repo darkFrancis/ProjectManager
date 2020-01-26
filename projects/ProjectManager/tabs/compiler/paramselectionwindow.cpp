@@ -1,3 +1,9 @@
+/**
+ * @file paramselectionwindow.cpp
+ * @brief Définition de la classe ParamSelectionWindow
+ * @author Dark Francis
+ * @date 21/12/2019
+ */
 #include "paramselectionwindow.hpp"
 #include "ui_paramselectionwindow.h"
 #include "settings/settings.hpp"

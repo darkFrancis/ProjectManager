@@ -1,7 +1,9 @@
 /**
  * @file tabcompiler.cpp
+ * @brief Définition de la classe TabCompiler
+ * @author Dark Francis
+ * @date 21/12/2019
  */
-
 #include "tabcompiler.hpp"
 #include "ui_tabcompiler.h"
 #include <QFileDialog>

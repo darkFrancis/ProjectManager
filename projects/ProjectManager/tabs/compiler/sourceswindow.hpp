@@ -13,6 +13,7 @@
     namespace Ui {
     class SourcesWindow;
     }
+
     /**
      * @class SourcesWindow
      * @brief La classe SourcesWindow permet la gestion des sources pour la compilation.
@@ -41,7 +42,7 @@
             void on_pushButton_remove_clicked();
 
         private:
-            Ui::SourcesWindow *ui;
+            Ui::SourcesWindow *ui;/**< UI de la classe SourcesWindow */
             void addItem(QString text, QListWidget* widget);
             bool isSource(QString extension);
             bool isHeader(QString extension);

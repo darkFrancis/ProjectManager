@@ -1,3 +1,9 @@
+/**
+ * @file tabdoxygen.cpp
+ * @brief Définition de la classe TabDoxygen
+ * @author Dark Francis
+ * @date 21/12/2019
+ */
 #include "tabdoxygen.hpp"
 #include "ui_tabdoxygen.h"
 #include <QFile>

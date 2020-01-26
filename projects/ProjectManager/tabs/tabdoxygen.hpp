@@ -24,7 +24,26 @@
 
     /**
      * @class TabDoxygen
-     * @brief La classe TabDoxygen défini l'onglet de configuration de Doxygen
+     * @brief La classe TabDoxygen défini l'onglet de configuration de Doxygen.
+     *
+     * Cette fenêtre est séparée en différentes sections pour la configuration :
+     * @li projet
+     * @li build
+     * @li message
+     * @li fichiers d'entrée
+     * @li recherche des sources
+     * @li HTML
+     * @li autres sortie
+     * @li préprocesseur
+     * @li références externes
+     * @li graphiques
+     *
+     * Les boutons en bas de la fenêtre permettent :
+     * @li de générer les templates
+     * @li de remettre les paramètres par défaut
+     * @li d'appliquer les changements
+     *
+     * @todo Ajouter la génération de la documentation avec un bouton
      */
     class TabDoxygen : public Tab
     {
@@ -85,9 +104,9 @@
             void on_pushButton_generateFiles_clicked();
 
         private:
-            Ui::TabDoxygen *ui;
-            QString m_doxyfile;
-            QTextStream* m_stream;
+            Ui::TabDoxygen *ui;/**< UI de la classe TabDoxygen */
+            QString m_doxyfile;/**< Fichier Doxyfile à utiliser */
+            QTextStream* m_stream;/**< Flux vers le fichier Doxyfile */
 
             // Init tabs
             void init_tabProject();

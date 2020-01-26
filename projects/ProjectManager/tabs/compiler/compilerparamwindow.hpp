@@ -1,3 +1,9 @@
+/**
+ * @file compilerparamwindow.hpp
+ * @brief Description de la classe CompilerParamWindow
+ * @author Dark Francis
+ * @date 21/12/2019
+ */
 #ifndef COMPILERPARAMWINDOW_HPP
 #define COMPILERPARAMWINDOW_HPP
 
@@ -8,6 +14,10 @@
     class CompilerParamWindow;
     }
 
+    /**
+     * @class CompilerParamWindow
+     * @brief La classe CompilerParamWindow défini la fenêtre de configuration de paramètres de compilation.
+     */
     class CompilerParamWindow : public QMainWindow
     {
         Q_OBJECT
@@ -36,7 +46,7 @@
             void selected(QString kw, QString option);
 
         private:
-            Ui::CompilerParamWindow *ui;
+            Ui::CompilerParamWindow *ui;/**< UI de la classe CompilerParamWindow */
             void add_option(QLineEdit* line_edit, QString option);
             void open_param(QString kw);
             void init();

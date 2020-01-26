@@ -13,6 +13,12 @@
     class TabProject;
     }
 
+    /**
+     * @class TabProject
+     * @brief La classe TabProject défini l'onglet de gestion du projet.
+     *
+     * Permet de définir les informations générales du projet.
+     */
     class TabProject : public Tab
     {
         Q_OBJECT
@@ -31,7 +37,7 @@
             void on_toolButton_git_clicked();
 
         private:
-            Ui::TabProject *ui;
+            Ui::TabProject *ui;/**< UI de la classe TabProject */
     };
 
 #endif // TABPROJECT_HPP

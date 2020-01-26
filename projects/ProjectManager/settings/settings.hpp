@@ -1,3 +1,9 @@
+/**
+ * @file settings.hpp
+ * @brief Définition des options
+ * @author Dark Francis
+ * @date 21/12/2019
+ */
 #ifndef SETTINGS_HPP
 #define SETTINGS_HPP
 
@@ -44,9 +50,9 @@
     #define CREATE_DATE QString("21/12/2019")
     #define VERSION "0.2"
 
-    #define SETTINGS_FILE           QString("config/settings.conf")
-    #define COLORS_FILE             QString("config/colors.conf")
-    #define COMPILER_FILE           QString("config/compiler.conf")
+    #define SETTINGS_FILE           QString("config/settings.conf")/**< @brief Définition du nom de fichier des options */
+    #define COLORS_FILE             QString("config/colors.conf")/**< @brief Définition du nom de fichier des couleurs */
+    #define COMPILER_FILE           QString("config/compiler.conf")/**< @brief Définition du nom de fichier d'option de compilateur */
 
     #define COMPILE_OVERALL         QString("overall")
     #define COMPILE_LANGUAGE_C      QString("c_language")
@@ -65,23 +71,58 @@
     #define HTML_BEGIN              QString("<html><head><style>i{color:green;}</style></head><body><p>")
     #define HTML_END                QString("</p></body></html>")
 
+    /**
+     * @struct Color
+     * @brief La structure Color défini une couleur RGB.
+     *
+     * Le fichier de définition des couleurs contient une couleur par ligne
+     * de la forme <nom> <red> <green> <blue>.
+     */
     struct Color
     {
-        QString name;
-        int red;
-        int green;
-        int blue;
+        QString name;/**< Nom de la couleur */
+        int red;/**< Composante rouge */
+        int green;/**< Composante verte */
+        int blue;/**< Composante bleue */
     };
     typedef struct Color Color;
 
+    /**
+     * @struct CompilerOption
+     * @brief La structure CompilerOption défini une option pour l'affichage dans la fenêtre de sélection.
+     *
+     * Le fichier de définition des options de compilateur contient les options par thême.
+     * Les thêmes sont définis comme un mot clé sur une ligne parmi :
+     * @li overall
+     * @li c_language
+     * @li cxx_language
+     * @li diagnostic
+     * @li warnings
+     * @li debug_options
+     * @li optimization
+     * @li instrumentation
+     * @li preprocessor
+     * @li assembler
+     * @li linker
+     * @li dirs_options
+     * @li convention_code
+     * Les lignes qui suivent un mot clé sont les options de compilateur
+     * de la forme <option>;<brief>;<tooltip>.
+     */
     struct CompilerOption
     {
-        QString option;
-        QString brief;
-        QString tooltip;
+        QString option;/**< Option du compilateur */
+        QString brief;/**< Résumé de l'option */
+        QString tooltip;/**< Détail de l'option qui apparait en la survolant */
     };
     typedef struct CompilerOption CompilerOption;
 
+    /**
+     * @class Settings
+     * @brief La classe Settings défini les options.
+     *
+     * Les option sont utilisée par des get/set.
+     */
     class Settings
     {
         public:
@@ -132,34 +173,34 @@
             void init_compiler_options();
             void add_color(QString name, int red, int green, int blue);
             void add_compiler_option(QString key_word, QString option, QString brief, QString tooltip);
-            static Settings* m_instance;
+            static Settings* m_instance;/**< Pointeur vers l'instance de la classe Settings */
             // View
-            QString m_style;
-            bool m_keep_size;
+            QString m_style;/**< Style d'affichage */
+            bool m_keep_size;/**< Booléen de conservation de la taille de la fenêtre principale */
             // Doxygen
-            QString m_doxygen_template_dir;
+            QString m_doxygen_template_dir;/**< Chemin vers le dossier de création des templates Doxygen */
             // Compiler
-            bool m_clear_screen;
-            QString m_color_normal;
-            QString m_color_success;
-            QString m_color_error;
-            QStringList m_sources_extensions;
-            QStringList m_headers_extensions;
+            bool m_clear_screen;/**< Booléen d'effacement d'affichage du compilateur entre chaque action */
+            QString m_color_normal;/**< couleur d'affichage de terminal normale */
+            QString m_color_success;/**< couleur d'affichage de terminal en cas de succès */
+            QString m_color_error;/**< couleur d'affichage de terminal en cas d'erreur */
+            QStringList m_sources_extensions;/**< Liste des extensions des fichiers sources */
+            QStringList m_headers_extensions;/**< Liste des extensions des fichiers headers */
             // Static config (no set)
-            QList<Color> m_colors;
-            QList<CompilerOption> m_overall_options;
-            QList<CompilerOption> m_language_c_options;
-            QList<CompilerOption> m_language_cxx_options;
-            QList<CompilerOption> m_diagnostic_options;
-            QList<CompilerOption> m_warnings_options;
-            QList<CompilerOption> m_debug_options;
-            QList<CompilerOption> m_opti_options;
-            QList<CompilerOption> m_instru_options;
-            QList<CompilerOption> m_preprocessor_options;
-            QList<CompilerOption> m_assembler_options;
-            QList<CompilerOption> m_linker_options;
-            QList<CompilerOption> m_dirs_options;
-            QList<CompilerOption> m_code_conv_options;
+            QList<Color> m_colors;/**< Liste des couleurs */
+            QList<CompilerOption> m_overall_options;/**< Liste des options de compilateur générales */
+            QList<CompilerOption> m_language_c_options;/**< Liste des options de compilateur de langage C */
+            QList<CompilerOption> m_language_cxx_options;/**< Liste des options de compilateur de langage C++ */
+            QList<CompilerOption> m_diagnostic_options;/**< Liste des options de compilateur de diagnostique */
+            QList<CompilerOption> m_warnings_options;/**< Liste des options de compilateur de warnings */
+            QList<CompilerOption> m_debug_options;/**< Liste des options de compilateur de debug */
+            QList<CompilerOption> m_opti_options;/**< Liste des options de compilateur d'optimisation */
+            QList<CompilerOption> m_instru_options;/**< Liste des options de compilateur d'instrumentation */
+            QList<CompilerOption> m_preprocessor_options;/**< Liste des options de compilateur du préprocesseur */
+            QList<CompilerOption> m_assembler_options;/**< Liste des options de compilateur de l'assembleur */
+            QList<CompilerOption> m_linker_options;/**< Liste des options de compilateur du linker */
+            QList<CompilerOption> m_dirs_options;/**< Liste des options de compilateur des dossiers */
+            QList<CompilerOption> m_code_conv_options;/**< Liste des options de compilateur de convention de code */
     };
 
 #endif // SETTINGS_HPP

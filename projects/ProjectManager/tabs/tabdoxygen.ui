@@ -44,7 +44,7 @@
    <item row="0" column="0" colspan="4">
     <widget class="QToolBox" name="toolBox">
      <property name="currentIndex">
-      <number>1</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="page_projectConf">
       <property name="geometry">
@@ -2020,7 +2020,7 @@ standard des erreurs.</string>
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-281</y>
+        <y>0</y>
         <width>538</width>
         <height>575</height>
        </rect>
@@ -2473,7 +2473,7 @@ principale (index.html).</string>
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-152</y>
+        <y>0</y>
         <width>538</width>
         <height>446</height>
        </rect>
@@ -2746,7 +2746,7 @@ alphabétique.</string>
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-1587</y>
+        <y>-1192</y>
         <width>538</width>
         <height>1881</height>
        </rect>
@@ -3735,6 +3735,9 @@ Par défaut : 250</string>
            <widget class="QSpinBox" name="spinBox_treeviewWidth">
             <property name="statusTip">
              <string>TREEVIEW_WIDTH</string>
+            </property>
+            <property name="maximum">
+             <number>1500</number>
             </property>
            </widget>
           </item>
@@ -5037,7 +5040,7 @@ MakeFile.</string>
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-14</y>
+        <y>0</y>
         <width>538</width>
         <height>308</height>
        </rect>

@@ -248,6 +248,7 @@ QString type2label(QString type)
 
 QString label2type(QString label)
 {
+    logger(__PRETTY_FUNCTION__);
     if(label == LABEL_C) return TYPE_C;
     else if(label == LABEL_CXX) return TYPE_CXX;
     else if(label == LABEL_LIBC) return TYPE_LIBC;

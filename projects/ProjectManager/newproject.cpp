@@ -17,6 +17,7 @@ NewProject::NewProject(QWidget *parent) :
     ui->lineEdit_projectName->setText("Project");
     QString dir = ctx->lastSearch();
     if(dir.at(dir.length()-1) != '/') dir.append('/');
+    ui->lineEdit_projectDir->setText(dir);
     ui->lineEdit_mainGitDir->setText(dir + ".git");
     ui->lineEdit_doxyfile->setText(dir + "Doxyfile");
     initComboType(ui->comboBox_projectType);
@@ -32,28 +33,54 @@ NewProject::~NewProject()
 void NewProject::on_toolButton_projectDir_clicked()
 {
     logger(__PRETTY_FUNCTION__);
-    QString dir_name = QFileDialog::getExistingDirectory(this, "Dossier de projet", Context::Instance()->lastSearch());
-    QDir dir(dir_name);
-    ui->lineEdit_projectDir->setText(dir.absolutePath());
-    Context::Instance()->setLastSearch(dir.absolutePath());
+    QString dir_name = QFileDialog::getExistingDirectory(this,
+                                                         "Dossier de projet",
+                                                         Context::Instance()->lastSearch());
+    if(dir_name != QString(""))
+    {
+        QDir dir(dir_name);
+        dir_name = dir.absolutePath();
+        if(dir_name[dir_name.length()-1] != QChar('/'))
+        {
+            dir_name.append('/');
+        }
+        ui->lineEdit_projectDir->setText(dir_name);
+        Context::Instance()->setLastSearch(dir.absolutePath());
+    }
 }
 
 void NewProject::on_toolButton_mainGitDir_clicked()
 {
     logger(__PRETTY_FUNCTION__);
-    QString dir_name = QFileDialog::getExistingDirectory(this, "Dossier GIT", Context::Instance()->lastSearch());
-    QDir dir(dir_name);
-    ui->lineEdit_mainGitDir->setText(dir.absolutePath());
-    Context::Instance()->setLastSearch(dir.absolutePath());
+    QString dir_name = QFileDialog::getExistingDirectory(this,
+                                                         "Dossier GIT",
+                                                         Context::Instance()->lastSearch());
+    if(dir_name != QString(""))
+    {
+        QDir dir(dir_name);
+        dir_name = dir.absolutePath();
+        if(dir_name[dir_name.length()-1] != QChar('/'))
+        {
+            dir_name.append('/');
+        }
+        dir_name.append(".git");
+        ui->lineEdit_mainGitDir->setText(dir_name);
+        Context::Instance()->setLastSearch(dir.absolutePath());
+    }
 }
 
 void NewProject::on_toolButton_doxyfile_clicked()
 {
     logger(__PRETTY_FUNCTION__);
-    QString file_name = QFileDialog::getSaveFileName(this, "Doxyfile", Context::Instance()->lastSearch());
-    QFileInfo file(file_name);
-    ui->lineEdit_doxyfile->setText(file.absoluteFilePath());
-    Context::Instance()->setLastSearch(file.absoluteDir().absolutePath());
+    QString file_name = QFileDialog::getSaveFileName(this,
+                                                     "Doxyfile",
+                                                     Context::Instance()->lastSearch());
+    if(file_name != QString(""))
+    {
+        QFileInfo file(file_name);
+        ui->lineEdit_doxyfile->setText(file.absoluteFilePath());
+        Context::Instance()->setLastSearch(file.absoluteDir().absolutePath());
+    }
 }
 
 void NewProject::on_pushButton_cancel_clicked()
@@ -78,15 +105,6 @@ void NewProject::on_pushButton_create_clicked()
 
     QString dir_git = ui->lineEdit_mainGitDir->text();
     QString dir_pro = ui->lineEdit_projectDir->text();
-    if(dir_pro[dir_pro.length()-1] != QChar('/'))
-    {
-        dir_pro.append(QChar('/'));
-    }
-    if(dir_git[dir_git.length()-1] != QChar('/'))
-    {
-        dir_git.append(QChar('/'));
-    }
-    dir_git.append(".git");
     QString file_name = ui->lineEdit_projectName->text();
     if(file_name.right(FILE_EXTENSION.length()) != FILE_EXTENSION)
     {
@@ -95,14 +113,18 @@ void NewProject::on_pushButton_create_clicked()
     QFile file(dir_pro + file_name);
     if(file.open(QIODevice::Text | QIODevice::Truncate | QIODevice::WriteOnly))
     {
+        logger("    label=" + ui->comboBox_projectType->currentText());
+        logger("    type=" + label2type(ui->comboBox_projectType->currentText()));
         QTextStream stream(&file);
-        stream << "# Project file" << endl;
-        stream << KW_PROJECT_NAME << "=" << ui->lineEdit_projectName->text() << endl;
-        stream << KW_PROJECT_TYPE << "=" << label2type(ui->comboBox_projectType->currentText()) << endl;
-        stream << KW_GIT_PATH << "=" << dir_git << endl;
-        stream << KW_DOXYFILE << "=" << ui->lineEdit_doxyfile->text() << endl;
-        stream << endl;
-        stream << "#Next infos will be added by ProjectManager";
+        stream << "# Project file" << endl
+               << KW_PROJECT_NAME << "=" << ui->lineEdit_projectName->text() << endl
+               << KW_PROJECT_TYPE << "=" << label2type(ui->comboBox_projectType->currentText()) << endl
+               << KW_GIT_PATH << "=" << dir_git << endl
+               << KW_DOXYFILE << "=" << ui->lineEdit_doxyfile->text() << endl
+               << KW_BUILD_DIR << "=" << dir_pro << "build/" <<endl
+               << KW_OUTPUT << "=" << dir_pro << "out/" << endl
+               << endl
+               << "#Next infos will be added by ProjectManager";
 
         file.close();
 

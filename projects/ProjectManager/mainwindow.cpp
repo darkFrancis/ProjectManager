@@ -130,6 +130,7 @@ void MainWindow::init()
     {
         m_tablist[i]->init();
     }
+    m_tabWidget->setEnabled(true);
 }
 
 void MainWindow::save()

@@ -50,11 +50,11 @@
     #define TYPE_SHAREDC        QString("sharedc")
     #define TYPE_SHAREDCXX      QString("sharedcxx")
     #define LABEL_C             QString("Application C")
-    #define LABEL_CXX           QString("Application CXX")
+    #define LABEL_CXX           QString("Application C++")
     #define LABEL_LIBC          QString("Librairie Statique C")
-    #define LABEL_LIBCXX        QString("Librairie Statique CXX")
+    #define LABEL_LIBCXX        QString("Librairie Statique C++")
     #define LABEL_SHAREDC       QString("Librairie Dynamique C")
-    #define LABEL_SHAREDCXX     QString("Librairie Dynamique CXX")
+    #define LABEL_SHAREDCXX     QString("Librairie Dynamique C++")
 
     class Context
     {

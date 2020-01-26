@@ -102,38 +102,7 @@
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="QComboBox" name="comboBox_projectType">
-        <item>
-         <property name="text">
-          <string>Application C</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Application C++</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Librairie Statique C</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Librairie Statique C++</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Librairie Dynamique C</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Librairie Dynamique C++</string>
-         </property>
-        </item>
-       </widget>
+       <widget class="QComboBox" name="comboBox_projectType"/>
       </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label_projectName">
@@ -155,7 +124,11 @@
       <item row="1" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
-         <widget class="QLineEdit" name="lineEdit_projectDir"/>
+         <widget class="QLineEdit" name="lineEdit_projectDir">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QToolButton" name="toolButton_projectDir">

@@ -30,6 +30,9 @@ TabGit::~TabGit()
     delete ui;
 }
 
+/**
+ * @brief TabGit::on_pushButton_clicked
+ */
 void TabGit::on_pushButton_clicked()
 {
     logger(__PRETTY_FUNCTION__);

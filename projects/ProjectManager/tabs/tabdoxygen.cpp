@@ -48,6 +48,7 @@ void TabDoxygen::init()
         init_tabExternRef();
         init_tabGraph();
         Parser::Instance()->close();
+        ui->toolBox->setCurrentIndex(0);
     }
     else
     {

@@ -1,0 +1,46 @@
+# Fichier de configuration de projet
+# Produit automatiquement par ProjectManager
+
+# Projet ProjectManager
+PROJECT_NAME=ProjectManager
+PROJECT_TYPE=cxx
+AUTHOR=Dark Francis
+PROJECT_VERSION=Alpha 0.2
+PROJECT_DESCRIPTION=
+# Gestion Git et Doxygen
+GIT_PATH=/home/francis/dev/.git
+DOXYFILE=/home/francis/dev/projects/ProjectManager/Doxyfile
+
+# Gestion de sortie du compilateur
+BUILD_DIR=
+OUTPUT=
+
+# FLAGS pour compilateur GCC
+FLAG_OVERALL = 
+
+FLAG_C = 
+
+FLAG_CXX = 
+
+FLAG_DIAG = 
+
+FLAG_WARN = 
+
+FLAG_DEBUG = 
+
+FLAG_OPT = 
+
+FLAG_INST = 
+
+FLAG_PREPROCESS = 
+
+FLAG_ASSEMBLER = 
+
+FLAG_LINKER = 
+
+FLAG_DIRS = 
+
+FLAG_CONVENTION = 
+
+FLAG_OTHER = 
+

@@ -60,7 +60,7 @@ void TabCompiler::save()
 void TabCompiler::init()
 {
     Context* ctx = Context::Instance();
-    ui->comboBox_projectType->setCurrentIndex(ui->comboBox_projectType->findText(ctx->projectType()));
+    ui->comboBox_projectType->setCurrentIndex(ui->comboBox_projectType->findText(type2label(ctx->projectType())));
     ui->radioButton_debug->setChecked(true);
     ui->lineEdit_buildDir->setText(ctx->buildDir());
     ui->lineEdit_output->setText(ctx->output());

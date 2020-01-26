@@ -1,0 +1,55 @@
+# Configuration du projet
+PROJECT_NAME=My Project
+OUTPUT_DIRECTORY=/home/francis/dev/projects/ProjectManager/doc
+CREATE_SUBDIRS=YES
+OUTPUT_LANGUAGE=French
+ABBREVIATE_BRIEF=$name
+ALWAYS_DETAILED_SEC=YES
+FULL_PATH_NAMES=NO
+SHORT_NAMES=YES
+
+# Configuration de build
+EXTRACT_ALL=YES
+EXTRACT_PRIVATE=YES
+INTERNAL_DOCS=YES
+SHOW_INCLUDE_FILES=NO
+SORT_BRIEF_DOCS=YES
+SORT_MEMBERS_CTORS_1ST=YES
+SHOW_USED_FILES=NO
+SHOW_FILES=NO
+
+# Configuration des messages
+WARN_FORMAT="$file:$line: $text"
+
+# Configuration des entrÃ©es
+FILE_PATTERNS=*.cpp *.hpp
+RECURSIVE=YES
+
+# Configurartion de la recherche de sources
+
+# Configuration de l'index alphabÃ©tique
+
+# Configuration de sortie HTML
+
+# Configuration de sortie LaTeX
+GENERATE_LATEX=NO
+
+# Configuration de sortie RTF
+
+# Configuration de sortie MAN
+
+# Configuration de sortie XML
+
+# Configuration de sortie DocBook
+
+# Configuration des dÃ©finitions AutoGen
+
+# Configuration du module Perl
+
+# Configuration du processeur
+
+# Configuration des rÃ©fÃ©rences externes
+
+# Configuration de l'outil DOT
+DOT_FONTNAME=aakar
+

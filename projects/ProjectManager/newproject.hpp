@@ -27,6 +27,7 @@
             void created();
 
         private slots:
+            void on_toolButton_projectDir_clicked();
             void on_toolButton_mainGitDir_clicked();
             void on_toolButton_doxyfile_clicked();
             void on_pushButton_cancel_clicked();

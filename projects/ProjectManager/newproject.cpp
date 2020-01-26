@@ -26,6 +26,11 @@ NewProject::~NewProject()
     delete ui;
 }
 
+void NewProject::on_toolButton_projectDir_clicked()
+{
+
+}
+
 void NewProject::on_toolButton_mainGitDir_clicked()
 {
     logger(__PRETTY_FUNCTION__);
@@ -105,7 +110,7 @@ void NewProject::on_pushButton_create_clicked()
         stream << "# Project file" << endl;
         stream << KW_PROJECT_NAME << "=" << ui->lineEdit_projectName->text() << endl;
         stream << KW_PROJECT_TYPE << "=" << type << endl;
-        stream << KW_GIT_PATH << "=" << ui->lineEdit_mainGitDir->text() << endl;
+        stream << KW_GIT_PATH << "=" << dir << ".git" << endl;
         stream << KW_DOXYFILE << "=" << ui->lineEdit_doxyfile->text() << endl;
         stream << endl;
         stream << "#Next infos will be added by ProjectManager";

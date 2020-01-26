@@ -35,33 +35,41 @@ void TabProject::on_pushButton_default_clicked()
 
 void TabProject::on_pushButton_apply_clicked()
 {
-    /**
-      @todo
-      */
     logger(__PRETTY_FUNCTION__);
+    save();
 }
 
 void TabProject::init()
 {
     logger(__PRETTY_FUNCTION__);
     Context* ctx = Context::Instance();
+    ui->lineEdit_projectName->setText((ctx->projectName()));
     ui->lineEdit_author->setText(ctx->projectAuthor());
+    ui->lineEdit_version->setText(ctx->projectVersion());
+    ui->lineEdit_git->setText(ctx->gitPath());
+    ui->lineEdit_doxyfile->setText(ctx->doxyfile());
+    ui->textEdit->setText(ctx->projectDescription());
 }
 
 void TabProject::save()
 {
-    /**
-      @todo
-      */
     logger(__PRETTY_FUNCTION__);
+    Context* ctx = Context::Instance();
+    ctx->setProjectName(ui->lineEdit_projectName->text());
+    ctx->setProjectAuthor(ui->lineEdit_author->text());
+    ctx->setProjectVersion(ui->lineEdit_version->text());
+    ctx->setGitPath(ui->lineEdit_git->text());
+    ctx->setDoxyfile(ui->lineEdit_doxyfile->text());
+    ctx->setProjectDescription(ui->textEdit->toPlainText());
+    ctx->save();
 }
 
 void TabProject::clean()
 {
     logger(__PRETTY_FUNCTION__);
+    ui->lineEdit_projectName->setText("My Project");
     ui->lineEdit_author->setText("Unknow");
     ui->lineEdit_version->setText("0.0");
-    ui->lineEdit_projectName->setText("My Project");
     ui->lineEdit_doxyfile->setText("");
     ui->lineEdit_git->setText("");
     ui->textEdit->setText("Description du projet");

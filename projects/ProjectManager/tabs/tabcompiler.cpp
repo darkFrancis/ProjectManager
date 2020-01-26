@@ -54,6 +54,7 @@ void TabCompiler::save()
     if(dir.at(dir.length()-1) != QChar('/')) dir.append('/');
     ctx->setBuildDir(dir);
     ctx->setOutput(ui->lineEdit_output->text());
+    ctx->setProjectType(label2type(ui->comboBox_projectType->currentText()));
 }
 
 void TabCompiler::init()

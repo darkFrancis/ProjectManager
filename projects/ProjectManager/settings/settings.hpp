@@ -42,7 +42,7 @@
     #define BUILD_DAY_CH1 (__DATE__[ 5])
     #define BUILD_DATE QString(BUILD_DAY_CH0)+BUILD_DAY_CH1+"/"+BUILD_MONTH_CH0+BUILD_MONTH_CH1+"/"+BUILD_YEAR_CH0+BUILD_YEAR_CH1+BUILD_YEAR_CH2+BUILD_YEAR_CH3
     #define CREATE_DATE QString("21/12/2019")
-    #define VERSION "0.1"
+    #define VERSION "0.2"
 
     #define SETTINGS_FILE           QString("config/settings.conf")
     #define COLORS_FILE             QString("config/colors.conf")

@@ -9,7 +9,7 @@
 
     #include <QMainWindow>
 
-    #define FILE_EXTENSION QString(".pm")
+    #define FILE_EXTENSION QString(".pjm")
 
     namespace Ui {
         class NewProject;

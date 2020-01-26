@@ -34,8 +34,9 @@
         public:
             explicit MainWindow(QWidget *parent = nullptr);
             ~MainWindow();
-            void init();
+            void initApp();
             void clean();
+            void init();
 
         public slots:
             void loadProject();

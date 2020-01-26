@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setWindowTitle("Project Manager");
     try
     {
-        init();
+        initApp();
         status("Initialisation terminée avec succès", STATUS_DEFAULT_TIMEOUT);
     }
     catch(QString msg)
@@ -45,7 +45,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::init()
+void MainWindow::initApp()
 {
     logger(__PRETTY_FUNCTION__);
     Settings::Instance()->init();
@@ -120,6 +120,15 @@ void MainWindow::clean()
     for(int i = 0; i < m_tablist.length(); i++)
     {
         m_tablist[i]->clean();
+    }
+}
+
+void MainWindow::init()
+{
+    logger(__PRETTY_FUNCTION__);
+    for(int i = 0; i < m_tablist.length(); i++)
+    {
+        m_tablist[i]->init();
     }
 }
 
@@ -225,10 +234,7 @@ void MainWindow::loadProject()
     {
         clean();
         Context::Instance()->loadProject();
-        for(int i = 0; i < m_tablist.length(); i++)
-        {
-            m_tablist[i]->init();
-        }
+        init();
     }
     catch(QString msg)
     {

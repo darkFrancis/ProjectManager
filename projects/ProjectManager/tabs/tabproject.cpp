@@ -49,6 +49,30 @@ void TabProject::init()
     ui->lineEdit_git->setText(ctx->gitPath());
     ui->lineEdit_doxyfile->setText(ctx->doxyfile());
     ui->textEdit->setText(ctx->projectDescription());
+    QString type;
+    switch(ui->comboBox_projectType->currentIndex())
+    {
+        case 0:
+            type = TYPE_C;
+            break;
+        case 1:
+            type = TYPE_CXX;
+            break;
+        case 2:
+            type = TYPE_LIBC;
+            break;
+        case 3:
+            type = TYPE_LIBCXX;
+            break;
+        case 4:
+            type = TYPE_SHAREDC;
+            break;
+        case 5:
+            type = TYPE_SHAREDCXX;
+            break;
+        default:
+            break;
+    }
 }
 
 void TabProject::save()
@@ -61,6 +85,31 @@ void TabProject::save()
     ctx->setGitPath(ui->lineEdit_git->text());
     ctx->setDoxyfile(ui->lineEdit_doxyfile->text());
     ctx->setProjectDescription(ui->textEdit->toPlainText());
+    QString type;
+    switch(ui->comboBox_projectType->currentIndex())
+    {
+        case 0:
+            type = TYPE_C;
+            break;
+        case 1:
+            type = TYPE_CXX;
+            break;
+        case 2:
+            type = TYPE_LIBC;
+            break;
+        case 3:
+            type = TYPE_LIBCXX;
+            break;
+        case 4:
+            type = TYPE_SHAREDC;
+            break;
+        case 5:
+            type = TYPE_SHAREDCXX;
+            break;
+        default:
+            break;
+    }
+    ctx->setProjectType(type);
     ctx->save();
 }
 
@@ -73,6 +122,7 @@ void TabProject::clean()
     ui->lineEdit_doxyfile->setText("");
     ui->lineEdit_git->setText("");
     ui->textEdit->setText("Description du projet");
+    ui->comboBox_projectType->setCurrentIndex(0);
 }
 
 void TabProject::on_toolButton_doxyfile_clicked()

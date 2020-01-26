@@ -17,9 +17,6 @@
     #define TEXT_INSTALL    QString("install")
     #define TEXT_UNINSTALL  QString("uninstall")
 
-    #define TEXT_SOURCES    QString("Sources")
-    #define TEXT_PARAM      QString("Paramètres")
-
     namespace Ui {
         class TabCompiler;
     }
@@ -52,6 +49,7 @@
             TabCompiler(QWidget *parent = nullptr);
             ~TabCompiler();
             void save();
+            void init();
 
         public slots:
             void updateStandardOutput();
@@ -61,7 +59,8 @@
 
         private slots:
             void on_toolButton_buildDir_clicked();
-            void on_toolButton_gestion_clicked();
+            void on_pushButton_sources_clicked();
+            void on_pushButton_param_clicked();
             void on_pushButton_action_clicked();
             void on_pushButton_default_clicked();
             void on_pushButton_apply_clicked();

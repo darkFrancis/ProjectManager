@@ -10,6 +10,7 @@
     #include <QString>
     #include <QStringList>
     #include <QTextStream>
+    #include <QComboBox>
 
     #define INDENT_SPACES "    "
     #define DESC_WIDTH 80
@@ -48,6 +49,12 @@
     #define TYPE_LIBCXX         QString("libcxx")
     #define TYPE_SHAREDC        QString("sharedc")
     #define TYPE_SHAREDCXX      QString("sharedcxx")
+    #define LABEL_C             QString("Application C")
+    #define LABEL_CXX           QString("Application CXX")
+    #define LABEL_LIBC          QString("Librairie Statique C")
+    #define LABEL_LIBCXX        QString("Librairie Statique CXX")
+    #define LABEL_SHAREDC       QString("Librairie Dynamique C")
+    #define LABEL_SHAREDCXX     QString("Librairie Dynamique CXX")
 
     class Context
     {
@@ -163,5 +170,8 @@
 
     QString relativePath(QString absolute_path, QString ref_dir);
     QString absolutePath(QString relative_path, QString ref_dir);
+    QString type2label(QString type);
+    QString label2type(QString label);
+    void initComboType(QComboBox* combo);
 
 #endif // CONTEXT_HPP

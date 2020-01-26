@@ -92,38 +92,7 @@ color: rgb(255, 255, 255);</string>
     </widget>
    </item>
    <item row="0" column="1" colspan="2">
-    <widget class="QComboBox" name="comboBox_projectType">
-     <item>
-      <property name="text">
-       <string>Application C</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Application C++</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Librairie statique C</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Librairie statique C++</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Librairie dynamique C</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Librairie dynamique C++</string>
-      </property>
-     </item>
-    </widget>
+    <widget class="QComboBox" name="comboBox_projectType"/>
    </item>
    <item row="1" column="1" colspan="2">
     <widget class="QFrame" name="frame">
@@ -181,23 +150,16 @@ color: rgb(255, 255, 255);</string>
    <item row="4" column="1" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <widget class="QComboBox" name="comboBox_gestion">
-       <item>
-        <property name="text">
-         <string>Sources</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Paramètres</string>
-        </property>
-       </item>
+      <widget class="QPushButton" name="pushButton_sources">
+       <property name="text">
+        <string>Sources</string>
+       </property>
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="toolButton_gestion">
+      <widget class="QPushButton" name="pushButton_param">
        <property name="text">
-        <string>...</string>
+        <string>Paramètres</string>
        </property>
       </widget>
      </item>

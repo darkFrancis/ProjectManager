@@ -26,6 +26,9 @@ TabCompiler::TabCompiler(QWidget *parent) :
     ui->setupUi(this);
     logger(__PRETTY_FUNCTION__);
 
+    initComboType(ui->comboBox_projectType);
+    ui->comboBox_projectType->setCurrentIndex(ui->comboBox_projectType->findText(type2label(Context::Instance()->projectType())));
+
     QShortcut* shortcut_terminate = new QShortcut(QKeySequence("Ctrl+X"), this);
     connect(shortcut_terminate, &QShortcut::activated, this, &TabCompiler::forceEnd);
     QShortcut* shortcut_clear = new QShortcut(QKeySequence("Ctrl+E"), this);
@@ -53,6 +56,15 @@ void TabCompiler::save()
     ctx->setOutput(ui->lineEdit_output->text());
 }
 
+void TabCompiler::init()
+{
+    Context* ctx = Context::Instance();
+    ui->comboBox_projectType->setCurrentIndex(ui->comboBox_projectType->findText(ctx->projectType()));
+    ui->radioButton_debug->setChecked(true);
+    ui->lineEdit_buildDir->setText(ctx->buildDir());
+    ui->lineEdit_output->setText(ctx->output());
+}
+
 /**
  * @brief Ce SLOT est appelé en cas de clic sur le bouton de recherche de dossier de build
  *
@@ -74,32 +86,26 @@ void TabCompiler::on_toolButton_buildDir_clicked()
     }
 }
 
-void TabCompiler::on_toolButton_gestion_clicked()
+void TabCompiler::on_pushButton_sources_clicked()
 {
     logger(__PRETTY_FUNCTION__);
-    if(ui->comboBox_gestion->currentText() == TEXT_SOURCES)
-    {
-        SourcesWindow* w = new SourcesWindow(this);
-        connect(this, &TabCompiler::destroyed, w, &SourcesWindow::close);
-        w->setAttribute(Qt::WA_QuitOnClose, false);
-        w->setWindowModality(Qt::ApplicationModal);
-        w->show();
-    }
-    else if(ui->comboBox_gestion->currentText() == TEXT_PARAM)
-    {
-        CompilerParamWindow* w = new CompilerParamWindow(this);
-        connect(this, &TabCompiler::destroyed, w, &SourcesWindow::close);
-        w->setAttribute(Qt::WA_QuitOnClose, false);
-        w->setWindowModality(Qt::ApplicationModal);
-        w->show();
-    }
-    else
-    {
-        QMessageBox::critical(this,
-                              "Erreur",
-                              "Action non reconnue !");
-    }
+    SourcesWindow* w = new SourcesWindow(this);
+    connect(this, &TabCompiler::destroyed, w, &SourcesWindow::close);
+    w->setAttribute(Qt::WA_QuitOnClose, false);
+    w->setWindowModality(Qt::ApplicationModal);
+    w->show();
 }
+
+void TabCompiler::on_pushButton_param_clicked()
+{
+    logger(__PRETTY_FUNCTION__);
+    CompilerParamWindow* w = new CompilerParamWindow(this);
+    connect(this, &TabCompiler::destroyed, w, &SourcesWindow::close);
+    w->setAttribute(Qt::WA_QuitOnClose, false);
+    w->setWindowModality(Qt::ApplicationModal);
+    w->show();
+}
+
 
 void TabCompiler::on_pushButton_action_clicked()
 {

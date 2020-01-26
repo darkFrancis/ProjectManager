@@ -234,3 +234,35 @@ QString absolutePath(QString relative_path, QString ref_dir)
     QFileInfo info(ref_dir + relative_path);
     return info.absoluteFilePath();
 }
+
+QString type2label(QString type)
+{
+    if(type == TYPE_C) return LABEL_C;
+    else if(type == TYPE_CXX) return LABEL_CXX;
+    else if(type == TYPE_LIBC) return LABEL_LIBC;
+    else if(type == TYPE_LIBCXX) return LABEL_LIBCXX;
+    else if(type == TYPE_SHAREDC) return LABEL_SHAREDC;
+    else if(type == TYPE_SHAREDCXX) return LABEL_SHAREDCXX;
+    else return "";
+}
+
+QString label2type(QString label)
+{
+    if(label == LABEL_C) return TYPE_C;
+    else if(label == LABEL_CXX) return TYPE_CXX;
+    else if(label == LABEL_LIBC) return TYPE_LIBC;
+    else if(label == LABEL_LIBCXX) return TYPE_LIBCXX;
+    else if(label == LABEL_SHAREDC) return TYPE_SHAREDC;
+    else if(label == LABEL_SHAREDCXX) return TYPE_SHAREDCXX;
+    else return "";
+}
+
+void initComboType(QComboBox* combo)
+{
+    combo->addItem(LABEL_C);
+    combo->addItem(LABEL_CXX);
+    combo->addItem(LABEL_LIBC);
+    combo->addItem(LABEL_LIBCXX);
+    combo->addItem(LABEL_SHAREDC);
+    combo->addItem(LABEL_SHAREDCXX);
+}

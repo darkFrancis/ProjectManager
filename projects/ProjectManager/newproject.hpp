@@ -9,15 +9,23 @@
 
     #include <QMainWindow>
 
-    #define FILE_EXTENSION QString(".pjm")
+    #define FILE_EXTENSION QString(".pjm")/**< Extension des fichiers projets */
 
     namespace Ui {
         class NewProject;
     }
 
+    /**
+     * @class NewProject
+     * @brief La classe NewProject définie la fenêtre de création d'un nouveau projet.
+     *
+     * Cette fenêtre s'ouvre depuis la fenêtre principale MainWindow.
+     * On peut y définir un nouveau projet en sélectionnant un dossier Git et en
+     * spécifiant ou enregistrer le fichier Doxygen.
+     */
     class NewProject : public QMainWindow
     {
-            Q_OBJECT
+        Q_OBJECT
 
         public:
             explicit NewProject(QWidget *parent);
@@ -34,7 +42,7 @@
             void on_pushButton_create_clicked();
 
         private:
-            Ui::NewProject *ui;
+            Ui::NewProject *ui;/**< UI de la classe NewProject */
     };
 
 #endif // NEWPROJECT_HPP

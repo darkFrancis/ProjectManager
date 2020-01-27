@@ -1,3 +1,9 @@
+/**
+ * @file parser.cpp
+ * @brief Définition des fonctions de la classe Parser
+ * @author Dark Francis
+ * @date 21/12/2019
+ */
 #include "parser.hpp"
 #include "settings/logger.hpp"
 

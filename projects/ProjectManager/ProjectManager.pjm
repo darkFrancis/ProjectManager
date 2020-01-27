@@ -5,7 +5,7 @@
 PROJECT_NAME=ProjectManager
 PROJECT_TYPE=cxx
 AUTHOR=Dark Francis
-PROJECT_VERSION=Alpha 0.2
+PROJECT_VERSION=Alpha 0.3
 PROJECT_DESCRIPTION=
 # Gestion Git et Doxygen
 GIT_PATH=/home/francis/dev/.git

@@ -43,19 +43,27 @@
     #define KW_FLAG_CODE_CONV    QString("FLAG_CONVENTION")
     #define KW_FLAG_OTHER        QString("FLAG_OTHER")
 
-    #define TYPE_C              QString("c")
-    #define TYPE_CXX            QString("cxx")
-    #define TYPE_LIBC           QString("libc")
-    #define TYPE_LIBCXX         QString("libcxx")
-    #define TYPE_SHAREDC        QString("sharedc")
-    #define TYPE_SHAREDCXX      QString("sharedcxx")
-    #define LABEL_C             QString("Application C")
-    #define LABEL_CXX           QString("Application C++")
-    #define LABEL_LIBC          QString("Librairie Statique C")
-    #define LABEL_LIBCXX        QString("Librairie Statique C++")
-    #define LABEL_SHAREDC       QString("Librairie Dynamique C")
-    #define LABEL_SHAREDCXX     QString("Librairie Dynamique C++")
+    #define TYPE_C              QString("c")/**< Format pour les applications C */
+    #define TYPE_CXX            QString("cxx")/**< Format pour les applications C++ */
+    #define TYPE_LIBC           QString("libc")/**< Format pour les librairies statiques C */
+    #define TYPE_LIBCXX         QString("libcxx")/**< Format pour les librairies statiques C++ */
+    #define TYPE_SHAREDC        QString("sharedc")/**< Format pour les librairies dynamiques C */
+    #define TYPE_SHAREDCXX      QString("sharedcxx")/**< Format pour les librairies dynamiques C++ */
+    #define LABEL_C             QString("Application C")/**< Label pour les applications C */
+    #define LABEL_CXX           QString("Application C++")/**< Label pour les applications C++ */
+    #define LABEL_LIBC          QString("Librairie Statique C")/**< Label pour les librairies statiques C */
+    #define LABEL_LIBCXX        QString("Librairie Statique C++")/**< Label pour les librairies statiques C++ */
+    #define LABEL_SHAREDC       QString("Librairie Dynamique C")/**< Label pour les librairies dynamiques C */
+    #define LABEL_SHAREDCXX     QString("Librairie Dynamique C++")/**< Label pour les librairies dynamiques C++ */
 
+    /**
+     * @class Context
+     * @brief La classe Context permet de stocker les informations en cours.
+     *
+     * Cette classe est un singleton.
+     * Les informations contenues sont accessibles par un jeu de fonctions get/set.
+     * Cette classe permet aussi de lire les fichiers projets pour en extraire les informations.
+     */
     class Context
     {
         public:
@@ -126,46 +134,46 @@
 
         private:
             Context();
-            static Context* m_instance;
-            bool m_open;
+            static Context* m_instance;/**< Pointeur vers l'instance de la classe Context */
+            bool m_open;/**< Booléen d'ouverture de projet */
             // Save functions
             QString indent();
             void save_description(QTextStream* stream);
             void save_sources(QString kw, QTextStream* stream);
             void save_flags(QString kw, QTextStream* stream);
             // Last
-            QString m_last_search;
+            QString m_last_search;/**< Dossier de la dernière recherche effectuée */
             // Files
-            QString m_project_file;
-            QString m_doxyfile;
-            QString m_git_path;
+            QString m_project_file;/**< Chemin vers le fichier du projet */
+            QString m_doxyfile;/**< Chemin vers le fichier Doxyfile */
+            QString m_git_path;/**< Chemin vers le dossier contenant .git */
             // Project
-            QString m_project_name;
-            QString m_project_type;
-            QString m_project_version;
-            QString m_project_desc;
-            QString m_author;
-            QString m_build_dir;
-            QString m_output;
+            QString m_project_name;/**< Nom du projet */
+            QString m_project_type;/**< Type de projet */
+            QString m_project_version;/**< Version du projet */
+            QString m_project_desc;/**< Description du projet */
+            QString m_author;/**< Auteur du projet */
+            QString m_build_dir;/**< Dossier de build pour le compilateur */
+            QString m_output;/**< Dossier de sortie du compilateur */
             // Sources
-            QStringList m_sources;
-            QStringList m_headers;
-            QStringList m_ressources;
+            QStringList m_sources;/**< Liste des sources */
+            QStringList m_headers;/**< Liste des headers */
+            QStringList m_ressources;/**< Listes des fichiers ressources (ni sources, ni headers) */
             // Compiler
-            QStringList m_flag_overall;
-            QStringList m_flag_c;
-            QStringList m_flag_cxx;
-            QStringList m_flag_diag;
-            QStringList m_flag_warn;
-            QStringList m_flag_debug;
-            QStringList m_flag_opt;
-            QStringList m_flag_inst;
-            QStringList m_flag_preprocess;
-            QStringList m_flag_assembler;
-            QStringList m_flag_linker;
-            QStringList m_flag_dirs;
-            QStringList m_flag_convention;
-            QStringList m_flag_other;
+            QStringList m_flag_overall;/**< Liste des flags généraux du compilateur */
+            QStringList m_flag_c;/**< Liste des flags C du compilateur */
+            QStringList m_flag_cxx;/**< Liste des flags C++ du compilateur */
+            QStringList m_flag_diag;/**< Liste des flags de diagnostique du compilateur */
+            QStringList m_flag_warn;/**< Liste des flags de warnings du compilateur */
+            QStringList m_flag_debug;/**< Liste des flags de debug du compilateur */
+            QStringList m_flag_opt;/**< Liste des flags d'optimisation du compilateur */
+            QStringList m_flag_inst;/**< Liste des flags d'instrumentation du compilateur */
+            QStringList m_flag_preprocess;/**< Liste des flags du préprocesseur du compilateur */
+            QStringList m_flag_assembler;/**< Liste des flags de l'assembleur du compilateur */
+            QStringList m_flag_linker;/**< Liste des flags du linker du compilateur */
+            QStringList m_flag_dirs;/**< Liste des flags des répertoires du compilateur */
+            QStringList m_flag_convention;/**< Liste des flags de convention de code du compilateur */
+            QStringList m_flag_other;/**< Liste des autres flags du compilateur */
     };
 
     QString relativePath(QString absolute_path, QString ref_dir);

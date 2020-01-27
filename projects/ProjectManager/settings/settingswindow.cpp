@@ -1,3 +1,9 @@
+/**
+ * @file settingswindow.cpp
+ * @brief Définition des fonctions de la classe SettingsWindow
+ * @author Dark Francis
+ * @date 21/12/2019
+ */
 #include "settingswindow.hpp"
 #include "ui_settingswindow.h"
 #include "logger.hpp"

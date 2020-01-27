@@ -1,3 +1,9 @@
+/**
+ * @file main.cpp
+ * @brief Fonction principale main
+ * @author Dark Francis
+ * @date 21/12/2019
+ */
 #include "mainwindow.hpp"
 #include "settings/logger.hpp"
 #include <QApplication>

@@ -1,3 +1,9 @@
+/**
+ * @file mainwindow.cpp
+ * @brief Définition des fonctions de la classe MainWindow
+ * @author Dark Francis
+ * @date 21/12/2019
+ */
 #include "mainwindow.hpp"
 #include "ui_mainwindow.h"
 

@@ -1,3 +1,9 @@
+/**
+ * @file newproject.cpp
+ * @brief Définition des fonctions de la classe NewProject
+ * @author Dark Francis
+ * @date 21/12/2019
+ */
 #include "newproject.hpp"
 #include "ui_newproject.h"
 #include "context.hpp"

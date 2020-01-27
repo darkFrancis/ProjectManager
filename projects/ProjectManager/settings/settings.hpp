@@ -1,6 +1,6 @@
 /**
  * @file settings.hpp
- * @brief Définition des options
+ * @brief Définition de la classe Settings
  * @author Dark Francis
  * @date 21/12/2019
  */
@@ -77,6 +77,7 @@
      *
      * Le fichier de définition des couleurs contient une couleur par ligne
      * de la forme <nom> <red> <green> <blue>.
+     * @n@n Header : @inheaderfile settings.hpp
      */
     struct Color
     {
@@ -108,6 +109,7 @@
      * @li convention_code
      * Les lignes qui suivent un mot clé sont les options de compilateur
      * de la forme <option>;<brief>;<tooltip>.
+     * @n@n Header : @inheaderfile settings.hpp
      */
     struct CompilerOption
     {
@@ -121,7 +123,9 @@
      * @class Settings
      * @brief La classe Settings défini les options.
      *
+     * Cette classe est un singleton.
      * Les option sont utilisée par des get/set.
+     * @n@n Header : @inheaderfile settings.hpp
      */
     class Settings
     {
@@ -131,15 +135,15 @@
             void save();
             void load();
             // Get
-            QString style(){return m_style;}
-            bool keepSize(){return m_keep_size;}
-            QString doxygenTemplateDir(){return m_doxygen_template_dir;}
-            bool clearScreen(){return m_clear_screen;}
-            QString colorNormal(){return m_color_normal;}
-            QString colorSuccess(){return m_color_success;}
-            QString colorError(){return m_color_error;}
-            QStringList sourcesExtensions(){return m_sources_extensions;}
-            QStringList headersExtensions(){return m_headers_extensions;}
+            QString style(){return m_style;}/**< GET : Settings::m_style */
+            bool keepSize(){return m_keep_size;}/**< GET : Settings::m_keep_size */
+            QString doxygenTemplateDir(){return m_doxygen_template_dir;}/**< GET : Settings::m_doxygen_template_dir */
+            bool clearScreen(){return m_clear_screen;}/**< GET : Settings::m_clear_screen */
+            QString colorNormal(){return m_color_normal;}/**< GET : Settings::m_color_normal */
+            QString colorSuccess(){return m_color_success;}/**< GET : Settings::m_color_success */
+            QString colorError(){return m_color_error;}/**< GET : Settings::m_color_error */
+            QStringList sourcesExtensions(){return m_sources_extensions;}/**< GET : Settings::m_sources_extensions */
+            QStringList headersExtensions(){return m_headers_extensions;}/**< GET : Settings::m_headers_extensions */
             // Get with no set
             QList<Color>* colors(){return &m_colors;}
             QList<CompilerOption>* overallOptions(){return &m_overall_options;}

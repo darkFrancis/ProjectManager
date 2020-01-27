@@ -17,7 +17,7 @@
     #define STATUS_DEFAULT_TIMEOUT 5
 
     // Init
-    #define INIT_FILE   QString("config/projectmanager.ini")
+    #define INIT_FILE   QString("config/projectmanager.ini")/**< Fichier d'initialisation du programme */
     #define INIT_X      200
     #define INIT_Y      200
     #define INIT_W      400
@@ -27,6 +27,16 @@
         class MainWindow;
     }
 
+    /**
+     * @class MainWindow
+     * @brief La classe MainWindow défini la fenêtre principale de ProjectManager.
+     *
+     * Cette fenêtre comporte différent onglets pour la gestion :
+     * @li du projet
+     * @li de la documentation avec Doxygen
+     * @li de la compilation avec GNU/GCC
+     * @li du suivi avec Git
+     */
     class MainWindow : public QMainWindow
     {
         Q_OBJECT
@@ -54,13 +64,13 @@
 
         private:
             // UI
-            Ui::MainWindow *ui;
-            QTabWidget* m_tabWidget;
+            Ui::MainWindow *ui;/**< UI de la classe MainWindow */
+            QTabWidget* m_tabWidget;/**< Widget principal de gestion des onglets */
             void status(QString msg, int timeout = 0);
             void createInit();
             void saveInit();
             // Tabs
-            QList<Tab*> m_tablist;
+            QList<Tab*> m_tablist;/**< Liste de chaque Widget principal d'onglet */
     };
 
 #endif // MAINWINDOW_HPP

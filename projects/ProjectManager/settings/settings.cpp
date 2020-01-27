@@ -1,3 +1,9 @@
+/**
+ * @file settings.cpp
+ * @brief Définition des fonctions de la classe Settings
+ * @author Dark Francis
+ * @date 21/12/2019
+ */
 #include "settings.hpp"
 #include "parser.hpp"
 #include "logger.hpp"
@@ -6,6 +12,13 @@
 
 Settings* Settings::m_instance = nullptr;
 
+/**
+ * @return Un pointeur vers l'unique instance de la classe Settings.
+ *
+ * Permet d'obtenir un pointeur vers l'instance Settings.@n
+ * Si aucune instance de Settings n'a été créée, la créée.
+ * Dans tout les cas, cette fonction renvoie un pointeur vers cette instance.
+ */
 Settings* Settings::Instance()
 {
     if(!m_instance)
@@ -13,6 +26,11 @@ Settings* Settings::Instance()
     return m_instance;
 }
 
+/**
+ * Constructeur de la classe Settings.@n
+ * L'initialisation se fait par la lecture des différents fichiers de configuration
+ * présents dans le dossier config.
+ */
 Settings::Settings()
 {
     logger(__PRETTY_FUNCTION__);
@@ -21,6 +39,10 @@ Settings::Settings()
     init_compiler_options();
 }
 
+/**
+ * Enregistre les données dans le fichiers des options. @n
+ * Cette fonction est appelée depuis la fenêtre SettingsWindow.
+ */
 void Settings::save()
 {
     logger(__PRETTY_FUNCTION__);
@@ -45,6 +67,10 @@ void Settings::save()
     }
 }
 
+/**
+ * Charge les données du fichiers des options.@n
+ * Ces données sont ensuite visualisable depuis la fenêtre SettingsWindow.
+ */
 void Settings::load()
 {
     logger(__PRETTY_FUNCTION__);
@@ -74,6 +100,19 @@ void Settings::load()
     }
 }
 
+/**
+ * Créé le fichier d'options par défaut. @n
+ * Initialise comme suit :
+ * @li Settings::m_style = default
+ * @li Settings::m_keep_size = true
+ * @li Settings::m_doxygen_template_dir = doxygen_templates
+ * @li Settings::m_clear_screen = true
+ * @li Settings::m_color_normal = Gold
+ * @li Settings::m_color_success = Lime
+ * @li Settings::m_color_error = Red
+ * @li Settings::m_sources_extensions = c i ii cc cp cxx cpp CPP c++ C
+ * @li Settings::m_headers_extensions = h hh H hp hxx hpp HPP h++ tcc
+ */
 void Settings::create()
 {
     logger(__PRETTY_FUNCTION__);

@@ -1,6 +1,6 @@
 /**
  * @file settingswindow.hpp
- * @brief Description de la classe SettingWindow
+ * @brief Description de la classe SettingsWindow
  * @author Dark Francis
  * @date 21/12/2019
  */

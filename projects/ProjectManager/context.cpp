@@ -1,3 +1,9 @@
+/**
+ * @file context.cpp
+ * @brief Définition des fonctions de la classe Context
+ * @author Dark Francis
+ * @date 21/12/2019
+ */
 #include "context.hpp"
 #include "parser.hpp"
 #include "settings/logger.hpp"

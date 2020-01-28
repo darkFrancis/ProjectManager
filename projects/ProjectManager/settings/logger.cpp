@@ -12,8 +12,8 @@
  * Permet d'écrire des message dans le fichier de log. @n
  * Cette fonction n'écrit que si la macro @b _DEBUG est définie. @n
  * L'écriture se fait à la suite du texte déjà écrit. @n
- * Le format d'écriture est le suivant : @b dd-MM-yyyy @b hh:mm:ss.zzz | @b msg
- * @n@n Header : @inheaderfile settings.hpp
+ * Le format d'écriture est le suivant : @b dd-MM-yyyy @b hh:mm:ss.zzz | @a msg
+ * @n@n Header : logger.hpp
  */
 void logger(QString msg)
 {
@@ -32,7 +32,7 @@ void logger(QString msg)
  * Créé le fichier de log. @n
  * La création ne s'effectue que si la macro@b _DEBUG est définie. @n
  * Si un fichier de log est déjà présent, l'efface.
- * @n@n Header : @inheaderfile settings.hpp
+ * @n@n Header : logger.hpp
  */
 void create_logger()
 {

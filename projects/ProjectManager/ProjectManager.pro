@@ -32,6 +32,7 @@ HEADERS += \
         mainwindow.hpp \
         newproject.hpp \
         parser.hpp \
+        settings/build.hpp \
         settings/logger.hpp \
         settings/settings.hpp \
         settings/settingswindow.hpp \

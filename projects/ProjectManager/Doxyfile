@@ -57,5 +57,4 @@ GENERATE_LATEX=NO
 
 # Configuration de l'outil DOT
 HIDE_UNDOC_RELATIONS=NO
-DOT_FONTNAME=aakar
 

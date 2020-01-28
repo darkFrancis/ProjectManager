@@ -28,6 +28,15 @@
             ~ParamSelectionWindow();
 
         signals:
+            /**
+             * @param kw Mot clé ParamSelectionWindow::m_kw
+             * @param option Option sélectionnée par l'utilisateur
+             *
+             * ParamSelectionWindow::selected est émit lorsque l'utilisateur
+             * valide un de ses choix d'option avec l'appel à la fonction
+             * ParamSelectionWindow::on_pushButton_ok_clicked suite à un clic sur
+             * le bouton OK de ParamSelectionWindow::ui.
+             */
             void selected(QString kw, QString option);
 
         private slots:

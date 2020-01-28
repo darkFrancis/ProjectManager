@@ -28,8 +28,10 @@ Settings* Settings::Instance()
 
 /**
  * Constructeur de la classe Settings.@n
- * L'initialisation se fait par la lecture des différents fichiers de configuration
- * présents dans le dossier config.
+ * L'initialisation se fait par la lecture des différents fichiers de configuration :
+ * @li #SETTINGS_FILE
+ * @li #COLORS_FILE
+ * @li #COMPILER_FILE
  */
 Settings::Settings()
 {
@@ -42,6 +44,16 @@ Settings::Settings()
 /**
  * Enregistre les données dans le fichiers des options. @n
  * Cette fonction est appelée depuis la fenêtre SettingsWindow.
+ * Les données suivante sont enregistrées dans le fichier #SETTINGS_FILE :
+ * @li Settings::m_style
+ * @li Settings::m_keep_size
+ * @li Settings::m_doxygen_template_dir
+ * @li Settings::m_clear_screen
+ * @li Settings::m_color_normal
+ * @li Settings::m_color_success
+ * @li Settings::m_color_error
+ * @li Settings::m_sources_extensions
+ * @li Settings::m_headers_extensions
  */
 void Settings::save()
 {
@@ -68,7 +80,18 @@ void Settings::save()
 }
 
 /**
- * Charge les données du fichiers des options.@n
+ * Charge les données du fichier #SETTINGS_FILE.@n
+ * Les mots clés suivants sont utilisés pour obtenir des informations :
+ * @li style
+ * @li keep_size
+ * @li doxygen_template_dir
+ * @li clear_screen
+ * @li color_normal
+ * @li color_error
+ * @li color_success
+ * @li sources_ext
+ * @li headers_ext
+ *
  * Ces données sont ensuite visualisable depuis la fenêtre SettingsWindow.
  */
 void Settings::load()
@@ -137,6 +160,10 @@ void Settings::create()
     }
 }
 
+/**
+ * Initialise les couleurs dans la liste Settings::m_colors.@n
+ * Cette liste est remplie par les informations du fichier #COLORS_FILE
+ */
 void Settings::init_color()
 {
     logger(__PRETTY_FUNCTION__);

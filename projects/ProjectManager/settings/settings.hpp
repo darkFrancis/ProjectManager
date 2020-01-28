@@ -9,50 +9,11 @@
 
     #include <QString>
     #include <QList>
+    #include "build.hpp"
 
-    #define BUILD_YEAR_CH0 (__DATE__[ 7])
-    #define BUILD_YEAR_CH1 (__DATE__[ 8])
-    #define BUILD_YEAR_CH2 (__DATE__[ 9])
-    #define BUILD_YEAR_CH3 (__DATE__[10])
-    #define BUILD_MONTH_IS_JAN (__DATE__[0] == 'J' && __DATE__[1] == 'a' && __DATE__[2] == 'n')
-    #define BUILD_MONTH_IS_FEB (__DATE__[0] == 'F')
-    #define BUILD_MONTH_IS_MAR (__DATE__[0] == 'M' && __DATE__[1] == 'a' && __DATE__[2] == 'r')
-    #define BUILD_MONTH_IS_APR (__DATE__[0] == 'A' && __DATE__[1] == 'p')
-    #define BUILD_MONTH_IS_MAY (__DATE__[0] == 'M' && __DATE__[1] == 'a' && __DATE__[2] == 'y')
-    #define BUILD_MONTH_IS_JUN (__DATE__[0] == 'J' && __DATE__[1] == 'u' && __DATE__[2] == 'n')
-    #define BUILD_MONTH_IS_JUL (__DATE__[0] == 'J' && __DATE__[1] == 'u' && __DATE__[2] == 'l')
-    #define BUILD_MONTH_IS_AUG (__DATE__[0] == 'A' && __DATE__[1] == 'u')
-    #define BUILD_MONTH_IS_SEP (__DATE__[0] == 'S')
-    #define BUILD_MONTH_IS_OCT (__DATE__[0] == 'O')
-    #define BUILD_MONTH_IS_NOV (__DATE__[0] == 'N')
-    #define BUILD_MONTH_IS_DEC (__DATE__[0] == 'D')
-    #define BUILD_MONTH_CH0 \
-        ((BUILD_MONTH_IS_OCT || BUILD_MONTH_IS_NOV || BUILD_MONTH_IS_DEC) ? '1' : '0')
-    #define BUILD_MONTH_CH1 \
-        ( \
-            (BUILD_MONTH_IS_JAN) ? '1' : \
-            (BUILD_MONTH_IS_FEB) ? '2' : \
-            (BUILD_MONTH_IS_MAR) ? '3' : \
-            (BUILD_MONTH_IS_APR) ? '4' : \
-            (BUILD_MONTH_IS_MAY) ? '5' : \
-            (BUILD_MONTH_IS_JUN) ? '6' : \
-            (BUILD_MONTH_IS_JUL) ? '7' : \
-            (BUILD_MONTH_IS_AUG) ? '8' : \
-            (BUILD_MONTH_IS_SEP) ? '9' : \
-            (BUILD_MONTH_IS_OCT) ? '0' : \
-            (BUILD_MONTH_IS_NOV) ? '1' : \
-            (BUILD_MONTH_IS_DEC) ? '2' : \
-            /* error default */    '?' \
-        )
-    #define BUILD_DAY_CH0 ((__DATE__[4] >= '0') ? (__DATE__[4]) : '0')
-    #define BUILD_DAY_CH1 (__DATE__[ 5])
-    #define BUILD_DATE QString(BUILD_DAY_CH0)+BUILD_DAY_CH1+"/"+BUILD_MONTH_CH0+BUILD_MONTH_CH1+"/"+BUILD_YEAR_CH0+BUILD_YEAR_CH1+BUILD_YEAR_CH2+BUILD_YEAR_CH3
-    #define CREATE_DATE QString("21/12/2019")
-    #define VERSION "0.2"
-
-    #define SETTINGS_FILE           QString("config/settings.conf")/**< @brief Définition du nom de fichier des options */
-    #define COLORS_FILE             QString("config/colors.conf")/**< @brief Définition du nom de fichier des couleurs */
-    #define COMPILER_FILE           QString("config/compiler.conf")/**< @brief Définition du nom de fichier d'option de compilateur */
+    #define SETTINGS_FILE           QString("config/settings.conf")/**< Définition du nom de fichier des options */
+    #define COLORS_FILE             QString("config/colors.conf")/**< Définition du nom de fichier des couleurs */
+    #define COMPILER_FILE           QString("config/compiler.conf")/**< Définition du nom de fichier d'option de compilateur */
 
     #define COMPILE_OVERALL         QString("overall")
     #define COMPILE_LANGUAGE_C      QString("c_language")
@@ -76,8 +37,8 @@
      * @brief La structure Color défini une couleur RGB.
      *
      * Le fichier de définition des couleurs contient une couleur par ligne
-     * de la forme <nom> <red> <green> <blue>.
-     * @n@n Header : @inheaderfile settings.hpp
+     * de la forme &lt;nom> &lt;red> &lt;green> &lt;blue>.
+     * @n@n Header : settings.hpp
      */
     struct Color
     {
@@ -108,8 +69,8 @@
      * @li dirs_options
      * @li convention_code
      * Les lignes qui suivent un mot clé sont les options de compilateur
-     * de la forme <option>;<brief>;<tooltip>.
-     * @n@n Header : @inheaderfile settings.hpp
+     * de la forme &lt;option>;&lt;brief>;&lt;tooltip>.
+     * @n@n Header : settings.hpp
      */
     struct CompilerOption
     {
@@ -125,7 +86,7 @@
      *
      * Cette classe est un singleton.
      * Les option sont utilisée par des get/set.
-     * @n@n Header : @inheaderfile settings.hpp
+     * @n@n Header : settings.hpp
      */
     class Settings
     {
@@ -136,7 +97,7 @@
             void load();
             // Get
             QString style(){return m_style;}/**< GET : Settings::m_style */
-            bool keepSize(){return m_keep_size;}/**< GET : Settings::m_keep_size */
+            bool keepSize(){return m_keep_size;}/**< GET : m_keep_size */
             QString doxygenTemplateDir(){return m_doxygen_template_dir;}/**< GET : Settings::m_doxygen_template_dir */
             bool clearScreen(){return m_clear_screen;}/**< GET : Settings::m_clear_screen */
             QString colorNormal(){return m_color_normal;}/**< GET : Settings::m_color_normal */
@@ -145,30 +106,30 @@
             QStringList sourcesExtensions(){return m_sources_extensions;}/**< GET : Settings::m_sources_extensions */
             QStringList headersExtensions(){return m_headers_extensions;}/**< GET : Settings::m_headers_extensions */
             // Get with no set
-            QList<Color>* colors(){return &m_colors;}
-            QList<CompilerOption>* overallOptions(){return &m_overall_options;}
-            QList<CompilerOption>* languageCOptions(){return &m_language_c_options;}
-            QList<CompilerOption>* languageCxxOptions(){return &m_language_cxx_options;}
-            QList<CompilerOption>* diagnosticOptions(){return &m_diagnostic_options;}
-            QList<CompilerOption>* warningsOptions(){return &m_warnings_options;}
-            QList<CompilerOption>* debugOptions(){return &m_debug_options;}
-            QList<CompilerOption>* optimizationOptions(){return &m_opti_options;}
-            QList<CompilerOption>* instrumentationOptions(){return &m_instru_options;}
-            QList<CompilerOption>* preprocessorOptions(){return &m_preprocessor_options;}
-            QList<CompilerOption>* assemblerOptions(){return &m_assembler_options;}
-            QList<CompilerOption>* linkerOptions(){return &m_linker_options;}
-            QList<CompilerOption>* dirsOptions(){return &m_dirs_options;}
-            QList<CompilerOption>* codeConvOptions(){return &m_code_conv_options;}
+            QList<Color>* colors(){return &m_colors;}/**< GET : Settings::m_colors */
+            QList<CompilerOption>* overallOptions(){return &m_overall_options;}/**< GET : Settings::m_overall_options */
+            QList<CompilerOption>* languageCOptions(){return &m_language_c_options;}/**< GET : Settings::m_language_c_options */
+            QList<CompilerOption>* languageCxxOptions(){return &m_language_cxx_options;}/**< GET : Settings::m_language_cxx_options */
+            QList<CompilerOption>* diagnosticOptions(){return &m_diagnostic_options;}/**< GET : Settings::m_diagnostic_options */
+            QList<CompilerOption>* warningsOptions(){return &m_warnings_options;}/**< GET : Settings::m_warnings_options */
+            QList<CompilerOption>* debugOptions(){return &m_debug_options;}/**< GET : Settings::m_debug_options */
+            QList<CompilerOption>* optimizationOptions(){return &m_opti_options;}/**< GET : Settings::m_opti_options */
+            QList<CompilerOption>* instrumentationOptions(){return &m_instru_options;}/**< GET : Settings::m_instru_options */
+            QList<CompilerOption>* preprocessorOptions(){return &m_preprocessor_options;}/**< GET : Settings::m_preprocessor_options */
+            QList<CompilerOption>* assemblerOptions(){return &m_assembler_options;}/**< GET : Settings::m_assembler_options */
+            QList<CompilerOption>* linkerOptions(){return &m_linker_options;}/**< GET : Settings::m_linker_options */
+            QList<CompilerOption>* dirsOptions(){return &m_dirs_options;}/**< GET : Settings::m_dirs_options */
+            QList<CompilerOption>* codeConvOptions(){return &m_code_conv_options;}/**< GET : Settings::m_code_conv_options */
             // Set
-            void setStyle(QString val){m_style = val;}
-            void setKeepSize(bool val){m_keep_size = val;}
-            void setDoxygenTemplateDir(QString val){m_doxygen_template_dir = val;}
-            void setClearScreen(bool val){m_clear_screen = val;}
-            void setColorNormal(QString color){m_color_normal = color;}
-            void setColorSuccess(QString color){m_color_success = color;}
-            void setColorError(QString color){m_color_error = color;}
-            void setSourcesExtensions(QStringList exts){m_sources_extensions = exts;}
-            void setHeadersExtensions(QStringList exts){m_headers_extensions = exts;}
+            void setStyle(QString val){m_style = val;}/**< SET : Settings::m_style */
+            void setKeepSize(bool val){m_keep_size = val;}/**< SET : Settings::m_keep_size */
+            void setDoxygenTemplateDir(QString val){m_doxygen_template_dir = val;}/**< SET : Settings::m_doxygen_template_dir */
+            void setClearScreen(bool val){m_clear_screen = val;}/**< SET : Settings::m_clear_screen */
+            void setColorNormal(QString color){m_color_normal = color;}/**< SET : Settings::m_color_normal */
+            void setColorSuccess(QString color){m_color_success = color;}/**< SET : Settings::m_color_success */
+            void setColorError(QString color){m_color_error = color;}/**< SET : Settings::m_color_error */
+            void setSourcesExtensions(QStringList exts){m_sources_extensions = exts;}/**< SET : Settings::m_sources_extensions */
+            void setHeadersExtensions(QStringList exts){m_headers_extensions = exts;}/**< SET : Settings::m_headers_extensions */
 
         private:
             Settings();

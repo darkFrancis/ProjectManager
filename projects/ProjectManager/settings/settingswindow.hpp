@@ -17,6 +17,8 @@
     /**
      * @class SettingsWindow
      * @brief La classe SettingsWindow défini la fenêtre de gestion des options.
+     *
+     * @n@n Header : settingswindow.hpp
      */
     class SettingsWindow : public QMainWindow
     {

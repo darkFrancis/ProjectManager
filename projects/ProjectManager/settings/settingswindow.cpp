@@ -9,6 +9,14 @@
 #include "logger.hpp"
 #include <QMessageBox>
 
+/**
+ * @param parent Le QWidget parent de cette fenêtre
+ *
+ * Contructeur de la classe SettingsWindow.@n
+ * Ce constructeur hérite de celui de QMainWindow et utilise le système des fichier UI.@n
+ * Les différents champs sont remplis en fonction des attributs de l'instance Settings.@n
+ * Voir @ref SETTING_GET, Ui.
+ */
 SettingsWindow::SettingsWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::SettingsWindow)
@@ -50,12 +58,20 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
     ui->lineEdit_headersExt->setText(settings->headersExtensions().join(' '));
 }
 
+/**
+ * Destructeur de la classe SettingsWindow.
+ */
 SettingsWindow::~SettingsWindow()
 {
     logger(__PRETTY_FUNCTION__);
     delete ui;
 }
 
+/**
+ * Ce connecteur est activé lors d'un clic sur le bouton OK de la fenêtre.@n
+ * Il commande un enregistrement des modifications apportées à travers la
+ * fonction SettingsWindow::save puis ferme cette fenêtre.
+ */
 void SettingsWindow::on_pushButton_ok_clicked()
 {
     logger(__PRETTY_FUNCTION__);
@@ -63,18 +79,31 @@ void SettingsWindow::on_pushButton_ok_clicked()
     this->close();
 }
 
+/**
+ * Ce connecteur est activé lors d'un clic sur le bouton Appliquer de la fenêtre.@n
+ * Il commande un enregistrement des modifications apportées à travers la
+ * fonction SettingsWindow::save.
+ */
 void SettingsWindow::on_pushButton_apply_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     save();
 }
 
+/**
+ * Ce connecteur est activé lors d'un clic sur le bouton OK de la fenêtre.@n
+ * Il ferme cette fenêtre.
+ */
 void SettingsWindow::on_pushButton_cancel_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     this->close();
 }
 
+/**
+ * Enregistre les modification apportées par l'utilisateur à travers la fenêtre.@n
+ * Voir @ref SETTING_SET.
+ */
 void SettingsWindow::save()
 {
     logger(__PRETTY_FUNCTION__);

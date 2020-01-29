@@ -18,14 +18,19 @@
      * @class SettingsWindow
      * @brief La classe SettingsWindow défini la fenêtre de gestion des options.
      *
-     * @n@n Header : settingswindow.hpp
+     * Les options sont répartie en trois partie :
+     * @li Affichage pour le style d'affichage
+     * @li Doxygen pour la configuration des templates
+     * @li Compilateur pour le format de sortie
+     *
+     * Header : settingswindow.hpp
      */
     class SettingsWindow : public QMainWindow
     {
         Q_OBJECT
 
         public:
-            explicit SettingsWindow(QWidget *parent = nullptr);
+            SettingsWindow(QWidget *parent = nullptr);
             ~SettingsWindow();
 
         private slots:
@@ -34,7 +39,7 @@
             void on_pushButton_cancel_clicked();
 
         private:
-            Ui::SettingsWindow *ui;/**< @brief UI de la classe SettingsWindow */
+            Ui::SettingsWindow *ui;/**< UI de la classe SettingsWindow */
             void save();
     };
 

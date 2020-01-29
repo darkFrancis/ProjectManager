@@ -9,6 +9,13 @@
 
 Parser* Parser::m_instance = nullptr;
 
+/**
+ * @return Un pointeur vers l'unique instance de la classe Parser.
+ *
+ * Permet d'obtenir un pointeur vers l'instance Parser.@n
+ * Si aucune instance de Parser n'a été créée, la créée.
+ * Dans tout les cas, cette fonction renvoie un pointeur vers cette instance.
+ */
 Parser* Parser::Instance()
 {
     if(!m_instance)

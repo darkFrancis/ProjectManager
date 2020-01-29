@@ -11,26 +11,35 @@
     #include <QList>
     #include "build.hpp"
 
+    /** @addtogroup FILE Fichiers
+      * @{ */
     #define SETTINGS_FILE           QString("config/settings.conf")/**< Définition du nom de fichier des options */
     #define COLORS_FILE             QString("config/colors.conf")/**< Définition du nom de fichier des couleurs */
     #define COMPILER_FILE           QString("config/compiler.conf")/**< Définition du nom de fichier d'option de compilateur */
+    /** @} */
 
-    #define COMPILE_OVERALL         QString("overall")
-    #define COMPILE_LANGUAGE_C      QString("c_language")
-    #define COMPILE_LANGUAGE_CXX    QString("cxx_language")
-    #define COMPILE_DIAGNOSTIC      QString("diagnostic")
-    #define COMPILE_WARNINGS        QString("warnings")
-    #define COMPILE_DEBUG           QString("debug_options")
-    #define COMPILE_OPTI            QString("optimization")
-    #define COMPILE_INSTRU          QString("instrumentation")
-    #define COMPILE_PREPROCESSOR    QString("preprocessor")
-    #define COMPILE_ASSEMBLER       QString("assembler")
-    #define COMPILE_LINKER          QString("linker")
-    #define COMPILE_DIRS            QString("dirs_options")
-    #define COMPILE_CODE_CONV       QString("convention_code")
+    /** @addtogroup KW_COMPILE Mots clés compilateur
+      * @{ */
+    #define COMPILE_OVERALL         QString("overall")/**< Mot clé des options générales */
+    #define COMPILE_LANGUAGE_C      QString("c_language")/**< Mot clé des options de langage C */
+    #define COMPILE_LANGUAGE_CXX    QString("cxx_language")/**< Mot clé des options langage C++ */
+    #define COMPILE_DIAGNOSTIC      QString("diagnostic")/**< Mot clé des options de diagnostique */
+    #define COMPILE_WARNINGS        QString("warnings")/**< Mot clé des options de warning */
+    #define COMPILE_DEBUG           QString("debug_options")/**< Mot clé des options de debug */
+    #define COMPILE_OPTI            QString("optimization")/**< Mot clé des options d'optimisation */
+    #define COMPILE_INSTRU          QString("instrumentation")/**< Mot clé des options d'instrumentation */
+    #define COMPILE_PREPROCESSOR    QString("preprocessor")/**< Mot clé des options de preprocesseur */
+    #define COMPILE_ASSEMBLER       QString("assembler")/**< Mot clé des options de l'assembleur */
+    #define COMPILE_LINKER          QString("linker")/**< Mot clé des options du linker */
+    #define COMPILE_DIRS            QString("dirs_options")/**< Mot clé des options des dossiers */
+    #define COMPILE_CODE_CONV       QString("convention_code")/**< Mot clé des options de convention de code */
+    /** @} */
 
-    #define HTML_BEGIN              QString("<html><head><style>i{color:green;}</style></head><body><p>")
-    #define HTML_END                QString("</p></body></html>")
+    /** @addtogroup HTML_TAG Balises HTML
+      * @{ */
+    #define HTML_BEGIN              QString("<html><head><style>i{color:green;}</style></head><body><p>")/**< Balise HTML utilisée avant les tooltips.@n Applique la couleur verte au texte en italique. */
+    #define HTML_END                QString("</p></body></html>")/**< Balise HTML utilisée à la fin d'un tooltip */
+    /** @} */
 
     /**
      * @struct Color
@@ -47,7 +56,7 @@
         int green;/**< Composante verte */
         int blue;/**< Composante bleue */
     };
-    typedef struct Color Color;
+    typedef struct Color Color;/**< Définition du type Color pour la structure de même nom */
 
     /**
      * @struct CompilerOption
@@ -78,7 +87,7 @@
         QString brief;/**< Résumé de l'option */
         QString tooltip;/**< Détail de l'option qui apparait en la survolant */
     };
-    typedef struct CompilerOption CompilerOption;
+    typedef struct CompilerOption CompilerOption;/**< Définition du type CompilerOption pour la structure de même nom */
 
     /**
      * @class Settings
@@ -92,12 +101,14 @@
     {
         public:
             static Settings* Instance();
-            void init(){}
+            void init();
             void save();
             void load();
             // Get
+            /** @addtogroup SETTING_GET Settings::get
+             * @{ */
             QString style(){return m_style;}/**< GET : Settings::m_style */
-            bool keepSize(){return m_keep_size;}/**< GET : m_keep_size */
+            bool keepSize(){return m_keep_size;}/**< GET : Settings::m_keep_size */
             QString doxygenTemplateDir(){return m_doxygen_template_dir;}/**< GET : Settings::m_doxygen_template_dir */
             bool clearScreen(){return m_clear_screen;}/**< GET : Settings::m_clear_screen */
             QString colorNormal(){return m_color_normal;}/**< GET : Settings::m_color_normal */
@@ -120,7 +131,10 @@
             QList<CompilerOption>* linkerOptions(){return &m_linker_options;}/**< GET : Settings::m_linker_options */
             QList<CompilerOption>* dirsOptions(){return &m_dirs_options;}/**< GET : Settings::m_dirs_options */
             QList<CompilerOption>* codeConvOptions(){return &m_code_conv_options;}/**< GET : Settings::m_code_conv_options */
+            /** @} */
             // Set
+            /** @addtogroup SETTING_SET Settings::set
+             * @{ */
             void setStyle(QString val){m_style = val;}/**< SET : Settings::m_style */
             void setKeepSize(bool val){m_keep_size = val;}/**< SET : Settings::m_keep_size */
             void setDoxygenTemplateDir(QString val){m_doxygen_template_dir = val;}/**< SET : Settings::m_doxygen_template_dir */
@@ -130,6 +144,7 @@
             void setColorError(QString color){m_color_error = color;}/**< SET : Settings::m_color_error */
             void setSourcesExtensions(QStringList exts){m_sources_extensions = exts;}/**< SET : Settings::m_sources_extensions */
             void setHeadersExtensions(QStringList exts){m_headers_extensions = exts;}/**< SET : Settings::m_headers_extensions */
+            /** @} */
 
         private:
             Settings();

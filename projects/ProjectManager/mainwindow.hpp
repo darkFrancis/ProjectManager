@@ -14,10 +14,13 @@
     #include "tabs/tabgit.hpp"
     #include "tabs/tabproject.hpp"
 
-    #define STATUS_DEFAULT_TIMEOUT 5
+    #define STATUS_DEFAULT_TIMEOUT 5/**<  */
 
     // Init
+    /** @addtogroup FILE Fichiers
+      * @{ */
     #define INIT_FILE   QString("config/projectmanager.ini")/**< Fichier d'initialisation du programme */
+    /** @}*/
     #define INIT_X      200
     #define INIT_Y      200
     #define INIT_W      400
@@ -42,7 +45,7 @@
         Q_OBJECT
 
         public:
-            explicit MainWindow(QWidget *parent = nullptr);
+            MainWindow(QWidget *parent = nullptr);
             ~MainWindow();
             void initApp();
             void clean();

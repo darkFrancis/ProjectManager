@@ -73,6 +73,8 @@
             void save();
             void close(){m_open = false;}
             // Set
+            /** @addtogroup CONTEXT_SET Context::set
+             * @{ */
             void setLastSearch(QString last_search){m_last_search = last_search;}
             void setProjectName(QString name){m_project_name = name;}
             void setProjectFile(QString file){m_project_file = file;}
@@ -101,7 +103,10 @@
             void setFlagDirs(QStringList flag){m_flag_dirs = flag;}
             void setFlagConvention(QStringList flag){m_flag_convention = flag;}
             void setFlagOther(QStringList flag){m_flag_other = flag;}
+            /** @} */
             // Get
+            /** @addtogroup CONTEXT_GET Context::get
+             * @{ */
             bool isOpen(){return m_open;}
             QString lastSearch(){return m_last_search;}
             QString projectName(){return m_project_name;}
@@ -131,6 +136,7 @@
             QStringList flagDirs(){return m_flag_dirs;}
             QStringList flagConvention(){return m_flag_convention;}
             QStringList flagOther(){return m_flag_other;}
+            /** @} */
 
         private:
             Context();

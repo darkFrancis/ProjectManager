@@ -26,7 +26,7 @@
         Q_OBJECT
 
         public:
-            explicit TabProject(QWidget *parent = nullptr);
+            TabProject(QWidget *parent = nullptr);
             ~TabProject();
             void init();
             void clean();

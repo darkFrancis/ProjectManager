@@ -23,7 +23,7 @@
         Q_OBJECT
 
         public:
-            explicit CompilerParamWindow(QWidget *parent = nullptr);
+            CompilerParamWindow(QWidget *parent = nullptr);
             ~CompilerParamWindow();
 
         private slots:

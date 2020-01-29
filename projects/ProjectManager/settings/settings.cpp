@@ -28,14 +28,23 @@ Settings* Settings::Instance()
 
 /**
  * Constructeur de la classe Settings.@n
+ * Appelle la fonction d'initialisation Settings::init.
+ */
+Settings::Settings()
+{
+    logger(__PRETTY_FUNCTION__);
+    init();
+}
+
+/**
+ * Initialise l'instance de la classe Settings.@n
  * L'initialisation se fait par la lecture des différents fichiers de configuration :
  * @li #SETTINGS_FILE
  * @li #COLORS_FILE
  * @li #COMPILER_FILE
  */
-Settings::Settings()
+void Settings::init()
 {
-    logger(__PRETTY_FUNCTION__);
     load();
     init_color();
     init_compiler_options();
@@ -44,7 +53,7 @@ Settings::Settings()
 /**
  * Enregistre les données dans le fichiers des options. @n
  * Cette fonction est appelée depuis la fenêtre SettingsWindow.
- * Les données suivante sont enregistrées dans le fichier #SETTINGS_FILE :
+ * Les données suivante sont enregistrées dans le fichier #SETTINGS_FILE:
  * @li Settings::m_style
  * @li Settings::m_keep_size
  * @li Settings::m_doxygen_template_dir
@@ -162,7 +171,10 @@ void Settings::create()
 
 /**
  * Initialise les couleurs dans la liste Settings::m_colors.@n
- * Cette liste est remplie par les informations du fichier #COLORS_FILE
+ * Cette liste est remplie par les informations du fichier #COLORS_FILE.@n
+ * Ce fichier doit comporter des lignes de la forme &lt;coulor> &lt;red> &lt;green> &lt;blue>.@n
+ * @c red @c green et @c blue doivent être des entiers entre 0 et 255.@n
+ * Si une ligne du fichier est incorrecte, une exception est levée.
  */
 void Settings::init_color()
 {
@@ -201,7 +213,10 @@ void Settings::init_color()
                 red = data[1].toInt(&ok_r);
                 green = data[2].toInt(&ok_g);
                 blue = data[3].toInt(&ok_b);
-                if(ok_b && ok_g && ok_r)
+                if(ok_b && ok_g && ok_r &&
+                   red >= 0 && red < 256 &&
+                   green >= 0 && green < 256 &&
+                   blue >= 0 && blue < 256)
                 {
                     add_color(data[0], red, green, blue);
                 }
@@ -218,6 +233,31 @@ void Settings::init_color()
     }
 }
 
+/**
+ * Initialise les options possibles du compilateur.@n
+ * Cette liste est remplie par les informations du fichier #COMPILER_FILE.@n
+ * Ce fichier doit comporter des sections. Une section est identifiée par un
+ * nom de section reconnu suivant les macros suivantes :
+ * @li #COMPILE_OVERALL pour les options générales
+ * @li #COMPILE_LANGUAGE_C pour les options de langage C
+ * @li #COMPILE_LANGUAGE_CXX pour les options de langage C++
+ * @li #COMPILE_DIAGNOSTIC pour les options de diagnostique
+ * @li #COMPILE_WARNINGS pour les options des warnings
+ * @li #COMPILE_DEBUG pour les options de debug
+ * @li #COMPILE_OPTI pour les options d'optimisation
+ * @li #COMPILE_INSTRU pour les options d'instrumentation
+ * @li #COMPILE_PREPROCESSOR pour les options du préprocesseur
+ * @li #COMPILE_ASSEMBLER pour les options de l'assembleur
+ * @li #COMPILE_LINKER pour les options du linker
+ * @li #COMPILE_DIRS pour les options des dossiers
+ * @li #COMPILE_CODE_CONV pour les options de convention de code
+ *
+ * Dans une section, on fait apparaître les options de la forme suivante :
+ * &lt;option>;&lt;description brève>;&lt;tooltip>. A noter que la @c description
+ * @c brève et le @c tooltip sont optionnels. En revanche, il faut garder les
+ * deux caractères séparateur ";" dans tous les cas.@n@n
+ * Voir : @ref KW_COMPILE.
+ */
 void Settings::init_compiler_options()
 {
     logger(__PRETTY_FUNCTION__);
@@ -274,6 +314,14 @@ void Settings::init_compiler_options()
     }
 }
 
+/**
+ * @param name Nom de la couleur à ajouter
+ * @param red Composante rouge de la couleur à ajouter (entre 0 et 255)
+ * @param green Composante verte de la couleur à ajouter (entre 0 et 255)
+ * @param blue Composante bleue de la couleur à ajouter (entre 0 et 255)
+ *
+ * Créé un objet de type Color et l'ajoute à la liste Settings::m_colors.
+ */
 void Settings::add_color(QString name, int red, int green, int blue)
 {
     logger("    add_color " + name);
@@ -285,6 +333,15 @@ void Settings::add_color(QString name, int red, int green, int blue)
     m_colors.append(color);
 }
 
+/**
+ * @param key_word Mot clé de la section
+ * @param option Option à ajouter
+ * @param brief Description brève de l'option
+ * @param tooltip Description complète de l'option
+ *
+ * Créé un objet de type CompilerOption et l'ajoute à la liste correspondant au mot clé @c key_word.@n@n
+ * Voir : @ref KW_COMPILE.
+ */
 void Settings::add_compiler_option(QString key_word, QString option, QString brief, QString tooltip)
 {
     logger("    add_flag " + key_word + " | " + option);

@@ -11,6 +11,13 @@
 
 Context* Context::m_instance = nullptr;
 
+/**
+ * @return Un pointeur vers l'unique instance de la classe Context.
+ *
+ * Permet d'obtenir un pointeur vers l'instance Context.@n
+ * Si aucune instance de Context n'a été créée, la créée.
+ * Dans tout les cas, cette fonction renvoie un pointeur vers cette instance.
+ */
 Context* Context::Instance()
 {
     if(!m_instance)

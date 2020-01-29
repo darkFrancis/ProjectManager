@@ -28,7 +28,7 @@
         Q_OBJECT
 
         public:
-            explicit NewProject(QWidget *parent);
+            NewProject(QWidget *parent);
             ~NewProject();
 
         signals:

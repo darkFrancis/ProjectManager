@@ -13,7 +13,7 @@
  * @param parent Le QWidget parent de cette fenêtre
  *
  * Contructeur de la classe SettingsWindow.@n
- * Ce constructeur hérite de celui de QMainWindow et utilise le système des fichier UI.@n
+ * Ce constructeur hérite de celui de QMainWindow et utilise le système des fichiers d'interface utilisateur.@n
  * Les différents champs sont remplis en fonction des attributs de l'instance Settings.@n
  * Voir @ref SETTING_GET, Ui.
  */

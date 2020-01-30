@@ -12,6 +12,14 @@
 #include "settings/logger.hpp"
 #include <QMessageBox>
 
+/**
+ * @param parent Le QWidget parent de cette fenêtre
+ *
+ * Contructeur de la classe CompilerParamWindow.@n
+ * Ce constructeur hérite de celui de QMainWindow et utilise le système des fichiers d'interface utilisateur.@n
+ * La liste de paramètres est remplie en fonction du mot clé avec la fonction CompilerParamWindow::init.@n
+ * Voir @ref KW_COMPILE Ui.
+ */
 CompilerParamWindow::CompilerParamWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::CompilerParamWindow)
@@ -21,96 +29,161 @@ CompilerParamWindow::CompilerParamWindow(QWidget *parent) :
     init();
 }
 
+/**
+ * Destructeur de la classe CompilerParamWindow.
+ */
 CompilerParamWindow::~CompilerParamWindow()
 {
     logger(__PRETTY_FUNCTION__);
     delete ui;
 }
 
+/**
+ * Ce connecteur est activé lors d'un clic sur le bouton outil des options générales.@n
+ * Il appel la fonction CompilerParamWindow::open_param avec le mot clé #COMPILE_OVERALL.
+ */
 void CompilerParamWindow::on_toolButton_overall_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     open_param(COMPILE_OVERALL);
 }
 
+/**
+ * Ce connecteur est activé lors d'un clic sur le bouton outil des options de langage C.@n
+ * Il appel la fonction CompilerParamWindow::open_param avec le mot clé #COMPILE_LANGUAGE_C.
+ */
 void CompilerParamWindow::on_toolButton_languageC_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     open_param(COMPILE_LANGUAGE_C);
 }
 
+/**
+ * Ce connecteur est activé lors d'un clic sur le bouton outil des options de langage C++.@n
+ * Il appel la fonction CompilerParamWindow::open_param avec le mot clé #COMPILE_LANGUAGE_CXX.
+ */
 void CompilerParamWindow::on_toolButton_languageCxx_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     open_param(COMPILE_LANGUAGE_CXX);
 }
 
+/**
+ * Ce connecteur est activé lors d'un clic sur le bouton outil des options de diagnostique.@n
+ * Il appel la fonction CompilerParamWindow::open_param avec le mot clé #COMPILE_DIAGNOSTIC.
+ */
 void CompilerParamWindow::on_toolButton_diagnostic_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     open_param(COMPILE_DIAGNOSTIC);
 }
 
+/**
+ * Ce connecteur est activé lors d'un clic sur le bouton outil des options des warnings.@n
+ * Il appel la fonction CompilerParamWindow::open_param avec le mot clé #COMPILE_WARNINGS.
+ */
 void CompilerParamWindow::on_toolButton_warnings_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     open_param(COMPILE_WARNINGS);
 }
 
+/**
+ * Ce connecteur est activé lors d'un clic sur le bouton outil des options de debug.@n
+ * Il appel la fonction CompilerParamWindow::open_param avec le mot clé #COMPILE_DEBUG.
+ */
 void CompilerParamWindow::on_toolButton_debug_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     open_param(COMPILE_DEBUG);
 }
 
+/**
+ * Ce connecteur est activé lors d'un clic sur le bouton outil des options d'optimisation.@n
+ * Il appel la fonction CompilerParamWindow::open_param avec le mot clé #COMPILE_OPTI.
+ */
 void CompilerParamWindow::on_toolButton_optimization_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     open_param(COMPILE_OPTI);
 }
 
+/**
+ * Ce connecteur est activé lors d'un clic sur le bouton outil des options d'instrumentation.@n
+ * Il appel la fonction CompilerParamWindow::open_param avec le mot clé #COMPILE_INSTRU.
+ */
 void CompilerParamWindow::on_toolButton_instrumentation_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     open_param(COMPILE_INSTRU);
 }
 
+/**
+ * Ce connecteur est activé lors d'un clic sur le bouton outil des options du préprocesseur.@n
+ * Il appel la fonction CompilerParamWindow::open_param avec le mot clé #COMPILE_PREPROCESSOR.
+ */
 void CompilerParamWindow::on_toolButton_preprocessor_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     open_param(COMPILE_PREPROCESSOR);
 }
 
+/**
+ * Ce connecteur est activé lors d'un clic sur le bouton outil des options de l'assembleur.@n
+ * Il appel la fonction CompilerParamWindow::open_param avec le mot clé #COMPILE_ASSEMBLER.
+ */
 void CompilerParamWindow::on_toolButton_assembler_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     open_param(COMPILE_ASSEMBLER);
 }
 
+/**
+ * Ce connecteur est activé lors d'un clic sur le bouton outil des options du linker.@n
+ * Il appel la fonction CompilerParamWindow::open_param avec le mot clé #COMPILE_LINKER.
+ */
 void CompilerParamWindow::on_toolButton_linker_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     open_param(COMPILE_LINKER);
 }
 
+/**
+ * Ce connecteur est activé lors d'un clic sur le bouton outil des options des dossiers.@n
+ * Il appel la fonction CompilerParamWindow::open_param avec le mot clé #COMPILE_DIRS.
+ */
 void CompilerParamWindow::on_toolButton_dirs_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     open_param(COMPILE_DIRS);
 }
 
+/**
+ * Ce connecteur est activé lors d'un clic sur le bouton outil des options de convention de code.@n
+ * Il appel la fonction CompilerParamWindow::open_param avec le mot clé #COMPILE_CODE_CONV.
+ */
 void CompilerParamWindow::on_toolButton_codeConvention_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     open_param(COMPILE_CODE_CONV);
 }
 
+/**
+ * Ce connecteur est activé lors d'un clic sur le bouton Appliquer.@n
+ * Il applique les modification apportées par l'utilisateur par l'appel
+ * à la fonction CompilerParamWindow::apply.
+ */
 void CompilerParamWindow::on_pushButton_apply_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     apply();
 }
 
+/**
+ * Ce connecteur est activé lors d'un clic sur le bouton OK.@n
+ * Il applique les modification apportées par l'utilisateur par l'appel
+ * à la fonction CompilerParamWindow::apply puis ferme la fenêtre.
+ */
 void CompilerParamWindow::on_pushButton_ok_clicked()
 {
     logger(__PRETTY_FUNCTION__);

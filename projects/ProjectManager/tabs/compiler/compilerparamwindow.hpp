@@ -17,6 +17,13 @@
     /**
      * @class CompilerParamWindow
      * @brief La classe CompilerParamWindow défini la fenêtre de configuration de paramètres de compilation.
+     *
+     * Les paramètres sont classés par catégories (Voir @ref KW_COMPILE).@n
+     * Chaque champs permet de sélectionner les paramètres qui seront utilisés lors
+     * de la compilation par la classe TabCompiler. Un champs est présent pour l'ajout
+     * d'options supplémentaires. Les options prédéfinies sont celles de GCC 7.4.0.
+     *
+     * @n@n Header : compilerparamwindow.hpp.
      */
     class CompilerParamWindow : public QMainWindow
     {

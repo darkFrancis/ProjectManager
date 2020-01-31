@@ -34,6 +34,7 @@ HEADERS += \
         parser.hpp \
         settings/build.hpp \
         settings/extern_doc.hpp \
+        settings/group_doc.hpp \
         settings/logger.hpp \
         settings/settings.hpp \
         settings/settingswindow.hpp \

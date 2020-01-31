@@ -73,7 +73,7 @@
             void save();
             void close(){m_open = false;}
             // Set
-            /** @addtogroup CONTEXT_SET Context::set
+            /** @addtogroup CONTEXT_SET
              * @{ */
             void setLastSearch(QString last_search){m_last_search = last_search;}
             void setProjectName(QString name){m_project_name = name;}
@@ -105,7 +105,7 @@
             void setFlagOther(QStringList flag){m_flag_other = flag;}
             /** @} */
             // Get
-            /** @addtogroup CONTEXT_GET Context::get
+            /** @addtogroup CONTEXT_GET
              * @{ */
             bool isOpen(){return m_open;}
             QString lastSearch(){return m_last_search;}

@@ -12,7 +12,7 @@
     #include <QTextStream>
     #include <QDateTime>
 
-    /** @addtogroup FILE Fichiers
+    /** @addtogroup FILE
       * @{ */
     #define FILE_LOGGER QString("projectmanager.log")/**< Fichier de log */
     /** @} */

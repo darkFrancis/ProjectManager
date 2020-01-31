@@ -17,7 +17,7 @@
     #define STATUS_DEFAULT_TIMEOUT 5/**<  */
 
     // Init
-    /** @addtogroup FILE Fichiers
+    /** @addtogroup FILE
       * @{ */
     #define INIT_FILE   QString("config/projectmanager.ini")/**< Fichier d'initialisation du programme */
     /** @}*/

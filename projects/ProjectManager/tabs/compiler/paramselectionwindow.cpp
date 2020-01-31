@@ -11,6 +11,28 @@
 #include <QMessageBox>
 #include <QStandardItemModel>
 
+/**
+ * @param parent Le QWidget parent de cette fenêtre
+ * @param param_type Mot clé de paramètre de compilation
+ *
+ * Contructeur de la classe ParamSelectionWindow.@n
+ * Ce constructeur hérite de celui de QMainWindow et utilise le système des fichiers
+ * d'interface utilisateur.@n
+ * La liste de paramètres est remplie en fonction du mot clé @c param_type. Ce mot clé
+ * permet de charger une liste d'option par défaut grâce aux fonctions GET de l'instance
+ * Settings. Une liste à deux colonnes est ensuite complétée avec ces informations.
+ * @li La première colonne fait référence à l'option à passer en paramètre au compilateur
+ * @li La deuxième colonne fait référence à la description brève de cette option
+ * @li Le tooltip affiché en passant la souris au dessus de ces champs est la description
+ * complète de cette option
+ *
+ * La première colonne est redimentionnée automatiquement en fonction de ces informations
+ * car celles-ci sont d'une importance majeure. La deuxième colonne se redimentionne
+ * automatiquement avec la fenêtre. Ensuite, la première ligne est sélectionnée par défaut.
+ * La sélection est forcée en mode sélection de ligne et non sélection de cellule (option
+ * par défaut).@n
+ * Voir @ref KW_COMPILE, @ref SETTING_GET, @ref HTML_TAG, Ui.
+ */
 ParamSelectionWindow::ParamSelectionWindow(QWidget *parent, QString param_type) :
     QMainWindow(parent),
     ui(new Ui::ParamSelectionWindow)

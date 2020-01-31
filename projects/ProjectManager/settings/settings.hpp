@@ -11,14 +11,14 @@
     #include <QList>
     #include "build.hpp"
 
-    /** @addtogroup FILE Fichiers
+    /** @addtogroup FILE
       * @{ */
     #define SETTINGS_FILE           QString("config/settings.conf")/**< Définition du nom de fichier des options */
     #define COLORS_FILE             QString("config/colors.conf")/**< Définition du nom de fichier des couleurs */
     #define COMPILER_FILE           QString("config/compiler.conf")/**< Définition du nom de fichier d'option de compilateur */
     /** @} */
 
-    /** @addtogroup KW_COMPILE Mots clés compilateur
+    /** @addtogroup KW_COMPILE
       * @{ */
     #define COMPILE_OVERALL         QString("overall")/**< Mot clé des options générales */
     #define COMPILE_LANGUAGE_C      QString("c_language")/**< Mot clé des options de langage C */
@@ -35,7 +35,7 @@
     #define COMPILE_CODE_CONV       QString("convention_code")/**< Mot clé des options de convention de code */
     /** @} */
 
-    /** @addtogroup HTML_TAG Balises HTML
+    /** @addtogroup HTML_TAG
       * @{ */
     #define HTML_BEGIN              QString("<html><head><style>i{color:green;}</style></head><body><p>")/**< Balise HTML utilisée avant les tooltips.@n Applique la couleur verte au texte en italique. */
     #define HTML_END                QString("</p></body></html>")/**< Balise HTML utilisée à la fin d'un tooltip */
@@ -105,7 +105,7 @@
             void save();
             void load();
             // Get
-            /** @addtogroup SETTING_GET Settings::get
+            /** @addtogroup SETTING_GET
              * @{ */
             QString style(){return m_style;}/**< GET : Settings::m_style */
             bool keepSize(){return m_keep_size;}/**< GET : Settings::m_keep_size */
@@ -133,7 +133,7 @@
             QList<CompilerOption>* codeConvOptions(){return &m_code_conv_options;}/**< GET : Settings::m_code_conv_options */
             /** @} */
             // Set
-            /** @addtogroup SETTING_SET Settings::set
+            /** @addtogroup SETTING_SET
              * @{ */
             void setStyle(QString val){m_style = val;}/**< SET : Settings::m_style */
             void setKeepSize(bool val){m_keep_size = val;}/**< SET : Settings::m_keep_size */

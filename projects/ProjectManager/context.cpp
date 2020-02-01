@@ -90,6 +90,7 @@ void Context::save()
                << KW_AUTHOR << "=" << m_author << endl
                << KW_PROJECT_VESRION << "=" << m_project_version << endl;
         save_description(&stream);
+        stream << endl;
 
         stream << "# Gestion Git et Doxygen" << endl
                << KW_GIT_PATH << "=" << m_git_path << endl
@@ -116,6 +117,12 @@ void Context::save()
         save_flags(KW_FLAG_DIRS, &stream);
         save_flags(KW_FLAG_CODE_CONV, &stream);
         save_flags(KW_FLAG_OTHER, &stream);
+        stream << endl;
+
+        stream << "# Fichiers" << endl;
+        save_sources(KW_SOURCES, &stream);
+        save_sources(KW_HEADERS, &stream);
+        save_sources(KW_RESSOURCES, &stream);
     }
 }
 
@@ -147,7 +154,6 @@ void Context::save_description(QTextStream *stream)
             }
         }
     }
-    *stream << endl;
 }
 
 void Context::save_sources(QString kw, QTextStream* stream)
@@ -156,8 +162,10 @@ void Context::save_sources(QString kw, QTextStream* stream)
     QStringList* tmp_list;
     if(kw == KW_SOURCES) tmp_list = &m_sources;
     else if(kw == KW_HEADERS) tmp_list = &m_headers;
-    else tmp_list = &m_ressources;
+    else /* KW_RESSOURCES */ tmp_list = &m_ressources;
 
+    trimList(tmp_list);
+    tmp_list->sort();
     if(tmp_list->length() > 0)
     {
         *stream << kw << " = " << tmp_list->first();
@@ -188,6 +196,7 @@ void Context::save_flags(QString kw, QTextStream* stream)
     else if(kw == KW_FLAG_CODE_CONV) tmp_list = &m_flag_convention;
     else /* KW_FLAG_OTHER */ tmp_list = &m_flag_other;
 
+    trimList(tmp_list);
     if(tmp_list->length() > 0)
     {
         *stream << kw << " = " << tmp_list->first();
@@ -279,4 +288,15 @@ void initComboType(QComboBox* combo)
     combo->addItem(LABEL_LIBCXX);
     combo->addItem(LABEL_SHAREDC);
     combo->addItem(LABEL_SHAREDCXX);
+}
+
+void trimList(QStringList* list)
+{
+    for(int i = 0; i < list->length(); i++)
+    {
+        if(list->at(i).simplified() == "")
+        {
+            list->removeAt(i);
+        }
+    }
 }

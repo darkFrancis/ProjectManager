@@ -187,5 +187,6 @@
     QString type2label(QString type);
     QString label2type(QString label);
     void initComboType(QComboBox* combo);
+    void trimList(QStringList* list);
 
 #endif // CONTEXT_HPP

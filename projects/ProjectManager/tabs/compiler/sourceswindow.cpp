@@ -11,6 +11,20 @@
 #include "settings/settings.hpp"
 #include "settings/logger.hpp"
 
+/**
+ * @param parent Le QWidget parent de cette fenêtre
+ *
+ * Contructeur de la classe ParamSelectionWindow.@n
+ * Ce constructeur hérite de celui de QMainWindow et utilise le système des fichiers
+ * d'interface utilisateur.@n
+ * Cette fenêtre contient 3 listes pour contenir:
+ * @li Les sources dont les extensions sont définies dans Settings::m_sources_extensions
+ * @li Les headers dont les extensions sont définies dans Settings::m_headers_extensions
+ * @li Les ressources qui sont tous les autres fichiers
+ *
+ * Ce constructeur va appeler la fonction SourcesWindow::init pour s'initialiser.
+ * Voir Settings, Context, Ui.
+ */
 SourcesWindow::SourcesWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::SourcesWindow)
@@ -18,17 +32,57 @@ SourcesWindow::SourcesWindow(QWidget *parent) :
     ui->setupUi(this);
 
     logger(__PRETTY_FUNCTION__);
-    connect(ui->listWidget_sources, &QListWidget::itemClicked, this, &SourcesWindow::setChecked);
-    connect(ui->listWidget_headers, &QListWidget::itemClicked, this, &SourcesWindow::setChecked);
-    connect(ui->listWidget_ressources, &QListWidget::itemClicked, this, &SourcesWindow::setChecked);
+    init();
 }
 
+/**
+ * Destructeur de la classe SourcesWindow
+ */
 SourcesWindow::~SourcesWindow()
 {
     logger(__PRETTY_FUNCTION__);
     delete ui;
 }
 
+/**
+ * Initialise la fenêtre.@n
+ * Cette fonction utilise les méthodes GET de l'instance Context pour ajouter
+ * les listes de fichiers dans la liste leur correspondant à l'aide de la fonction
+ * SourcesWindow::addItem.@n
+ * Voir @ref CONTEXT_GET, Ui.
+ */
+void SourcesWindow::init()
+{
+    logger(__PRETTY_FUNCTION__);
+    Context* ctx = Context::Instance();
+    for(QString path : ctx->sources()) addItem(path, ui->listWidget_sources);
+    for(QString path : ctx->headers()) addItem(path, ui->listWidget_headers);
+    for(QString path : ctx->ressources()) addItem(path, ui->listWidget_ressources);
+}
+
+/**
+ * Enregistre les modifications apportées par l'utilisateur.@n
+ * Cette fonction utilise les méthodes SET de l'instance Context pour enregistrer
+ * les élément présent dans la fenêtre dans les liste des fichiers. Puis elle appelle
+ * la fonction Context::save pour enregistrer les modification apportées dans le
+ * fichier de projet.
+ * Voir @ref CONTEXT_SET, @ref FILE, Ui.
+ */
+void SourcesWindow::save()
+{
+    Context* ctx = Context::Instance();
+    ctx->setSources(getSources());
+    ctx->setHeaders(getHeaders());
+    ctx->setRessources(getRessources());
+    ctx->save();
+}
+
+/**
+ * @return Liste des sources
+ *
+ * Cette fonction renvoie une liste des chemins absolus vers les
+ * fichiers des sources.
+ */
 QStringList SourcesWindow::getSources()
 {
     logger(__PRETTY_FUNCTION__);
@@ -40,6 +94,12 @@ QStringList SourcesWindow::getSources()
     return source_list;
 }
 
+/**
+ * @return Liste des headers
+ *
+ * Cette fonction renvoie une liste des chemins absolus vers les
+ * fichiers des headers.
+ */
 QStringList SourcesWindow::getHeaders()
 {
     logger(__PRETTY_FUNCTION__);
@@ -51,6 +111,12 @@ QStringList SourcesWindow::getHeaders()
     return header_list;
 }
 
+/**
+ * @return Liste des ressources
+ *
+ * Cette fonction renvoie une liste des chemins absolus vers les
+ * fichiers des ressources.
+ */
 QStringList SourcesWindow::getRessources()
 {
     logger(__PRETTY_FUNCTION__);
@@ -62,6 +128,13 @@ QStringList SourcesWindow::getRessources()
     return ressource_list;
 }
 
+/**
+ * Ce connecteur s'active lors d'un clic sur le bouton Ajouter par l'utilisateur.@n
+ * Dans ce cas, une fenêtre s'ouvre pour que l'utilisateur sélectionne des fichiers.
+ * Ces fichiers sont ensuite séprés en 3 catégories : les sources, les headers et
+ * les ressources selon leur extension de fichier (voir SourcesWindow::SourcesWindow).
+ * La fonction SourcesWindow::save est ensuite appelée.
+ */
 void SourcesWindow::on_pushButton_add_clicked()
 {
     logger(__PRETTY_FUNCTION__);
@@ -113,9 +186,15 @@ void SourcesWindow::on_pushButton_add_clicked()
         ui->listWidget_sources->sortItems();
         ui->listWidget_headers->sortItems();
         ui->listWidget_ressources->sortItems();
+        save();
     }
 }
 
+/**
+ * Ce connecteur s'active lors d'un clic sur le bouton Supprimer par l'utilisateur.@n
+ * Dans ce cas, tous les items coché par l'utilisateur sont supprimés.
+ * La fonction SourcesWindow::save est ensuite appelée.
+ */
 void SourcesWindow::on_pushButton_remove_clicked()
 {
     logger(__PRETTY_FUNCTION__);
@@ -157,30 +236,20 @@ void SourcesWindow::on_pushButton_remove_clicked()
     {
         delete rem_ressources[i];
     }
+    save();
 }
 
 /**
- * @brief SourcesWindow::setChecked permet de définir l'état (coché/non coché) d'un item de la liste
+ * @param text Texte de l'élément à ajouter à la liste
+ * @param widget Liste dans laquelle ajouter l'élément
  *
- * @li Si l'item est coché, le décoche
- * @li Sinon, le coche
- *
- * @param item L'item à définir
+ * Cette fonction ajoute un nouvel item comportant le texte @c text dans la
+ * liste @c widget. Ce nouvel élément pourra être sélectionné par une case
+ * cochable du côté gauche ou par double-clic. Il est par défaut non-coché.@n
+ * Voir SourcesWindow::on_listWidget_sources_itemDoubleClicked
+ * SourcesWindow::on_listWidget_headers_itemDoubleClicked
+ * SourcesWindow::on_listWidget_ressources_itemDoubleClicked
  */
-void SourcesWindow::setChecked(QListWidgetItem* item)
-{
-    if(item->checkState() == Qt::Checked)
-    {
-        logger("    set_check false");
-        item->setCheckState(Qt::Unchecked);
-    }
-    else
-    {
-        logger("    set_check true");
-        item->setCheckState(Qt::Checked);
-    }
-}
-
 void SourcesWindow::addItem(QString text, QListWidget* widget)
 {
     logger("    add_item " + text);
@@ -210,4 +279,56 @@ bool SourcesWindow::isSource(QString extension)
 bool SourcesWindow::isHeader(QString extension)
 {
     return Settings::Instance()->headersExtensions().contains(extension);
+}
+
+/**
+ * @param item Item double-cliqué par l'utilisateur
+ *
+ * Ce connecteur est appelé lors du double-clic sur un item de la liste des sources.@n
+ * Appel la fonction SourcesWindow::itemDoubleClicked pour la gestion de cet item.
+ */
+void SourcesWindow::on_listWidget_sources_itemDoubleClicked(QListWidgetItem *item)
+{
+    itemDoubleClicked(item);
+}
+
+/**
+ * @param item Item double-cliqué par l'utilisateur
+ *
+ * Ce connecteur est appelé lors du double-clic sur un item de la liste des headers.@n
+ * Appel la fonction SourcesWindow::itemDoubleClicked pour la gestion de cet item.
+ */
+void SourcesWindow::on_listWidget_headers_itemDoubleClicked(QListWidgetItem *item)
+{
+    itemDoubleClicked(item);
+}
+
+/**
+ * @param item Item double-cliqué par l'utilisateur
+ *
+ * Ce connecteur est appelé lors du double-clic sur un item de la liste des ressources.@n
+ * Appel la fonction SourcesWindow::itemDoubleClicked pour la gestion de cet item.
+ */
+void SourcesWindow::on_listWidget_ressources_itemDoubleClicked(QListWidgetItem *item)
+{
+    itemDoubleClicked(item);
+}
+
+/**
+ * @param item Item double-cliqué par l'utilisateur
+ *
+ * L'item @c item change d'état entre coché et non-coché.
+ */
+void SourcesWindow::itemDoubleClicked(QListWidgetItem *item)
+{
+    if(item->checkState() == Qt::Checked)
+    {
+        logger("    item uncheked");
+        item->setCheckState(Qt::Unchecked);
+    }
+    else
+    {
+        logger("    item cheked");
+        item->setCheckState(Qt::Checked);
+    }
 }

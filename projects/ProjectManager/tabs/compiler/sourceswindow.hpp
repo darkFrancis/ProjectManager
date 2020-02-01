@@ -30,22 +30,25 @@
         public:
             SourcesWindow(QWidget *parent = nullptr);
             ~SourcesWindow();
+            void init();
+            void save();
             QStringList getSources();
             QStringList getHeaders();
             QStringList getRessources();
 
-        public slots:
-            void setChecked(QListWidgetItem* item);
-
         private slots:
             void on_pushButton_add_clicked();
             void on_pushButton_remove_clicked();
+            void on_listWidget_sources_itemDoubleClicked(QListWidgetItem *item);
+            void on_listWidget_headers_itemDoubleClicked(QListWidgetItem *item);
+            void on_listWidget_ressources_itemDoubleClicked(QListWidgetItem *item);
 
         private:
             Ui::SourcesWindow *ui;/**< UI de la classe SourcesWindow */
             void addItem(QString text, QListWidget* widget);
             bool isSource(QString extension);
             bool isHeader(QString extension);
+            void itemDoubleClicked(QListWidgetItem *item);
     };
 
 #endif // SOURCESWINDOW_HPP

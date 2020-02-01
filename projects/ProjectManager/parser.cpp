@@ -72,7 +72,7 @@ bool Parser::load(QString filename)
                         new_param = new_param.simplified();
                         param[1] += " " + new_param;
                     }
-                    m_map.insert(param[0], param[1]);
+                    m_map.insert(param[0].simplified(), param[1].simplified());
                 }
             }
         }

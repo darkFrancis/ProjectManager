@@ -16,31 +16,19 @@ BUILD_DIR=
 OUTPUT=
 
 # FLAGS pour compilateur GCC
-FLAG_OVERALL = 
 
-FLAG_C = 
+# Fichiers
+SOURCES = /home/francis/dev/projects/ProjectManager/main.cpp \
+    /home/francis/dev/projects/ProjectManager/mainwindow.cpp \
+    /home/francis/dev/projects/ProjectManager/newproject.cpp \
+    /home/francis/dev/projects/ProjectManager/parser.cpp
 
-FLAG_CXX = 
+HEADERS = /home/francis/dev/projects/ProjectManager/context.hpp \
+    /home/francis/dev/projects/ProjectManager/mainwindow.hpp \
+    /home/francis/dev/projects/ProjectManager/newproject.hpp \
+    /home/francis/dev/projects/ProjectManager/parser.hpp
 
-FLAG_DIAG = 
-
-FLAG_WARN = 
-
-FLAG_DEBUG = 
-
-FLAG_OPT = 
-
-FLAG_INST = 
-
-FLAG_PREPROCESS = 
-
-FLAG_ASSEMBLER = 
-
-FLAG_LINKER = 
-
-FLAG_DIRS = 
-
-FLAG_CONVENTION = 
-
-FLAG_OTHER = 
+RESSOURCES = /home/francis/dev/projects/ProjectManager/Doxyfile \
+    /home/francis/dev/projects/ProjectManager/mainwindow.ui \
+    /home/francis/dev/projects/ProjectManager/newproject.ui
 

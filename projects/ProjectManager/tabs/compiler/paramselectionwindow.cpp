@@ -125,18 +125,32 @@ ParamSelectionWindow::ParamSelectionWindow(QWidget *parent, QString param_type) 
     ui->tableView->selectRow(0);
 }
 
+/**
+ * Destructeur de la classe ParamSelectionWindow
+ */
 ParamSelectionWindow::~ParamSelectionWindow()
 {
     logger(__PRETTY_FUNCTION__);
     delete ui;
 }
 
+/**
+ * Ce connecteur est activé par un clic sur le bouton Fermer.@n
+ * Ferme la fenêtre.
+ */
 void ParamSelectionWindow::on_pushButton_close_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     this->close();
 }
 
+/**
+ * Ce connecteur est activé par un clic sur le bouton OK.@n
+ * Emet le signal ParamSelectionWindow::selected avec comme paramètre le
+ * mot clé ParamSelectionWindow::m_kw et la valeur de la première cellule
+ * de la case sélectionnée (l'option).@n
+ * Ferme la fenêtre.
+ */
 void ParamSelectionWindow::on_pushButton_ok_clicked()
 {
     logger(__PRETTY_FUNCTION__);

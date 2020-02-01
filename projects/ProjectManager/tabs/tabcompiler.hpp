@@ -10,12 +10,15 @@
     #include "tab.hpp"
     #include <QProcess>
 
-    #define TEXT_BUILDRUN   QString("build&run")
-    #define TEXT_BUILD      QString("build")
-    #define TEXT_RUN        QString("run")
-    #define TEXT_CLEAN      QString("clean")
-    #define TEXT_INSTALL    QString("install")
-    #define TEXT_UNINSTALL  QString("uninstall")
+    /** @addtogroup COMPILE_ACTION
+      * @{ */
+    #define TEXT_BUILDRUN   QString("build&run")/**< Texte pour l'action de compilation puis d'exécution */
+    #define TEXT_BUILD      QString("build")/**< Texte pour l'action de compilation seule */
+    #define TEXT_RUN        QString("run")/**< Texte pour l'action d'exécution seule */
+    #define TEXT_CLEAN      QString("clean")/**< Texte pour l'action de nettoyage */
+    #define TEXT_INSTALL    QString("install")/**< Texte pour l'action d'installation */
+    #define TEXT_UNINSTALL  QString("uninstall")/**< Texte pour l'action de désinstallation */
+    /** @} */
 
     namespace Ui {
         class TabCompiler;

@@ -15,8 +15,8 @@
     #include <QFontComboBox>
     #include <QGroupBox>
 
-    #define DOC_YES QString("YES")
-    #define DOC_NO  QString("NO")
+    #define DOC_YES QString("YES")/**< Valeur @c true pour la configuration Doxygen */
+    #define DOC_NO  QString("NO")/**< Valeur @c false pour la configuration Doxygen */
 
     namespace Ui {
         class TabDoxygen;

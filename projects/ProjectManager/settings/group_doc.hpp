@@ -25,10 +25,19 @@
 
     /**
       * @defgroup HTML_TAG Balises HTML
-      * @brief Balises HTML particulières
+      * @brief Les balises HTML particulières
       *
       * Ces balises forment une base pour simplifier le code lors de la
       * création de texte au format HTML.
+      */
+
+    /**
+      * @defgroup COMPILE_ACTION Actions du compilateur
+      * @brief Les actions possibles du compilateur
+      *
+      * Ces différentes actions sont sélectionnable par un menu déroulant sur
+      * l'onglet TabCompiler. Elle sont activée par le connecteur
+      * TabCompiler::on_pushButton_action_clicked.
       */
 
     /**
@@ -37,7 +46,8 @@
       *
       * Ces mots clés sont utilisés :
       * @li lors de la lecture du fichier #COMPILER_FILE
-      * @li lors de l'initialisation des fenêtres de gestions des paramètres de compilation
+      * @li lors de l'initialisation des fenêtres de gestions des paramètres
+      * de compilation
       */
 
     /**

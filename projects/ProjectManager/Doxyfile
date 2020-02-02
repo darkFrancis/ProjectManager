@@ -1,6 +1,6 @@
 # Configuration du projet
 PROJECT_NAME=My Project
-OUTPUT_DIRECTORY=/home/francis/dev/projects/ProjectManager/doc
+OUTPUT_DIRECTORY=doc
 CREATE_SUBDIRS=YES
 OUTPUT_LANGUAGE=French
 ABBREVIATE_BRIEF=$name

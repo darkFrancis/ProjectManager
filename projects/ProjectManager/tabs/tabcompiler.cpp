@@ -218,6 +218,12 @@ void TabCompiler::action_build_run()
     action_run();
 }
 
+/**
+ * Fonction correspondant à l'action #TEXT_BUILDRUN.@n
+ * Exécute les fonctions TabCompiler::action_build et
+ * TabCompiler::action_run.@n
+ * Voir @ref COMPILE_ACTION, @ref TABCOMPILER_ACTION.
+ */
 void TabCompiler::action_build()
 {
     logger(__PRETTY_FUNCTION__);

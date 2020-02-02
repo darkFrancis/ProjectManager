@@ -16,6 +16,15 @@
 #include "parser.hpp"
 #include "settings/logger.hpp"
 
+/**
+ * @param parent Le QWidget parent de cet onglet
+ *
+ * Contructeur de la classe TabDoxygen. Il hérite de celui de Tab et utilise
+ * le système des fichiers d'interface utilisateur.@n
+ * Ce constructeur connect le signal TabDoxygen::foundPath avec le connecteur
+ * TabDoxygen::writePath.@n
+ * Voir Ui.
+ */
 TabDoxygen::TabDoxygen(QWidget *parent) :
     Tab(parent),
     ui(new Ui::TabDoxygen)
@@ -26,6 +35,9 @@ TabDoxygen::TabDoxygen(QWidget *parent) :
     connect(this, SIGNAL(foundPath(QString,QLineEdit*)), this, SLOT(writePath(QString,QLineEdit*)));
 }
 
+/**
+ * Destructeur de la classe TabDoxygen.
+ */
 TabDoxygen::~TabDoxygen()
 {
     logger(__PRETTY_FUNCTION__);

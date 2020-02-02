@@ -21,8 +21,7 @@
  *
  * Contructeur de la classe TabCompiler. Il hérite de celui de Tab et utilise
  * le système des fichiers d'interface utilisateur.@n
- * Ce constructeur appel la fonction d'initialisation TabCompiler::init puis
- * ajoute les raccourcis clavier suivant :
+ * Ce constructeur ajoute les raccourcis clavier suivant :
  * @li &lt;Ctrl+X> pour faire appel à la fonction TabCompiler::forceEnd
  * @li &lt;Ctrl+E> pour effacer l'affichage de l'onglet
  *
@@ -34,8 +33,6 @@ TabCompiler::TabCompiler(QWidget *parent) :
 {
     ui->setupUi(this);
     logger(__PRETTY_FUNCTION__);
-
-    init();
 
     QShortcut* shortcut_terminate = new QShortcut(QKeySequence("Ctrl+X"), this);
     connect(shortcut_terminate, &QShortcut::activated, this, &TabCompiler::forceEnd);
@@ -219,17 +216,14 @@ void TabCompiler::action_build_run()
 }
 
 /**
- * Fonction correspondant à l'action #TEXT_BUILDRUN.@n
- * Exécute les fonctions TabCompiler::action_build et
- * TabCompiler::action_run.@n
+ * Fonction correspondant à l'action #TEXT_BUILD.@n
+ * @todo Ecrire cette fonction + la tester
+ *
  * Voir @ref COMPILE_ACTION, @ref TABCOMPILER_ACTION.
  */
 void TabCompiler::action_build()
 {
     logger(__PRETTY_FUNCTION__);
-    /**
-     * @todo
-     */
     Context* ctx = Context::Instance();
     QString compiler = (ctx->projectType()[ctx->projectType().length()-1] == QChar('x') ? "g++" : "gcc");
     // Preprocess + Assembleur
@@ -241,6 +235,12 @@ void TabCompiler::action_build()
     // Linkage
 }
 
+/**
+ * Fonction correspondant à l'action #TEXT_RUN.@n
+ * Exécute le programme se trouvant dans le dossier de build et portant
+ * le nom de la sortie.@n
+ * Voir @ref COMPILE_ACTION, @ref TABCOMPILER_ACTION.
+ */
 void TabCompiler::action_run()
 {
     logger(__PRETTY_FUNCTION__);
@@ -249,20 +249,35 @@ void TabCompiler::action_run()
     send_cmd("./" + info.fileName(), QStringList(), info.absoluteDir().absolutePath());
 }
 
+/**
+ * Fonction correspondant à l'action #TEXT_CLEAN.@n
+ * Nettoie le dossieer de build en supprimant tous les fichier d'extension
+ * .o générés lors d'une précédante compilation.@n
+ * Voir @ref COMPILE_ACTION, @ref TABCOMPILER_ACTION.
+ */
 void TabCompiler::action_clean()
 {
     logger(__PRETTY_FUNCTION__);
     send_cmd("rm", QStringList() << "-rf" << "*.o", Context::Instance()->buildDir());
 }
 
+/**
+ * Fonction correspondant à l'action #TEXT_INSTALL.@n
+ * @todo Ecrire cette fonction (commande install) + la tester
+ *
+ * Voir @ref COMPILE_ACTION, @ref TABCOMPILER_ACTION.
+ */
 void TabCompiler::action_install()
 {
-    /**
-     * @todo utiliser commande install
-     */
     logger(__PRETTY_FUNCTION__);
 }
 
+/**
+ * Fonction correspondant à l'action #TEXT_UNINSTALL.@n
+ * @todo Ecrire cette fonction (commande rm?) + la tester
+ *
+ * Voir @ref COMPILE_ACTION, @ref TABCOMPILER_ACTION.
+ */
 void TabCompiler::action_uninstall()
 {
     /**
@@ -271,6 +286,21 @@ void TabCompiler::action_uninstall()
     logger(__PRETTY_FUNCTION__);
 }
 
+/**
+ * @param cmd Commande à exécuter
+ * @param param Arguments à passer à la commande
+ * @param dir Répertoire dans lequel exécuter la commande
+ *
+ * Si un processus est déjà en cours, ajoute la commande à exécuter dans la
+ * file d'attente via la fonction TabCompiler::addCommand. Sinon, prépare le
+ * processus et demande son exécution en le connectant comme suit :
+ * @li Sortie standard -> TabCompiler::updateStandardOutput
+ * @li Erreur standard -> TabCompiler::updateStandardError
+ * @li Fin d'exécution -> TabCompiler::endCmd
+ *
+ * Cette fonction désactive le bouton d'exécution de commandes.@n
+ * Voir TabCompiler::m_process.
+ */
 void TabCompiler::send_cmd(QString cmd, QStringList param /*= QStringList()*/, QString dir /*= "."*/)
 {
     logger("    cmd: " + cmd + " " + param.join(' '));
@@ -291,18 +321,37 @@ void TabCompiler::send_cmd(QString cmd, QStringList param /*= QStringList()*/, Q
     }
 }
 
+/**
+ * Ce connecteur est activé lorsqu'il est possible de lire la sortie standard
+ * du processus en cours. La lecture de sortie de processus est cablée sur la
+ * sortie standard et la fonction TabCompiler::readProcess est appelée.@n
+ * Voir TabCompiler::m_process.
+ */
 void TabCompiler::updateStandardOutput()
 {
     m_process->setReadChannel(QProcess::StandardOutput);
     readProcess();
 }
 
+/**
+ * Ce connecteur est activé lorsqu'il est possible de lire l'erreur standard
+ * du processus en cours. La lecture de sortie de processus est cablée sur
+ * l'erreur standard et la fonction TabCompiler::readProcess est appelée.@n
+ * Voir TabCompiler::m_process.
+ */
 void TabCompiler::updateStandardError()
 {
     m_process->setReadChannel(QProcess::StandardError);
     readProcess();
 }
 
+/**
+ * Lecture de la sortie du processus en cours.@n
+ * Utilise un format HTML pour afficher la sortie/erreur du processus en cours
+ * avec un texte coloré selon le cas (voir Settings::m_color_normal et
+ * Settings::m_color_error).@n
+ * Voir TabCompiler::m_process.
+ */
 void TabCompiler::readProcess()
 {
     QString to_write = "";
@@ -328,6 +377,19 @@ void TabCompiler::readProcess()
     ui->textEdit_status->append(to_write);
 }
 
+/**
+ * @param exitCode Code retour de l'exécution du processus
+ * @param exitStatus Status final du processus
+ *
+ * Ce connecteur est activé lorsque le processus en cours se termine.@n
+ * Utilise un format HTML pour afficher le résultat du processus en cours
+ * avec un texte coloré selon le cas (voir Settings::m_color_success et
+ * Settings::m_color_error). Si il reste des commandes à exécuter dans
+ * la fie d'attente, exécute la suivante à l'aide de la fonction
+ * TabCompiler::send_cmd. Sinon, réactive le bouton d'exécution des
+ * commandes.@n
+ * Voir TabCompiler::m_process, Command.
+ */
 void TabCompiler::endCmd(int exitCode, QProcess::ExitStatus exitStatus)
 {
     logger("    end_cmd: " + QString::number(exitCode));
@@ -355,6 +417,17 @@ void TabCompiler::endCmd(int exitCode, QProcess::ExitStatus exitStatus)
     }
 }
 
+/**
+ * @param cmd Nom de la commande
+ * @param param Arguments de la commande
+ * @param dir Répertoire dans lequel exécuter la commande
+ *
+ * Ajoute une commande dans la file d'attente des commandes, TabCompiler::m_commands.@n
+ * Un objet Command est créé avec les arguments de cette fonction avant d'être
+ * ajouté à cette liste. Cette commande sera exécutée pluus tard par la fonction
+ * TabCompiler::send_cmd.@n
+ * Voir TabCompiler::endCmd.
+ */
 void TabCompiler::addCommand(QString cmd, QStringList param, QString dir)
 {
     Command command;
@@ -364,6 +437,12 @@ void TabCompiler::addCommand(QString cmd, QStringList param, QString dir)
     m_commands.append(command);
 }
 
+/**
+ * Tue le processus en cours.@n
+ * Ceci entraine un crash du processus si celui-ci n'était pas terminé.
+ * Le connecteur TabCompiler::endCmd est donc appelé.@n
+ * Voir TabCompiler::m_process.
+ */
 void TabCompiler::forceEnd()
 {
     logger(__PRETTY_FUNCTION__);
@@ -371,6 +450,12 @@ void TabCompiler::forceEnd()
     m_process->kill();
 }
 
+/**
+ * Ce connecteur est activé par un clic souris sur le bouton Défaut par l'utilisateur.@n
+ * Il remet à zéro les informations de l'onglet TabCompiler:
+ * @li Dossier de build : "ProjectDir"/build/
+ * @li Sortie : bin/"ProjectName"
+ */
 void TabCompiler::on_pushButton_default_clicked()
 {
     logger(__PRETTY_FUNCTION__);
@@ -381,6 +466,11 @@ void TabCompiler::on_pushButton_default_clicked()
     ui->lineEdit_output->setText("bin/" + Context::Instance()->projectName());
 }
 
+/**
+ * Ce connecteur est activé par un clic souris sur le bouton Appliquer par l'utilisateur.@n
+ * Il appelle enregistre les modifications apportées par l'utilisateur avec la fonction
+ * TabCompiler::save.
+ */
 void TabCompiler::on_pushButton_apply_clicked()
 {
     logger(__PRETTY_FUNCTION__);

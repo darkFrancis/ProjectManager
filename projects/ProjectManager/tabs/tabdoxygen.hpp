@@ -58,6 +58,15 @@
             void clean();
 
         signals:
+            /**
+             * @param path Chemin du fichier/dossier sélectionné
+             * @param lineedit La ligne d'édition dans laquelle écrire le chemin
+             *
+             * Ce signal est émit suite à la recherche d'un fichier/dossier par
+             * l'utilisateur. Cette recherche est demandée si l'utilisateur clic
+             * sur un bouton outil de la fenêtre.@n
+             * Voir TabDoxygen::writePath.
+             */
             void foundPath(QString path, QLineEdit* lineedit);
 
         private slots:

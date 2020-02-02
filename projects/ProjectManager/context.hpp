@@ -12,37 +12,42 @@
     #include <QTextStream>
     #include <QComboBox>
 
-    #define INDENT_SPACES "    "
-    #define DESC_WIDTH 80
+    #define INDENT_SPACES "    "/**< Espaces pour les indentations (= 4 espaces) */
+    #define DESC_WIDTH 80/**< Nombre de caractères maximum par ligne de description */
 
-    #define KW_PROJECT_NAME     QString("PROJECT_NAME")
-    #define KW_PROJECT_TYPE     QString("PROJECT_TYPE")
-    #define KW_PROJECT_VESRION  QString("PROJECT_VERSION")
-    #define KW_PROJECT_DESC     QString("PROJECT_DESCRIPTION")
-    #define KW_AUTHOR           QString("AUTHOR")
-    #define KW_BUILD_DIR        QString("BUILD_DIR")
-    #define KW_OUTPUT           QString("OUTPUT")
-    #define KW_GIT_PATH         QString("GIT_PATH")
-    #define KW_DOXYFILE         QString("DOXYFILE")
-    #define KW_SOURCES          QString("SOURCES")
-    #define KW_HEADERS          QString("HEADERS")
-    #define KW_RESSOURCES       QString("RESSOURCES")
+    /** @addtogroup PROJECT_FLAGS
+      * @{ */
+    #define KW_PROJECT_NAME     QString("PROJECT_NAME")/**< Flag du nom de projet */
+    #define KW_PROJECT_TYPE     QString("PROJECT_TYPE")/**< Flag du type de projet */
+    #define KW_PROJECT_VESRION  QString("PROJECT_VERSION")/**< Flag de version du projet */
+    #define KW_PROJECT_DESC     QString("PROJECT_DESCRIPTION")/**< Flag de description du projet */
+    #define KW_AUTHOR           QString("AUTHOR")/**< Flag de l'auteur du projet */
+    #define KW_BUILD_DIR        QString("BUILD_DIR")/**< Flag du répertoire de compilation du projet */
+    #define KW_OUTPUT           QString("OUTPUT")/**< Flag du répertoire de sortie du projet */
+    #define KW_GIT_PATH         QString("GIT_PATH")/**< Flag du répertoire GIT du projet */
+    #define KW_DOXYFILE         QString("DOXYFILE")/**< Flag du fichier Doxygen projet */
+    #define KW_SOURCES          QString("SOURCES")/**< Flag des sources du projet */
+    #define KW_HEADERS          QString("HEADERS")/**< Flag des headers du projet */
+    #define KW_RESSOURCES       QString("RESSOURCES")/**< Flag des ressources du projet */
 
-    #define KW_FLAG_OVERALL      QString("FLAG_OVERALL")
-    #define KW_FLAG_LANGUAGE_C   QString("FLAG_C")
-    #define KW_FLAG_LANGUAGE_CXX QString("FLAG_CXX")
-    #define KW_FLAG_DIAGNOSTIC   QString("FLAG_DIAG")
-    #define KW_FLAG_WARNINGS     QString("FLAG_WARN")
-    #define KW_FLAG_DEBUG        QString("FLAG_DEBUG")
-    #define KW_FLAG_OPTI         QString("FLAG_OPT")
-    #define KW_FLAG_INSTRU       QString("FLAG_INST")
-    #define KW_FLAG_PREPROCESSOR QString("FLAG_PREPROCESS")
-    #define KW_FLAG_ASSEMBLER    QString("FLAG_ASSEMBLER")
-    #define KW_FLAG_LINKER       QString("FLAG_LINKER")
-    #define KW_FLAG_DIRS         QString("FLAG_DIRS")
-    #define KW_FLAG_CODE_CONV    QString("FLAG_CONVENTION")
-    #define KW_FLAG_OTHER        QString("FLAG_OTHER")
+    #define KW_FLAG_OVERALL      QString("FLAG_OVERALL")/**< Flag des options générales du compilateur */
+    #define KW_FLAG_LANGUAGE_C   QString("FLAG_C")/**< Flag des options de langage C du compilateur */
+    #define KW_FLAG_LANGUAGE_CXX QString("FLAG_CXX")/**< Flag des options de langage C++ du compilateur */
+    #define KW_FLAG_DIAGNOSTIC   QString("FLAG_DIAG")/**< Flag des options de diagnostique du compilateur */
+    #define KW_FLAG_WARNINGS     QString("FLAG_WARN")/**< Flag des options de warnings du compilateur */
+    #define KW_FLAG_DEBUG        QString("FLAG_DEBUG")/**< Flag des options de debug du compilateur */
+    #define KW_FLAG_OPTI         QString("FLAG_OPT")/**< Flag des options d'optimisation du compilateur */
+    #define KW_FLAG_INSTRU       QString("FLAG_INST")/**< Flag des options d'instrumentation du compilateur */
+    #define KW_FLAG_PREPROCESSOR QString("FLAG_PREPROCESS")/**< Flag des options de préprocesseur du compilateur */
+    #define KW_FLAG_ASSEMBLER    QString("FLAG_ASSEMBLER")/**< Flag des options d'assembleur du compilateur */
+    #define KW_FLAG_LINKER       QString("FLAG_LINKER")/**< Flag des options de linker du compilateur */
+    #define KW_FLAG_DIRS         QString("FLAG_DIRS")/**< Flag des options des dossiers du compilateur */
+    #define KW_FLAG_CODE_CONV    QString("FLAG_CONVENTION")/**< Flag des options de convention de code du compilateur */
+    #define KW_FLAG_OTHER        QString("FLAG_OTHER")/**< Flag des autres options du compilateur */
+    /** @} */
 
+    /** @addtogroup PROJECT_TYPE
+      * @{ */
     #define TYPE_C              QString("c")/**< Format pour les applications C */
     #define TYPE_CXX            QString("cxx")/**< Format pour les applications C++ */
     #define TYPE_LIBC           QString("libc")/**< Format pour les librairies statiques C */
@@ -55,6 +60,7 @@
     #define LABEL_LIBCXX        QString("Librairie Statique C++")/**< Label pour les librairies statiques C++ */
     #define LABEL_SHAREDC       QString("Librairie Dynamique C")/**< Label pour les librairies dynamiques C */
     #define LABEL_SHAREDCXX     QString("Librairie Dynamique C++")/**< Label pour les librairies dynamiques C++ */
+    /** @} */
 
     /**
      * @class Context

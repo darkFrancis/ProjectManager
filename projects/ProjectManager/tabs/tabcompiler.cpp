@@ -10,44 +10,57 @@
 #include <QMessageBox>
 #include <QProcess>
 #include <QShortcut>
-#include <QDebug>
 #include "settings/settings.hpp"
 #include "context.hpp"
 #include "compiler/sourceswindow.hpp"
 #include "compiler/compilerparamwindow.hpp"
 #include "settings/logger.hpp"
 
+/**
+ * @param parent Le QWidget parent de cet onglet
+ *
+ * Contructeur de la classe TabCompiler. Il hérite de celui de Tab et utilise
+ * le système des fichiers d'interface utilisateur.@n
+ * Ce constructeur appel la fonction d'initialisation TabCompiler::init puis
+ * ajoute les raccourcis clavier suivant :
+ * @li &lt;Ctrl+X> pour faire appel à la fonction TabCompiler::forceEnd
+ * @li &lt;Ctrl+E> pour effacer l'affichage de l'onglet
+ *
+ * Voir Ui.
+ */
 TabCompiler::TabCompiler(QWidget *parent) :
     Tab(parent),
     ui(new Ui::TabCompiler)
 {
-    /**
-     * @brief Constructeur de TabCompiler
-     * @param parent Le QWidget parent
-     */
     ui->setupUi(this);
     logger(__PRETTY_FUNCTION__);
 
-    initComboType(ui->comboBox_projectType);
-    ui->comboBox_projectType->setCurrentIndex(ui->comboBox_projectType->findText(type2label(Context::Instance()->projectType())));
+    init();
 
     QShortcut* shortcut_terminate = new QShortcut(QKeySequence("Ctrl+X"), this);
     connect(shortcut_terminate, &QShortcut::activated, this, &TabCompiler::forceEnd);
     QShortcut* shortcut_clear = new QShortcut(QKeySequence("Ctrl+E"), this);
     connect(shortcut_clear, &QShortcut::activated, ui->textEdit_status, &QTextEdit::clear);
-
-    m_process = nullptr;
 }
+
+/**
+ * Destructeur de la classe TabCompiler
+ */
 TabCompiler::~TabCompiler()
 {
-    /**
-     * @brief Destructeur de TabCompiler
-     */
     logger(__PRETTY_FUNCTION__);
     delete ui;
     delete m_process;
 }
 
+/**
+ * Enregistre les modifications apportées par l'utilisateur.@n
+ * Cette fonction utilise les méthodes SET de l'instance Context pour enregistrer
+ * les éléments présents dans cet onglet (type de projet et chemins). Puis elle appelle
+ * la fonction Context::save pour enregistrer les modification apportées dans le
+ * fichier de projet.
+ * Voir @ref CONTEXT_SET, @ref FILE, Ui.
+ */
 void TabCompiler::save()
 {
     logger(__PRETTY_FUNCTION__);
@@ -57,20 +70,41 @@ void TabCompiler::save()
     ctx->setBuildDir(dir);
     ctx->setOutput(ui->lineEdit_output->text());
     ctx->setProjectType(label2type(ui->comboBox_projectType->currentText()));
+    ctx->save();
 }
 
+/**
+ * Cette fonction initialise l'onglet TabCompiler.@n
+ * Elle initialise les liste déroulante à l'aide de la fonction initComboType,
+ * pour ce qui est de la sélection du type de projet, et avec les labels
+ * @ref COMPILE_ACTION, pour ce qui est des action de compilation à effectuer.
+ * Les lignes d'édition sont remplies grâce aux méthodes GET de l'instance
+ * Context.@n
+ * Voir @ref CONTEXT_GET, Ui.
+ */
 void TabCompiler::init()
 {
+    // Init comboBox
+    initComboType(ui->comboBox_projectType);
+    ui->comboBox_action->addItems(QStringList() << TEXT_BUILDRUN
+                                                << TEXT_BUILD
+                                                << TEXT_RUN
+                                                << TEXT_CLEAN
+                                                << TEXT_INSTALL
+                                                << TEXT_UNINSTALL);
+
+    // Set default
     Context* ctx = Context::Instance();
     ui->comboBox_projectType->setCurrentIndex(ui->comboBox_projectType->findText(type2label(ctx->projectType())));
     ui->radioButton_debug->setChecked(true);
     ui->lineEdit_buildDir->setText(ctx->buildDir());
     ui->lineEdit_output->setText(ctx->output());
+
+    m_process = nullptr;
 }
 
 /**
- * @brief Ce SLOT est appelé en cas de clic sur le bouton de recherche de dossier de build
- *
+ * Ce connecteur est activé en cas de clic sur le bouton outil de recherche de dossier de build.@n
  * Suite à une recherche de dossier (fenêtre de dialogue) :
  * @li Si le dossier retourné est vide, ne fait rien.
  * @li Sinon, mais à jour le context et écrit le chemin absolu dans la ligne de texte.
@@ -89,6 +123,14 @@ void TabCompiler::on_toolButton_buildDir_clicked()
     }
 }
 
+/**
+ * Ce connecteur est activé par un clic souris sur le bouton Sources par
+ * l'utilisateur.@n
+ * Ouvre une fenêtre SourcesWindow pour sélectionner/supprimer des fichiers
+ * de sources, des headers ou des fichiers de ressources. Cette fenêtre bloque
+ * les autre fenêtre de l'application tant qu'elle est présente pour forcer
+ * l'utilisateur à finir la sélection (ou fermer cette même fenêtre).
+ */
 void TabCompiler::on_pushButton_sources_clicked()
 {
     logger(__PRETTY_FUNCTION__);
@@ -99,6 +141,14 @@ void TabCompiler::on_pushButton_sources_clicked()
     w->show();
 }
 
+/**
+ * Ce connecteur est activé par un clic souris sur le bouton Paramètres par
+ * l'utilisateur.@n
+ * Ouvre une fenêtre CompilerParamWindow pour gérer les différentes options
+ * de compilation. Cette fenêtre bloque les autre fenêtre de l'application
+ * tant qu'elle est présente pour forcer l'utilisateur à finir la sélection
+ * (ou fermer cette même fenêtre).
+ */
 void TabCompiler::on_pushButton_param_clicked()
 {
     logger(__PRETTY_FUNCTION__);
@@ -109,7 +159,13 @@ void TabCompiler::on_pushButton_param_clicked()
     w->show();
 }
 
-
+/**
+ * Ce connecteur s'active par un clic souris sur le bouton Exécuter par
+ * l'utilisateur.@n
+ * Il effectue une action en fonction de l'action de compilation sélectionnée
+ * dans la liste déroulante.@n
+ * Voir @ref COMPILE_ACTION, @ref TABCOMPILER_ACTION.
+ */
 void TabCompiler::on_pushButton_action_clicked()
 {
     logger(__PRETTY_FUNCTION__);
@@ -149,6 +205,12 @@ void TabCompiler::on_pushButton_action_clicked()
     }
 }
 
+/**
+ * Fonction correspondant à l'action #TEXT_BUILDRUN.@n
+ * Exécute les fonctions TabCompiler::action_build et
+ * TabCompiler::action_run.@n
+ * Voir @ref COMPILE_ACTION, @ref TABCOMPILER_ACTION.
+ */
 void TabCompiler::action_build_run()
 {
     logger(__PRETTY_FUNCTION__);

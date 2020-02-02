@@ -35,9 +35,41 @@
       * @defgroup COMPILE_ACTION Actions du compilateur
       * @brief Les actions possibles du compilateur
       *
-      * Ces différentes actions sont sélectionnable par un menu déroulant sur
-      * l'onglet TabCompiler. Elle sont activée par le connecteur
-      * TabCompiler::on_pushButton_action_clicked.
+      * Ces différentes actions sont sélectionnables par un menu déroulant sur
+      * l'onglet TabCompiler. Les fonctions leur correspondant sont activée par
+      * le connecteur TabCompiler::on_pushButton_action_clicked.@n
+      * Voir @ref TABCOMPILER_ACTION.
+      */
+
+    /**
+      * @defgroup TABCOMPILER_ACTION Fonctions du compilateur
+      * @brief Les fonctions d'actions du compilateur
+      *
+      * Ces différentes fonctions sont sélectionnables par un menu déroulant sur
+      * l'onglet TabCompiler à travers des mots clés d'action. Elle sont activée
+      * par le connecteur TabCompiler::on_pushButton_action_clicked.@n
+      * Voir @ref COMPILE_ACTION.
+      */
+
+    /**
+      * @defgroup PROJECT_TYPE Types de projet
+      * @brief Les différents types de projets possibles et leurs labels
+      *
+      * Ces types de projets sont utilisés lors de la compilation pour choisir
+      * des options supplémentaires à appliquer par défaut. Les labels sont
+      * utiliser pour remplir les listes déroulantes pour la sélection du type
+      * de projet.
+      */
+
+    /**
+      * @defgroup PROJECT_FLAGS Flags du fichier projet
+      * @brief Les différents flags utilisable dans un fichier projet
+      *
+      * Ces différents flags permettent de spécifier des informations utilisable
+      * par ProjectManager pour:
+      * @li Générer une documentation à l'aide de Doxygen
+      * @li Gérer les versions à l'aide de GIT
+      * @li Compiler à l'aide de GNU/GCC
       */
 
     /**

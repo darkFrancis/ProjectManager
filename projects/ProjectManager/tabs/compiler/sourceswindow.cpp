@@ -14,7 +14,7 @@
 /**
  * @param parent Le QWidget parent de cette fenêtre
  *
- * Contructeur de la classe ParamSelectionWindow.@n
+ * Contructeur de la classe SourcesWindow.@n
  * Ce constructeur hérite de celui de QMainWindow et utilise le système des fichiers
  * d'interface utilisateur.@n
  * Cette fenêtre contient 3 listes pour contenir:
@@ -63,8 +63,8 @@ void SourcesWindow::init()
 /**
  * Enregistre les modifications apportées par l'utilisateur.@n
  * Cette fonction utilise les méthodes SET de l'instance Context pour enregistrer
- * les élément présent dans la fenêtre dans les liste des fichiers. Puis elle appelle
- * la fonction Context::save pour enregistrer les modification apportées dans le
+ * les éléments présents dans la fenêtre dans les listes des fichiers. Puis elle appelle
+ * la fonction Context::save pour enregistrer les modifications apportées dans le
  * fichier de projet.
  * Voir @ref CONTEXT_SET, @ref FILE, Ui.
  */

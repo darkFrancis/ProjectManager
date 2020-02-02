@@ -26,7 +26,10 @@
 
     /**
      * @struct Command
-     * @brief La structure Command défini une commande à appeler avec un QProcess.
+     * @brief La structure Command défini une commande à appeler avec un QProcess
+     *
+     * Cette structure est utilisée pour préparer une file d'attente des commandes à
+     * passer dans l'onglet TabCompiler.
      */
     struct Command
     {
@@ -76,12 +79,15 @@
 
             // Actions
             QProcess* m_process;/**< Processus en cours */
+            /** @addtogroup TABCOMPILER_ACTION
+              * @{ */
             void action_build_run();
             void action_build();
             void action_run();
             void action_clean();
             void action_install();
             void action_uninstall();
+            /** @} */
 
             // Commandes
             void send_cmd(QString cmd, QStringList param = QStringList(), QString dir = ".");

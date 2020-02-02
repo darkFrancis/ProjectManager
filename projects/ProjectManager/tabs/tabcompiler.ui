@@ -168,43 +168,7 @@ color: rgb(255, 255, 255);</string>
    <item row="5" column="1" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QComboBox" name="comboBox_action">
-       <item>
-        <property name="text">
-         <string>build&amp;run</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>build</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>run</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>makefile</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>clean</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>install</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>uninstall</string>
-        </property>
-       </item>
-      </widget>
+      <widget class="QComboBox" name="comboBox_action"/>
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_action">

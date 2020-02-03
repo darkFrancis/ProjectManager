@@ -3,9 +3,15 @@
  * @brief Documentation des membres externes au programme.
  * @author Dark Francis
  * @date 21/12/2019
+ *
+ * Voir @ref EXTERN_DOC.
+ * @todo Ajouter les autres membre Qt à la doc.
  */
 #ifndef EXTERN_DOC_HPP
 #define EXTERN_DOC_HPP
+
+    /** @addtogroup EXTERN_DOC
+     * @{ */
 
     /**
      * @namespace Ui
@@ -31,5 +37,7 @@
      * Cette classe permet de décrire des widgets.@n@n
      * Voir : https://doc.qt.io/qt-5/qwidget.html.
      */
+
+    /** @} */
 
 #endif // EXTERN_DOC_HPP

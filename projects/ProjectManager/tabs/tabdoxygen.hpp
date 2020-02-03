@@ -27,16 +27,16 @@
      * @brief La classe TabDoxygen défini l'onglet de configuration de Doxygen.
      *
      * Cette fenêtre est séparée en différentes sections pour la configuration :
-     * @li projet
-     * @li build
-     * @li message
-     * @li fichiers d'entrée
-     * @li recherche des sources
+     * @li Projet
+     * @li Build
+     * @li Message
+     * @li Fichiers d'entrée
+     * @li Recherche des sources
      * @li HTML
-     * @li autres sortie
-     * @li préprocesseur
-     * @li références externes
-     * @li graphiques
+     * @li Autres sortie
+     * @li Préprocesseur
+     * @li Références externes
+     * @li Graphiques
      *
      * Les boutons en bas de la fenêtre permettent :
      * @li de générer les templates
@@ -55,7 +55,6 @@
             void init();
             void save();
             void createDoxyfile();
-            void clean();
 
         signals:
             /**
@@ -118,6 +117,8 @@
             QTextStream* m_stream;/**< Flux vers le fichier Doxyfile */
 
             // Init tabs
+            /** @addtogroup INIT_DOXYTAB
+              * @{ */
             void init_tabProject();
             void init_tabBuild();
             void init_tabMsg();
@@ -128,8 +129,11 @@
             void init_tabProcessor();
             void init_tabExternRef();
             void init_tabGraph();
+            /** @} */
 
             // Save tabs
+            /** @addtogroup SAVE_DOXYTAB
+              * @{ */
             void save_tabProject();
             void save_tabBuild();
             void save_tabMsg();
@@ -140,22 +144,29 @@
             void save_tabProcessor();
             void save_tabExternRef();
             void save_tabGraph();
+            /** @} */
 
             // Init Widgets
+            /** @addtogroup SUB_INIT_DOXYTAB
+              * @{ */
             void initCheckbox(QString key, QCheckBox* checkbox, bool default_value, bool default_cond = false);
             void initGroupbox(QString key, QGroupBox* groupbox, bool default_value, bool default_cond = false);
             void initCombobox(QString key, QComboBox* combobox, QString default_value = "", bool default_cond = false);
             void initFontCbox(QString key, QFontComboBox* fontcombobox, QString default_value = "", bool default_cond = false);
             void initLineedit(QString key, QLineEdit* lineedit, QString default_value = "", bool default_cond = false);
             void initSpinbox_(QString key, QSpinBox* spinbox, int default_value = 0, bool default_cond = false);
+            /** @} */
 
             // Save Widgets
+            /** @addtogroup SUB_SAVE_DOXYTAB
+              * @{ */
             void saveCheckbox(QString key, QCheckBox* checkbox, bool default_value);
             void saveGroupbox(QString key, QGroupBox* groupbox, bool default_value);
             void saveCombobox(QString key, QComboBox* combobox, QString default_value = "");
             void saveFontCbox(QString key, QFontComboBox* fontcombobox, QString default_value = "");
             void saveLineedit(QString key, QLineEdit* lineedit, QString default_value = "");
             void saveSpinbox_(QString key, QSpinBox* spinbox, int default_value = 0);
+            /** @} */
 
             // Templates
             void command(QString cmd, QString workingDir = ".");

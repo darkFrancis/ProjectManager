@@ -15,6 +15,7 @@
 #include "context.hpp"
 #include "parser.hpp"
 #include "settings/logger.hpp"
+#include "settings/settings.hpp"
 
 /**
  * @param parent Le QWidget parent de cet onglet
@@ -44,6 +45,13 @@ TabDoxygen::~TabDoxygen()
     delete ui;
 }
 
+/**
+ * Fonction d'initialisation de la classe TabDoxygen.@n
+ * Si le fichier Doxygen n'éxiste pas, le créé avec les valeurs par défaut
+ * pour chaque option. Ensuite, les différentes fonctions d'initialisation
+ * de cet onglet sont appelées.@n
+ * Voir Context::m_doxyfile, @ref INIT_DOXYTAB, @ref FILE.
+ */
 void TabDoxygen::init()
 {
     logger(__PRETTY_FUNCTION__);
@@ -74,6 +82,12 @@ void TabDoxygen::init()
     }
 }
 
+/**
+ * Fonction d'enregistrement de la classe TabDoxygen.@n
+ * Appelle les différentes fonctions d'enregistrement pour mettre à jour
+ * le fichier de configuration de Doxygen.@n
+ * Voir @ref SAVE_DOXYTAB, @ref FILE.
+ */
 void TabDoxygen::save()
 {
     logger(__PRETTY_FUNCTION__);
@@ -99,6 +113,14 @@ void TabDoxygen::save()
     }
 }
 
+/**
+ * Fonction de création du fichier de configuration de Doxygen.@n
+ * Chaque option de configuration de Doxygen est écrite avec sa valeur par défaut
+ * dans le fichier Doxyfile choisi par l'utilisateur
+ * @warning Si un fichier Doxyfile existe déjà, le supprime.
+ *
+ * Voir @ref FILE, http://www.doxygen.nl/manual/index.html.
+ */
 void TabDoxygen::createDoxyfile()
 {
     logger(__PRETTY_FUNCTION__);
@@ -419,6 +441,10 @@ void TabDoxygen::createDoxyfile()
     }
 }
 
+/**
+ * Fonction d'initialisation de la section "Projet" de l'onglet Doxygen.@n
+ * Utilise les fonctions @ref SUB_INIT_DOXYTAB.
+ */
 void TabDoxygen::init_tabProject()
 {
     logger(__PRETTY_FUNCTION__);
@@ -469,6 +495,10 @@ void TabDoxygen::init_tabProject()
     initSpinbox_("LOOKUP_CACHE_SIZE", ui->spinBox_lookupCacheSize);
 }
 
+/**
+ * Fonction d'initialisation de la section "Build" de l'onglet Doxygen.@n
+ * Utilise les fonctions @ref SUB_INIT_DOXYTAB.
+ */
 void TabDoxygen::init_tabBuild()
 {
     logger(__PRETTY_FUNCTION__);
@@ -508,6 +538,10 @@ void TabDoxygen::init_tabBuild()
     initLineedit("CITE_BIB_FILES", ui->lineEdit_citeBibFiles);
 }
 
+/**
+ * Fonction d'initialisation de la section "Message" de l'onglet Doxygen.@n
+ * Utilise les fonctions @ref SUB_INIT_DOXYTAB.
+ */
 void TabDoxygen::init_tabMsg()
 {
     logger(__PRETTY_FUNCTION__);
@@ -521,6 +555,10 @@ void TabDoxygen::init_tabMsg()
     initLineedit("WARN_LOGFILE", ui->lineEdit_warnLogfile);
 }
 
+/**
+ * Fonction d'initialisation de la section "Entrée" de l'onglet Doxygen.@n
+ * Utilise les fonctions @ref SUB_INIT_DOXYTAB.
+ */
 void TabDoxygen::init_tabInput()
 {
     logger(__PRETTY_FUNCTION__);
@@ -543,6 +581,10 @@ void TabDoxygen::init_tabInput()
     initLineedit("USE_MDFILE_AS_MAINPAGE", ui->lineEdit_useMdfileAsMainpage);
 }
 
+/**
+ * Fonction d'initialisation de la section "Recherche des sources" de l'onglet Doxygen.@n
+ * Utilise les fonctions @ref SUB_INIT_DOXYTAB.
+ */
 void TabDoxygen::init_tabSource()
 {
     logger(__PRETTY_FUNCTION__);
@@ -562,6 +604,10 @@ void TabDoxygen::init_tabSource()
     initLineedit("IGNORE_PREFIX", ui->lineEdit_ignorePrefix, "", !ui->groupBox_alphabeticalIndex->isChecked());
 }
 
+/**
+ * Fonction d'initialisation de la section "HTML" de l'onglet Doxygen.@n
+ * Utilise les fonctions @ref SUB_INIT_DOXYTAB.
+ */
 void TabDoxygen::init_tabHtml()
 {
     logger(__PRETTY_FUNCTION__);
@@ -629,6 +675,10 @@ void TabDoxygen::init_tabHtml()
     initLineedit("EXTRA_SEARCH_MAPPINGS", ui->lineEdit_extraSearchMapping, "", !search);
 }
 
+/**
+ * Fonction d'initialisation de la section "Autres sorties" de l'onglet Doxygen.@n
+ * Utilise les fonctions @ref SUB_INIT_DOXYTAB.
+ */
 void TabDoxygen::init_tabOutput()
 {
     logger(__PRETTY_FUNCTION__);
@@ -681,6 +731,10 @@ void TabDoxygen::init_tabOutput()
     initLineedit("PERLMOD_MAKEVAR_PREFIX", ui->lineEdit_perlmodMakevarPrefix, "", !perl);
 }
 
+/**
+ * Fonction d'initialisation de la section "Préprocesseur" de l'onglet Doxygen.@n
+ * Utilise les fonctions @ref SUB_INIT_DOXYTAB.
+ */
 void TabDoxygen::init_tabProcessor()
 {
     logger(__PRETTY_FUNCTION__);
@@ -696,6 +750,10 @@ void TabDoxygen::init_tabProcessor()
     initCheckbox("SKIP_FUNCTION_MACROS", ui->checkBox_skipFunctionMacros, true, !preprocess);
 }
 
+/**
+ * Fonction d'initialisation de la section "Références externes" de l'onglet Doxygen.@n
+ * Utilise les fonctions @ref SUB_INIT_DOXYTAB.
+ */
 void TabDoxygen::init_tabExternRef()
 {
     logger(__PRETTY_FUNCTION__);
@@ -707,6 +765,10 @@ void TabDoxygen::init_tabExternRef()
     initLineedit("PERL_PATH", ui->lineEdit_perlPath, "/usr/bin/perl");
 }
 
+/**
+ * Fonction d'initialisation de la section "Graphiques" de l'onglet Doxygen.@n
+ * Utilise les fonctions @ref SUB_INIT_DOXYTAB.
+ */
 void TabDoxygen::init_tabGraph()
 {
     initCheckbox("CLASS_DIAGRAMS", ui->checkBox_classDiagrams, true);
@@ -748,6 +810,19 @@ void TabDoxygen::init_tabGraph()
     initLineedit("PLANTUML_INCLUDE_PATH", ui->lineEdit_plantumlIncludePath);
 }
 
+/**
+ * @param key Le mot clé de l'option de configuration de Doxygen
+ * @param checkbox L'objet QCheckBox associé à l'option
+ * @param default_value La valeur par défaut de l'option
+ * @param default_cond Si @c true, force la valeur par défaut
+ *
+ * Fonction d'initialisation spécifique aux widgets QCheckBox.@n
+ * Cette fonction coche la case @c checkbox correspondant au mot clé @c key
+ * en fonction de la valeur retournée par la fonction Parser::get pour @c key.
+ * Si aucune valeur n'est retournée par cette fonction ou si @c default_cond
+ * vaut @c true, la valeur par défaut @c default_value est utilisée.@n
+ * Voir Ui.
+ */
 void TabDoxygen::initCheckbox(QString key, QCheckBox* checkbox, bool default_value, bool default_cond /*= false*/)
 {
     if(default_cond)
@@ -777,6 +852,19 @@ void TabDoxygen::initCheckbox(QString key, QCheckBox* checkbox, bool default_val
     }
 }
 
+/**
+ * @param key Le mot clé de l'option de configuration de Doxygen
+ * @param groupbox L'objet QGroupBox associé à l'option
+ * @param default_value La valeur par défaut de l'option
+ * @param default_cond Si @c true, force la valeur par défaut
+ *
+ * Fonction d'initialisation spécifique aux widgets QGroupBox.@n
+ * Cette fonction coche la section @c groupbox correspondant au mot clé @c key
+ * en fonction de la valeur retournée par la fonction Parser::get pour @c key.
+ * Si aucune valeur n'est retournée par cette fonction ou si @c default_cond
+ * vaut @c true, la valeur par défaut @c default_value est utilisée.@n
+ * Voir Ui.
+ */
 void TabDoxygen::initGroupbox(QString key, QGroupBox* groupbox, bool default_value, bool default_cond /*= false*/)
 {
     if(default_cond)
@@ -806,6 +894,19 @@ void TabDoxygen::initGroupbox(QString key, QGroupBox* groupbox, bool default_val
     }
 }
 
+/**
+ * @param key Le mot clé de l'option de configuration de Doxygen
+ * @param combobox L'objet QComboBox associé à l'option
+ * @param default_value La valeur par défaut de l'option
+ * @param default_cond Si @c true, force la valeur par défaut
+ *
+ * Fonction d'initialisation spécifique aux widgets QComboBox.@n
+ * Cette fonction initialise la liste déroulante @c combobox correspondant au
+ * mot clé @c key en fonction de la valeur retournée par la fonction Parser::get
+ * pour @c key. Si aucune valeur n'est retournée par cette fonction ou si @c
+ * default_cond vaut @c true, la valeur par défaut @c default_value est utilisée.@n
+ * Voir Ui.
+ */
 void TabDoxygen::initCombobox(QString key, QComboBox* combobox, QString default_value /*= ""*/, bool default_cond /*= false*/)
 {
     int index;
@@ -833,6 +934,19 @@ void TabDoxygen::initCombobox(QString key, QComboBox* combobox, QString default_
     combobox->setCurrentIndex(index);
 }
 
+/**
+ * @param key Le mot clé de l'option de configuration de Doxygen
+ * @param fontcombobox L'objet QFontComboBox associé à l'option
+ * @param default_value La valeur par défaut de l'option
+ * @param default_cond Si @c true, force la valeur par défaut
+ *
+ * Fonction d'initialisation spécifique aux widgets QFontComboBox.@n
+ * Cette fonction initialise la liste de polices @c fontcombobox correspondant au
+ * mot clé @c key en fonction de la valeur retournée par la fonction Parser::get
+ * pour @c key. Si aucune valeur n'est retournée par cette fonction ou si @c
+ * default_cond vaut @c true, la valeur par défaut @c default_value est utilisée.@n
+ * Voir Ui.
+ */
 void TabDoxygen::initFontCbox(QString key, QFontComboBox* fontcombobox, QString default_value /*= ""*/, bool default_cond /*= false*/)
 {
     int index;
@@ -860,6 +974,19 @@ void TabDoxygen::initFontCbox(QString key, QFontComboBox* fontcombobox, QString 
     fontcombobox->setCurrentIndex(index);
 }
 
+/**
+ * @param key Le mot clé de l'option de configuration de Doxygen
+ * @param lineedit L'objet QLineEdit associé à l'option
+ * @param default_value La valeur par défaut de l'option
+ * @param default_cond Si @c true, force la valeur par défaut
+ *
+ * Fonction d'initialisation spécifique aux widgets QLineEdit.@n
+ * Cette fonction initialise la ligne d'édition @c lineedit correspondant au
+ * mot clé @c key en fonction de la valeur retournée par la fonction Parser::get
+ * pour @c key. Si aucune valeur n'est retournée par cette fonction ou si @c
+ * default_cond vaut @c true, la valeur par défaut @c default_value est utilisée.@n
+ * Voir Ui.
+ */
 void TabDoxygen::initLineedit(QString key, QLineEdit *lineedit, QString default_value /*= ""*/, bool default_cond /*= false*/)
 {
     if(default_cond)
@@ -880,6 +1007,19 @@ void TabDoxygen::initLineedit(QString key, QLineEdit *lineedit, QString default_
     }
 }
 
+/**
+ * @param key Le mot clé de l'option de configuration de Doxygen
+ * @param spinbox L'objet QSpinBox associé à l'option
+ * @param default_value La valeur par défaut de l'option
+ * @param default_cond Si @c true, force la valeur par défaut
+ *
+ * Fonction d'initialisation spécifique aux widgets QSpinBox.@n
+ * Cette fonction initialise le sélecteur d'entier @c spinbox correspondant au
+ * mot clé @c key en fonction de la valeur retournée par la fonction Parser::get
+ * pour @c key. Si aucune valeur n'est retournée par cette fonction ou si @c
+ * default_cond vaut @c true, la valeur par défaut @c default_value est utilisée.@n
+ * Voir Ui.
+ */
 void TabDoxygen::initSpinbox_(QString key, QSpinBox* spinbox, int default_value /*= 0*/, bool default_cond /*= false*/)
 {
     int value_int;
@@ -911,6 +1051,10 @@ void TabDoxygen::initSpinbox_(QString key, QSpinBox* spinbox, int default_value 
     spinbox->setValue(value_int);
 }
 
+/**
+ * Fonction d'enregistrement de la section "Projet" de l'onglet Doxygen.@n
+ * Utilise les fonctions @ref SUB_SAVE_DOXYTAB.
+ */
 void TabDoxygen::save_tabProject()
 {
     logger(__PRETTY_FUNCTION__);
@@ -966,6 +1110,10 @@ void TabDoxygen::save_tabProject()
     *m_stream << endl;
 }
 
+/**
+ * Fonction d'enregistrement de la section "Build" de l'onglet Doxygen.@n
+ * Utilise les fonctions @ref SUB_SAVE_DOXYTAB.
+ */
 void TabDoxygen::save_tabBuild()
 {
     logger(__PRETTY_FUNCTION__);
@@ -1010,6 +1158,10 @@ void TabDoxygen::save_tabBuild()
     *m_stream << endl;
 }
 
+/**
+ * Fonction d'enregistrement de la section "Messages" de l'onglet Doxygen.@n
+ * Utilise les fonctions @ref SUB_SAVE_DOXYTAB.
+ */
 void TabDoxygen::save_tabMsg()
 {
     logger(__PRETTY_FUNCTION__);
@@ -1025,6 +1177,10 @@ void TabDoxygen::save_tabMsg()
     *m_stream << endl;
 }
 
+/**
+ * Fonction d'enregistrement de la section "Fichiers d'entrée" de l'onglet Doxygen.@n
+ * Utilise les fonctions @ref SUB_SAVE_DOXYTAB.
+ */
 void TabDoxygen::save_tabInput()
 {
     logger(__PRETTY_FUNCTION__);
@@ -1049,6 +1205,10 @@ void TabDoxygen::save_tabInput()
     *m_stream << endl;
 }
 
+/**
+ * Fonction d'enregistrement de la section "Recherche des sources" de l'onglet Doxygen.@n
+ * Utilise les fonctions @ref SUB_SAVE_DOXYTAB.
+ */
 void TabDoxygen::save_tabSource()
 {
     logger(__PRETTY_FUNCTION__);
@@ -1075,6 +1235,10 @@ void TabDoxygen::save_tabSource()
     *m_stream << endl;
 }
 
+/**
+ * Fonction d'enregistrement de la section "HTML" de l'onglet Doxygen.@n
+ * Utilise les fonctions @ref SUB_SAVE_DOXYTAB.
+ */
 void TabDoxygen::save_tabHtml()
 {
     logger(__PRETTY_FUNCTION__);
@@ -1158,6 +1322,10 @@ void TabDoxygen::save_tabHtml()
     *m_stream << endl;
 }
 
+/**
+ * Fonction d'enregistrement de la section "Autres sorties" de l'onglet Doxygen.@n
+ * Utilise les fonctions @ref SUB_SAVE_DOXYTAB.
+ */
 void TabDoxygen::save_tabOutput()
 {
     logger(__PRETTY_FUNCTION__);
@@ -1236,6 +1404,10 @@ void TabDoxygen::save_tabOutput()
     *m_stream << endl;
 }
 
+/**
+ * Fonction d'enregistrement de la section "Préprocesseur" de l'onglet Doxygen.@n
+ * Utilise les fonctions @ref SUB_SAVE_DOXYTAB.
+ */
 void TabDoxygen::save_tabProcessor()
 {
     logger(__PRETTY_FUNCTION__);
@@ -1258,6 +1430,10 @@ void TabDoxygen::save_tabProcessor()
     *m_stream << endl;
 }
 
+/**
+ * Fonction d'enregistrement de la section "Références externes" de l'onglet Doxygen.@n
+ * Utilise les fonctions @ref SUB_SAVE_DOXYTAB.
+ */
 void TabDoxygen::save_tabExternRef()
 {
     logger(__PRETTY_FUNCTION__);
@@ -1271,6 +1447,10 @@ void TabDoxygen::save_tabExternRef()
     *m_stream << endl;
 }
 
+/**
+ * Fonction d'enregistrement de la section "Graphiques" de l'onglet Doxygen.@n
+ * Utilise les fonctions @ref SUB_SAVE_DOXYTAB.
+ */
 void TabDoxygen::save_tabGraph()
 {
     logger(__PRETTY_FUNCTION__);
@@ -1317,6 +1497,16 @@ void TabDoxygen::save_tabGraph()
     *m_stream << endl;
 }
 
+/**
+ * @param key Le mot clé de l'option de configuration de Doxygen
+ * @param checkbox L'objet QCheckBox associé à l'option
+ * @param default_value La valeur par défaut de l'option
+ *
+ * Fonction d'enregistrement spécifique aux widgets QCheckBox.@n
+ * Cette fonction enregistre l'état de la case @c checkbox correspondant au mot clé
+ * @c key seulement si celui-ci diffère de la valeur par défaut @c default_value.@n
+ * Voir Ui.
+ */
 void TabDoxygen::saveCheckbox(QString key, QCheckBox* checkbox, bool default_value)
 {
     if((checkbox->isChecked() && default_value)
@@ -1337,6 +1527,16 @@ void TabDoxygen::saveCheckbox(QString key, QCheckBox* checkbox, bool default_val
     *m_stream << endl;
 }
 
+/**
+ * @param key Le mot clé de l'option de configuration de Doxygen
+ * @param groupbox L'objet QGroupBox associé à l'option
+ * @param default_value La valeur par défaut de l'option
+ *
+ * Fonction d'enregistrement spécifique aux widgets QGroupBox.@n
+ * Cette fonction enregistre l'état de la section @c groupbox correspondant au mot clé
+ * @c key seulement si celui-ci diffère de la valeur par défaut @c default_value.@n
+ * Voir Ui.
+ */
 void TabDoxygen::saveGroupbox(QString key, QGroupBox* groupbox, bool default_value)
 {
     if((groupbox->isChecked() && default_value)
@@ -1357,6 +1557,16 @@ void TabDoxygen::saveGroupbox(QString key, QGroupBox* groupbox, bool default_val
     *m_stream << endl;
 }
 
+/**
+ * @param key Le mot clé de l'option de configuration de Doxygen
+ * @param combobox L'objet QComboBox associé à l'option
+ * @param default_value La valeur par défaut de l'option
+ *
+ * Fonction d'enregistrement spécifique aux widgets QComboBox.@n
+ * Cette fonction enregistre la valeur de la liste déroulante @c combobox correspondant au mot clé
+ * @c key seulement si celle-ci diffère de la valeur par défaut @c default_value et n'est pas vide.@n
+ * Voir Ui.
+ */
 void TabDoxygen::saveCombobox(QString key, QComboBox* combobox, QString default_value /*= ""*/)
 {
     if(combobox->currentText() != QString("")
@@ -1366,6 +1576,16 @@ void TabDoxygen::saveCombobox(QString key, QComboBox* combobox, QString default_
     }
 }
 
+/**
+ * @param key Le mot clé de l'option de configuration de Doxygen
+ * @param fontcombobox L'objet QFontComboBox associé à l'option
+ * @param default_value La valeur par défaut de l'option
+ *
+ * Fonction d'enregistrement spécifique aux widgets QFontComboBox.@n
+ * Cette fonction enregistre la valeur de la liste de polices @c fontcombobox correspondant au mot clé
+ * @c key seulement si celle-ci diffère de la valeur par défaut @c default_value et n'est pas vide.@n
+ * Voir Ui.
+ */
 void TabDoxygen::saveFontCbox(QString key, QFontComboBox* fontcombobox, QString default_value /*= ""*/)
 {
     if(fontcombobox->currentText() != QString("")
@@ -1375,6 +1595,16 @@ void TabDoxygen::saveFontCbox(QString key, QFontComboBox* fontcombobox, QString 
     }
 }
 
+/**
+ * @param key Le mot clé de l'option de configuration de Doxygen
+ * @param lineedit L'objet QLineEdit associé à l'option
+ * @param default_value La valeur par défaut de l'option
+ *
+ * Fonction d'enregistrement spécifique aux widgets QLineEdit.@n
+ * Cette fonction enregistre la valeur de la ligne d'édition @c lineedit correspondant au mot clé
+ * @c key seulement si celle-ci diffère de la valeur par défaut @c default_value et n'est pas vide.@n
+ * Voir Ui.
+ */
 void TabDoxygen::saveLineedit(QString key, QLineEdit* lineedit, QString default_value /*= ""*/)
 {
     if(lineedit->text() != QString("")
@@ -1384,6 +1614,16 @@ void TabDoxygen::saveLineedit(QString key, QLineEdit* lineedit, QString default_
     }
 }
 
+/**
+ * @param key Le mot clé de l'option de configuration de Doxygen
+ * @param spinbox L'objet QSpinBox associé à l'option
+ * @param default_value La valeur par défaut de l'option
+ *
+ * Fonction d'enregistrement spécifique aux widgets QSpinBox.@n
+ * Cette fonction enregistre la valeur du sélecteur d'entier @c spinbox correspondant au mot clé
+ * @c key seulement si celui-ci diffère de la valeur par défaut @c default_value.@n
+ * Voir Ui.
+ */
 void TabDoxygen::saveSpinbox_(QString key, QSpinBox* spinbox, int default_value /*= 0*/)
 {
     if(spinbox->value() != default_value)
@@ -1392,186 +1632,368 @@ void TabDoxygen::saveSpinbox_(QString key, QSpinBox* spinbox, int default_value 
     }
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection de logo de projet. Il appelle la fonction TabDoxygen::getOpenFile
+ * avec comme argument la ligne d'édition correspondant au chemin vers le logo du
+ * projet.
+ */
 void TabDoxygen::on_toolButton_projectLogo_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_projectLogo);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection du dossier de sortie. Il appelle la fonction TabDoxygen::getDir
+ * avec comme argument la ligne d'édition correspondant au chemin vers le dossier de
+ * sortie.
+ */
 void TabDoxygen::on_toolButton_outputDir_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getDir(ui->lineEdit_outputDir);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection de filtre de version. Il appelle la fonction TabDoxygen::getOpenFile
+ * avec comme argument la ligne d'édition correspondant au chemin vers lefiltre de
+ * version.
+ */
 void TabDoxygen::on_toolButton_fileVersionFilter_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_fileVersionFilter);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection de fichier de structure. Il appelle la fonction TabDoxygen::getOpenFile
+ * avec comme argument la ligne d'édition correspondant au chemin vers le fichier de
+ * structure.
+ */
 void TabDoxygen::on_toolButton_layoutFile_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_layoutFile);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection de fichiers bibliographiques. Il appelle la fonction
+ * TabDoxygen::getOpenFiles avec comme argument la ligne d'édition correspondant aux
+ * chemins vers les fichiers bibliographiques.
+ */
 void TabDoxygen::on_toolButton_citeBibFiles_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getOpenFiles(ui->lineEdit_citeBibFiles);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection du fichier de log. Il appelle la fonction TabDoxygen::getSaveFile
+ * avec comme argument la ligne d'édition correspondant au chemin vers le fichier de
+ * log pour les warnings.
+ */
 void TabDoxygen::on_toolButton_warnLogfile_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getSaveFile(ui->lineEdit_warnLogfile);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection des fichiers exemples. Il appelle la fonction TabDoxygen::getOpenFiles
+ * avec comme argument la ligne d'édition correspondant aux chemins vers les fichiers
+ * exemples.
+ */
 void TabDoxygen::on_toolButton_examplePath_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getOpenFiles(ui->lineEdit_examplePath);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection des images. Il appelle la fonction TabDoxygen::getOpenFiles avec
+ * comme argument la ligne d'édition correspondant aux chemins vers les images.
+ */
 void TabDoxygen::on_toolButton_imagePath_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getOpenFiles(ui->lineEdit_imagePath);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection du filtre d'entrée. Il appelle la fonction TabDoxygen::getOpenFile
+ * avec comme argument la ligne d'édition correspondant au chemin vers le filtre
+ * d'entrée.
+ */
 void TabDoxygen::on_toolButton_inputFilter_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_inputFilter);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection de fichier Mdfile pour la page principale. Il appelle la fonction
+ * TabDoxygen::getOpenFile avec comme argument la ligne d'édition correspondant au
+ * chemin vers le fichier Mdfile.
+ */
 void TabDoxygen::on_toolButton_useMdfileAsMainpage_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_useMdfileAsMainpage);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection du header HTML. Il appelle la fonction TabDoxygen::getOpenFile
+ * avec comme argument la ligne d'édition correspondant au chemin vers le header HTML.
+ */
 void TabDoxygen::on_toolButton_htmlHeader_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_htmlHeader);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection du footer HTML. Il appelle la fonction TabDoxygen::getOpenFile
+ * avec comme argument la ligne d'édition correspondant au chemin vers le footer HTML.
+ */
 void TabDoxygen::on_toolButton_htmlFooter_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_htmlFooter);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection de la feuille de style HTML. Il appelle la fonction TabDoxygen::getOpenFile
+ * avec comme argument la ligne d'édition correspondant au chemin vers la feuille de style HTML.
+ */
 void TabDoxygen::on_toolButton_htmlStylesheet_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_htmlStylesheet);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection de la feuille de style HTML supplémentaire. Il appelle la fonction
+ * TabDoxygen::getOpenFile avec comme argument la ligne d'édition correspondant au
+ * chemin vers la feuille de style HTM supplémentaire.
+ */
 void TabDoxygen::on_toolButton_htmlExtraStylesheet_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_htmlExtraStylesheet);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection du compilateur de l'aide HTML. Il appelle la fonction
+ * TabDoxygen::getOpenFile avec comme argument la ligne d'édition correspondant au
+ * chemin vers le compilateur de l'aide HTML.
+ */
 void TabDoxygen::on_toolButton_hhcLocation_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_hhcLocation);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection du compilateur de l'aide Qt, qhelpgenerator. Il appelle la fonction
+ * TabDoxygen::getOpenFile avec comme argument la ligne d'édition correspondant au
+ * chemin vers le compilateur de l'aide Qt.
+ */
 void TabDoxygen::on_toolButton_qhgLocation_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_qhgLocation);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection du fichier de script MathJax. Il appelle la fonction
+ * TabDoxygen::getOpenFile avec comme argument la ligne d'édition correspondant au
+ * chemin vers le fichier de script MathJax.
+ */
 void TabDoxygen::on_toolButton_mathjaxCodefile_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_mathjaxCodefile);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection du header LaTeX. Il appelle la fonction TabDoxygen::getOpenFile
+ * avec comme argument la ligne d'édition correspondant au chemin vers le header LaTeX.
+ */
 void TabDoxygen::on_toolButton_latexHeader_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_latexHeader);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection du footer LaTeX. Il appelle la fonction TabDoxygen::getOpenFile
+ * avec comme argument la ligne d'édition correspondant au chemin vers le footer LaTeX.
+ */
 void TabDoxygen::on_toolButton_latexFooter_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_latexFooter);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection de la feuille de style LaTeX supplémentaire. Il appelle la fonction
+ * TabDoxygen::getOpenFile avec comme argument la ligne d'édition correspondant au
+ * chemin vers le la feuille de style LaTeX supplémentaire.
+ */
 void TabDoxygen::on_toolButton_latexExtraStylesheet_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_latexExtraStylesheet);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection des fichiers LaTeX supplémentaire. Il appelle la fonction
+ * TabDoxygen::getOpenFiles avec comme argument la ligne d'édition correspondant au
+ * chemin vers les fichiers LaTeX supplémentaire.
+ */
 void TabDoxygen::on_toolButton_latexExtraFiles_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getOpenFiles(ui->lineEdit_latexExtraFiles);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection de la feuille de style RTF. Il appelle la fonction TabDoxygen::getOpenFile
+ * avec comme argument la ligne d'édition correspondant au chemin vers la feuille de
+ * style RTF.
+ */
 void TabDoxygen::on_toolButton_rtfStylesheetFile_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_rtfStylesheetFile);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection du fichier d'extension RTF. Il appelle la fonction TabDoxygen::getOpenFile
+ * avec comme argument la ligne d'édition correspondant au chemin vers le fichier
+ * d'extension RTF.
+ */
 void TabDoxygen::on_toolButton_rtfExtensionsFile_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_rtfExtensionsFile);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection du script interpréteur Perl. Il appelle la fonction TabDoxygen::getDir
+ * avec comme argument la ligne d'édition correspondant au chemin vers le script interpréteur
+ * Perl.
+ */
 void TabDoxygen::on_toolButton_perlPath_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getDir(ui->lineEdit_perlPath);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection du dossier de l'outil MsGen Tool. Il appelle la fonction TabDoxygen::getDir
+ * avec comme argument la ligne d'édition correspondant au chemin vers le dossier de l'outil
+ * MsGen Tool.
+ */
 void TabDoxygen::on_toolButton_mscgenPath_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getDir(ui->lineEdit_mscgenPath);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection du dossier de l'outil Dia. Il appelle la fonction TabDoxygen::getDir
+ * avec comme argument la ligne d'édition correspondant au chemin vers le dossier de
+ * l'outil Dia.
+ */
 void TabDoxygen::on_toolButton_diaPath_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getDir(ui->lineEdit_diaPath);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection du dossier des polices d'écriture pour DOT. Il appelle la fonction
+ * TabDoxygen::getDir avec comme argument la ligne d'édition correspondant au
+ * chemin vers le dossier des polices d'criture pour DOT.
+ */
 void TabDoxygen::on_toolButton_dotFontpath_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getDir(ui->lineEdit_dotFontpath);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection du dossier de l'outil DOT. Il appelle la fonction TabDoxygen::getDir
+ * avec comme argument la ligne d'édition correspondant au chemin vers le dossier de l'outil
+ * DOT.
+ */
 void TabDoxygen::on_toolButton_dotPath_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getDir(ui->lineEdit_dotPath);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection du dossier de l'exécutable de PlantUML. Il appelle la fonction
+ * TabDoxygen::getDir avec comme argument la ligne d'édition correspondant au
+ * chemin vers le dossier de l'exécutable de PlantUML.
+ */
 void TabDoxygen::on_toolButton_plantumlJarPath_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_plantumlJarPath);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * de sélection du dossier de configuration de l'exécutable de PlantUML. Il appelle la
+ * fonction TabDoxygen::getDir avec comme argument la ligne d'édition correspondant
+ * au chemin vers le dossier de configuration de l'exécutable de PlantUML.
+ */
 void TabDoxygen::on_toolButton_plantumlCfgFile_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_plantumlCfgFile);
 }
 
+/**
+ * @param lineedit Ligne d'édition QLineEdit associée
+ *
+ * Ouvre une fenêtre de dialogue pour indiquer un fichier. Si un fichier est
+ * sélectionné, émet le signal TabDoxygen::foundPath avec comme arguments le
+ * chemin vers le fichier sélectionné et @c lineedit.@n
+ * Voir TabDoxygen::writePath.
+ */
 void TabDoxygen::getSaveFile(QLineEdit* lineedit)
 {
     logger(__PRETTY_FUNCTION__);
@@ -1587,6 +2009,14 @@ void TabDoxygen::getSaveFile(QLineEdit* lineedit)
     }
 }
 
+/**
+ * @param lineedit Ligne d'édition QLineEdit associée
+ *
+ * Ouvre une fenêtre de dialogue pour recherché un fichier éxistant. Si un
+ * fichier est sélectionné, émet le signal TabDoxygen::foundPath avec comme
+ * arguments le chemin vers le fichier sélectionné et @c lineedit.@n
+ * Voir TabDoxygen::writePath.
+ */
 void TabDoxygen::getOpenFile(QLineEdit* lineedit)
 {
     logger(__PRETTY_FUNCTION__);
@@ -1602,6 +2032,15 @@ void TabDoxygen::getOpenFile(QLineEdit* lineedit)
     }
 }
 
+/**
+ * @param lineedit Ligne d'édition QLineEdit associée
+ *
+ * Ouvre une fenêtre de dialogue pour recherché plusieurs fichiers éxistants.
+ * Si au moins un fichier est sélectionné, émet le signal TabDoxygen::foundPath
+ * avec comme arguments les chemins vers les fichiers sélectionnés séparés par
+ * des espaces et @c lineedit.@n
+ * Voir TabDoxygen::writePath.
+ */
 void TabDoxygen::getOpenFiles(QLineEdit* lineedit)
 {
     logger(__PRETTY_FUNCTION__);
@@ -1628,6 +2067,14 @@ void TabDoxygen::getOpenFiles(QLineEdit* lineedit)
     }
 }
 
+/**
+ * @param lineedit Ligne d'édition QLineEdit associée
+ *
+ * Ouvre une fenêtre de dialogue pour recherché un dossier éxistant. Si un
+ * fichier est sélectionné, émet le signal TabDoxygen::foundPath avec comme
+ * arguments le chemin vers le dossier sélectionné et @c lineedit.@n
+ * Voir TabDoxygen::writePath.
+ */
 void TabDoxygen::getDir(QLineEdit* lineedit)
 {
     logger(__PRETTY_FUNCTION__);
@@ -1643,17 +2090,38 @@ void TabDoxygen::getDir(QLineEdit* lineedit)
     }
 }
 
+/**
+ * @param path Chemin vers un ou plusieurs fichier(s)/dossier(s)
+ * @param lineedit Ligne d'édition QLineEdit associée
+ *
+ * Ecrit le ou les chemin(s) passé(s) en argument @c path dans la ligne
+ * d'édition @c lineedit.
+ */
 void TabDoxygen::writePath(QString path, QLineEdit* lineedit)
 {
     lineedit->setText(path);
 }
 
+/**
+ * Ce connecteur est activé lors d'un clic souris par l'utilisateur sur le
+ * bouton Appliquer.@n
+ * Il appelle la fonction TabDoxygen::save pour enregistrer les modifications
+ * qui ont été apportées.
+ */
 void TabDoxygen::on_pushButton_apply_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     save();
 }
 
+/**
+ * Ce connecteur est activé lors d'un clic souris par l'utilisateur sur le
+ * bouton Défaut.@n
+ * Demande à l'utilisateur s'il est sur de vouloir remettre les valeur par
+ * défaut sur cet onglet. S'il répond "OUI", efface le fichier de configuration
+ * de Doxygen avec la fonction TabDoxygen::createDoxyfile et réinitialise cet
+ * onglet avec la fonction TabDoxygen::init.
+ */
 void TabDoxygen::on_pushButton_default_clicked()
 {
     logger(__PRETTY_FUNCTION__);
@@ -1670,18 +2138,27 @@ void TabDoxygen::on_pushButton_default_clicked()
     }
 }
 
+/**
+ * Ce connecteur est activé lors d'un clic souris par l'utilisateur sur le
+ * bouton "Générer Templates".@n
+ * Exécute les commandes de génération des templates Doxygen dans le dossier
+ * spécifié dans l'instance Settings à partir du dossier de configuration
+ * de Doxygen.@n
+ * Voir Settings::m_doxygen_template_dir.
+ */
 void TabDoxygen::on_pushButton_generateFiles_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     QFileInfo infos(m_doxyfile);
     QString dir = infos.absoluteDir().absolutePath();
+    if(dir.at(dir.length()-1) != QChar('/')) dir.append('/');
 
     try
     {
         QApplication::setOverrideCursor(Qt::WaitCursor);
         // Create Dir
-        command("mkdir doxygen_templates", dir);
-        dir += "/doxygen_templates/";
+        dir += Settings::Instance()->doxygenTemplateDir();
+        command("mkdir " + dir, ".");
         command("mkdir rtf", dir);
         command("mkdir html", dir);
         command("mkdir latex", dir);
@@ -1701,6 +2178,13 @@ void TabDoxygen::on_pushButton_generateFiles_clicked()
     }
 }
 
+/**
+ * @param cmd Commande à exécuter
+ * @param workingDir Dossier de travail
+ *
+ * Cette fonction exécute la commande @c cmd dans le dossier @c workingDir
+ * à l'aide d'un objet QProcess.
+ */
 void TabDoxygen::command(QString cmd, QString workingDir)
 {
     logger("    cmd: " + cmd);
@@ -1711,10 +2195,4 @@ void TabDoxygen::command(QString cmd, QString workingDir)
     {
         throw(QString("Erreur pour la commande : " + cmd));
     }
-}
-
-void TabDoxygen::clean()
-{
-    logger(__PRETTY_FUNCTION__);
-    //init();
 }

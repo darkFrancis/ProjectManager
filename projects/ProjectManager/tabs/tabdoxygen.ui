@@ -44,7 +44,7 @@
    <item row="0" column="0" colspan="4">
     <widget class="QToolBox" name="toolBox">
      <property name="currentIndex">
-      <number>0</number>
+      <number>9</number>
      </property>
      <widget class="QWidget" name="page_projectConf">
       <property name="geometry">
@@ -1169,7 +1169,7 @@ Par défaut : 0</string>
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
+        <y>-820</y>
         <width>538</width>
         <height>1114</height>
        </rect>
@@ -2746,7 +2746,7 @@ alphabétique.</string>
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-1192</y>
+        <y>-1587</y>
         <width>538</width>
         <height>1881</height>
        </rect>
@@ -3287,20 +3287,6 @@ fichier .chm de sortie.</string>
                </property>
               </widget>
              </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_qhcLocation">
-               <property name="toolTip">
-                <string>Permet de spécifier la localisation
-du compilateur de l'aide HTML.</string>
-               </property>
-               <property name="statusTip">
-                <string>HHC_LOCATION</string>
-               </property>
-               <property name="text">
-                <string>HTML help compiler</string>
-               </property>
-              </widget>
-             </item>
              <item row="1" column="1">
               <layout class="QHBoxLayout" name="horizontalLayout_15">
                <item>
@@ -3407,6 +3393,20 @@ Par défaut : non coché</string>
                </property>
                <property name="text">
                 <string>Ajouter des éléments supplémentaires</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_qhcLocation">
+               <property name="toolTip">
+                <string>Permet de spécifier la localisation
+du compilateur de l'aide HTML.</string>
+               </property>
+               <property name="statusTip">
+                <string>HHC_LOCATION</string>
+               </property>
+               <property name="text">
+                <string>HTML help compiler</string>
                </property>
               </widget>
              </item>
@@ -4119,7 +4119,7 @@ tagname=loc.</string>
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
+        <y>-1101</y>
         <width>538</width>
         <height>1395</height>
        </rect>
@@ -5040,7 +5040,7 @@ MakeFile.</string>
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
+        <y>-14</y>
         <width>538</width>
         <height>308</height>
        </rect>

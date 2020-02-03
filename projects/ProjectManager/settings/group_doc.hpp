@@ -114,4 +114,41 @@
       * attributs de l'instance Settings.
       */
 
+    /**
+      * @defgroup INIT_DOXYTAB Initialisation Doxygen
+      * @brief Fonctions d'initialisation de l'onglet Doxygen
+      *
+      * Ces méthodes servent chacune à initialiser une portion de l'onglet
+      * de configuration de Doxygen.
+      */
+
+    /**
+      * @defgroup SAVE_DOXYTAB Enregistrement Doxygen
+      * @brief Fonctions d'enregistrement de l'onglet Doxygen
+      *
+      * Ces méthodes servent chacune à enregistrer une portion de l'onglet
+      * de configuration de Doxygen.
+      */
+
+    /**
+      * @defgroup SUB_INIT_DOXYTAB Sous-initialisation Doxygen
+      * @brief Sous-fonctions d'initialisation de l'onglet Doxygen
+      *
+      * Ces méthodes servent chacune à initialiser les objets de l'interface
+      * de façon spécifique.
+      */
+
+    /**
+      * @defgroup SUB_SAVE_DOXYTAB Sous-enregistrement Doxygen
+      * @brief Sous-fonctions d'enregistrement de l'onglet Doxygen
+      *
+      * Ces méthodes servent chacune à enregistrer les données de l'interface
+      * de façon spécifique.
+      */
+
+    /**
+      * @defgroup EXTERN_DOC Documentation externe
+      * @brief Les membres externes à ProjectManager
+      */
+
 #endif // GROUP_DOC_HPP

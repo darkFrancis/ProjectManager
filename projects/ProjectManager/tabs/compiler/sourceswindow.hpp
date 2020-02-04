@@ -20,8 +20,7 @@
      * @li Avec le bouton ajout, une fenêtre de dialog s'ouvre pour ajouter des fichiers
      * @li Il est possible de cocher les fichier pour les supprimer avec le boutons Supprimer
      *
-     * @todo Les extensions de fichier pour être considérées comme sources, header ou ressource
-     * peuvent être configurées dans les options.
+     * Header : sourceswindow.hpp
      */
     class SourcesWindow : public QMainWindow
     {

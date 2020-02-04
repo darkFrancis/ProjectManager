@@ -39,6 +39,8 @@
      * @li de la documentation avec Doxygen
      * @li de la compilation avec GNU/GCC
      * @li du suivi avec Git
+     *
+     * Header : mainwindow.hpp
      */
     class MainWindow : public QMainWindow
     {

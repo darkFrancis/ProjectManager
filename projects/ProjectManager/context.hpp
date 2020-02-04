@@ -69,6 +69,7 @@
      * Cette classe est un singleton.
      * Les informations contenues sont accessibles par un jeu de fonctions get/set.
      * Cette classe permet aussi de lire les fichiers projets pour en extraire les informations.
+     * @n Header : context.hpp
      */
     class Context
     {
@@ -81,7 +82,7 @@
             // Set
             /** @addtogroup CONTEXT_SET
              * @{ */
-            void setLastSearch(QString last_search){m_last_search = last_search;}
+            void setLastSearch(QString last_search){m_last_search = last_search;}/**< GET : Context::m_last_search */
             void setProjectName(QString name){m_project_name = name;}
             void setProjectFile(QString file){m_project_file = file;}
             void setProjectType(QString type){m_project_type = type;}
@@ -113,7 +114,7 @@
             // Get
             /** @addtogroup CONTEXT_GET
              * @{ */
-            bool isOpen(){return m_open;}
+            bool isOpen(){return m_open;}/**< GET : Context::m_open */
             QString lastSearch(){return m_last_search;}
             QString projectName(){return m_project_name;}
             QString projectFile(){return m_project_file;}

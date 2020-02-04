@@ -25,9 +25,11 @@ Context* Context::Instance()
     return m_instance;
 }
 
-Context::Context() :
-    m_project_file(""),
-    m_doxyfile("")
+/**
+ * Constructeur de la classe Context.@n
+ * Initialise la varible Context::m_open à @c false.
+ */
+Context::Context()
 {
     logger(__PRETTY_FUNCTION__);
     m_open = false;
@@ -290,6 +292,9 @@ void initComboType(QComboBox* combo)
     combo->addItem(LABEL_SHAREDCXX);
 }
 
+/**
+ * @param list
+ */
 void trimList(QStringList* list)
 {
     for(int i = 0; i < list->length(); i++)

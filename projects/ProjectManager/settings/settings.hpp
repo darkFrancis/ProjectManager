@@ -95,7 +95,7 @@
      *
      * Cette classe est un singleton.
      * Les option sont utilisée par des get/set.
-     * @n@n Header : settings.hpp
+     * @n Header : settings.hpp
      */
     class Settings
     {

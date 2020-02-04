@@ -48,6 +48,8 @@
      * @li les dossiers de build et de sortie
      * @li le mode de compilation : release (défini NDEBUG) ou debug (défini _DEBUG)
      *
+     * Header : tabcompiler.hpp
+     *
      * @todo finir la classe TabCompiler
      */
     class TabCompiler : public Tab

@@ -43,6 +43,8 @@
      * @li de remettre les paramètres par défaut
      * @li d'appliquer les changements
      *
+     * Header : tabdoxygen.hpp
+     *
      * @todo Ajouter la génération de la documentation avec un bouton
      */
     class TabDoxygen : public Tab

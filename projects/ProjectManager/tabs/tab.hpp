@@ -16,6 +16,7 @@
      * Cette classe hérite de la classe QWidget.@n
      * Cette classe défini des fonctions d'initialisation, de nettoyage et de récupération
      * des informations pour les Widgets des onglets.
+     * @n Header : tab.hpp
      */
     class Tab : public QWidget
     {

@@ -280,9 +280,6 @@ void TabCompiler::action_install()
  */
 void TabCompiler::action_uninstall()
 {
-    /**
-     * @todo fonction de désinstallation
-     */
     logger(__PRETTY_FUNCTION__);
 }
 

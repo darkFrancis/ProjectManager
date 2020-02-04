@@ -18,6 +18,7 @@
      * @brief La classe TabProject défini l'onglet de gestion du projet.
      *
      * Permet de définir les informations générales du projet.
+     * @n Header : tabproject.hpp
      *
      * @todo Répercusion dans les autres onglets si changement de dossiers Git/Doxygen
      */

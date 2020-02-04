@@ -22,6 +22,7 @@
      * Cette fenêtre s'ouvre depuis la fenêtre principale MainWindow.
      * On peut y définir un nouveau projet en sélectionnant un dossier Git et en
      * spécifiant ou enregistrer le fichier Doxygen.
+     * @n Header : newproject.hpp
      */
     class NewProject : public QMainWindow
     {

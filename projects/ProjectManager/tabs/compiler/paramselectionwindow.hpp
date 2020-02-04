@@ -18,6 +18,7 @@
      * @brief La classe ParamSelectionWindow défini la fenêtre de sélection de paramètre de compilation.
      *
      * L'affichage est défini par la strcture CompilerOption.
+     * @n Header : paramselectionwindow.hpp
      */
     class ParamSelectionWindow : public QMainWindow
     {

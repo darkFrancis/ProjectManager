@@ -12,6 +12,15 @@
 #include "context.hpp"
 #include "settings/logger.hpp"
 
+/**
+ * @param parent Le QWidget parent de cet onglet
+ *
+ * Contructeur de la classe TabDoxygen. Il hérite de celui de Tab et utilise
+ * le système des fichiers d'interface utilisateur.@n
+ * Ce constructeur écrit le texte correspondant à la présence ou non du dossier
+ * Git donné par l'instance Context.@n
+ * Voir @ref CONTEXT_GET, Ui.
+ */
 TabGit::TabGit(QWidget *parent) :
     Tab(parent),
     ui(new Ui::TabGit)
@@ -30,6 +39,9 @@ TabGit::TabGit(QWidget *parent) :
     }
 }
 
+/**
+ * Destructeur de la classe TabGit.
+ */
 TabGit::~TabGit()
 {
     logger(__PRETTY_FUNCTION__);
@@ -37,7 +49,9 @@ TabGit::~TabGit()
 }
 
 /**
- * @brief TabGit::on_pushButton_clicked
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le
+ * bouton Git de la fenêtre.@n
+ * Si le dossier Git n'existe pas, le créé, sinon, démarre GitKraken.
  */
 void TabGit::on_pushButton_clicked()
 {

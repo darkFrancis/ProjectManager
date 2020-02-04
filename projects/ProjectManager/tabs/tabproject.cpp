@@ -11,6 +11,15 @@
 #include "context.hpp"
 #include "settings/logger.hpp"
 
+/**
+ * @param parent Le QWidget parent de cet onglet
+ *
+ * Contructeur de la classe TabDoxygen. Il hérite de celui de Tab et utilise
+ * le système des fichiers d'interface utilisateur.@n
+ * Ce constructeur initialise sa liste déroulante contenant les type possible
+ * de projet avec la fonction initComboType.@n
+ * Voir Ui.
+ */
 TabProject::TabProject(QWidget *parent) :
     Tab(parent),
     ui(new Ui::TabProject)
@@ -20,12 +29,20 @@ TabProject::TabProject(QWidget *parent) :
     initComboType(ui->comboBox_projectType);
 }
 
+/**
+ * Destructeur de la classe TabProject.
+ */
 TabProject::~TabProject()
 {
     logger(__PRETTY_FUNCTION__);
     delete ui;
 }
 
+/**
+ * Ce connecteurest activé par un clic souris de l'utilisateur sur le bouton Défaut.@n
+ * Une fenêtre de confirmation est affiché à l'utilisateur. S'il confirme son action,
+ * la fonction clean est appelée pour remettre les valeurs par défaut.
+ */
 void TabProject::on_pushButton_default_clicked()
 {
     logger(__PRETTY_FUNCTION__);
@@ -40,12 +57,22 @@ void TabProject::on_pushButton_default_clicked()
     }
 }
 
+/**
+ * Ce connecteurest activé par un clic souris de l'utilisateur sur le bouton Appliquer.@n
+ * La fonction save est appelée pour enregistrer les valeurs saisies par l'utilisateur.
+ */
 void TabProject::on_pushButton_apply_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     save();
 }
 
+/**
+ * Fonction d'initialisation de l'onglet Projet.@n
+ * Utilise les méthodes GET de l'instance Context pour remplir les différent champs de cet
+ * onglet avec les valeurs du projet.@n
+ * Voir @ref CONTEXT_GET, Ui.
+ */
 void TabProject::init()
 {
     logger(__PRETTY_FUNCTION__);
@@ -59,6 +86,12 @@ void TabProject::init()
     ui->comboBox_projectType->setCurrentIndex(ui->comboBox_projectType->findText(type2label(ctx->projectType())));
 }
 
+/**
+ * Fonction d'enregistrement de l'onglet Projet.@n
+ * Utilise les méthodes SET de l'instance Context pour enregistrer les modifications apportées
+ * par l'utilisateur sur l'onglet Projet. Puis appelle la fonction Context::save.@n
+ * Voir @ref CONTEXT_SET, Ui.
+ */
 void TabProject::save()
 {
     logger(__PRETTY_FUNCTION__);
@@ -73,6 +106,17 @@ void TabProject::save()
     ctx->save();
 }
 
+/**
+ * Fonction de nettoyage de l'onglet Projet.@n
+ * Remet à zéro les valeurs de l'onglet projet:
+ * @li Nom de Projet : @b My @b Project
+ * @li Auteur : @b Unknown
+ * @li Version : @b 0.0
+ * @li Doxyfile : @i Vide
+ * @li Chemin vers GIT : @i vide
+ * @li Description du projet : @b Description @b du @b Projet
+ * @li Type de projet : @b Application @b C
+ */
 void TabProject::clean()
 {
     logger(__PRETTY_FUNCTION__);
@@ -85,25 +129,47 @@ void TabProject::clean()
     ui->comboBox_projectType->setCurrentIndex(0);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * du fichier Doxyfile.@n
+ * Demande à l'utilisateur de sélectionner le fichier Doxyfile grâce à une boîte de
+ * dialogue. Si un fichier est sélectionné, renseigne son chemin dans la ligne
+ * d'édition associée.@n
+ * Voir Ui.
+ */
 void TabProject::on_toolButton_doxyfile_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     QString file_name = QFileDialog::getSaveFileName(this, "Doxyfile", Context::Instance()->lastSearch());
-    QFileInfo file(file_name);
-    ui->lineEdit_doxyfile->setText(file.absolutePath());
-    Context::Instance()->setLastSearch(file.absoluteDir().absolutePath());
+    if(file_name != "")
+    {
+        QFileInfo file(file_name);
+        ui->lineEdit_doxyfile->setText(file.absolutePath());
+        Context::Instance()->setLastSearch(file.absoluteDir().absolutePath());
+    }
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
+ * du dossier Git.@n
+ * Demande à l'utilisateur de sélectionner le dossier GIT grâce à une boîte de
+ * dialogue. Si un dossier est sélectionné, renseigne son chemin dans la ligne
+ * d'édition associée.@n
+ * Voir Ui.
+ */
 void TabProject::on_toolButton_git_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     QString dir_name = QFileDialog::getExistingDirectory(this, "Dossier GIT", Context::Instance()->lastSearch());
-    QDir dir(dir_name);
-    dir_name = dir.absolutePath();
-    if(dir_name[dir_name.length()-1] != QChar('/'))
+    if(dir_name != "")
     {
-        dir_name.append('/');
+        QDir dir(dir_name);
+        dir_name = dir.absolutePath();
+        if(dir_name[dir_name.length()-1] != QChar('/'))
+        {
+            dir_name.append('/');
+        }
+        ui->lineEdit_git->setText(dir_name);
+        Context::Instance()->setLastSearch(dir.absolutePath());
     }
-    ui->lineEdit_git->setText(dir_name);
-    Context::Instance()->setLastSearch(dir.absolutePath());
 }

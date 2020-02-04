@@ -18,6 +18,7 @@
      * @brief La classe TabGit défini l'onglet de gestion de Git.
      *
      * Cette fenêtre lance le programme GitKraken pour la gestion de Git.
+     * @n Header : tabgit.hpp
      *
      * @todo Remplacement de l'utilisation de GitKraken par des commandes internes
      */

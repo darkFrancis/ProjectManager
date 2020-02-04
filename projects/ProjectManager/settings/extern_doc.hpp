@@ -21,6 +21,7 @@
      * à partir des fichiers de structure ui.@n@n
      * Voir https://doc.qt.io/qt-5/designer-ui-file-format.html.
      */
+    namespace Ui {}
 
     /**
      * @class QMainWindow
@@ -29,6 +30,7 @@
      * Cette classe permet de décrire des fenêtres.@n@n
      * Voir : https://doc.qt.io/qt-5/qmainwindow.html.
      */
+    class QMainWindow{};
 
     /**
      * @class QWidget
@@ -37,6 +39,7 @@
      * Cette classe permet de décrire des widgets.@n@n
      * Voir : https://doc.qt.io/qt-5/qwidget.html.
      */
+    class QWidget{};
 
     /** @} */
 

@@ -68,81 +68,82 @@
      *
      * Cette classe est un singleton.
      * Les informations contenues sont accessibles par un jeu de fonctions get/set.
-     * Cette classe permet aussi de lire les fichiers projets pour en extraire les informations.
-     * @n Header : context.hpp
+     * Cette classe permet aussi de lire les fichiers projets pour en extraire les informations.@n
+     * Voir @ref CONTEXT_GET, @ref CONTEXT_SET.
+     * @n Header : context.hpp.
      */
     class Context
     {
         public:
             static Context* Instance();
             void loadProject();
-            void reloadProject(){loadProject();}
+            void reloadProject(){loadProject();}/**< Recharge le projet avec la fonction Context::loadProject */
             void save();
-            void close(){m_open = false;}
+            void close(){m_open = false;}/**< Passe la variable Context::m_open à @b false pour signifier que le projet est fermé et enregistré */
             // Set
             /** @addtogroup CONTEXT_SET
              * @{ */
-            void setLastSearch(QString last_search){m_last_search = last_search;}/**< GET : Context::m_last_search */
-            void setProjectName(QString name){m_project_name = name;}
-            void setProjectFile(QString file){m_project_file = file;}
-            void setProjectType(QString type){m_project_type = type;}
-            void setProjectVersion(QString version){m_project_version = version;}
-            void setProjectDescription(QString description){m_project_desc = description;}
-            void setProjectAuthor(QString author){m_author = author;}
-            void setBuildDir(QString dir){m_build_dir = dir;}
-            void setOutput(QString dir){m_output = dir;}
-            void setSources(QStringList sources){m_sources = sources;}
-            void setHeaders(QStringList headers){m_headers = headers;}
-            void setRessources(QStringList ressources){m_ressources = ressources;}
-            void setDoxyfile(QString doxyfile){m_doxyfile = doxyfile;}
-            void setGitPath(QString path){m_git_path = path;}
-            void setFlagOverall(QStringList flag){m_flag_overall = flag;}
-            void setFlagC(QStringList flag){m_flag_c = flag;}
-            void setFlagCxx(QStringList flag){m_flag_cxx = flag;}
-            void setFlagDiag(QStringList flag){m_flag_diag = flag;}
-            void setFlagWarn(QStringList flag){m_flag_warn = flag;}
-            void setFlagDebug(QStringList flag){m_flag_debug = flag;}
-            void setFlagOpt(QStringList flag){m_flag_opt = flag;}
-            void setFlagInst(QStringList flag){m_flag_inst = flag;}
-            void setFlagPreprocess(QStringList flag){m_flag_preprocess = flag;}
-            void setFlagAssembler(QStringList flag){m_flag_assembler = flag;}
-            void setFlagLinker(QStringList flag){m_flag_linker = flag;}
-            void setFlagDirs(QStringList flag){m_flag_dirs = flag;}
-            void setFlagConvention(QStringList flag){m_flag_convention = flag;}
-            void setFlagOther(QStringList flag){m_flag_other = flag;}
+            void setLastSearch(QString last_search){m_last_search = last_search;}/**< SET : Context::m_last_search */
+            void setProjectName(QString name){m_project_name = name;}/**< SET : Context::m_project_name */
+            void setProjectFile(QString file){m_project_file = file;}/**< SET : Context::m_project_file */
+            void setProjectType(QString type){m_project_type = type;}/**< SET : Context::m_project_type */
+            void setProjectVersion(QString version){m_project_version = version;}/**< SET : Context::m_project_version */
+            void setProjectDescription(QString description){m_project_desc = description;}/**< SET : Context::m_project_desc */
+            void setProjectAuthor(QString author){m_author = author;}/**< SET : Context::m_author */
+            void setBuildDir(QString dir){m_build_dir = dir;}/**< SET : Context::m_build_dir */
+            void setOutput(QString dir){m_output = dir;}/**< SET : Context::m_output */
+            void setSources(QStringList sources){m_sources = sources;}/**< SET : Context::m_sources */
+            void setHeaders(QStringList headers){m_headers = headers;}/**< SET : Context::m_headers */
+            void setRessources(QStringList ressources){m_ressources = ressources;}/**< SET : Context::m_ressources */
+            void setDoxyfile(QString doxyfile){m_doxyfile = doxyfile;}/**< SET : Context::m_doxyfile */
+            void setGitPath(QString path){m_git_path = path;}/**< SET : Context::m_git_path */
+            void setFlagOverall(QStringList flag){m_flag_overall = flag;}/**< SET : Context::m_flag_overall */
+            void setFlagC(QStringList flag){m_flag_c = flag;}/**< SET : Context::m_flag_c */
+            void setFlagCxx(QStringList flag){m_flag_cxx = flag;}/**< SET : Context::m_flag_cxx */
+            void setFlagDiag(QStringList flag){m_flag_diag = flag;}/**< SET : Context::m_flag_diag */
+            void setFlagWarn(QStringList flag){m_flag_warn = flag;}/**< SET : Context::m_flag_warn */
+            void setFlagDebug(QStringList flag){m_flag_debug = flag;}/**< SET : Context::m_flag_debug */
+            void setFlagOpt(QStringList flag){m_flag_opt = flag;}/**< SET : Context::m_flag_opt */
+            void setFlagInst(QStringList flag){m_flag_inst = flag;}/**< SET : Context::m_flag_inst */
+            void setFlagPreprocess(QStringList flag){m_flag_preprocess = flag;}/**< SET : Context::m_flag_preprocess */
+            void setFlagAssembler(QStringList flag){m_flag_assembler = flag;}/**< SET : Context::m_flag_assembler */
+            void setFlagLinker(QStringList flag){m_flag_linker = flag;}/**< SET : Context::m_flag_linker */
+            void setFlagDirs(QStringList flag){m_flag_dirs = flag;}/**< SET : Context::m_flag_dirs */
+            void setFlagConvention(QStringList flag){m_flag_convention = flag;}/**< SET : Context::m_flag_convention */
+            void setFlagOther(QStringList flag){m_flag_other = flag;}/**< SET : Context::m_flag_other */
             /** @} */
             // Get
             /** @addtogroup CONTEXT_GET
              * @{ */
             bool isOpen(){return m_open;}/**< GET : Context::m_open */
-            QString lastSearch(){return m_last_search;}
-            QString projectName(){return m_project_name;}
-            QString projectFile(){return m_project_file;}
-            QString projectType(){return m_project_type;}
-            QString projectVersion(){return m_project_version;}
-            QString projectDescription(){return m_project_desc;}
-            QString projectAuthor(){return m_author;}
-            QString buildDir(){return m_build_dir;}
-            QString output(){return m_output;}
-            QStringList sources(){return m_sources;}
-            QStringList headers(){return m_headers;}
-            QStringList ressources(){return m_ressources;}
-            QString doxyfile(){return m_doxyfile;}
-            QString gitPath(){return m_git_path;}
-            QStringList flagOverall(){return m_flag_overall;}
-            QStringList flagC(){return m_flag_c;}
-            QStringList flagCxx(){return m_flag_cxx;}
-            QStringList flagDiag(){return m_flag_diag;}
-            QStringList flagWarn(){return m_flag_warn;}
-            QStringList flagDebug(){return m_flag_debug;}
-            QStringList flagOpt(){return m_flag_opt;}
-            QStringList flagInst(){return m_flag_inst;}
-            QStringList flagPreprocess(){return m_flag_preprocess;}
-            QStringList flagAssembler(){return m_flag_assembler;}
-            QStringList flagLinker(){return m_flag_linker;}
-            QStringList flagDirs(){return m_flag_dirs;}
-            QStringList flagConvention(){return m_flag_convention;}
-            QStringList flagOther(){return m_flag_other;}
+            QString lastSearch(){return m_last_search;}/**< GET : Context::m_last_search */
+            QString projectName(){return m_project_name;}/**< GET : Context::m_project_name */
+            QString projectFile(){return m_project_file;}/**< GET : Context::m_project_file */
+            QString projectType(){return m_project_type;}/**< GET : Context::m_project_type */
+            QString projectVersion(){return m_project_version;}/**< GET : Context::m_project_version */
+            QString projectDescription(){return m_project_desc;}/**< GET : Context::m_project_desc */
+            QString projectAuthor(){return m_author;}/**< GET : Context::m_author */
+            QString buildDir(){return m_build_dir;}/**< GET : Context::m_build_dir */
+            QString output(){return m_output;}/**< GET : Context::m_output */
+            QStringList sources(){return m_sources;}/**< GET : Context::m_sources */
+            QStringList headers(){return m_headers;}/**< GET : Context::m_headers */
+            QStringList ressources(){return m_ressources;}/**< GET : Context::m_ressources */
+            QString doxyfile(){return m_doxyfile;}/**< GET : Context::m_doxyfile */
+            QString gitPath(){return m_git_path;}/**< GET : Context::m_git_path */
+            QStringList flagOverall(){return m_flag_overall;}/**< GET : Context::m_flag_overall */
+            QStringList flagC(){return m_flag_c;}/**< GET : Context::m_flag_c */
+            QStringList flagCxx(){return m_flag_cxx;}/**< GET : Context::m_flag_cxx */
+            QStringList flagDiag(){return m_flag_diag;}/**< GET : Context::m_flag_diag */
+            QStringList flagWarn(){return m_flag_warn;}/**< GET : Context::m_flag_warn */
+            QStringList flagDebug(){return m_flag_debug;}/**< GET : Context::m_flag_debug */
+            QStringList flagOpt(){return m_flag_opt;}/**< GET : Context::m_flag_opt */
+            QStringList flagInst(){return m_flag_inst;}/**< GET : Context::m_flag_inst */
+            QStringList flagPreprocess(){return m_flag_preprocess;}/**< GET : Context::m_flag_preprocess */
+            QStringList flagAssembler(){return m_flag_assembler;}/**< GET : Context::m_flag_assembler */
+            QStringList flagLinker(){return m_flag_linker;}/**< GET : Context::m_flag_linker */
+            QStringList flagDirs(){return m_flag_dirs;}/**< GET : Context::m_flag_dirs */
+            QStringList flagConvention(){return m_flag_convention;}/**< GET : Context::m_flag_convention */
+            QStringList flagOther(){return m_flag_other;}/**< GET : Context::m_flag_other */
             /** @} */
 
         private:
@@ -150,7 +151,6 @@
             static Context* m_instance;/**< Pointeur vers l'instance de la classe Context */
             bool m_open;/**< Booléen d'ouverture de projet */
             // Save functions
-            QString indent();
             void save_description(QTextStream* stream);
             void save_sources(QString kw, QTextStream* stream);
             void save_flags(QString kw, QTextStream* stream);

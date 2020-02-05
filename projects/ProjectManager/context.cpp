@@ -35,6 +35,13 @@ Context::Context()
     m_open = false;
 }
 
+/**
+ * Fonction de chargement de projet.@n
+ * Utilise l'instance Parser pour analyser le fichier Context::m_project_file
+ * et récupérer les valeurs des différentes options présentes dans le fichier
+ * de projet.@n
+ * Voir @ref FILE, @ref PROJECT_FLAGS.
+ */
 void Context::loadProject()
 {
     logger(__PRETTY_FUNCTION__);
@@ -76,6 +83,12 @@ void Context::loadProject()
     }
 }
 
+/**
+ * Fonction d'enregistrement de projet.@n
+ * Enregistre les différentes options renseignées par l'utilisateur en s'aidant
+ * des fonctions Context::save_description et Context::save_sources.@n
+ * Voir @ref FILE, @ref PROJECT_FLAGS.
+ */
 void Context::save()
 {
     logger(__PRETTY_FUNCTION__);
@@ -128,6 +141,17 @@ void Context::save()
     }
 }
 
+/**
+ * @param stream Flux vers le fichier pour enregistrement
+ *
+ * Fonction d'enregistrement de la description de projet.@n
+ * Enregistre la description du projet grâce au flux @c stream passé en
+ * argument. Des retour à la ligne sont effectués pour éviter que cette
+ * description ne dépasse #DESC_WIDTH caractères de large. Chaque retour
+ * à la ligne est précédé d'un espace et du caractère '\' pour que le
+ * Parser puisse l'analyser au prochain chargement du projet.@n
+ * Voir @ref FILE, @ref PROJECT_FLAGS.
+ */
 void Context::save_description(QTextStream *stream)
 {
     logger(__PRETTY_FUNCTION__);
@@ -158,6 +182,17 @@ void Context::save_description(QTextStream *stream)
     }
 }
 
+/**
+ * @param kw Mot clé du type de source
+ * @param stream Flux vers le fichier pour enregistrement
+ *
+ * Fonction d'enregistrement des sources.@n
+ * Enregistre la liste de sources du type @c kw passé en argument avec
+ * un seul fichier par ligne. Chaque retour à la ligne est précédé d'un
+ * espace et du caractère '\' pour que le Parser puisse l'analyser au
+ * prochain chargement du projet.@n
+ * Voir @ref FILE, @ref PROJECT_FLAGS.
+ */
 void Context::save_sources(QString kw, QTextStream* stream)
 {
     logger(__PRETTY_FUNCTION__);
@@ -179,6 +214,17 @@ void Context::save_sources(QString kw, QTextStream* stream)
     }
 }
 
+/**
+ * @param kw Mot clé de l'option de compilateur
+ * @param stream Flux vers le fichier pour enregistrement
+ *
+ * Fonction d'enregistrement des options de compilation.@n
+ * Enregistre la liste d'options de compilation du type @c kw passé en
+ * argument avec une seule option par ligne. Chaque retour à la ligne
+ * est précédé d'un espace et du caractère '\' pour que le Parser puisse
+ * l'analyser au prochain chargement du projet.@n
+ * Voir @ref FILE, @ref PROJECT_FLAGS.
+ */
 void Context::save_flags(QString kw, QTextStream* stream)
 {
     logger(__PRETTY_FUNCTION__);
@@ -218,6 +264,17 @@ void Context::save_flags(QString kw, QTextStream* stream)
     }
 }
 
+/**
+ * @param absolute_path Chemin absolu d'un fichier/dossier
+ * @param ref_dir Répertoire de référence
+ * @return Chemin relatif
+ *
+ * Permet d'obtenir le chemin relatif d'un fichier/dossier de chemin absolu
+ * @c absolute_path par rapport à un répertoire de référence @c ref_dir.
+ * Des caractères ".." peuvent apparaitre lors de ce processus.
+ * @warning Sur un système de type Windows, des chemins sur des disques
+ * différents ne fonctionneront pas.
+ */
 QString relativePath(QString absolute_path, QString ref_dir)
 {
     QStringList ref_dirs = ref_dir.split('/');
@@ -249,6 +306,14 @@ QString relativePath(QString absolute_path, QString ref_dir)
     return abs_dirs.join('/');
 }
 
+/**
+ * @param relative_path Chemin relatif vers un fichier/dossier
+ * @param ref_dir Répertoire de référence pour le chemin relatif
+ * @return Chemin absolu
+ *
+ * Permet d'obtenir le chemin absolu d'un fichier/dossier de chemin @c relative_path
+ * par rapport au dossier @c ref_dir.
+ */
 QString absolutePath(QString relative_path, QString ref_dir)
 {
     if(ref_dir.at(ref_dir.length()-1) != QChar('/'))
@@ -259,6 +324,14 @@ QString absolutePath(QString relative_path, QString ref_dir)
     return info.absoluteFilePath();
 }
 
+/**
+ * @param type Le type de projet
+ * @return Label correspondant à @c type
+ *
+ * Permet d'obtenir le label pour un type de projet donné. Si @c type n'est
+ * pas un type de projet valide, renvoi une chaine de caractères QString vide.@n
+ * Voir @ref PROJECT_TYPE.
+ */
 QString type2label(QString type)
 {
     if(type == TYPE_C) return LABEL_C;
@@ -270,6 +343,14 @@ QString type2label(QString type)
     else return "";
 }
 
+/**
+ * @param label Le label du type de projet
+ * @return Type correspondant à @c label
+ *
+ * Permet d'obtenir le type de projet pour un label donné. Si @c label n'est
+ * pas un label de projet valide, renvoi une chaine de caractères QString vide.@n
+ * Voir @ref PROJECT_TYPE.
+ */
 QString label2type(QString label)
 {
     logger(__PRETTY_FUNCTION__);
@@ -282,6 +363,15 @@ QString label2type(QString label)
     else return "";
 }
 
+/**
+ * @param combo Liste déroulante à initialiser
+ *
+ * Initialise la liste déroulante @c combo en ajoutant les labels des types
+ * possibles de projets.
+ * @warning @c combo doit être vide
+ *
+ * Voir @ref PROJECT_TYPE.
+ */
 void initComboType(QComboBox* combo)
 {
     combo->addItem(LABEL_C);
@@ -293,7 +383,10 @@ void initComboType(QComboBox* combo)
 }
 
 /**
- * @param list
+ * @param list Liste à simplifier
+ *
+ * Retire tout élément vide (ou ne contenant que des espaces) de la liste @c list
+ * passé en argument.
  */
 void trimList(QStringList* list)
 {

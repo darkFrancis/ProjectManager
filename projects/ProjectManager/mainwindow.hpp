@@ -14,17 +14,17 @@
     #include "tabs/tabgit.hpp"
     #include "tabs/tabproject.hpp"
 
-    #define STATUS_DEFAULT_TIMEOUT 5/**<  */
+    #define STATUS_DEFAULT_TIMEOUT 5/**< Timeout par défaut pour l'affichage du status */
 
     // Init
     /** @addtogroup FILE
       * @{ */
     #define INIT_FILE   QString("config/projectmanager.ini")/**< Fichier d'initialisation du programme */
     /** @}*/
-    #define INIT_X      200
-    #define INIT_Y      200
-    #define INIT_W      400
-    #define INIT_H      300
+    #define INIT_X      200/**< Position X par défaut d'affichage de la fenêtre principale */
+    #define INIT_Y      200/**< Position Y par défaut d'affichage de la fenêtre principale */
+    #define INIT_W      400/**< Largeur par défaut d'affichage de la fenêtre principale */
+    #define INIT_H      300/**< Hauteur X par défaut d'affichage de la fenêtre principale */
 
     namespace Ui {
         class MainWindow;
@@ -58,6 +58,8 @@
             void save();
 
         private slots:
+            /** @addtogroup MENU_FUNC
+             * @{ */
             void on_actionNouveau_triggered();
             void on_actionOuvrir_triggered();
             void on_actionEnregistrer_triggered();
@@ -66,6 +68,7 @@
             void on_actionOptions_triggered();
             void on_actionA_propos_triggered();
             void on_actionA_propos_de_Qt_triggered();
+            /** @} */
 
         private:
             // UI

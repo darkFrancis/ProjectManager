@@ -83,6 +83,15 @@
       */
 
     /**
+      * @defgroup MENU_FUNC Action de menu
+      * @brief Les différentes actions du menu de la fenêtre principale
+      *
+      * Ces actions sont accessibles depuis la barre menu de la fenêtre principale
+      * MainWindow. Elle peuvent être activées par un clic ou alors avec un reccourci
+      * clavier prédéfini.
+      */
+
+    /**
       * @defgroup CONTEXT_GET Context::get
       * @brief Ce groupe contient les méthodes GET de l'instance Context.
       *
@@ -149,6 +158,9 @@
     /**
       * @defgroup EXTERN_DOC Documentation externe
       * @brief Les membres externes à ProjectManager
+      *
+      * Ces membres proviennent de la bibliothèque standard C++ ou de l'API Qt.@n
+      * Voir https://fr.cppreference.com/, https://doc.qt.io/.
       */
 
 #endif // GROUP_DOC_HPP

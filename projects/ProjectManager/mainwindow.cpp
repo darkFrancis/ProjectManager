@@ -21,6 +21,18 @@
 #include "settings/settings.hpp"
 #include "settings/logger.hpp"
 
+/**
+ * @param parent Le QWidget parent de cette fenêtre
+ *
+ * Contructeur de la classe MainWindow.@n
+ * Ce constructeur hérite de celui de QMainWindow et utilise le système des fichiers
+ * d'interface utilisateur.@n
+ * Ce constructeur va appeler la fonction MainWindow::initApp pour s'initialiser. En
+ * cas d'erreur lors de cette initialisation, affiche un message d'erreur pour
+ * l'utilisateur à la fois dans la barre de status en bas de la fenêtre mais aussi
+ * par une popup.@n
+ * Voir Ui.
+ */
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -44,6 +56,10 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 }
 
+/**
+ * Destructeur de la classe MainWindow.@n
+ * Appel la fonction MainWindow::saveInit pour enregistrer l'état de la fenêtre.
+ */
 MainWindow::~MainWindow()
 {
     logger(__PRETTY_FUNCTION__);
@@ -51,6 +67,20 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+/**
+ * Fonction d'initialisation de la fenêtre.@n
+ * Cette fenêtre étant la fenêtre principale, c'est ici que sont initialisées les
+ * instances de ce programme dans cet ordre:
+ * @li Initialisation de l'instance Setting avec l'appel Setting::init
+ * @li Si le fichier #INIT_FILE n'éxiste pas, l'initialise en appelant la fonction
+ * MainWindow::createInit
+ * @li Lecture du fichier #INIT_FILE pour mettre en forme cette fenêtre et pour
+ * renseigner les variables Context::m_project_file et Context::m_last_search
+ * @li Créé et ajoute les différents onglets issus de la classe Tab
+ * @li Si un projet a été renseigné lors de cette initialisation par le fichier
+ * #INIT_FILE, le charge avec la fonction MainWindow::loadProject, sinon, rend
+ * innaccessible au clic de l'utilisateur
+ */
 void MainWindow::initApp()
 {
     logger(__PRETTY_FUNCTION__);
@@ -120,6 +150,11 @@ void MainWindow::initApp()
     }
 }
 
+/**
+ * Fonction de nettoyage générale.@n
+ * Appel les fonctions de nettoyage de chaque onglet.@n
+ * Voir Tab::clean.
+ */
 void MainWindow::clean()
 {
     logger(__PRETTY_FUNCTION__);
@@ -129,6 +164,12 @@ void MainWindow::clean()
     }
 }
 
+/**
+ * Fonction d'initialisation générale.@n
+ * Appel les fonctions d'initialisation de chaque onglet puis
+ * les rend accessible au clic.@n
+ * Voir Tab::init.
+ */
 void MainWindow::init()
 {
     logger(__PRETTY_FUNCTION__);
@@ -139,6 +180,11 @@ void MainWindow::init()
     m_tabWidget->setEnabled(true);
 }
 
+/**
+ * Fonction d'enregistrement générale.@n
+ * Appel les fonctions d'enregistrement de chaque onglet.@n
+ * Voir Tab::save.
+ */
 void MainWindow::save()
 {
     logger(__PRETTY_FUNCTION__);
@@ -148,6 +194,16 @@ void MainWindow::save()
     }
 }
 
+/**
+ * Fonction de génération du fichier d'initialisation.@n
+ * Génère un fichier d'initialisation #INIT_FILE avec des paramètres par défaut :
+ * @li x = #INIT_X
+ * @li y = #INIT_Y
+ * @li width = #INIT_W
+ * @li height = #INIT_H
+ * @li project = @i vide
+ * @li last_search = @i vide
+ */
 void MainWindow::createInit()
 {
     logger(__PRETTY_FUNCTION__);
@@ -178,6 +234,14 @@ void MainWindow::createInit()
     }
 }
 
+/**
+ * Fonction d'enregistrement d'état.@n
+ * Enregistre dans le fichier #INIT_FILE les paramètres d'utilisation en cours.
+ * Utilise les fonctions native de la classe QMainWindow pour obtenir les valeurs
+ * des caractéristiques de la fenêtre. Appel les fonctions GET de l'instance Context
+ * pour obtenir le projet ouvert et la dernière recherche effectuée.@n
+ * Voir @ref CONTEXT_GET.
+ */
 void MainWindow::saveInit()
 {
     logger(__PRETTY_FUNCTION__);
@@ -208,12 +272,28 @@ void MainWindow::saveInit()
     }
 }
 
+/**
+ * @param msg Message à afficher
+ * @param timeout Timeout en secondes
+ *
+ * Affiche le message @c msg dans la barre de status en bas de la fenêtre principale
+ * pendant @c timeout secondes. Si un autre message est affiché, celui-ci disparait.@n
+ * Voir Ui.
+ */
 void MainWindow::status(QString msg, int timeout)
 {
     logger(__PRETTY_FUNCTION__);
     ui->statusBar->showMessage(msg, timeout * 1000);
 }
 
+/**
+ * Shortcut : @b Ctrl+N.@n
+ * Fonction de création de nouveau projet.@n
+ * Si un projet est déjà ouvert, demande à l'utilisateur de confirmer son action.
+ * S'il confirme, une fenêtre NewProject est ouverte. Cette fenêtre bloque
+ * les autres fenêtres de l'application tant qu'elle est présente pour forcer
+ * l'utilisateur à finir la sélection (ou fermer cette même fenêtre).
+ */
 void MainWindow::on_actionNouveau_triggered()
 {
     logger(__PRETTY_FUNCTION__);
@@ -222,7 +302,7 @@ void MainWindow::on_actionNouveau_triggered()
     {
         QMessageBox::StandardButton res;
         res = QMessageBox::question(this, "Attention", "Attention ! Si un nouveau fichier est ouvert, tout ce qui n'est pas enregistré sera supprimé.\nVoulez vous continuer ?");
-        if(res == QMessageBox::No)
+        if(res != QMessageBox::Yes)
         {
             return;
         }
@@ -234,6 +314,12 @@ void MainWindow::on_actionNouveau_triggered()
     p->show();
 }
 
+/**
+ * Fonction générale de chargement de projet.@n
+ * Prépare l'IHM avec la fonction MainWindow::init, puis charge le projet
+ * avec la fonction Context::loadProject, et enfin initialise l'IHM avec
+ * la fonction MainWindow::init.
+ */
 void MainWindow::loadProject()
 {
     logger(__PRETTY_FUNCTION__);
@@ -257,7 +343,7 @@ void MainWindow::on_actionOuvrir_triggered()
     {
         QMessageBox::StandardButton res;
         res = QMessageBox::question(this, "Attention", "Attention ! Si un nouveau fichier est ouvert, tout ce qui n'est pas enregistré sera supprimé.\nVoulez vous continuer ?");
-        if(res == QMessageBox::No)
+        if(res != QMessageBox::Yes)
         {
             return;
         }

@@ -312,7 +312,7 @@ void CompilerParamWindow::add_option(QLineEdit *line_edit, QString option)
  *
  * Ouvre une fenêtre ParamSelectionWindow pour sélectionner une option de
  * compilation avec pour paramètre le mot clé @c kw. Cette fenêtre bloque
- * les autre fenêtre de l'application tant qu'elle est présente pour forcer
+ * les autres fenêtres de l'application tant qu'elle est présente pour forcer
  * l'utilisateur à finir la sélection (ou fermer cette même fenêtre).@n
  * Voir @ref KW_COMPILE.
  */

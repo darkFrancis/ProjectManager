@@ -44,8 +44,6 @@
      * @li d'appliquer les changements
      *
      * Header : tabdoxygen.hpp
-     *
-     * @todo Ajouter la génération de la documentation avec un bouton
      */
     class TabDoxygen : public Tab
     {
@@ -112,6 +110,7 @@
             void on_pushButton_apply_clicked();
             void on_pushButton_default_clicked();
             void on_pushButton_generateFiles_clicked();
+            void on_pushButton_generateDoc_clicked();
 
         private:
             Ui::TabDoxygen *ui;/**< UI de la classe TabDoxygen */

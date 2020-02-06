@@ -33,6 +33,12 @@ TabDoxygen::TabDoxygen(QWidget *parent) :
     ui->setupUi(this);
     logger(__PRETTY_FUNCTION__);
 
+    // Ajout police d'écriture par défaut de Dot si non présente
+    if(ui->fontComboBox_dotFontName->findText("Helvetica") == -1)
+    {
+        ui->fontComboBox_dotFontName->addItem("Helvetica");
+    }
+
     connect(this, SIGNAL(foundPath(QString,QLineEdit*)), this, SLOT(writePath(QString,QLineEdit*)));
 }
 
@@ -2175,6 +2181,62 @@ void TabDoxygen::on_pushButton_generateFiles_clicked()
     catch(QString msg)
     {
         QMessageBox::critical(this, "Erreur", msg);
+    }
+}
+
+/**
+ * Ce connecteur est activé lors d'un clic souris par l'utilisateur sur le
+ * bouton "Générer Doc".@n
+ * Enregistre les modifications apportées par l'utilisateur puis exécute la
+ * commande de génération de la documentation du projet. La dernière sortie
+ * de la génération de la documentation se trouve dans les fichiers
+ * doxygen.log et doxygen.err. Si des erreurs sont détectées, affiche une
+ * popup avec un lien vers le fichier d'erreur, sinon, la popup affiche un
+ * message de réussite.@n
+ * Voir Settings::m_doxyfile, TabDoxygen::save.
+ */
+void TabDoxygen::on_pushButton_generateDoc_clicked()
+{
+    logger(__PRETTY_FUNCTION__);
+    save();
+    QFileInfo info(Context::Instance()->doxyfile());
+    QString dir = info.absoluteDir().absolutePath();
+    if(dir.at(dir.length()-1) != QChar('/')) dir.append('/');
+    QProcess process;
+    process.setWorkingDirectory(dir);
+    process.setStandardOutputFile(dir + "doxygen.log");
+    process.setStandardErrorFile(dir + "doxygen.err");
+    process.start("doxygen", QStringList() << info.fileName());
+    if(process.waitForFinished())
+    {
+        QFile err_file(dir + "doxygen.err");
+        QString extra_info = "";
+        if(err_file.open(QIODevice::Text | QIODevice::ReadOnly))
+        {
+            extra_info ="\n";
+            QString text = err_file.readAll();
+            if(text.simplified() == "")
+            {
+                extra_info += "Aucune erreur détectée.";
+            }
+            else
+            {
+                QStringList ligns = text.split('\n');
+                extra_info += QString::number(ligns.length()-1) + " erreurs détectées !\n\n"
+                              "Voir les erreurs dans le fichier <a href=\"" + dir + "doxygen.err\">"
+                              + dir + "doxygen.err</a>";
+            }
+            err_file.close();
+        }
+        QMessageBox::information(this,
+                                 "Doxygen",
+                                 "<html><body>La documentation a été générée." + extra_info + "</body></html>");
+    }
+    else
+    {
+        QMessageBox::critical(this,
+                              "Doxygen",
+                              "Erreur lors de la génération de la Doc");
     }
 }
 

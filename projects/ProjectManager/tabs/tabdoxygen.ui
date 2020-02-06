@@ -14,34 +14,21 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="0">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="1" column="2">
+   <item row="1" column="3">
     <widget class="QPushButton" name="pushButton_default">
      <property name="text">
       <string>Défaut</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="3">
+   <item row="1" column="4">
     <widget class="QPushButton" name="pushButton_apply">
      <property name="text">
       <string>Appliquer</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="0" colspan="4">
+   <item row="0" column="0" colspan="5">
     <widget class="QToolBox" name="toolBox">
      <property name="currentIndex">
       <number>9</number>
@@ -1169,7 +1156,7 @@ Par défaut : 0</string>
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-820</y>
+        <y>0</y>
         <width>538</width>
         <height>1114</height>
        </rect>
@@ -2746,7 +2733,7 @@ alphabétique.</string>
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-1587</y>
+        <y>0</y>
         <width>538</width>
         <height>1881</height>
        </rect>
@@ -4119,7 +4106,7 @@ tagname=loc.</string>
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-1101</y>
+        <y>0</y>
         <width>538</width>
         <height>1395</height>
        </rect>
@@ -5040,7 +5027,7 @@ MakeFile.</string>
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-14</y>
+        <y>0</y>
         <width>538</width>
         <height>308</height>
        </rect>
@@ -6312,10 +6299,30 @@ dans un bloc UML.</string>
      </widget>
     </widget>
    </item>
+   <item row="1" column="0">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
    <item row="1" column="1">
     <widget class="QPushButton" name="pushButton_generateFiles">
      <property name="text">
       <string>Générer Templates</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QPushButton" name="pushButton_generateDoc">
+     <property name="text">
+      <string>Générer Doc</string>
      </property>
     </widget>
    </item>

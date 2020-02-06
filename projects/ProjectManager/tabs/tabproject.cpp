@@ -112,8 +112,8 @@ void TabProject::save()
  * @li Nom de Projet : @b My @b Project
  * @li Auteur : @b Unknown
  * @li Version : @b 0.0
- * @li Doxyfile : @i Vide
- * @li Chemin vers GIT : @i vide
+ * @li Doxyfile : @e Vide
+ * @li Chemin vers GIT : @e vide
  * @li Description du projet : @b Description @b du @b Projet
  * @li Type de projet : @b Application @b C
  */

@@ -12,6 +12,22 @@
 #include <QTextStream>
 #include <QMessageBox>
 
+/**
+ * @param parent Le QWidget parent de cette fenêtre
+ *
+ * Contructeur de la classe MainWindow.@n
+ * Ce constructeur hérite de celui de QMainWindow et utilise le système des fichiers
+ * d'interface utilisateur.@n
+ * Ce constructeur va initialiser les différents champs requis pour la création d'un
+ * nouveau projet à l'aide des méthodes GET de l'instance Context:
+ * @li Nom de projet : @b Project
+ * @li Dossier du projet : Context::m_last_search
+ * @li Dossier Git : Context::m_last_search + @b ".git"
+ * @li Fichier Doxygen : Context::m_last_search + @b "Doxyfile"
+ * @li Type de projet : #TYPE_C
+ *
+ * Voir @ref CONTEXT_GET, Ui.
+ */
 NewProject::NewProject(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::NewProject)
@@ -30,12 +46,22 @@ NewProject::NewProject(QWidget *parent) :
     ui->comboBox_projectType->setCurrentIndex(0);
 }
 
+/**
+ * Desctructeur de la classe NewProject.
+ */
 NewProject::~NewProject()
 {
     logger(__PRETTY_FUNCTION__);
     delete ui;
 }
 
+/**
+ * Ce connecteur est activé par un clic souris par l'utilisateur sur le bouton
+ * outil de recherche de dossier de projet.@n
+ * Ouvre une fenêtre de recherche de dossier. Si l'utilisateur sélectionne un
+ * dossier, sont chemin absolu est écrit dans la ligne d'édition correspondante
+ * et se termine par le caractère @b '/'.
+ */
 void NewProject::on_toolButton_projectDir_clicked()
 {
     logger(__PRETTY_FUNCTION__);
@@ -55,6 +81,13 @@ void NewProject::on_toolButton_projectDir_clicked()
     }
 }
 
+/**
+ * Ce connecteur est activé par un clic souris par l'utilisateur sur le bouton
+ * outil de recherche de dossier Git.@n
+ * Ouvre une fenêtre de recherche de dossier. Si l'utilisateur sélectionne un
+ * dossier, sont chemin absolu est écrit dans la ligne d'édition correspondante
+ * auquel est ajouté le dossier @b ".git".
+ */
 void NewProject::on_toolButton_mainGitDir_clicked()
 {
     logger(__PRETTY_FUNCTION__);
@@ -75,6 +108,12 @@ void NewProject::on_toolButton_mainGitDir_clicked()
     }
 }
 
+/**
+ * Ce connecteur est activé par un clic souris par l'utilisateur sur le bouton
+ * outil de recherche de dossier Git.@n
+ * Ouvre une fenêtre de recherche de fichier. Si l'utilisateur sélectionne un
+ * fichier, sont chemin absolu est écrit dans la ligne d'édition correspondante.
+ */
 void NewProject::on_toolButton_doxyfile_clicked()
 {
     logger(__PRETTY_FUNCTION__);
@@ -89,12 +128,27 @@ void NewProject::on_toolButton_doxyfile_clicked()
     }
 }
 
+/**
+ * Ce connecteur est activé par un clic souris par l'utilisateur sur le bouton
+ * Annuler.@n
+ * Ferme cette fenêtre.
+ */
 void NewProject::on_pushButton_cancel_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     this->close();
 }
 
+/**
+ * Ce connecteur est activé par un clic souris par l'utilisateur sur le bouton
+ * Créer.@n
+ * Si toutes les lignes de cette fenêtre ont été renseignées, génére un fichier
+ * projet de la forme &lt;nom de projet>.#FILE_EXTENSION. Renseigne les différents
+ * champs de cette fenêtre dans ce fichier avec les mots clés associés. Une fois
+ * le fichier de projet généré, émet le signal NewwProject::created puis ferme
+ * cette fenêtre.@n
+ * Voir @ref PROJECT_FLAGS.
+ */
 void NewProject::on_pushButton_create_clicked()
 {
     logger(__PRETTY_FUNCTION__);

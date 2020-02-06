@@ -201,8 +201,8 @@ void MainWindow::save()
  * @li y = #INIT_Y
  * @li width = #INIT_W
  * @li height = #INIT_H
- * @li project = @i vide
- * @li last_search = @i vide
+ * @li project = @e vide
+ * @li last_search = @e vide
  */
 void MainWindow::createInit()
 {
@@ -288,7 +288,7 @@ void MainWindow::status(QString msg, int timeout)
 
 /**
  * Shortcut : @b Ctrl+N.@n
- * Fonction de création de nouveau projet.@n
+ * Action de création de nouveau projet.@n
  * Si un projet est déjà ouvert, demande à l'utilisateur de confirmer son action.
  * S'il confirme, une fenêtre NewProject est ouverte. Cette fenêtre bloque
  * les autres fenêtres de l'application tant qu'elle est présente pour forcer
@@ -335,6 +335,14 @@ void MainWindow::loadProject()
     }
 }
 
+/**
+ * Shortcut : @b Ctrl+O.@n
+ * Action d'ouverture de projet.@n
+ * Si un projet est déjà ouvert, demande à l'utilisateur de confirmer son action.
+ * S'il confirme, une fenêtre de sélection de fichier projet est ouverte. Si un
+ * fichier est sélectionné, le projet en cours en fermé puis le nouveau projet est
+ * chargé avec la fonction MainWindow::loadProject.
+ */
 void MainWindow::on_actionOuvrir_triggered()
 {
     logger(__PRETTY_FUNCTION__);
@@ -361,12 +369,24 @@ void MainWindow::on_actionOuvrir_triggered()
     }
 }
 
+/**
+ * Shortcut : @b Ctrl+S.@n
+ * Action d'enregistrement de projet.@n
+ * Appelle la fonction MainWindow::save.
+ */
 void MainWindow::on_actionEnregistrer_triggered()
 {
     logger(__PRETTY_FUNCTION__);
     save();
 }
 
+/**
+ * Action de fermeture de projet.@n
+ * Si un projet est déjà ouvert, demande à l'utilisateur de confirmer son action.
+ * S'il confirme, les fenêtre sont nettoyées avec la fonction MainWindow::clean et
+ * les onglets sont rendus innaccessible aux actions de l'utilisateur. La fonction
+ * Context::close est appelée.
+ */
 void MainWindow::on_actionFermer_triggered()
 {
     logger(__PRETTY_FUNCTION__);
@@ -384,12 +404,24 @@ void MainWindow::on_actionFermer_triggered()
     }
 }
 
+
+/**
+ * Shortcut : @b Ctrl+Q.@n
+ * Action d'arrêt du programme.@n
+ * Arrête le programme ProjectManager.
+ */
 void MainWindow::on_actionQuitter_triggered()
 {
     logger(__PRETTY_FUNCTION__);
     qApp->quit();
 }
 
+/**
+ * Action d'ouverture des options.@n
+ * Ouvre une fenêtre SettingsWindow. Cette fenêtre bloque les autres fenêtres de
+ * l'application tant qu'elle est présente pour forcer l'utilisateur à finir la
+ * sélection (ou fermer cette même fenêtre).
+ */
 void MainWindow::on_actionOptions_triggered()
 {
     logger(__PRETTY_FUNCTION__);
@@ -399,6 +431,10 @@ void MainWindow::on_actionOptions_triggered()
     w->show();
 }
 
+/**
+ * Action "A Propos".@n
+ * Affiche les informations sur le projet ProjectManager.
+ */
 void MainWindow::on_actionA_propos_triggered()
 {
     logger(__PRETTY_FUNCTION__);
@@ -412,6 +448,10 @@ void MainWindow::on_actionA_propos_triggered()
                        "à l'aide des outils externe Doxygen et GitKraken.");
 }
 
+/**
+ * Action "A Propos de Qt".@n
+ * Affiche les informations sur l'API Qt.
+ */
 void MainWindow::on_actionA_propos_de_Qt_triggered()
 {
     logger(__PRETTY_FUNCTION__);

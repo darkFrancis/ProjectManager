@@ -12,7 +12,10 @@
       * @author Dark Francis
       * @date 21/12/2019
       *
-      * ProjectManager est un logiciel de gestion de projet.
+      * ProjectManager est un logiciel de gestion de projet.@n
+      * Il dépend des outils suivant:
+      * @li Git pour la gestion des sources (https://git-scm.com/)
+      * @li Doxygen pour la génération de documentation (http://www.doxygen.nl/)
       */
 
     /**

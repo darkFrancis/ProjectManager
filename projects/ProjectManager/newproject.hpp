@@ -33,7 +33,7 @@
             ~NewProject();
 
         signals:
-            void created();
+            void created();/**< Ce signal est émit si un fichier de projet a été généré.*/
 
         private slots:
             void on_toolButton_projectDir_clicked();

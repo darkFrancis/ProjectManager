@@ -27,7 +27,7 @@
             bool load(QString filename);
             QString get(QString key);
             void close();
-            bool isUsed();
+            bool isUsed(){return m_used;}/**< GET : Parser::m_used */
 
         protected:
             Parser();

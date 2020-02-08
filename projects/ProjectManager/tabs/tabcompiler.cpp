@@ -10,6 +10,7 @@
 #include <QMessageBox>
 #include <QProcess>
 #include <QShortcut>
+#include <QGridLayout>
 #include "settings.hpp"
 #include "context.hpp"
 #include "sourceswindow.hpp"
@@ -21,11 +22,8 @@
  *
  * Contructeur de la classe TabCompiler. Il hérite de celui de Tab et utilise
  * le système des fichiers d'interface utilisateur.@n
- * Ce constructeur ajoute les raccourcis clavier suivant :
- * @li &lt;Ctrl+X> pour faire appel à la fonction TabCompiler::forceEnd
- * @li &lt;Ctrl+E> pour effacer l'affichage de l'onglet
- *
- * Voir Ui.
+ * Ajoute et initialise l'élément TabCompiler::m_displayer.@n
+ * Voir Ui, ProcessDisplayer.
  */
 TabCompiler::TabCompiler(QWidget *parent) :
     Tab(parent),
@@ -34,10 +32,12 @@ TabCompiler::TabCompiler(QWidget *parent) :
     ui->setupUi(this);
     logger(__PRETTY_FUNCTION__);
 
-    QShortcut* shortcut_terminate = new QShortcut(QKeySequence("Ctrl+X"), this);
-    connect(shortcut_terminate, &QShortcut::activated, this, &TabCompiler::forceEnd);
-    QShortcut* shortcut_clear = new QShortcut(QKeySequence("Ctrl+E"), this);
-    connect(shortcut_clear, &QShortcut::activated, ui->textEdit_status, &QTextEdit::clear);
+    // Ajout de l'écran de display des commandes
+    QGridLayout* layout = new QGridLayout();
+    layout->setContentsMargins(0,0,0,0);
+    m_displayer = new ProcessDisplayer(this);
+    layout->addWidget(m_displayer);
+    ui->groupBox_status->setLayout(layout);
 }
 
 /**
@@ -47,7 +47,6 @@ TabCompiler::~TabCompiler()
 {
     logger(__PRETTY_FUNCTION__);
     delete ui;
-    delete m_process;
 }
 
 /**
@@ -96,8 +95,6 @@ void TabCompiler::init()
     ui->radioButton_debug->setChecked(true);
     ui->lineEdit_buildDir->setText(ctx->buildDir());
     ui->lineEdit_output->setText(ctx->output());
-
-    m_process = nullptr;
 }
 
 /**
@@ -168,7 +165,7 @@ void TabCompiler::on_pushButton_action_clicked()
     logger(__PRETTY_FUNCTION__);
     if(Settings::Instance()->clearScreen())
     {
-        ui->textEdit_status->clear();
+        m_displayer->clear();
     }
     if(ui->comboBox_action->currentText() == TEXT_BUILDRUN)
     {
@@ -219,7 +216,7 @@ void TabCompiler::action_build_run()
  * Fonction correspondant à l'action #TEXT_BUILD.@n
  * @todo Ecrire cette fonction + la tester
  *
- * Voir @ref COMPILE_ACTION, @ref TABCOMPILER_ACTION.
+ * Voir @ref COMPILE_ACTION, @ref TABCOMPILER_ACTION, ProcessDisplayer.
  */
 void TabCompiler::action_build()
 {
@@ -239,212 +236,49 @@ void TabCompiler::action_build()
  * Fonction correspondant à l'action #TEXT_RUN.@n
  * Exécute le programme se trouvant dans le dossier de build et portant
  * le nom de la sortie.@n
- * Voir @ref COMPILE_ACTION, @ref TABCOMPILER_ACTION.
+ * Voir @ref COMPILE_ACTION, @ref TABCOMPILER_ACTION, ProcessDisplayer.
  */
 void TabCompiler::action_run()
 {
     logger(__PRETTY_FUNCTION__);
     Context* ctx = Context::Instance();
     QFileInfo info(ctx->buildDir() + ctx->output());
-    send_cmd("./" + info.fileName(), QStringList(), info.absoluteDir().absolutePath());
+    m_displayer->send_cmd("./" + info.fileName(), QStringList(), info.absoluteDir().absolutePath());
 }
 
 /**
  * Fonction correspondant à l'action #TEXT_CLEAN.@n
  * Nettoie le dossieer de build en supprimant tous les fichier d'extension
  * .o générés lors d'une précédante compilation.@n
- * Voir @ref COMPILE_ACTION, @ref TABCOMPILER_ACTION.
+ * Voir @ref COMPILE_ACTION, @ref TABCOMPILER_ACTION, ProcessDisplayer.
  */
 void TabCompiler::action_clean()
 {
     logger(__PRETTY_FUNCTION__);
-    send_cmd("rm", QStringList() << "-rf" << "*.o", Context::Instance()->buildDir());
+    m_displayer->send_cmd("rm", QStringList() << "-rf" << "*.o", Context::Instance()->buildDir());
 }
 
 /**
  * Fonction correspondant à l'action #TEXT_INSTALL.@n
  * @todo Ecrire cette fonction (commande install) + la tester
  *
- * Voir @ref COMPILE_ACTION, @ref TABCOMPILER_ACTION.
+ * Voir @ref COMPILE_ACTION, @ref TABCOMPILER_ACTION, ProcessDisplayer.
  */
 void TabCompiler::action_install()
 {
     logger(__PRETTY_FUNCTION__);
+    m_displayer->send_cmd("ping", QStringList() << "riot.de");
 }
 
 /**
  * Fonction correspondant à l'action #TEXT_UNINSTALL.@n
  * @todo Ecrire cette fonction (commande rm?) + la tester
  *
- * Voir @ref COMPILE_ACTION, @ref TABCOMPILER_ACTION.
+ * Voir @ref COMPILE_ACTION, @ref TABCOMPILER_ACTION, ProcessDisplayer.
  */
 void TabCompiler::action_uninstall()
 {
     logger(__PRETTY_FUNCTION__);
-}
-
-/**
- * @param cmd Commande à exécuter
- * @param param Arguments à passer à la commande
- * @param dir Répertoire dans lequel exécuter la commande
- *
- * Si un processus est déjà en cours, ajoute la commande à exécuter dans la
- * file d'attente via la fonction TabCompiler::addCommand. Sinon, prépare le
- * processus et demande son exécution en le connectant comme suit :
- * @li Sortie standard -> TabCompiler::updateStandardOutput
- * @li Erreur standard -> TabCompiler::updateStandardError
- * @li Fin d'exécution -> TabCompiler::endCmd
- *
- * Cette fonction désactive le bouton d'exécution de commandes.@n
- * Voir TabCompiler::m_process.
- */
-void TabCompiler::send_cmd(QString cmd, QStringList param /*= QStringList()*/, QString dir /*= "."*/)
-{
-    logger("    cmd: " + cmd + " " + param.join(' '));
-    ui->pushButton_action->setEnabled(false);
-    if(m_process == nullptr)
-    {
-        m_process = new QProcess(this);
-        ui->textEdit_status->append("> " + cmd + " " + param.join(' '));
-        m_process->setWorkingDirectory(dir);
-        m_process->start(cmd, param);
-        connect(m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(updateStandardOutput()));
-        connect(m_process, SIGNAL(readyReadStandardError()), this, SLOT(updateStandardError()));
-        connect(m_process, SIGNAL(finished(int,QProcess::ExitStatus)), this, SLOT(endCmd(int,QProcess::ExitStatus)));
-    }
-    else
-    {
-        addCommand(cmd, param, dir);
-    }
-}
-
-/**
- * Ce connecteur est activé lorsqu'il est possible de lire la sortie standard
- * du processus en cours. La lecture de sortie de processus est cablée sur la
- * sortie standard et la fonction TabCompiler::readProcess est appelée.@n
- * Voir TabCompiler::m_process.
- */
-void TabCompiler::updateStandardOutput()
-{
-    m_process->setReadChannel(QProcess::StandardOutput);
-    readProcess();
-}
-
-/**
- * Ce connecteur est activé lorsqu'il est possible de lire l'erreur standard
- * du processus en cours. La lecture de sortie de processus est cablée sur
- * l'erreur standard et la fonction TabCompiler::readProcess est appelée.@n
- * Voir TabCompiler::m_process.
- */
-void TabCompiler::updateStandardError()
-{
-    m_process->setReadChannel(QProcess::StandardError);
-    readProcess();
-}
-
-/**
- * Lecture de la sortie du processus en cours.@n
- * Utilise un format HTML pour afficher la sortie/erreur du processus en cours
- * avec un texte coloré selon le cas (voir Settings::m_color_normal et
- * Settings::m_color_error).@n
- * Voir TabCompiler::m_process.
- */
-void TabCompiler::readProcess()
-{
-    QString to_write = "";
-    to_write += "<p style=\"color:";
-    to_write += (m_process->readChannel() == QProcess::StandardOutput ? Settings::Instance()->colorNormal() : Settings::Instance()->colorError());
-    to_write += "\">";
-
-    QString line = "";
-    bool first = true;
-    while(m_process->canReadLine())
-    {
-        if(first)
-            first = false;
-        else
-            to_write += "<br/>";
-        line = m_process->readLine();
-        // Format
-        line = line.left(line.length()-1);
-        line = line.replace('<', "&lt;").replace('>', "&gt;").replace(' ', "&nbsp;");
-        to_write.append(line);
-    }
-    to_write += "</p>";
-    ui->textEdit_status->append(to_write);
-}
-
-/**
- * @param exitCode Code retour de l'exécution du processus
- * @param exitStatus Status final du processus
- *
- * Ce connecteur est activé lorsque le processus en cours se termine.@n
- * Utilise un format HTML pour afficher le résultat du processus en cours
- * avec un texte coloré selon le cas (voir Settings::m_color_success et
- * Settings::m_color_error). Si il reste des commandes à exécuter dans
- * la fie d'attente, exécute la suivante à l'aide de la fonction
- * TabCompiler::send_cmd. Sinon, réactive le bouton d'exécution des
- * commandes.@n
- * Voir TabCompiler::m_process, Command.
- */
-void TabCompiler::endCmd(int exitCode, QProcess::ExitStatus exitStatus)
-{
-    logger("    end_cmd: " + QString::number(exitCode));
-    Settings* setting = Settings::Instance();
-    bool ok = exitStatus == QProcess::NormalExit;
-    QString result = "<p style=\"color:";
-    result += (ok ? setting->colorSuccess() : setting->colorError());
-    result += "\">";
-    result += (ok ? "OK" : "Crash");
-    result += " (exit_code=" + QString::number(exitCode) + ")";
-    result += "<br/></p>";
-    ui->textEdit_status->append(result);
-    delete m_process;
-    m_process = nullptr;
-
-    // Next command
-    if(m_commands.length() > 0)
-    {
-        Command cmd = m_commands.takeFirst();
-        send_cmd(cmd.programm, cmd.params, cmd.dir);
-    }
-    else
-    {
-        ui->pushButton_action->setEnabled(true);
-    }
-}
-
-/**
- * @param cmd Nom de la commande
- * @param param Arguments de la commande
- * @param dir Répertoire dans lequel exécuter la commande
- *
- * Ajoute une commande dans la file d'attente des commandes, TabCompiler::m_commands.@n
- * Un objet Command est créé avec les arguments de cette fonction avant d'être
- * ajouté à cette liste. Cette commande sera exécutée pluus tard par la fonction
- * TabCompiler::send_cmd.@n
- * Voir TabCompiler::endCmd.
- */
-void TabCompiler::addCommand(QString cmd, QStringList param, QString dir)
-{
-    Command command;
-    command.programm = cmd;
-    command.params = param;
-    command.dir = dir;
-    m_commands.append(command);
-}
-
-/**
- * Tue le processus en cours.@n
- * Ceci entraine un crash du processus si celui-ci n'était pas terminé.
- * Le connecteur TabCompiler::endCmd est donc appelé.@n
- * Voir TabCompiler::m_process.
- */
-void TabCompiler::forceEnd()
-{
-    logger(__PRETTY_FUNCTION__);
-    m_commands.clear();
-    m_process->kill();
 }
 
 /**

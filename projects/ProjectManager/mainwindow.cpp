@@ -359,12 +359,13 @@ void MainWindow::on_actionOuvrir_triggered()
     QString file = QFileDialog::getOpenFileName(this,
                                                 "Ouvrir",
                                                 ctx->lastSearch(),
-                                                "ProjectFile *." + FILE_EXTENSION);
+                                                "ProjectFile *" + FILE_EXTENSION);
     if(file != "")
     {
         QFileInfo info(file);
         ctx->setLastSearch(info.absoluteDir().absolutePath());
         ctx->close();
+        ctx->setProjectFile(info.absoluteFilePath());
         loadProject();
     }
 }

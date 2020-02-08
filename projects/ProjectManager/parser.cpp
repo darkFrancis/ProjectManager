@@ -59,12 +59,16 @@ bool Parser::load(QString filename)
 {
     logger(__PRETTY_FUNCTION__);
     if(m_used)
+    {
+        logger("    ERROR : Parser already used");
         return false;
+    }
 
     m_map.clear();
     QFile file(filename);
     if(file.open(QIODevice::Text | QIODevice::ReadOnly))
     {
+        logger("    file " + filename + " opened");
         QString text = file.readAll();
         QStringList ligns = text.split(QChar('\n'));
         for(int i = 0; i < ligns.length(); i++)
@@ -105,6 +109,7 @@ bool Parser::load(QString filename)
         m_used = true;
         return true;
     }
+    logger("    Can't open the file " + filename);
     return false;
 }
 

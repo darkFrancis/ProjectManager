@@ -8,6 +8,7 @@
 #define TABCOMPILER_HPP
 
     #include "tab.hpp"
+    #include "processdisplayer.hpp"
     #include <QProcess>
 
     /** @addtogroup COMPILE_ACTION
@@ -25,21 +26,6 @@
     }
 
     /**
-     * @struct Command
-     * @brief La structure Command défini une commande à appeler avec un QProcess
-     *
-     * Cette structure est utilisée pour préparer une file d'attente des commandes à
-     * passer dans l'onglet TabCompiler.
-     */
-    struct Command
-    {
-        QString programm;/**< Nom du programme à appeler */
-        QStringList params;/**< Liste des paramètres à passer au programme */
-        QString dir;/**< Répertoire dans lequel exécuter le programme */
-    };
-    typedef struct Command Command;
-
-    /**
      * @class TabCompiler
      * @brief La classe TabCompiler défini l'onglet de compilation.
      *
@@ -48,6 +34,8 @@
      * @li les dossiers de build et de sortie
      * @li le mode de compilation : release (défini NDEBUG) ou debug (défini _DEBUG)
      *
+     * Cet onglet utilise le widget ProcessDisplayer pour afficher les commandes en
+     * cours.@n
      * Header : tabcompiler.hpp
      *
      * @todo finir la classe TabCompiler
@@ -62,12 +50,6 @@
             void save();
             void init();
 
-        public slots:
-            void updateStandardOutput();
-            void updateStandardError();
-            void endCmd(int exitCode, QProcess::ExitStatus exitStatus);
-            void forceEnd();
-
         private slots:
             void on_toolButton_buildDir_clicked();
             void on_pushButton_sources_clicked();
@@ -78,9 +60,9 @@
 
         private:
             Ui::TabCompiler *ui;/**< UI de la classe TabCompiler */
+            ProcessDisplayer* m_displayer;/**< Widget d'affichage et de gestion des commandes */
 
             // Actions
-            QProcess* m_process;/**< Processus en cours */
             /** @addtogroup TABCOMPILER_ACTION
               * @{ */
             void action_build_run();
@@ -90,12 +72,6 @@
             void action_install();
             void action_uninstall();
             /** @} */
-
-            // Commandes
-            void send_cmd(QString cmd, QStringList param = QStringList(), QString dir = ".");
-            void readProcess();
-            void addCommand(QString cmd, QStringList param, QString dir);
-            QList<Command> m_commands;/**< Liste des commandes à exécuter */
     };
 
 #endif // TABCOMPILER_HPP

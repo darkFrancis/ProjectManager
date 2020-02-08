@@ -6,8 +6,8 @@
  */
 #include "paramselectionwindow.hpp"
 #include "ui_paramselectionwindow.h"
-#include "settings/settings.hpp"
-#include "settings/logger.hpp"
+#include "settings.hpp"
+#include "logger.hpp"
 #include <QMessageBox>
 #include <QStandardItemModel>
 

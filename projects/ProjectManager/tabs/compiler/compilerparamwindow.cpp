@@ -7,9 +7,9 @@
 #include "compilerparamwindow.hpp"
 #include "ui_compilerparamwindow.h"
 #include "paramselectionwindow.hpp"
-#include "settings/settings.hpp"
+#include "settings.hpp"
 #include "context.hpp"
-#include "settings/logger.hpp"
+#include "logger.hpp"
 #include <QMessageBox>
 
 /**

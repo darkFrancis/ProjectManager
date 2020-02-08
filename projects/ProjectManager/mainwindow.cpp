@@ -18,8 +18,8 @@
 #include "context.hpp"
 #include "newproject.hpp"
 #include "settings/settingswindow.hpp"
-#include "settings/settings.hpp"
-#include "settings/logger.hpp"
+#include "settings.hpp"
+#include "logger.hpp"
 
 /**
  * @param parent Le QWidget parent de cette fenêtre

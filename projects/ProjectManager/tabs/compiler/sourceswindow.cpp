@@ -8,8 +8,8 @@
 #include "ui_sourceswindow.h"
 #include <QFileDialog>
 #include "context.hpp"
-#include "settings/settings.hpp"
-#include "settings/logger.hpp"
+#include "settings.hpp"
+#include "logger.hpp"
 
 /**
  * @param parent Le QWidget parent de cette fenêtre

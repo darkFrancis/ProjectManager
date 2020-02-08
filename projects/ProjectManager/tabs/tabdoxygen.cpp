@@ -14,8 +14,8 @@
 #include <QProcess>
 #include "context.hpp"
 #include "parser.hpp"
-#include "settings/logger.hpp"
-#include "settings/settings.hpp"
+#include "logger.hpp"
+#include "settings.hpp"
 
 /**
  * @param parent Le QWidget parent de cet onglet

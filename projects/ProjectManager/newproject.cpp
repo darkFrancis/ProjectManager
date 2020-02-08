@@ -7,7 +7,7 @@
 #include "newproject.hpp"
 #include "ui_newproject.h"
 #include "context.hpp"
-#include "settings/logger.hpp"
+#include "logger.hpp"
 #include <QFileDialog>
 #include <QTextStream>
 #include <QMessageBox>

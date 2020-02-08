@@ -9,10 +9,10 @@
 
     #include <QMainWindow>
     #include <QList>
-    #include "tabs/tabcompiler.hpp"
-    #include "tabs/tabdoxygen.hpp"
-    #include "tabs/tabgit.hpp"
-    #include "tabs/tabproject.hpp"
+    #include "tabcompiler.hpp"
+    #include "tabdoxygen.hpp"
+    #include "tabgit.hpp"
+    #include "tabproject.hpp"
 
     #define STATUS_DEFAULT_TIMEOUT 5/**< Timeout par défaut pour l'affichage du status */
 

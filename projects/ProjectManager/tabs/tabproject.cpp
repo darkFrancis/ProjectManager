@@ -9,7 +9,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include "context.hpp"
-#include "settings/logger.hpp"
+#include "logger.hpp"
 
 /**
  * @param parent Le QWidget parent de cet onglet

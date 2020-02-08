@@ -5,7 +5,7 @@
  * @date 21/12/2019
  */
 #include "parser.hpp"
-#include "settings/logger.hpp"
+#include "logger.hpp"
 
 Parser* Parser::m_instance = nullptr;
 

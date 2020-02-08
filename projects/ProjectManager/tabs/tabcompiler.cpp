@@ -10,11 +10,11 @@
 #include <QMessageBox>
 #include <QProcess>
 #include <QShortcut>
-#include "settings/settings.hpp"
+#include "settings.hpp"
 #include "context.hpp"
-#include "compiler/sourceswindow.hpp"
-#include "compiler/compilerparamwindow.hpp"
-#include "settings/logger.hpp"
+#include "sourceswindow.hpp"
+#include "compilerparamwindow.hpp"
+#include "logger.hpp"
 
 /**
  * @param parent Le QWidget parent de cet onglet

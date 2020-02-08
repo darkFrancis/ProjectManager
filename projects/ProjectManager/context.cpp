@@ -6,7 +6,7 @@
  */
 #include "context.hpp"
 #include "parser.hpp"
-#include "settings/logger.hpp"
+#include "logger.hpp"
 #include <QFileInfo>
 
 Context* Context::m_instance = nullptr;

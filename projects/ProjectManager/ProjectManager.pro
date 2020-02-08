@@ -10,6 +10,16 @@ CONFIG(debug, debug|release)
     DEFINES += _DEBUG
 }
 
+DESTDIR = build
+MAKEFILE = $$DESTDIR/MakeFile
+OBJECTS_DIR = $$DESTDIR/objects
+MOC_DIR = $$DESTDIR/moc
+UI_DIR = $$DESTDIR/ui
+
+INCLUDEPATH += settings \
+        tabs \
+        tabs/compiler
+
 SOURCES += \
         context.cpp \
         main.cpp \
@@ -22,6 +32,7 @@ SOURCES += \
         tabs/compiler/compilerparamwindow.cpp \
         tabs/compiler/paramselectionwindow.cpp \
         tabs/compiler/sourceswindow.cpp \
+        tabs/processdisplayer.cpp \
         tabs/tabcompiler.cpp \
         tabs/tabdoxygen.cpp \
         tabs/tabgit.cpp \
@@ -41,6 +52,7 @@ HEADERS += \
         tabs/compiler/compilerparamwindow.hpp \
         tabs/compiler/paramselectionwindow.hpp \
         tabs/compiler/sourceswindow.hpp \
+        tabs/processdisplayer.hpp \
         tabs/tab.hpp \
         tabs/tabcompiler.hpp \
         tabs/tabdoxygen.hpp \
@@ -59,5 +71,13 @@ FORMS += \
         tabs/tabgit.ui \
         tabs/tabproject.ui
 
-QMAKE_CLEAN += $$OUT_PWD/build/*
-QMAKE_POST_LINK += $$quote(cp -rn $$PWD/config $$OUT_PWD/$$escape_expand(\n\t))
+QMAKE_POST_LINK += $$quote(cp -rn $$PWD/config $$DESTDIR/$$escape_expand(\n\t))
+QMAKE_POST_LINK += $$quote(rm -f $$OUT_PWD/.qmake.stash$$escape_expand(\n\t))
+
+QMAKE_CLEAN += $$DESTDIR/TARGET \
+        $$OBJECTS_DIR/* \
+        $$MOC_DIR/* \
+        $$UI_DIR/* \
+        $$OUT_PWD/.qmake.stash \
+        $$MAKEFILE \
+        $$DESTDIR/config/*

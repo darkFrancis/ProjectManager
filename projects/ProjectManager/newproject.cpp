@@ -40,7 +40,6 @@ NewProject::NewProject(QWidget *parent) :
     QString dir = ctx->lastSearch();
     if(dir.at(dir.length()-1) != '/') dir.append('/');
     ui->lineEdit_projectDir->setText(dir);
-    ui->lineEdit_mainGitDir->setText(dir + ".git");
     ui->lineEdit_doxyfile->setText(dir + "Doxyfile");
     initComboType(ui->comboBox_projectType);
     ui->comboBox_projectType->setCurrentIndex(0);
@@ -83,34 +82,7 @@ void NewProject::on_toolButton_projectDir_clicked()
 
 /**
  * Ce connecteur est activé par un clic souris par l'utilisateur sur le bouton
- * outil de recherche de dossier Git.@n
- * Ouvre une fenêtre de recherche de dossier. Si l'utilisateur sélectionne un
- * dossier, sont chemin absolu est écrit dans la ligne d'édition correspondante
- * auquel est ajouté le dossier @b ".git".
- */
-void NewProject::on_toolButton_mainGitDir_clicked()
-{
-    logger(__PRETTY_FUNCTION__);
-    QString dir_name = QFileDialog::getExistingDirectory(this,
-                                                         "Dossier GIT",
-                                                         Context::Instance()->lastSearch());
-    if(dir_name != QString(""))
-    {
-        QDir dir(dir_name);
-        dir_name = dir.absolutePath();
-        if(dir_name[dir_name.length()-1] != QChar('/'))
-        {
-            dir_name.append('/');
-        }
-        dir_name.append(".git");
-        ui->lineEdit_mainGitDir->setText(dir_name);
-        Context::Instance()->setLastSearch(dir.absolutePath());
-    }
-}
-
-/**
- * Ce connecteur est activé par un clic souris par l'utilisateur sur le bouton
- * outil de recherche de dossier Git.@n
+ * outil de recherche de fichier Doxygen.@n
  * Ouvre une fenêtre de recherche de fichier. Si l'utilisateur sélectionne un
  * fichier, sont chemin absolu est écrit dans la ligne d'édition correspondante.
  */
@@ -153,7 +125,6 @@ void NewProject::on_pushButton_create_clicked()
 {
     logger(__PRETTY_FUNCTION__);
     if(ui->lineEdit_doxyfile->text().isEmpty() ||
-       ui->lineEdit_mainGitDir->text().isEmpty() ||
        ui->lineEdit_projectName->text().isEmpty() ||
        ui->lineEdit_projectDir->text().isEmpty())
     {
@@ -163,7 +134,6 @@ void NewProject::on_pushButton_create_clicked()
         return;
     }
 
-    QString dir_git = ui->lineEdit_mainGitDir->text();
     QString dir_pro = ui->lineEdit_projectDir->text();
     QString file_name = ui->lineEdit_projectName->text();
     if(file_name.right(FILE_EXTENSION.length()) != FILE_EXTENSION)
@@ -179,7 +149,6 @@ void NewProject::on_pushButton_create_clicked()
         stream << "# Project file" << endl
                << KW_PROJECT_NAME << "=" << ui->lineEdit_projectName->text() << endl
                << KW_PROJECT_TYPE << "=" << label2type(ui->comboBox_projectType->currentText()) << endl
-               << KW_GIT_PATH << "=" << dir_git << endl
                << KW_DOXYFILE << "=" << ui->lineEdit_doxyfile->text() << endl
                << KW_BUILD_DIR << "=" << dir_pro << "build/" <<endl
                << KW_OUTPUT << "=" << dir_pro << "out/" << endl

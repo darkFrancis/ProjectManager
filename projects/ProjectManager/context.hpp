@@ -24,7 +24,6 @@
     #define KW_AUTHOR           QString("AUTHOR")/**< Flag de l'auteur du projet */
     #define KW_BUILD_DIR        QString("BUILD_DIR")/**< Flag du répertoire de compilation du projet */
     #define KW_OUTPUT           QString("OUTPUT")/**< Flag du répertoire de sortie du projet */
-    #define KW_GIT_PATH         QString("GIT_PATH")/**< Flag du répertoire GIT du projet */
     #define KW_DOXYFILE         QString("DOXYFILE")/**< Flag du fichier Doxygen projet */
     #define KW_SOURCES          QString("SOURCES")/**< Flag des sources du projet */
     #define KW_HEADERS          QString("HEADERS")/**< Flag des headers du projet */
@@ -96,7 +95,6 @@
             void setHeaders(QStringList headers){m_headers = headers;}/**< SET : Context::m_headers */
             void setRessources(QStringList ressources){m_ressources = ressources;}/**< SET : Context::m_ressources */
             void setDoxyfile(QString doxyfile){m_doxyfile = doxyfile;}/**< SET : Context::m_doxyfile */
-            void setGitPath(QString path){m_git_path = path;}/**< SET : Context::m_git_path */
             void setFlagOverall(QStringList flag){m_flag_overall = flag;}/**< SET : Context::m_flag_overall */
             void setFlagC(QStringList flag){m_flag_c = flag;}/**< SET : Context::m_flag_c */
             void setFlagCxx(QStringList flag){m_flag_cxx = flag;}/**< SET : Context::m_flag_cxx */
@@ -129,7 +127,6 @@
             QStringList headers(){return m_headers;}/**< GET : Context::m_headers */
             QStringList ressources(){return m_ressources;}/**< GET : Context::m_ressources */
             QString doxyfile(){return m_doxyfile;}/**< GET : Context::m_doxyfile */
-            QString gitPath(){return m_git_path;}/**< GET : Context::m_git_path */
             QStringList flagOverall(){return m_flag_overall;}/**< GET : Context::m_flag_overall */
             QStringList flagC(){return m_flag_c;}/**< GET : Context::m_flag_c */
             QStringList flagCxx(){return m_flag_cxx;}/**< GET : Context::m_flag_cxx */
@@ -159,7 +156,6 @@
             // Files
             QString m_project_file;/**< Chemin vers le fichier du projet */
             QString m_doxyfile;/**< Chemin vers le fichier Doxyfile */
-            QString m_git_path;/**< Chemin vers le dossier contenant .git */
             // Project
             QString m_project_name;/**< Nom du projet */
             QString m_project_type;/**< Type de projet */

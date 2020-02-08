@@ -80,7 +80,6 @@ void TabProject::init()
     ui->lineEdit_projectName->setText((ctx->projectName()));
     ui->lineEdit_author->setText(ctx->projectAuthor());
     ui->lineEdit_version->setText(ctx->projectVersion());
-    ui->lineEdit_git->setText(ctx->gitPath());
     ui->lineEdit_doxyfile->setText(ctx->doxyfile());
     ui->textEdit->setText(ctx->projectDescription());
     ui->comboBox_projectType->setCurrentIndex(ui->comboBox_projectType->findText(type2label(ctx->projectType())));
@@ -99,7 +98,6 @@ void TabProject::save()
     ctx->setProjectName(ui->lineEdit_projectName->text());
     ctx->setProjectAuthor(ui->lineEdit_author->text());
     ctx->setProjectVersion(ui->lineEdit_version->text());
-    ctx->setGitPath(ui->lineEdit_git->text());
     ctx->setDoxyfile(ui->lineEdit_doxyfile->text());
     ctx->setProjectDescription(ui->textEdit->toPlainText());
     ctx->setProjectType(label2type(ui->comboBox_projectType->currentText()));
@@ -124,7 +122,6 @@ void TabProject::clean()
     ui->lineEdit_author->setText("Unknow");
     ui->lineEdit_version->setText("0.0");
     ui->lineEdit_doxyfile->setText("");
-    ui->lineEdit_git->setText("");
     ui->textEdit->setText("Description du projet");
     ui->comboBox_projectType->setCurrentIndex(0);
 }
@@ -169,7 +166,6 @@ void TabProject::on_toolButton_git_clicked()
         {
             dir_name.append('/');
         }
-        ui->lineEdit_git->setText(dir_name);
         Context::Instance()->setLastSearch(dir.absolutePath());
     }
 }

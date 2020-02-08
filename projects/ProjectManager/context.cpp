@@ -55,7 +55,6 @@ void Context::loadProject()
         m_author = parser->get(KW_AUTHOR);
         m_build_dir = parser->get(KW_BUILD_DIR);
         m_output = parser->get(KW_OUTPUT);
-        m_git_path = parser->get(KW_GIT_PATH);
         m_doxyfile = parser->get(KW_DOXYFILE);
         m_sources = parser->get(KW_SOURCES).split(' ');
         m_headers = parser->get(KW_HEADERS).split(' ');
@@ -107,8 +106,7 @@ void Context::save()
         save_description(&stream);
         stream << endl;
 
-        stream << "# Gestion Git et Doxygen" << endl
-               << KW_GIT_PATH << "=" << m_git_path << endl
+        stream << "# Gestion Doxygen" << endl
                << KW_DOXYFILE << "=" << m_doxyfile << endl
                << endl;
 

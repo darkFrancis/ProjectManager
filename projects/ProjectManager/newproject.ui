@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>477</width>
-    <height>205</height>
+    <width>455</width>
+    <height>173</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -44,66 +44,6 @@
     </item>
     <item row="0" column="0" colspan="3">
      <layout class="QFormLayout" name="formLayout">
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_mainGitDir">
-        <property name="text">
-         <string>Répertoire GIT</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QLineEdit" name="lineEdit_mainGitDir">
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QToolButton" name="toolButton_mainGitDir">
-          <property name="text">
-           <string>...</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="3" column="1">
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QLineEdit" name="lineEdit_doxyfile">
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QToolButton" name="toolButton_doxyfile">
-          <property name="text">
-           <string>...</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_doxyfile">
-        <property name="text">
-         <string>Doxyfile</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_projectType">
-        <property name="text">
-         <string>Type de projet</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="QComboBox" name="comboBox_projectType"/>
-      </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label_projectName">
         <property name="text">
@@ -138,6 +78,41 @@
          </widget>
         </item>
        </layout>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_doxyfile">
+        <property name="text">
+         <string>Doxyfile</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLineEdit" name="lineEdit_doxyfile">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QToolButton" name="toolButton_doxyfile">
+          <property name="text">
+           <string>...</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_projectType">
+        <property name="text">
+         <string>Type de projet</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QComboBox" name="comboBox_projectType"/>
       </item>
      </layout>
     </item>

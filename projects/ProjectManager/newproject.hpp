@@ -20,7 +20,7 @@
      * @brief La classe NewProject définie la fenêtre de création d'un nouveau projet.
      *
      * Cette fenêtre s'ouvre depuis la fenêtre principale MainWindow.
-     * On peut y définir un nouveau projet en sélectionnant un dossier Git et en
+     * On peut y définir un nouveau projet en sélectionnant sont dossier et en
      * spécifiant ou enregistrer le fichier Doxygen.
      * @n Header : newproject.hpp
      */
@@ -37,7 +37,6 @@
 
         private slots:
             void on_toolButton_projectDir_clicked();
-            void on_toolButton_mainGitDir_clicked();
             void on_toolButton_doxyfile_clicked();
             void on_pushButton_cancel_clicked();
             void on_pushButton_create_clicked();

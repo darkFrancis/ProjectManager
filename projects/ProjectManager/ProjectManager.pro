@@ -28,7 +28,6 @@ SOURCES += \
         newproject.cpp \
         parser.cpp \
         process/processdisplayer.cpp \
-        process/processmanager.cpp \
         settings/logger.cpp \
         settings/settings.cpp \
         settings/settingswindow.cpp \
@@ -47,7 +46,6 @@ HEADERS += \
         parser.hpp \
         process/command.hpp \
         process/processdisplayer.hpp \
-        process/processmanager.hpp \
         settings/build.hpp \
         settings/extern_doc.hpp \
         settings/group_doc.hpp \

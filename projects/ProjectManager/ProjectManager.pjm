@@ -5,10 +5,9 @@
 PROJECT_NAME=ProjectManager
 PROJECT_TYPE=cxx
 AUTHOR=Dark Francis
-PROJECT_VERSION=Alpha 0.3
+PROJECT_VERSION=Alpha 0.2
 PROJECT_DESCRIPTION=
-# Gestion Git et Doxygen
-GIT_PATH=/home/francis/dev/.git
+# Gestion Doxygen
 DOXYFILE=/home/francis/dev/projects/ProjectManager/Doxyfile
 
 # Gestion de sortie du compilateur

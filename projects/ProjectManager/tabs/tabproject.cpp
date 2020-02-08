@@ -145,27 +145,3 @@ void TabProject::on_toolButton_doxyfile_clicked()
         Context::Instance()->setLastSearch(file.absoluteDir().absolutePath());
     }
 }
-
-/**
- * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton outil
- * du dossier Git.@n
- * Demande à l'utilisateur de sélectionner le dossier GIT grâce à une boîte de
- * dialogue. Si un dossier est sélectionné, renseigne son chemin dans la ligne
- * d'édition associée.@n
- * Voir Ui.
- */
-void TabProject::on_toolButton_git_clicked()
-{
-    logger(__PRETTY_FUNCTION__);
-    QString dir_name = QFileDialog::getExistingDirectory(this, "Dossier GIT", Context::Instance()->lastSearch());
-    if(dir_name != "")
-    {
-        QDir dir(dir_name);
-        dir_name = dir.absolutePath();
-        if(dir_name[dir_name.length()-1] != QChar('/'))
-        {
-            dir_name.append('/');
-        }
-        Context::Instance()->setLastSearch(dir.absolutePath());
-    }
-}

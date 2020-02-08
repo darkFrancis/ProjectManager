@@ -27,6 +27,17 @@
             virtual void init(){}
             virtual void clean(){}
             virtual void save(){}
+
+        signals:
+            /**
+             * @param msg Message à afficher
+             * @param timeout Temps d'affichage en secondes
+             *
+             * Ce signal est émit pour effectuer un affichage de status dans la
+             * fenêtre principale.@n
+             * Voir MainWindow::status.
+             */
+            void status(QString msg, int timeout);
     };
 
 #endif // TAB_HPP

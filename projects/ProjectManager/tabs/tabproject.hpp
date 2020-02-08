@@ -37,7 +37,6 @@
             void on_pushButton_default_clicked();
             void on_pushButton_apply_clicked();
             void on_toolButton_doxyfile_clicked();
-            void on_toolButton_git_clicked();
 
         private:
             Ui::TabProject *ui;/**< UI de la classe TabProject */

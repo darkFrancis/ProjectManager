@@ -56,6 +56,7 @@
         public slots:
             void loadProject();
             void save();
+            void status(QString msg, int timeout = 0);
 
         private slots:
             /** @addtogroup MENU_FUNC
@@ -74,7 +75,6 @@
             // UI
             Ui::MainWindow *ui;/**< UI de la classe MainWindow */
             QTabWidget* m_tabWidget;/**< Widget principal de gestion des onglets */
-            void status(QString msg, int timeout = 0);
             void createInit();
             void saveInit();
             // Tabs

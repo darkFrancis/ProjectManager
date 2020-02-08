@@ -6,15 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>649</width>
-    <height>419</height>
+    <width>688</width>
+    <height>449</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_4">
-   <item>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
       <widget class="QLabel" name="label_branch">
@@ -41,7 +41,7 @@
      </item>
     </layout>
    </item>
-   <item>
+   <item row="1" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QGroupBox" name="groupBox_unstaged">
@@ -187,7 +187,7 @@
      </item>
     </layout>
    </item>
-   <item>
+   <item row="2" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QLineEdit" name="lineEdit_commit"/>
@@ -203,6 +203,27 @@
       <widget class="QCheckBox" name="checkBox_amend">
        <property name="text">
         <string>amend</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="3" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QLabel" name="label_extra">
+       <property name="text">
+        <string>git</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit_extra"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_extra">
+       <property name="text">
+        <string>Exécuter</string>
        </property>
       </widget>
      </item>

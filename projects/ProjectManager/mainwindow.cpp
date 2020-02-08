@@ -130,6 +130,12 @@ void MainWindow::initApp()
     m_tablist.append(tab_git);
     ui->centralWidget->layout()->addWidget(m_tabWidget);
 
+    // Connexion de status
+    connect(tab_project, SIGNAL(status(QString,int)), this, SLOT(status(QString,int)));
+    connect(tab_doxygen, SIGNAL(status(QString,int)), this, SLOT(status(QString,int)));
+    connect(tab_compiler, SIGNAL(status(QString,int)), this, SLOT(status(QString,int)));
+    connect(tab_git, SIGNAL(status(QString,int)), this, SLOT(status(QString,int)));
+
     // Last Session
     if(QFile::exists(Context::Instance()->projectFile()))
     {

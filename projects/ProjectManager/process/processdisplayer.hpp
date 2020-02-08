@@ -10,28 +10,14 @@
     #include <QTextEdit>
     #include <QProcess>
 
-    /**
-     * @struct Command
-     * @brief La structure Command défini une commande à appeler avec un QProcess
-     *
-     * Cette structure est utilisée pour préparer une file d'attente des commandes à
-     * passer dans le widget ProcessDisplayer.@n
-     * Header : processdisplayer.hpp.
-     */
-    struct Command
-    {
-        QString programm;/**< Nom du programme à appeler */
-        QStringList params;/**< Liste des paramètres à passer au programme */
-        QString dir;/**< Répertoire dans lequel exécuter le programme */
-    };
-    typedef struct Command Command;
+    #include "command.hpp"
 
     /**
      * La classe ProcessDisplayer hérite de la classe Qt QTextEdit.@n
      * Ce widget permet d'exécuter des commandes et affiche la sortie standard et
      * l'erreur standard. Les couleurs d'affichage peuvent être configurées dans
      * les options.@n
-     * Voir Settings, SettingsWindow.@n
+     * Voir Settings, SettingsWindow, Command.@n
      * Header : processdisplayer.hpp.
      */
     class ProcessDisplayer : public QTextEdit

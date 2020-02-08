@@ -16,7 +16,8 @@ OBJECTS_DIR = $$DESTDIR/objects
 MOC_DIR = $$DESTDIR/moc
 UI_DIR = $$DESTDIR/ui
 
-INCLUDEPATH += settings \
+INCLUDEPATH += process \
+        settings \
         tabs \
         tabs/compiler
 
@@ -26,13 +27,14 @@ SOURCES += \
         mainwindow.cpp \
         newproject.cpp \
         parser.cpp \
+        process/processdisplayer.cpp \
+        process/processmanager.cpp \
         settings/logger.cpp \
         settings/settings.cpp \
         settings/settingswindow.cpp \
         tabs/compiler/compilerparamwindow.cpp \
         tabs/compiler/paramselectionwindow.cpp \
         tabs/compiler/sourceswindow.cpp \
-        tabs/processdisplayer.cpp \
         tabs/tabcompiler.cpp \
         tabs/tabdoxygen.cpp \
         tabs/tabgit.cpp \
@@ -43,6 +45,9 @@ HEADERS += \
         mainwindow.hpp \
         newproject.hpp \
         parser.hpp \
+        process/command.hpp \
+        process/processdisplayer.hpp \
+        process/processmanager.hpp \
         settings/build.hpp \
         settings/extern_doc.hpp \
         settings/group_doc.hpp \
@@ -52,7 +57,6 @@ HEADERS += \
         tabs/compiler/compilerparamwindow.hpp \
         tabs/compiler/paramselectionwindow.hpp \
         tabs/compiler/sourceswindow.hpp \
-        tabs/processdisplayer.hpp \
         tabs/tab.hpp \
         tabs/tabcompiler.hpp \
         tabs/tabdoxygen.hpp \

@@ -38,6 +38,7 @@ TabCompiler::TabCompiler(QWidget *parent) :
     m_displayer = new ProcessDisplayer(this);
     layout->addWidget(m_displayer);
     ui->groupBox_status->setLayout(layout);
+    connect(m_displayer, SIGNAL(end()), this, SLOT(activate_action()));
 }
 
 /**
@@ -95,6 +96,15 @@ void TabCompiler::init()
     ui->radioButton_debug->setChecked(true);
     ui->lineEdit_buildDir->setText(ctx->buildDir());
     ui->lineEdit_output->setText(ctx->output());
+}
+
+/**
+ * Ce connecteur est activé par le signal ProcessDisplayer::end.@n
+ * Rend accessible au clic le bouton d'exécution d'action.
+ */
+void TabCompiler::activate_action()
+{
+    ui->pushButton_action->setEnabled(true);
 }
 
 /**
@@ -163,6 +173,7 @@ void TabCompiler::on_pushButton_param_clicked()
 void TabCompiler::on_pushButton_action_clicked()
 {
     logger(__PRETTY_FUNCTION__);
+    ui->pushButton_action->setEnabled(false);
     if(Settings::Instance()->clearScreen())
     {
         m_displayer->clear();
@@ -267,7 +278,7 @@ void TabCompiler::action_clean()
 void TabCompiler::action_install()
 {
     logger(__PRETTY_FUNCTION__);
-    m_displayer->send_cmd("ping", QStringList() << "riot.de");
+    m_displayer->send_cmd("git", QStringList() << "status", "/home/francis");
 }
 
 /**
@@ -279,6 +290,7 @@ void TabCompiler::action_install()
 void TabCompiler::action_uninstall()
 {
     logger(__PRETTY_FUNCTION__);
+    m_displayer->send_cmd("git", QStringList() << "status", "/home/francis/dev");
 }
 
 /**

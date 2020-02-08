@@ -49,9 +49,9 @@ ProcessDisplayer::~ProcessDisplayer()
  * Si un processus est déjà en cours, ajoute la commande à exécuter dans la
  * file d'attente via la fonction ProcessDisplayer::addCommand. Sinon, prépare le
  * processus et demande son exécution en le connectant comme suit :
- * @li Sortie standard -> TabCompiler::updateStandardOutput
- * @li Erreur standard -> TabCompiler::updateStandardError
- * @li Fin d'exécution -> TabCompiler::endCmd
+ * @li Sortie standard -> ProcessDisplayer::updateStandardOutput
+ * @li Erreur standard -> ProcessDisplayer::updateStandardError
+ * @li Fin d'exécution -> ProcessDisplayer::endCmd
  *
  * Voir ProcessDisplayer::m_process.
  */
@@ -61,7 +61,7 @@ void ProcessDisplayer::send_cmd(QString cmd, QStringList param /*= QStringList()
     if(m_process == nullptr)
     {
         m_process = new QProcess(this);
-        this->append("> " + cmd + " " + param.join(' '));
+        this->append(dir + "> " + cmd + " " + param.join(' '));
         m_process->setWorkingDirectory(dir);
         m_process->start(cmd, param);
         connect(m_process, SIGNAL(readyReadStandardOutput()), this, SLOT(updateStandardOutput()));

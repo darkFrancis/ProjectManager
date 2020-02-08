@@ -50,6 +50,9 @@
             void save();
             void init();
 
+        public slots:
+            void activate_action();
+
         private slots:
             void on_toolButton_buildDir_clicked();
             void on_pushButton_sources_clicked();

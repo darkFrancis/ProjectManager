@@ -17,9 +17,7 @@
  *
  * Contructeur de la classe TabDoxygen. Il hérite de celui de Tab et utilise
  * le système des fichiers d'interface utilisateur.@n
- * Ce constructeur écrit le texte correspondant à la présence ou non du dossier
- * Git donné par l'instance Context.@n
- * Voir @ref CONTEXT_GET, Ui.
+ * Voir Ui.
  */
 TabGit::TabGit(QWidget *parent) :
     Tab(parent),
@@ -27,16 +25,6 @@ TabGit::TabGit(QWidget *parent) :
 {
     ui->setupUi(this);
     logger(__PRETTY_FUNCTION__);
-    QDir git_dir(Context::Instance()->gitPath());
-    if(!git_dir.exists())
-    {
-        m_git_exists = false;
-        ui->pushButton->setText("Créer le dossier Git");
-    }
-    else
-    {
-        m_git_exists = true;
-    }
 }
 
 /**
@@ -48,28 +36,86 @@ TabGit::~TabGit()
     delete ui;
 }
 
-/**
- * Ce connecteur est activé par un clic souris de l'utilisateur sur le
- * bouton Git de la fenêtre.@n
- * Si le dossier Git n'existe pas, le créé, sinon, démarre GitKraken.
- */
-void TabGit::on_pushButton_clicked()
+void TabGit::init()
 {
-    logger(__PRETTY_FUNCTION__);
-    if(!m_git_exists)
+
+}
+
+void TabGit::clear()
+{
+    ui->listWidget_staged->clear();
+    ui->listWidget_unstaged->clear();
+    ui->checkBox_amend->setChecked(false);
+    ui->lineEdit_commit->clear();
+    ui->comboBox_branch->clear();
+}
+
+void TabGit::on_pushButton_commit_clicked()
+{
+
+}
+
+void TabGit::on_checkBox_amend_stateChanged(int arg1)
+{
+    if(arg1 == Qt::Checked)
     {
-        QProcess process;
-        process.setWorkingDirectory(Context::Instance()->gitPath());
-        process.start("git init");
-        if(!process.waitForFinished())
-        {
-            throw(QString("Erreur, impossible d'initialiser le répertoire Git"));
-        }
-        ui->pushButton->setText("Lancer GitKraken");
+        /**
+          * @todo Récupérer dernier commit pour ajout à la description
+          */
     }
     else
     {
-        QProcess process;
-        process.startDetached("gitkraken -p " + Context::Instance()->gitPath() + " &");
+        ui->lineEdit_commit->clear();
+        ui->lineEdit_commit->setPlaceholderText(GIT_COMMIT_PLACEHOLDER);
     }
+}
+
+void TabGit::on_comboBox_branch_currentTextChanged(const QString &arg1)
+{
+
+}
+
+void TabGit::on_toolButton_branch_clicked()
+{
+
+}
+
+void TabGit::on_pushButton_add_clicked()
+{
+
+}
+
+void TabGit::on_pushButton_reset_clicked()
+{
+
+}
+
+void TabGit::on_pushButton_checkout_clicked()
+{
+
+}
+
+void TabGit::on_pushButton_gitk_clicked()
+{
+
+}
+
+void TabGit::on_pushButton_tags_clicked()
+{
+
+}
+
+void TabGit::on_pushButton_push_clicked()
+{
+
+}
+
+void TabGit::on_pushButton_fetch_clicked()
+{
+
+}
+
+void TabGit::on_pushButton_rebase_clicked()
+{
+
 }

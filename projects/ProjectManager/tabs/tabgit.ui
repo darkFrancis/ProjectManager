@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>688</width>
-    <height>449</height>
+    <height>480</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -66,6 +66,12 @@
           <property name="editTriggers">
            <set>QAbstractItemView::NoEditTriggers</set>
           </property>
+          <property name="selectionMode">
+           <enum>QAbstractItemView::ExtendedSelection</enum>
+          </property>
+          <property name="viewMode">
+           <enum>QListView::ListMode</enum>
+          </property>
           <property name="itemAlignment">
            <set>Qt::AlignLeading</set>
           </property>
@@ -115,6 +121,13 @@
          <widget class="QPushButton" name="pushButton_tags">
           <property name="text">
            <string>Tags...</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_conflicts">
+          <property name="text">
+           <string>Conflits...</string>
           </property>
          </widget>
         </item>

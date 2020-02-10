@@ -22,7 +22,11 @@ void logger(QString msg)
         if(file.open(QIODevice::Text | QIODevice::WriteOnly | QIODevice::Append))
         {
             QTextStream stream(&file);
-            stream << QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm:ss.zzz | ") << msg << endl;
+            QStringList ligns = msg.split('\n');
+            for(int i = 0; i < ligns.length(); i++)
+            {
+                stream << QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm:ss.zzz | ") << ligns[i] << endl;
+            }
             file.close();
         }
     #endif // _DEBUG

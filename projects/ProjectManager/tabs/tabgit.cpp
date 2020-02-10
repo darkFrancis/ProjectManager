@@ -104,7 +104,12 @@ void TabGit::on_pushButton_add_clicked()
 
 void TabGit::on_pushButton_reset_clicked()
 {
-    action(QStringList() << "");
+    QStringList items;
+    for(int i = 0; i < ui->listWidget_staged->count(); i++)
+    {
+
+    }
+    action(QStringList() << "reset");
 }
 
 void TabGit::on_pushButton_checkout_clicked()
@@ -136,12 +141,19 @@ void TabGit::on_pushButton_fetch_clicked()
 
 void TabGit::on_pushButton_rebase_clicked()
 {
-    action(QStringList() << "rebase");
+    if(action(QStringList() << "rebase" << ui->comboBox_branch->currentText()))
+    {
+        if(m_last_exit_code > 0)
+        {
+
+        }
+    }
 }
 
 void TabGit::on_pushButton_extra_clicked()
 {
     action(ui->lineEdit_extra->text().split(' '));
+    ui->lineEdit_extra->clear();
 }
 
 /**
@@ -165,7 +177,7 @@ bool TabGit::action(QStringList args)
         m_output = m_process->readAllStandardOutput();
         m_last_exit_code = m_process->exitCode();
         if(m_process->exitStatus() != QProcess::NormalExit) m_last_exit_code = -1;
-        emit status("Fin d'exécution (code retour : " + QString::number(m_last_exit_code), 2);
+        emit status("Fin d'exécution (code retour : " + QString::number(m_last_exit_code) + ")", 2);
         QApplication::restoreOverrideCursor();
         return true;
     }
@@ -177,18 +189,33 @@ void TabGit::update_status()
     if(action(QStringList() << "status" << "-s"))
     {
         QStringList state_list = m_output.split('\n');
+        state_list.sort();
+        m_unmerged.clear();
+        ui->listWidget_staged->clear();
+        ui->listWidget_unstaged->clear();
         for(QString state : state_list)
         {
-            QString file_name = state.right(state.length()-3);
-            QString label0 = stateChar2Label(state.at(0));
-            QString label1 = stateChar2Label(state.at(1));
-            if(label0 != "")
+            if(state.length() > 3)
             {
-
-            }
-            if(label1 != "")
-            {
-
+                QString file_name = state.right(state.length()-3);
+                if(state.at(0) == QChar('U') ||
+                   state.at(1) == QChar('U'))
+                {
+                    m_unmerged.append(file_name);
+                }
+                else
+                {
+                    QString label0 = stateChar2Label(state.at(0));
+                    QString label1 = stateChar2Label(state.at(1), true);
+                    if(label0 != "")
+                    {
+                        ui->listWidget_staged->addItem(label0 + " : " + file_name);
+                    }
+                    if(label1 != "")
+                    {
+                        ui->listWidget_unstaged->addItem(label1 + " : " + file_name);
+                    }
+                }
             }
         }
     }
@@ -196,14 +223,17 @@ void TabGit::update_status()
 
 QString TabGit::stateChar2Label(QChar c, bool staged /*= false*/)
 {
-    if(c == QChar(' ')) return GIT_STATUS_LABEL_0;
-    else if(c == QChar('A')) return GIT_STATUS_LABEL_A;
+    if(c == QChar('A')) return GIT_STATUS_LABEL_A;
     else if(c == QChar('C')) return GIT_STATUS_LABEL_C;
     else if(c == QChar('D')) return GIT_STATUS_LABEL_D;
     else if(c == QChar('M')) return GIT_STATUS_LABEL_M;
     else if(c == QChar('R')) return GIT_STATUS_LABEL_R;
-    else if(c == QChar('U')) return GIT_STATUS_LABEL_U;
     else if(c == QChar('?') && !staged) return GIT_STATUS_LABEL_1;
     else if(c == QChar('!') && !staged) return GIT_STATUS_LABEL_2;
     else return "";
+}
+
+void TabGit::on_lineEdit_extra_returnPressed()
+{
+    on_pushButton_extra_clicked();
 }

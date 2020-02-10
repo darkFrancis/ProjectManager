@@ -64,12 +64,15 @@
             void on_pushButton_rebase_clicked();
             void on_pushButton_extra_clicked();
 
+            void on_lineEdit_extra_returnPressed();
+
         private:
             Ui::TabGit *ui;/**< UI de la classe TabGit */
             QProcess* m_process;/**< Processus pour exécution des commandes Git */
             int m_last_exit_code;/**< Dernier code retour du processus */
             QString m_output;/**< Sortie standard du dernier processus */
             QString m_error;/**< Erreur standard du dernier processus */
+            QStringList m_unmerged;/**< Liste des fichiers en conflit */
             bool action(QStringList args);
             void update_status();
             QString stateChar2Label(QChar c, bool staged = false);

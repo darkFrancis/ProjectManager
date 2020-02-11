@@ -10,6 +10,7 @@
 #include <QDir>
 #include <QProcess>
 #include <QMessageBox>
+#include <QTimer>
 #include "context.hpp"
 #include "logger.hpp"
 #include "context.hpp"
@@ -30,6 +31,8 @@ TabGit::TabGit(QWidget *parent) :
     logger(__PRETTY_FUNCTION__);
 
     m_process = new QProcess();
+    connect(&m_timer, &QTimer::timeout, this, &TabGit::update_status);
+    m_timer.start(1000);
 }
 
 /**
@@ -76,9 +79,8 @@ void TabGit::on_checkBox_amend_stateChanged(int arg1)
 {
     if(arg1 == Qt::Checked)
     {
-        /**
-          * @todo Récupérer dernier commit pour ajout à la description
-          */
+        while(!action(QStringList() << "log" << "-n1" << "--pretty=format:%s")){}
+        ui->lineEdit_commit->setText(m_output);
     }
     else
     {
@@ -99,29 +101,30 @@ void TabGit::on_toolButton_branch_clicked()
 
 void TabGit::on_pushButton_add_clicked()
 {
-    action(QStringList() << "");
+    QStringList selection = getSelected(ui->listWidget_unstaged);
+    if(selection.length() == 0) action(QStringList() << "add" << ".");
+    else action(QStringList() << "add" << selection);
 }
 
 void TabGit::on_pushButton_reset_clicked()
 {
-    QStringList items;
-    for(int i = 0; i < ui->listWidget_staged->count(); i++)
-    {
-
-    }
-    action(QStringList() << "reset");
+    QStringList selection = getSelected(ui->listWidget_staged);
+    if(selection.length() == 0) action(QStringList() << "reset" << "HEAD");
+    else action(QStringList() << "reset" << selection);
 }
 
 void TabGit::on_pushButton_checkout_clicked()
 {
-    action(QStringList() << "");
+    QStringList selection = getSelected(ui->listWidget_staged);
+    if(selection.length() == 0) action(QStringList() << "checkout" << "--" << ".");
+    else action(QStringList() << "checkout" << "--" << selection);
 }
 
 void TabGit::on_pushButton_gitk_clicked()
 {
     QProcess process;
     process.setWorkingDirectory(m_process->workingDirectory());
-    process.startDetached("gitk");
+    process.startDetached("gitk", QStringList() << "--all");
 }
 
 void TabGit::on_pushButton_tags_clicked()
@@ -131,29 +134,35 @@ void TabGit::on_pushButton_tags_clicked()
 
 void TabGit::on_pushButton_push_clicked()
 {
-    action(QStringList() << "push" << "origin" << ui->comboBox_branch->currentText());
+    if(action(QStringList() << "push" << "origin" << ui->comboBox_branch->currentText()))
+    {
+        if(m_last_exit_code > 0) QMessageBox::information(this, "Erreur", m_error);
+    }
 }
 
 void TabGit::on_pushButton_fetch_clicked()
 {
-    action(QStringList() << "fetch");
+    if(action(QStringList() << "fetch"))
+    {
+        if(m_last_exit_code > 0) QMessageBox::information(this, "Erreur", m_error);
+    }
 }
 
 void TabGit::on_pushButton_rebase_clicked()
 {
     if(action(QStringList() << "rebase" << ui->comboBox_branch->currentText()))
     {
-        if(m_last_exit_code > 0)
-        {
-
-        }
+        if(m_last_exit_code > 0) QMessageBox::information(this, "Erreur", m_error);
     }
 }
 
 void TabGit::on_pushButton_extra_clicked()
 {
-    action(ui->lineEdit_extra->text().split(' '));
-    ui->lineEdit_extra->clear();
+    if(action(ui->lineEdit_extra->text().split(' ')))
+    {
+        ui->lineEdit_extra->clear();
+        if(m_last_exit_code > 0) QMessageBox::information(this, "Erreur", m_error);
+    }
 }
 
 /**
@@ -165,20 +174,20 @@ void TabGit::on_pushButton_extra_clicked()
  * arguments ceux passés en paramètres. Attend la fin de l'exécution de la
  * commande pour récupérer le code retour, la sortie et l'erreur.
  */
-bool TabGit::action(QStringList args)
+bool TabGit::action(QStringList args, bool b_status /*= true*/, bool cursor /*= true*/)
 {
     if(m_process->state() == QProcess::NotRunning && args.length() > 0)
     {
-        QApplication::setOverrideCursor(Qt::WaitCursor);
-        emit status("Lancement git " + args.at(0), 3);
+        if(cursor) QApplication::setOverrideCursor(Qt::WaitCursor);
+        if(b_status) emit status("Lancement git " + args.at(0), 3);
         m_process->start("git", args);
         m_process->waitForFinished();
         m_error = m_process->readAllStandardError();
         m_output = m_process->readAllStandardOutput();
         m_last_exit_code = m_process->exitCode();
         if(m_process->exitStatus() != QProcess::NormalExit) m_last_exit_code = -1;
-        emit status("Fin d'exécution (code retour : " + QString::number(m_last_exit_code) + ")", 2);
-        QApplication::restoreOverrideCursor();
+        if(b_status) emit status("Fin d'exécution (code retour : " + QString::number(m_last_exit_code) + ")", 2);
+        if(cursor) QApplication::restoreOverrideCursor();
         return true;
     }
     return false;
@@ -186,7 +195,9 @@ bool TabGit::action(QStringList args)
 
 void TabGit::update_status()
 {
-    if(action(QStringList() << "status" << "-s"))
+    QStringList tmp_select_stage = getSelected(ui->listWidget_staged);
+    QStringList tmp_select_unstage = getSelected(ui->listWidget_unstaged);
+    if(action(QStringList() << "status" << "-s", false, false))
     {
         QStringList state_list = m_output.split('\n');
         state_list.sort();
@@ -210,10 +221,18 @@ void TabGit::update_status()
                     if(label0 != "")
                     {
                         ui->listWidget_staged->addItem(label0 + " : " + file_name);
+                        if(tmp_select_stage.contains(file_name))
+                        {
+                            ui->listWidget_staged->item(ui->listWidget_staged->count()-1)->setSelected(true);
+                        }
                     }
                     if(label1 != "")
                     {
                         ui->listWidget_unstaged->addItem(label1 + " : " + file_name);
+                        if(tmp_select_unstage.contains(file_name))
+                        {
+                            ui->listWidget_unstaged->item(ui->listWidget_unstaged->count()-1)->setSelected(true);
+                        }
                     }
                 }
             }
@@ -231,6 +250,23 @@ QString TabGit::stateChar2Label(QChar c, bool staged /*= false*/)
     else if(c == QChar('?') && !staged) return GIT_STATUS_LABEL_1;
     else if(c == QChar('!') && !staged) return GIT_STATUS_LABEL_2;
     else return "";
+}
+
+QStringList TabGit::getSelected(QListWidget *list_view)
+{
+    QStringList items;
+    QString item;
+    int idx;
+    for(int i = 0; i < list_view->count(); i++)
+    {
+        if(list_view->item(i)->isSelected())
+        {
+            item = list_view->item(i)->text();
+            idx = item.indexOf(QChar(':'));
+            items << item.right(item.length()-idx).simplified();
+        }
+    }
+    return items;
 }
 
 void TabGit::on_lineEdit_extra_returnPressed()

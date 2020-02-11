@@ -9,6 +9,8 @@
 
     #include "tab.hpp"
     #include <QProcess>
+    #include <QListWidget>
+    #include <QTimer>
 
     #define GIT_COMMIT_DEFAULT_MSG QString("Commit without message")/**< Message par défaut pour un commit si aucun message n'est renseigné */
     #define GIT_COMMIT_PLACEHOLDER QString("Ajoutez un message au commit")/**< Affichage dans la ligne d'édition du commit si aucun message renseigné */
@@ -47,6 +49,7 @@
             void clear();
 
         private slots:
+            void update_status();
             // Commit
             void on_pushButton_commit_clicked();
             void on_checkBox_amend_stateChanged(int arg1);
@@ -63,7 +66,6 @@
             void on_pushButton_fetch_clicked();
             void on_pushButton_rebase_clicked();
             void on_pushButton_extra_clicked();
-
             void on_lineEdit_extra_returnPressed();
 
         private:
@@ -73,8 +75,9 @@
             QString m_output;/**< Sortie standard du dernier processus */
             QString m_error;/**< Erreur standard du dernier processus */
             QStringList m_unmerged;/**< Liste des fichiers en conflit */
-            bool action(QStringList args);
-            void update_status();
+            QTimer m_timer;
+            bool action(QStringList args, bool status = true, bool cursor = true);
+            QStringList getSelected(QListWidget* list_view);
             QString stateChar2Label(QChar c, bool staged = false);
     };
 

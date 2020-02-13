@@ -37,6 +37,8 @@
      * @n Header : tabgit.hpp
      *
      * @todo Remplacement de l'utilisation de GitKraken par des commandes internes
+     *
+     * @todo Ajout d'option pour la personnalisation des commandes
      */
     class TabGit : public Tab
     {
@@ -49,7 +51,7 @@
             void clear();
 
         private slots:
-            void update_status();
+            void update_all();
             // Commit
             void on_pushButton_commit_clicked();
             void on_checkBox_amend_stateChanged(int arg1);
@@ -76,9 +78,12 @@
             QString m_error;/**< Erreur standard du dernier processus */
             QStringList m_unmerged;/**< Liste des fichiers en conflit */
             QTimer m_timer;
-            bool action(QStringList args, bool status = true, bool cursor = true);
+            bool action(QStringList args, bool status = true);
             QStringList getSelected(QListWidget* list_view);
             QString stateChar2Label(QChar c, bool staged = false);
+            // Update
+            void update_status();
+            void update_branches();
     };
 
 #endif // TABGIT_HPP

@@ -36,6 +36,7 @@ SOURCES += \
         tabs/compiler/paramselectionwindow.cpp \
         tabs/compiler/sourceswindow.cpp \
         tabs/git/errorviewer.cpp \
+        tabs/git/tagswindow.cpp \
         tabs/tabcompiler.cpp \
         tabs/tabdoxygen.cpp \
         tabs/tabgit.cpp \
@@ -58,6 +59,7 @@ HEADERS += \
         tabs/compiler/paramselectionwindow.hpp \
         tabs/compiler/sourceswindow.hpp \
         tabs/git/errorviewer.hpp \
+        tabs/git/tagswindow.hpp \
         tabs/tab.hpp \
         tabs/tabcompiler.hpp \
         tabs/tabdoxygen.hpp \
@@ -72,6 +74,7 @@ FORMS += \
         tabs/compiler/paramselectionwindow.ui \
         tabs/compiler/sourceswindow.ui \
         tabs/git/errorviewer.ui \
+        tabs/git/tagswindow.ui \
         tabs/tabcompiler.ui \
         tabs/tabdoxygen.ui \
         tabs/tabgit.ui \

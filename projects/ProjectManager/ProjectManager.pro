@@ -19,7 +19,8 @@ UI_DIR = $$DESTDIR/ui
 INCLUDEPATH += process \
         settings \
         tabs \
-        tabs/compiler
+        tabs/compiler\
+        tabs/git
 
 SOURCES += \
         context.cpp \
@@ -34,6 +35,7 @@ SOURCES += \
         tabs/compiler/compilerparamwindow.cpp \
         tabs/compiler/paramselectionwindow.cpp \
         tabs/compiler/sourceswindow.cpp \
+        tabs/git/errorviewer.cpp \
         tabs/tabcompiler.cpp \
         tabs/tabdoxygen.cpp \
         tabs/tabgit.cpp \
@@ -55,6 +57,7 @@ HEADERS += \
         tabs/compiler/compilerparamwindow.hpp \
         tabs/compiler/paramselectionwindow.hpp \
         tabs/compiler/sourceswindow.hpp \
+        tabs/git/errorviewer.hpp \
         tabs/tab.hpp \
         tabs/tabcompiler.hpp \
         tabs/tabdoxygen.hpp \
@@ -68,6 +71,7 @@ FORMS += \
         tabs/compiler/compilerparamwindow.ui \
         tabs/compiler/paramselectionwindow.ui \
         tabs/compiler/sourceswindow.ui \
+        tabs/git/errorviewer.ui \
         tabs/tabcompiler.ui \
         tabs/tabdoxygen.ui \
         tabs/tabgit.ui \

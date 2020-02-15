@@ -14,6 +14,7 @@
 #include "context.hpp"
 #include "logger.hpp"
 #include "context.hpp"
+#include "errorviewer.hpp"
 #include <QDebug>
 
 /**
@@ -80,7 +81,7 @@ void TabGit::on_checkBox_amend_stateChanged(int arg1)
 {
     if(arg1 == Qt::Checked)
     {
-        while(!action(QStringList() << "log" << "-n1" << "--pretty=format:%s")){}
+        while(!action(QStringList() << "log" << "-n1" << "--pretty=format:%s", false)){}
         ui->lineEdit_commit->setText(m_output);
     }
     else
@@ -92,7 +93,7 @@ void TabGit::on_checkBox_amend_stateChanged(int arg1)
 
 void TabGit::on_comboBox_branch_currentTextChanged(const QString &arg1)
 {
-    action(QStringList() << "checkout" << arg1);
+    //action(QStringList() << "checkout" << arg1);
 }
 
 void TabGit::on_toolButton_branch_clicked()
@@ -130,7 +131,7 @@ void TabGit::on_pushButton_gitk_clicked()
 
 void TabGit::on_pushButton_tags_clicked()
 {
-    update_status();
+
 }
 
 void TabGit::on_pushButton_push_clicked()
@@ -187,11 +188,28 @@ bool TabGit::action(QStringList args, bool b_status /*= true*/)
         m_last_exit_code = m_process->exitCode();
         if(m_process->exitStatus() != QProcess::NormalExit) m_last_exit_code = -1;
         if(b_status) emit status("Fin d'exécution (code retour : " + QString::number(m_last_exit_code) + ")", 2);
+        if(b_status && m_last_exit_code > 0)
+        {
+            ErrorViewer *w = new ErrorViewer(this,
+                                             "Erreur d'exécution de la commande git",
+                                             m_error);
+            w->show();
+            return false;
+        }
         return true;
     }
     return false;
 }
 
+/**
+ * Mise à jour du status.@n
+ * Cette fonction utilise la commande @b git @b status pour récuppérer l'état courant
+ * du dépôt git et actualise les listes de fichiers de cet onglet.
+ *
+ * @bug Clignotement si trop de fichiers à rafraichir.@n
+ * Idée de correction : ne faire que l'ajout/suppression des fichiers dans la liste
+ * et trier cette liste.
+ */
 void TabGit::update_status()
 {
     QStringList tmp_select_stage = getSelected(ui->listWidget_staged);

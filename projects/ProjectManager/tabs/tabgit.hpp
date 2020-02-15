@@ -87,6 +87,7 @@
             // Update
             void update_status();
             void update_branches();
+            void update_remote();
     };
 
 #endif // TABGIT_HPP

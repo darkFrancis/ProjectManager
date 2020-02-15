@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>688</width>
-    <height>480</height>
+    <height>511</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -164,6 +164,9 @@
            <string>Distant</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <widget class="QComboBox" name="comboBox_remote"/>
+           </item>
            <item>
             <widget class="QPushButton" name="pushButton_push">
              <property name="text">

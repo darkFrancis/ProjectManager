@@ -54,6 +54,7 @@ void TabGit::init()
     m_process->setWorkingDirectory(info.absolutePath());
     this->update_all();
     ui->comboBox_branch->setCurrentIndex(ui->comboBox_branch->findText(ui->label_branch->text().split(':').at(1).simplified()));
+    ui->comboBox_remote->setCurrentIndex(0);
     m_timer.start(1000);
 }
 
@@ -133,7 +134,7 @@ void TabGit::on_pushButton_tags_clicked()
 
 void TabGit::on_pushButton_push_clicked()
 {
-    action(QStringList() << "push" << "origin" << ui->comboBox_branch->currentText());
+    action(QStringList() << "push" << ui->comboBox_remote->currentText() << ui->comboBox_branch->currentText());
 }
 
 void TabGit::on_pushButton_fetch_clicked()
@@ -309,10 +310,30 @@ void TabGit::update_branches()
     }
 }
 
+void TabGit::update_remote()
+{
+    if(action(QStringList() << "remote", false))
+    {
+        QStringList remote_list = m_output.split('\n');
+        int current_select = ui->comboBox_remote->currentIndex();
+        ui->comboBox_remote->clear();
+        for(QString remote : remote_list)
+        {
+            remote = remote.simplified();
+            if(remote.length() > 0)
+            {
+                ui->comboBox_remote->addItem(remote);
+            }
+        }
+        ui->comboBox_remote->setCurrentIndex(current_select);
+    }
+}
+
 void TabGit::update_all()
 {
     update_branches();
     update_status();
+    update_remote();
     if(ui->listWidget_staged->count() == 0 && !ui->checkBox_amend->isChecked()) ui->pushButton_commit->setEnabled(false);
     else ui->pushButton_commit->setEnabled(true);
 }

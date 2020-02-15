@@ -56,8 +56,10 @@
             void on_pushButton_commit_clicked();
             void on_checkBox_amend_stateChanged(int arg1);
             // Branches
-            void on_comboBox_branch_currentTextChanged(const QString &arg1);
             void on_toolButton_branch_clicked();
+            void on_pushButton_branchMerge_clicked();
+            void on_pushButton_branchSwitch_clicked();
+            void on_comboBox_branch_currentIndexChanged(const QString &arg1);
             // Actions
             void on_pushButton_add_clicked();
             void on_pushButton_reset_clicked();
@@ -79,7 +81,8 @@
             QStringList m_unmerged;/**< Liste des fichiers en conflit */
             QTimer m_timer;
             bool action(QStringList args, bool status = true);
-            QStringList getSelected(QListWidget* list_view);
+            QStringList getSelected(QListWidget* list_view, bool only_files = true);
+            QStringList getAllItems(QListWidget* list_view, bool only_files = true);
             QString stateChar2Label(QChar c, bool staged = false);
             // Update
             void update_status();

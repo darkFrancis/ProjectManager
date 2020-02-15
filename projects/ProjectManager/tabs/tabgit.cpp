@@ -34,6 +34,7 @@ TabGit::TabGit(QWidget *parent) :
 
     m_process = new QProcess();
     connect(&m_timer, &QTimer::timeout, this, &TabGit::update_all);
+    ui->lineEdit_commit->setPlaceholderText(GIT_COMMIT_PLACEHOLDER);
 }
 
 /**
@@ -51,6 +52,8 @@ void TabGit::init()
     Context* ctx = Context::Instance();
     QFileInfo info(ctx->projectFile());
     m_process->setWorkingDirectory(info.absolutePath());
+    this->update_all();
+    ui->comboBox_branch->setCurrentIndex(ui->comboBox_branch->findText(ui->label_branch->text().split(':').at(1).simplified()));
     m_timer.start(1000);
 }
 
@@ -74,7 +77,7 @@ void TabGit::on_pushButton_commit_clicked()
     QString msg = ui->lineEdit_commit->text().simplified();
     if(msg == QString("")) args << GIT_COMMIT_DEFAULT_MSG;
     else args << msg;
-    action(args);
+    if(action(args)) ui->lineEdit_commit->clear();
 }
 
 void TabGit::on_checkBox_amend_stateChanged(int arg1)
@@ -87,13 +90,7 @@ void TabGit::on_checkBox_amend_stateChanged(int arg1)
     else
     {
         ui->lineEdit_commit->clear();
-        ui->lineEdit_commit->setPlaceholderText(GIT_COMMIT_PLACEHOLDER);
     }
-}
-
-void TabGit::on_comboBox_branch_currentTextChanged(const QString &arg1)
-{
-    //action(QStringList() << "checkout" << arg1);
 }
 
 void TabGit::on_toolButton_branch_clicked()
@@ -136,26 +133,17 @@ void TabGit::on_pushButton_tags_clicked()
 
 void TabGit::on_pushButton_push_clicked()
 {
-    if(action(QStringList() << "push" << "origin" << ui->comboBox_branch->currentText()))
-    {
-        if(m_last_exit_code > 0) QMessageBox::information(this, "Erreur", m_error);
-    }
+    action(QStringList() << "push" << "origin" << ui->comboBox_branch->currentText());
 }
 
 void TabGit::on_pushButton_fetch_clicked()
 {
-    if(action(QStringList() << "fetch"))
-    {
-        if(m_last_exit_code > 0) QMessageBox::information(this, "Erreur", m_error);
-    }
+    action(QStringList() << "fetch");
 }
 
 void TabGit::on_pushButton_rebase_clicked()
 {
-    if(action(QStringList() << "rebase" << ui->comboBox_branch->currentText()))
-    {
-        if(m_last_exit_code > 0) QMessageBox::information(this, "Erreur", m_error);
-    }
+    action(QStringList() << "rebase" << ui->comboBox_branch->currentText());
 }
 
 void TabGit::on_pushButton_extra_clicked()
@@ -163,7 +151,6 @@ void TabGit::on_pushButton_extra_clicked()
     if(action(ui->lineEdit_extra->text().split(' ')))
     {
         ui->lineEdit_extra->clear();
-        if(m_last_exit_code > 0) QMessageBox::information(this, "Erreur", m_error);
     }
 }
 
@@ -205,23 +192,21 @@ bool TabGit::action(QStringList args, bool b_status /*= true*/)
  * Mise à jour du status.@n
  * Cette fonction utilise la commande @b git @b status pour récuppérer l'état courant
  * du dépôt git et actualise les listes de fichiers de cet onglet.
- *
- * @bug Clignotement si trop de fichiers à rafraichir.@n
- * Idée de correction : ne faire que l'ajout/suppression des fichiers dans la liste
- * et trier cette liste.
  */
 void TabGit::update_status()
 {
-    QStringList tmp_select_stage = getSelected(ui->listWidget_staged);
-    QStringList tmp_select_unstage = getSelected(ui->listWidget_unstaged);
+    QStringList tmp_select_stage = getSelected(ui->listWidget_staged, false);
+    QStringList tmp_select_unstage = getSelected(ui->listWidget_unstaged, false);
+    QStringList tmp_stage = getAllItems(ui->listWidget_staged, false);
+    QStringList tmp_unstage = getAllItems(ui->listWidget_unstaged, false);
 
     if(action(QStringList() << "status" << "-s", false))
     {
         QStringList state_list = m_output.split('\n');
         state_list.sort();
         m_unmerged.clear();
-        ui->listWidget_staged->clear();
-        ui->listWidget_unstaged->clear();
+
+        // Ajout des nouveaux items
         for(QString state : state_list)
         {
             if(state.length() > 3)
@@ -234,27 +219,69 @@ void TabGit::update_status()
                 }
                 else
                 {
-                    QString label0 = stateChar2Label(state.at(0));
-                    QString label1 = stateChar2Label(state.at(1), true);
+                    QString label0 = stateChar2Label(state.at(0), true);
+                    QString label1 = stateChar2Label(state.at(1));
                     if(label0 != "")
                     {
-                        ui->listWidget_staged->addItem(label0 + " : " + file_name);
-                        if(tmp_select_stage.contains(file_name))
+                        QString text = label0 + " : " + file_name;
+                        if(!tmp_stage.contains(text))
                         {
-                            ui->listWidget_staged->item(ui->listWidget_staged->count()-1)->setSelected(true);
+                            ui->listWidget_staged->addItem(text);
+                            if(tmp_select_stage.contains(text))
+                            {
+                                ui->listWidget_staged->item(ui->listWidget_staged->count()-1)->setSelected(true);
+                            }
+                        }
+                        else
+                        {
+                            tmp_stage.removeOne(text);
                         }
                     }
                     if(label1 != "")
                     {
-                        ui->listWidget_unstaged->addItem(label1 + " : " + file_name);
-                        if(tmp_select_unstage.contains(file_name))
+                        QString text = label1 + " : " + file_name;
+                        if(!tmp_unstage.contains(text))
                         {
-                            ui->listWidget_unstaged->item(ui->listWidget_unstaged->count()-1)->setSelected(true);
+                            ui->listWidget_unstaged->addItem(label1 + " : " + file_name);
+                            if(tmp_select_unstage.contains(text))
+                            {
+                                ui->listWidget_unstaged->item(ui->listWidget_unstaged->count()-1)->setSelected(true);
+                            }
+                        }
+                        else
+                        {
+                            tmp_unstage.removeOne(text);
                         }
                     }
                 }
             }
         }
+
+        // Suppression des items qui n'existent plus
+        for(int i = 0; i < tmp_stage.length(); i++)
+        {
+            for(int j = 0; j < ui->listWidget_staged->count(); j++)
+            {
+                if(tmp_stage[i] == ui->listWidget_staged->item(j)->text())
+                {
+                    ui->listWidget_staged->takeItem(j);
+                }
+            }
+        }
+        for(int i = 0; i < tmp_unstage.length(); i++)
+        {
+            for(int j = 0; j < ui->listWidget_unstaged->count(); j++)
+            {
+                if(tmp_unstage[i] == ui->listWidget_unstaged->item(j)->text())
+                {
+                    ui->listWidget_unstaged->takeItem(j);
+                }
+            }
+        }
+
+        // Tri
+        ui->listWidget_staged->sortItems();
+        ui->listWidget_unstaged->sortItems();
     }
 }
 
@@ -263,7 +290,7 @@ void TabGit::update_branches()
     if(action(QStringList() << "branch", false))
     {
         QStringList branch_list = m_output.split('\n');
-        QString current_branch = "";
+        int current_select = ui->comboBox_branch->currentIndex();
         ui->comboBox_branch->clear();
         for(QString branch : branch_list)
         {
@@ -273,12 +300,12 @@ void TabGit::update_branches()
                 if(branch[0] == QChar('*'))
                 {
                     branch = branch.right(branch.length()-2);
-                    current_branch = branch;
+                    ui->label_branch->setText("Branche courante : " + branch);
                 }
                 ui->comboBox_branch->addItem(branch);
             }
         }
-        ui->comboBox_branch->setCurrentIndex(ui->comboBox_branch->findText(current_branch));
+        ui->comboBox_branch->setCurrentIndex(current_select);
     }
 }
 
@@ -286,7 +313,7 @@ void TabGit::update_all()
 {
     update_branches();
     update_status();
-    if(ui->listWidget_staged->count() == 0) ui->pushButton_commit->setEnabled(false);
+    if(ui->listWidget_staged->count() == 0 && !ui->checkBox_amend->isChecked()) ui->pushButton_commit->setEnabled(false);
     else ui->pushButton_commit->setEnabled(true);
 }
 
@@ -302,19 +329,27 @@ QString TabGit::stateChar2Label(QChar c, bool staged /*= false*/)
     else return "";
 }
 
-QStringList TabGit::getSelected(QListWidget *list_view)
+QStringList TabGit::getSelected(QListWidget *list_view, bool only_files /*= true*/)
 {
     QStringList items;
-    QString item;
-    int idx;
     for(int i = 0; i < list_view->count(); i++)
     {
         if(list_view->item(i)->isSelected())
         {
-            item = list_view->item(i)->text();
-            idx = item.indexOf(QChar(':'));
-            items << item.right(item.length()-idx-1).simplified();
+            if(only_files) items << list_view->item(i)->text().split(':').at(1).simplified();
+            else items << list_view->item(i)->text();
         }
+    }
+    return items;
+}
+
+QStringList TabGit::getAllItems(QListWidget *list_view, bool only_files /*= true*/)
+{
+    QStringList items;
+    for(int i = 0; i < list_view->count(); i++)
+    {
+        if(only_files) items << list_view->item(i)->text().split(':').at(1).simplified();
+        else items << list_view->item(i)->text();
     }
     return items;
 }
@@ -322,4 +357,28 @@ QStringList TabGit::getSelected(QListWidget *list_view)
 void TabGit::on_lineEdit_extra_returnPressed()
 {
     on_pushButton_extra_clicked();
+}
+
+void TabGit::on_pushButton_branchMerge_clicked()
+{
+    action(QStringList() << "merge" << ui->comboBox_branch->currentText());
+}
+
+void TabGit::on_pushButton_branchSwitch_clicked()
+{
+    action(QStringList() << "checkout" << ui->comboBox_branch->currentText());
+}
+
+void TabGit::on_comboBox_branch_currentIndexChanged(const QString &arg1)
+{
+    if(arg1 == ui->label_branch->text().split(':').at(1).simplified())
+    {
+        ui->pushButton_branchSwitch->setEnabled(false);
+        ui->pushButton_branchMerge->setEnabled(false);
+    }
+    else
+    {
+        ui->pushButton_branchSwitch->setEnabled(true);
+        ui->pushButton_branchMerge->setEnabled(true);
+    }
 }

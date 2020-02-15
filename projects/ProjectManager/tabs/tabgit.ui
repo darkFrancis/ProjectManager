@@ -18,6 +18,36 @@
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
       <widget class="QLabel" name="label_branch">
+       <property name="text">
+        <string>Branche courante : ###</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_branchSwitch">
+       <property name="maximumSize">
+        <size>
+         <width>25</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>-&gt;</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboBox_branch">
+       <property name="maximumSize">
+        <size>
+         <width>250</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_branchMerge">
        <property name="maximumSize">
         <size>
          <width>150</width>
@@ -25,12 +55,9 @@
         </size>
        </property>
        <property name="text">
-        <string>Branche active</string>
+        <string>Merge</string>
        </property>
       </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="comboBox_branch"/>
      </item>
      <item>
       <widget class="QToolButton" name="toolButton_branch">
@@ -186,6 +213,9 @@
          <widget class="QListWidget" name="listWidget_staged">
           <property name="editTriggers">
            <set>QAbstractItemView::NoEditTriggers</set>
+          </property>
+          <property name="selectionMode">
+           <enum>QAbstractItemView::ExtendedSelection</enum>
           </property>
           <property name="itemAlignment">
            <set>Qt::AlignLeading</set>

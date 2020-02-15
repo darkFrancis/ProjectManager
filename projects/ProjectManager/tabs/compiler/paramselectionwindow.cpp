@@ -123,6 +123,8 @@ ParamSelectionWindow::ParamSelectionWindow(QWidget *parent, QString param_type) 
     ui->tableView->horizontalHeader()->setStretchLastSection(true);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->selectRow(0);
+    this->setWindowModality(Qt::ApplicationModal);
+    this->setAttribute(Qt::WA_QuitOnClose, false);
 }
 
 /**

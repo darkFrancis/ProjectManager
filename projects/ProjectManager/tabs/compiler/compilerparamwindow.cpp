@@ -321,8 +321,6 @@ void CompilerParamWindow::open_param(QString kw)
     logger("    open_param " + kw);
     ParamSelectionWindow* w = new ParamSelectionWindow(this, kw);
     connect(w, &ParamSelectionWindow::selected, this, &CompilerParamWindow::selected);
-    w->setAttribute(Qt::WA_QuitOnClose, false);
-    w->setWindowModality(Qt::ApplicationModal);
     w->show();
 }
 
@@ -351,6 +349,9 @@ void CompilerParamWindow::init()
     ui->lineEdit_dirs->setText(ctx->flagDirs().join(' '));
     ui->lineEdit_codeConvention->setText(ctx->flagConvention().join(' '));
     ui->lineEdit_other->setText(ctx->flagOther().join(' '));
+
+    this->setWindowModality(Qt::ApplicationModal);
+    this->setAttribute(Qt::WA_QuitOnClose, false);
 }
 
 /**

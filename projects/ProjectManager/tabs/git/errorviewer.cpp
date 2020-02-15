@@ -25,6 +25,7 @@ ErrorViewer::ErrorViewer(QWidget *parent, QString error, QString details) :
     ui->setupUi(this);
 
     this->setWindowModality(Qt::ApplicationModal);
+    this->setAttribute(Qt::WA_QuitOnClose, false);
     ui->label_error->setText(error);
     ui->textEdit_details->setHidden(true);
     ui->textEdit_details->setText(details);

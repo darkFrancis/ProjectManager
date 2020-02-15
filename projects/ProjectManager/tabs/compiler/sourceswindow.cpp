@@ -58,6 +58,8 @@ void SourcesWindow::init()
     for(QString path : ctx->sources()) addItem(path, ui->listWidget_sources);
     for(QString path : ctx->headers()) addItem(path, ui->listWidget_headers);
     for(QString path : ctx->ressources()) addItem(path, ui->listWidget_ressources);
+    this->setWindowModality(Qt::ApplicationModal);
+    this->setAttribute(Qt::WA_QuitOnClose, false);
 }
 
 /**

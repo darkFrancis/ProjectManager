@@ -56,6 +56,8 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
     ui->comboBox_colorSuccess->setCurrentIndex(ui->comboBox_colorSuccess->findText(settings->colorSuccess()));
     ui->lineEdit_sourcesExt->setText(settings->sourcesExtensions().join(' '));
     ui->lineEdit_headersExt->setText(settings->headersExtensions().join(' '));
+    this->setWindowModality(Qt::ApplicationModal);
+    this->setAttribute(Qt::WA_QuitOnClose, false);
 }
 
 /**

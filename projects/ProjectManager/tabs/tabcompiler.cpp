@@ -140,8 +140,6 @@ void TabCompiler::on_pushButton_sources_clicked()
     logger(__PRETTY_FUNCTION__);
     SourcesWindow* w = new SourcesWindow(this);
     connect(this, &TabCompiler::destroyed, w, &SourcesWindow::close);
-    w->setAttribute(Qt::WA_QuitOnClose, false);
-    w->setWindowModality(Qt::ApplicationModal);
     w->show();
 }
 
@@ -158,8 +156,6 @@ void TabCompiler::on_pushButton_param_clicked()
     logger(__PRETTY_FUNCTION__);
     CompilerParamWindow* w = new CompilerParamWindow(this);
     connect(this, &TabCompiler::destroyed, w, &SourcesWindow::close);
-    w->setAttribute(Qt::WA_QuitOnClose, false);
-    w->setWindowModality(Qt::ApplicationModal);
     w->show();
 }
 

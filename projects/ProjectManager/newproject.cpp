@@ -43,6 +43,8 @@ NewProject::NewProject(QWidget *parent) :
     ui->lineEdit_doxyfile->setText(dir + "Doxyfile");
     initComboType(ui->comboBox_projectType);
     ui->comboBox_projectType->setCurrentIndex(0);
+    this->setWindowModality(Qt::ApplicationModal);
+    this->setAttribute(Qt::WA_QuitOnClose, false);
 }
 
 /**

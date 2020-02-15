@@ -28,6 +28,10 @@
         public:
             TagsWindow(QWidget *parent = nullptr, QStringList tags = QStringList());
             ~TagsWindow();
+            void update_tags(QStringList tags);
+
+        public slots:
+            void clean_tag_name();
 
         signals:
             /**

@@ -50,6 +50,19 @@
             void init();
             void clear();
 
+        signals:
+            /**
+             * Ce signal est émit en cas de création d'un nouveau tag.
+             */
+            void tag_created();
+            /**
+             * @param tags Liste des tags
+             *
+             * Ce signal est émit pour mettre à jour la liste des tag dans la fenêtre
+             * de gestion des tags.
+             */
+            void tag_update(QStringList tags);
+
         private slots:
             void update_all();
             // Commit
@@ -71,6 +84,7 @@
             void on_pushButton_rebase_clicked();
             void on_pushButton_extra_clicked();
             void on_lineEdit_extra_returnPressed();
+            void action_tags(QStringList args);
 
         private:
             Ui::TabGit *ui;/**< UI de la classe TabGit */
@@ -79,7 +93,7 @@
             QString m_output;/**< Sortie standard du dernier processus */
             QString m_error;/**< Erreur standard du dernier processus */
             QStringList m_unmerged;/**< Liste des fichiers en conflit */
-            QTimer m_timer;
+            QTimer m_timer;/**< Timer pour la mise à jour du status */
             bool action(QStringList args, bool status = true);
             QStringList getSelected(QListWidget* list_view, bool only_files = true);
             QStringList getAllItems(QListWidget* list_view, bool only_files = true);

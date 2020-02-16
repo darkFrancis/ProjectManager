@@ -45,6 +45,14 @@ TagsWindow::~TagsWindow()
  */
 void TagsWindow::update_tags(QStringList tags)
 {
+    for(int i = 0; i < tags.length(); i++)
+    {
+        if(tags[i].simplified() == "")
+        {
+            tags.removeAt(i);
+            i--;
+        }
+    }
     ui->listWidget_tags->clear();
     ui->listWidget_tags->addItems(tags);
     ui->listWidget_tags->sortItems();
@@ -86,8 +94,6 @@ void TagsWindow::on_pushButton_add_clicked()
             args << ui->lineEdit_commit->text().simplified();
         }
         emit action(args);
-        ui->listWidget_tags->addItem(ui->lineEdit_name->text().simplified());
-        ui->listWidget_tags->sortItems();
     }
 }
 
@@ -98,7 +104,7 @@ void TagsWindow::on_pushButton_add_clicked()
  */
 void TagsWindow::on_pushButton_push_clicked()
 {
-    emit action(QStringList() << "push" << "origin" << "--tags");
+    emit action(QStringList() << "push");
 }
 
 /**
@@ -108,11 +114,13 @@ void TagsWindow::on_pushButton_push_clicked()
  */
 void TagsWindow::on_pushButton_remove_clicked()
 {
+    QStringList tmp;
     for(int i = 0; i < ui->listWidget_tags->count(); i++)
     {
         if(ui->listWidget_tags->item(i)->isSelected())
         {
-            emit action(QStringList() << "tag" << "-d" << ui->listWidget_tags->item(i)->text());
+            tmp << ui->listWidget_tags->item(i)->text();
         }
     }
+    emit action(QStringList() << "tag" << "-d" << tmp);
 }

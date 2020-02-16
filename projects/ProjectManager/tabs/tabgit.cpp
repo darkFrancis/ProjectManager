@@ -15,6 +15,7 @@
 #include "logger.hpp"
 #include "context.hpp"
 #include "errorviewer.hpp"
+#include "tagswindow.hpp"
 #include <QDebug>
 
 /**
@@ -129,7 +130,12 @@ void TabGit::on_pushButton_gitk_clicked()
 
 void TabGit::on_pushButton_tags_clicked()
 {
-
+    while(!action(QStringList() << "tag", false)){}
+    TagsWindow* w = new TagsWindow(this, m_output.split('\n'));
+    connect(w, &TagsWindow::action, this, &TabGit::action_tags);
+    connect(this, &TabGit::tag_created, w, &TagsWindow::clean_tag_name);
+    connect(this, &TabGit::tag_update, w, &TagsWindow::update_tags);
+    w->show();
 }
 
 void TabGit::on_pushButton_push_clicked()
@@ -380,16 +386,37 @@ void TabGit::on_lineEdit_extra_returnPressed()
     on_pushButton_extra_clicked();
 }
 
+/**
+ * Ce connesteur est activé par un clic souris de l'utilisateur sur le bouton
+ * de merge de branche.@n
+ * Appelle la fonction TabGit::action avec comme paramètre la commande @b git
+ * @b merge et le nom de la branche sélectionnée dans la liste déroulante.
+ */
 void TabGit::on_pushButton_branchMerge_clicked()
 {
     action(QStringList() << "merge" << ui->comboBox_branch->currentText());
 }
 
+/**
+ * Ce connesteur est activé par un clic souris de l'utilisateur sur le bouton
+ * de changement de branche (->).@n
+ * Appelle la fonction TabGit::action avec comme paramètre la commande @b git
+ * @b checkout et le nom de la branche sélectionnée dans la liste déroulante.
+ */
 void TabGit::on_pushButton_branchSwitch_clicked()
 {
     action(QStringList() << "checkout" << ui->comboBox_branch->currentText());
 }
 
+/**
+ * @param arg1 Nouveau texte de la liste déroulante
+ *
+ * Ce connecteur est appelé si le texte de la liste déroulante de sélection
+ * des branches est modifié.@n
+ * @li Si le nom de la branche de la liste déroulante est le nom de la branche
+ * courante, désactive les boutons "Merge" et "->"
+ * @li Sinon, ces boutons sont activés
+ */
 void TabGit::on_comboBox_branch_currentIndexChanged(const QString &arg1)
 {
     if(arg1 == ui->label_branch->text().split(':').at(1).simplified())
@@ -401,5 +428,33 @@ void TabGit::on_comboBox_branch_currentIndexChanged(const QString &arg1)
     {
         ui->pushButton_branchSwitch->setEnabled(true);
         ui->pushButton_branchMerge->setEnabled(true);
+    }
+}
+
+/**
+ * @param args Argument pour la commande Git
+ *
+ * Ce connecteur est appelé par l'émission du signal TagsWindow::action.@n
+ * La commande git contenue dans le paramètre @c args est exécutée par un
+ * appel à la fonction TabGit::action. Il existe 2 commandes qui entraine
+ * des actions supplémentaires :
+ * @li @b push : ajout du dépôt distant dans la commande
+ * @li création : émission des signaux TabGit::tag_created et TabGit::tag_update
+ * en fin d'exécution
+ */
+void TabGit::action_tags(QStringList args)
+{
+    if(args.length() > 0)
+    {
+        if(args[0] == QString("push"))
+        {
+            args << ui->comboBox_remote->currentText() << "--tags";
+        }
+        if(action(args) && m_output.simplified() == "") // Création d'un nouveau tag
+        {
+            emit tag_created();
+            while(!action(QStringList() << "tag")){}
+            emit tag_update(m_output.split('\n'));
+        }
     }
 }

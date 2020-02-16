@@ -16,6 +16,7 @@
 #include "context.hpp"
 #include "errorviewer.hpp"
 #include "tagswindow.hpp"
+#include "brancheswindow.hpp"
 #include <QDebug>
 
 /**
@@ -136,7 +137,14 @@ void TabGit::on_checkBox_amend_stateChanged(int arg1)
  */
 void TabGit::on_toolButton_branch_clicked()
 {
-
+    if(action(QStringList() << "branch"))
+    {
+        BranchesWindow* w = new BranchesWindow(this);
+        connect(w, &BranchesWindow::action, this, &TabGit::action_branch);
+        connect(this, &TabGit::branch_update, w, &BranchesWindow::update_branches);
+        w->show();
+        w->update_branches(m_output.split('\n'));
+    }
 }
 
 /**
@@ -611,6 +619,24 @@ void TabGit::action_tags(QStringList args)
             while(!action(QStringList() << "tag")){}
             emit tag_update(m_output.split('\n'));
         }
+    }
+}
+
+/**
+ * @param args Argument pour la commande Git
+ *
+ * Ce connecteur est appelé par l'émission du signal TagsWindow::action.@n
+ * La commande git contenue dans le paramètre @c args est exécutée par un
+ * appel à la fonction TabGit::action. Il existe 2 commandes qui entraine
+ * des actions supplémentaires :
+ * @li @b push : ajout du dépôt distant dans la commande
+ * @li création : émission des signaux TabGit::tag_created et TabGit::tag_update
+ * en fin d'exécution
+ */
+void TabGit::action_branch(QStringList args)
+{
+    if(args.length() > 0)
+    {
     }
 }
 

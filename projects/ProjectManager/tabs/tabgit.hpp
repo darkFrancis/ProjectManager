@@ -62,6 +62,13 @@
              * de gestion des tags.
              */
             void tag_update(QStringList tags);
+            /**
+             * @param branches Liste des tags
+             *
+             * Ce signal est émit pour mettre à jour la liste des branches dans la fenêtre
+             * de gestion des branches.
+             */
+            void branch_update(QStringList branches);
 
         private slots:
             void update_all();
@@ -86,6 +93,7 @@
             void on_pushButton_extra_clicked();
             void on_lineEdit_extra_returnPressed();
             void action_tags(QStringList args);
+            void action_branch(QStringList args);
 
         private:
             Ui::TabGit *ui;/**< UI de la classe TabGit */

@@ -68,6 +68,7 @@
             // Commit
             void on_pushButton_commit_clicked();
             void on_checkBox_amend_stateChanged(int arg1);
+            void on_lineEdit_commit_returnPressed();
             // Branches
             void on_toolButton_branch_clicked();
             void on_pushButton_branchMerge_clicked();

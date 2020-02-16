@@ -48,6 +48,13 @@ TabGit::~TabGit()
     delete ui;
 }
 
+/**
+ * Fonction d'initialisation de l'onglet TabGit.@n
+ * Récupère les informations du projet avec les méthodes GET de la classe
+ * Context pour charger les informations nécessaires au bon fonctionnement
+ * de cet onglet. Puis démarre le timer TabGit::m_timer.@n
+ * Voir @ref CONTEXT_GET.
+ */
 void TabGit::init()
 {
     Context* ctx = Context::Instance();
@@ -59,6 +66,11 @@ void TabGit::init()
     m_timer.start(1000);
 }
 
+/**
+ * Fonction de nettoyage de l'onglet Git.@n
+ * Vide toute les liste de cet onglet et tue le processus en cours
+ * s'il y en a un.
+ */
 void TabGit::clear()
 {
     ui->listWidget_staged->clear();
@@ -66,10 +78,18 @@ void TabGit::clear()
     ui->checkBox_amend->setChecked(false);
     ui->lineEdit_commit->clear();
     ui->comboBox_branch->clear();
+    ui->comboBox_remote->clear();
     m_process->kill();
     delete m_process;
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le
+ * bouton Commit.@n
+ * Exécute la commande @b git @b commit grâce à la fonction TabGit::action.
+ * Si aucun message n'est renseigné, le message #GIT_COMMIT_DEFAULT_MSG est
+ * utilisé pour l'option @b -m de cette commande.
+ */
 void TabGit::on_pushButton_commit_clicked()
 {
     QStringList args;
@@ -79,9 +99,22 @@ void TabGit::on_pushButton_commit_clicked()
     QString msg = ui->lineEdit_commit->text().simplified();
     if(msg == QString("")) args << GIT_COMMIT_DEFAULT_MSG;
     else args << msg;
-    if(action(args)) ui->lineEdit_commit->clear();
+    if(action(args))
+    {
+        ui->lineEdit_commit->clear();
+        ui->checkBox_amend->setChecked(false);
+    }
 }
 
+/**
+ * @param arg1 Nouvel état de la case
+ *
+ * Ce connecteur est activé en cas de changement d'état de la case cochable
+ * amend.@n
+ * @li Si cette case vient d'être cochée, affiche le dernier message de commit
+ * dans la ligne d'édition permettant d'éditer le message du prochain commit.
+ * @li Sinon, efface la ligne du message.
+ */
 void TabGit::on_checkBox_amend_stateChanged(int arg1)
 {
     if(arg1 == Qt::Checked)
@@ -95,11 +128,25 @@ void TabGit::on_checkBox_amend_stateChanged(int arg1)
     }
 }
 
+/**
+ * Ce connecteur est activé suite à un clic souris de l'utilisateur sur
+ * le bouton outil "..." à droite de la sélection des branches.@n
+ * Ouvre la fenêtre de gestion des branches.@n
+ * Voir BranchesWindow.
+ */
 void TabGit::on_toolButton_branch_clicked()
 {
 
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le
+ * bouton Add.@n
+ * Exécute la commande @b git @b add grâce à la fonction TabGit::action.
+ * Si aucun élément dans la liste Unstaged n'est sélectionné, alors cette
+ * fonction considèrera qu'ils sont tous sélectionnés. Sinon, n'exécute
+ * la commande que pour les éléments sélectionnés.
+ */
 void TabGit::on_pushButton_add_clicked()
 {
     QStringList selection = getSelected(ui->listWidget_unstaged);
@@ -107,6 +154,14 @@ void TabGit::on_pushButton_add_clicked()
     else action(QStringList() << "add" << selection);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le
+ * bouton Reset.@n
+ * Exécute la commande @b git @b reset grâce à la fonction TabGit::action.
+ * Si aucun élément dans la liste Staged n'est sélectionné, alors cette
+ * fonction considèrera qu'ils sont tous sélectionnés. Sinon, n'exécute
+ * la commande que pour les éléments sélectionnés.
+ */
 void TabGit::on_pushButton_reset_clicked()
 {
     QStringList selection = getSelected(ui->listWidget_staged);
@@ -114,20 +169,45 @@ void TabGit::on_pushButton_reset_clicked()
     else action(QStringList() << "reset" << selection);
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le
+ * bouton Checkout.@n
+ * Exécute la commande @b git @b checkout @b -- grâce à la fonction
+ * TabGit::action. Si aucun élément dans la liste Staged n'est sélectionné,
+ * alors cette fonction ne fera absolument rien. Sinon, n'exécute la commande
+ * que pour les éléments sélectionnés.
+ */
 void TabGit::on_pushButton_checkout_clicked()
 {
     QStringList selection = getSelected(ui->listWidget_staged);
-    if(selection.length() == 0) action(QStringList() << "checkout" << "--" << ".");
-    else action(QStringList() << "checkout" << "--" << selection);
+    if(selection.length() > 0)
+    {
+        QMessageBox::StandardButton rep;
+        rep = QMessageBox::question(this,
+                                    "Checkout",
+                                    "Êtes-vous sûr de vouloir annuler les modifications"
+                                    "apportées à ces fichiers ?");
+        if(rep == QMessageBox::Yes) action(QStringList() << "checkout" << "--" << selection);
+    }
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le
+ * bouton Gitk.@n
+ * Exécute la commande @b gitk.
+ */
 void TabGit::on_pushButton_gitk_clicked()
 {
     QProcess process;
     process.setWorkingDirectory(m_process->workingDirectory());
-    process.startDetached("gitk", QStringList() << "--all");
+    process.startDetached("gitk", QStringList() << "--all" << "--date-order");
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le
+ * bouton Tags.@n
+ * Ouvre la fenêtre de gestion des tags.
+ */
 void TabGit::on_pushButton_tags_clicked()
 {
     while(!action(QStringList() << "tag", false)){}
@@ -138,21 +218,50 @@ void TabGit::on_pushButton_tags_clicked()
     w->show();
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le
+ * bouton Push.@n
+ * Exécute la commande @b git @b push grâce à la fonction TabGit::action.
+ * Cette commande va pousser la branche sélectionnée dans la liste déroulante
+ * des branches vers le dépôt distant sélectionné dans la liste déroulantes
+ * des dépôts distants.
+ */
 void TabGit::on_pushButton_push_clicked()
 {
     action(QStringList() << "push" << ui->comboBox_remote->currentText() << ui->comboBox_branch->currentText());
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le
+ * bouton Fetch.@n
+ * Exécute la commande @b git @b fetch grâce à la fonction TabGit::action.
+ * Cette commande va récupérer les nouveaux commit depuis le dépôt distant
+ * sélectionné dans la liste déroulantes des dépôts distants.
+ */
 void TabGit::on_pushButton_fetch_clicked()
 {
-    action(QStringList() << "fetch");
+    action(QStringList() << "fetch" << ui->comboBox_remote->currentText());
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le
+ * bouton Rebase.@n
+ * Exécute la commande @b git @b rebase grâce à la fonction TabGit::action.
+ * Cette commande va réorganiser les commit sur la branche sélectionnée dans
+ * la liste déroulante des branches.
+ */
 void TabGit::on_pushButton_rebase_clicked()
 {
     action(QStringList() << "rebase" << ui->comboBox_branch->currentText());
 }
 
+/**
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le
+ * bouton Exécuter.@n
+ * Exécute la commande @b git @b <cmd> grâce à la fonction TabGit::action.
+ * La commande à exécuter est celle renseignée dans la ligne d'édition à la
+ * gauche de ce bouton.
+ */
 void TabGit::on_pushButton_extra_clicked()
 {
     if(action(ui->lineEdit_extra->text().split(' ')))
@@ -292,6 +401,11 @@ void TabGit::update_status()
     }
 }
 
+/**
+ * Mise à jour des branches.@n
+ * Cette fonction utilise la commande @b git @b branch pour récuppérer la liste
+ * des branche du dépôt git et actualise la liste des branches de cet onglet.
+ */
 void TabGit::update_branches()
 {
     if(action(QStringList() << "branch", false))
@@ -316,6 +430,11 @@ void TabGit::update_branches()
     }
 }
 
+/**
+ * Mise à jour des dépôts distants.@n
+ * Cette fonction utilise la commande @b git @b remote pour récuppérer la liste
+ * des dépôts distants et actualise la liste des dépôts distants de cet onglet.
+ */
 void TabGit::update_remote()
 {
     if(action(QStringList() << "remote", false))
@@ -335,6 +454,11 @@ void TabGit::update_remote()
     }
 }
 
+/**
+ * Mise à jour générale.@n
+ * Appelle les fonctions TabGit::update_branches, TabGit::update_status et
+ * TabGit::update_remote pour mettre à jour les listes de cet onglet.
+ */
 void TabGit::update_all()
 {
     update_branches();
@@ -344,6 +468,14 @@ void TabGit::update_all()
     else ui->pushButton_commit->setEnabled(true);
 }
 
+/**
+ * @param c Caractère d'état du fichier
+ * @param staged Provient de la colonne staged
+ * @return Libellé à afficher
+ *
+ * Cette fonction permet de renvoyer le libellé à afficher en fonction du
+ * caractère renvoyé par la fonction @b git @b status @b -s.
+ */
 QString TabGit::stateChar2Label(QChar c, bool staged /*= false*/)
 {
     if(c == QChar('A')) return GIT_STATUS_LABEL_A;
@@ -356,6 +488,15 @@ QString TabGit::stateChar2Label(QChar c, bool staged /*= false*/)
     else return "";
 }
 
+/**
+ * @param list_view QListWidget d'où proviennent les items
+ * @param only_files Booléen de sélection de la forme de sortie
+ * @return Liste des éléments sélectionnés
+ *
+ * Renvoie la liste des éléments sélectionnés dans le QListWidget @c list_view
+ * sous forme d'une liste de chaînes de caractères. Si @c only_files est passé
+ * à @b true, cette liste ne contient pas l'état des fichiers de cette liste.
+ */
 QStringList TabGit::getSelected(QListWidget *list_view, bool only_files /*= true*/)
 {
     QStringList items;
@@ -370,6 +511,15 @@ QStringList TabGit::getSelected(QListWidget *list_view, bool only_files /*= true
     return items;
 }
 
+/**
+ * @param list_view QListWidget d'où proviennent les items
+ * @param only_files Booléen de sélection de la forme de sortie
+ * @return Liste des éléments
+ *
+ * Renvoie la liste des éléments dans le QListWidget @c list_view sous forme
+ * d'une liste de chaînes de caractères. Si @c only_files est passé à @b true,
+ * cette liste ne contient pas l'état des fichiers de cette liste.
+ */
 QStringList TabGit::getAllItems(QListWidget *list_view, bool only_files /*= true*/)
 {
     QStringList items;
@@ -381,6 +531,11 @@ QStringList TabGit::getAllItems(QListWidget *list_view, bool only_files /*= true
     return items;
 }
 
+/**
+ * Ce connecteur est activé par un retour clavier depuis la ligne d'édition des
+ * commandes personnalisées.@n
+ * Exécute la même action que la fonction TabGit::on_pushButton_extra_clicked.
+ */
 void TabGit::on_lineEdit_extra_returnPressed()
 {
     on_pushButton_extra_clicked();
@@ -457,4 +612,14 @@ void TabGit::action_tags(QStringList args)
             emit tag_update(m_output.split('\n'));
         }
     }
+}
+
+/**
+ * Ce connecteur est activé par un retour clavier depuis la ligne d'édition des
+ * messages pour commit.@n
+ * Exécute la même action que la fonction TabGit::on_pushButton_commit_clicked.
+ */
+void TabGit::on_lineEdit_commit_returnPressed()
+{
+    on_pushButton_commit_clicked();
 }

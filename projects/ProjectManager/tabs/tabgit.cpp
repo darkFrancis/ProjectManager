@@ -17,7 +17,6 @@
 #include "errorviewer.hpp"
 #include "tagswindow.hpp"
 #include "brancheswindow.hpp"
-#include <QDebug>
 
 /**
  * @param parent Le QWidget parent de cet onglet
@@ -188,13 +187,16 @@ void TabGit::on_pushButton_reset_clicked()
 void TabGit::on_pushButton_checkout_clicked()
 {
     QStringList selection = getSelected(ui->listWidget_staged);
+    selection << getSelected(ui->listWidget_unstaged);
+    selection.removeDuplicates();
     if(selection.length() > 0)
     {
         QMessageBox::StandardButton rep;
         rep = QMessageBox::question(this,
                                     "Checkout",
                                     "Êtes-vous sûr de vouloir annuler les modifications"
-                                    "apportées à ces fichiers ?");
+                                    "apportées à ces fichiers ?\n" +
+                                    selection.join('\n'));
         if(rep == QMessageBox::Yes) action(QStringList() << "checkout" << "--" << selection);
     }
 }
@@ -224,6 +226,19 @@ void TabGit::on_pushButton_tags_clicked()
     connect(this, &TabGit::tag_created, w, &TagsWindow::clean_tag_name);
     connect(this, &TabGit::tag_update, w, &TagsWindow::update_tags);
     w->show();
+}
+
+/**
+ * Ce connesteur est activé par un clic souris de l'utilisateur sur le bouton
+ * Conflit.
+ *
+ * @todo Créer une fenêtre de gestion des conflit et l'ouvrir
+ */
+void TabGit::on_pushButton_conflicts_clicked()
+{
+    QMessageBox::information(this,
+                             "Info",
+                             "Fonctionnalité en cours de développement.");
 }
 
 /**
@@ -419,7 +434,7 @@ void TabGit::update_branches()
     if(action(QStringList() << "branch", false))
     {
         QStringList branch_list = m_output.split('\n');
-        int current_select = ui->comboBox_branch->currentIndex();
+        QString current_text = ui->comboBox_branch->currentText();
         ui->comboBox_branch->clear();
         for(QString branch : branch_list)
         {
@@ -434,7 +449,7 @@ void TabGit::update_branches()
                 ui->comboBox_branch->addItem(branch);
             }
         }
-        ui->comboBox_branch->setCurrentIndex(current_select);
+        ui->comboBox_branch->setCurrentIndex(ui->comboBox_branch->findText(current_text));
     }
 }
 
@@ -448,7 +463,7 @@ void TabGit::update_remote()
     if(action(QStringList() << "remote", false))
     {
         QStringList remote_list = m_output.split('\n');
-        int current_select = ui->comboBox_remote->currentIndex();
+        QString current_text = ui->comboBox_remote->currentText();
         ui->comboBox_remote->clear();
         for(QString remote : remote_list)
         {
@@ -458,7 +473,7 @@ void TabGit::update_remote()
                 ui->comboBox_remote->addItem(remote);
             }
         }
-        ui->comboBox_remote->setCurrentIndex(current_select);
+        ui->comboBox_remote->setCurrentIndex(ui->comboBox_remote->findText(current_text));
     }
 }
 
@@ -602,8 +617,8 @@ void TabGit::on_comboBox_branch_currentIndexChanged(const QString &arg1)
  * appel à la fonction TabGit::action. Il existe 2 commandes qui entraine
  * des actions supplémentaires :
  * @li @b push : ajout du dépôt distant dans la commande
- * @li création : émission des signaux TabGit::tag_created et TabGit::tag_update
- * en fin d'exécution
+ * @li création : émission du signal TabGit::tag_created en fin d'exécution
+ * @li par défaut : émission du signal TabGit::tag_update en fin d'exécution
  */
 void TabGit::action_tags(QStringList args)
 {
@@ -613,9 +628,9 @@ void TabGit::action_tags(QStringList args)
         {
             args << ui->comboBox_remote->currentText() << "--tags";
         }
-        if(action(args) && m_output.simplified() == "") // Création d'un nouveau tag
+        if(action(args))
         {
-            emit tag_created();
+            if(m_output.simplified() == "") emit tag_created(); // Création d'un nouveau tag
             while(!action(QStringList() << "tag")){}
             emit tag_update(m_output.split('\n'));
         }
@@ -625,18 +640,20 @@ void TabGit::action_tags(QStringList args)
 /**
  * @param args Argument pour la commande Git
  *
- * Ce connecteur est appelé par l'émission du signal TagsWindow::action.@n
+ * Ce connecteur est appelé par l'émission du signal BranchesWindow::action.@n
  * La commande git contenue dans le paramètre @c args est exécutée par un
- * appel à la fonction TabGit::action. Il existe 2 commandes qui entraine
- * des actions supplémentaires :
- * @li @b push : ajout du dépôt distant dans la commande
- * @li création : émission des signaux TabGit::tag_created et TabGit::tag_update
- * en fin d'exécution
+ * appel à la fonction TabGit::action. Le signal TabGit::branch_update est
+ * émit en fin d'exécution.
  */
 void TabGit::action_branch(QStringList args)
 {
     if(args.length() > 0)
     {
+        if(action(args))
+        {
+            while(!action(QStringList() << "branch")){}
+            emit branch_update(m_output.split('\n'));
+        }
     }
 }
 

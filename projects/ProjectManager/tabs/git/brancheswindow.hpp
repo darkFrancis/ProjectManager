@@ -1,3 +1,9 @@
+/**
+ * @file brancheswindow.hpp
+ * @brief Description de la classe BranchesWindow
+ * @author Dark Francis
+ * @date 21/12/2019
+ */
 #ifndef BRANCHESWINDOW_HPP
 #define BRANCHESWINDOW_HPP
 
@@ -8,6 +14,14 @@
     class BranchesWindow;
     }
 
+    /**
+     * @class BranchesWindow
+     * @brief La classe BranchesWindow défini la fenêtre de gestion des branches GIT.
+     *
+     * Ces branches peuvent être ajoutées, supprimées, renommées ou copiées. Toute
+     * autre commande devra se faire manuellement depuis l'onglet Git.@n
+     * Header : brancheswindow.hpp
+     */
     class BranchesWindow : public QMainWindow
     {
         Q_OBJECT
@@ -20,6 +34,12 @@
             void update_branches(QStringList branches);
 
         signals:
+            /**
+             * @param args Arguments à utiliser
+             *
+             * Ce signal est émit pour demander un appel à la commande Git depuis
+             * l'onglet Git de la fenêtre principale.
+             */
             void action(QStringList args);
 
         private slots:
@@ -30,7 +50,9 @@
             void on_pushButton_remove_clicked();
 
         private:
-            Ui::BranchesWindow *ui;
+            Ui::BranchesWindow *ui;/**< UI de la classe BranchesWindow */
+            bool check_branch_name(QString name);
+            QString get_selected();
     };
 
 #endif // BRANCHESWINDOW_HPP

@@ -87,6 +87,7 @@
             void on_pushButton_checkout_clicked();
             void on_pushButton_gitk_clicked();
             void on_pushButton_tags_clicked();
+            void on_pushButton_conflicts_clicked();
             void on_pushButton_push_clicked();
             void on_pushButton_fetch_clicked();
             void on_pushButton_rebase_clicked();

@@ -36,6 +36,7 @@ SOURCES += \
         tabs/compiler/paramselectionwindow.cpp \
         tabs/compiler/sourceswindow.cpp \
         tabs/git/brancheswindow.cpp \
+        tabs/git/conflictwindow.cpp \
         tabs/git/errorviewer.cpp \
         tabs/git/tagswindow.cpp \
         tabs/tabcompiler.cpp \
@@ -60,6 +61,7 @@ HEADERS += \
         tabs/compiler/paramselectionwindow.hpp \
         tabs/compiler/sourceswindow.hpp \
         tabs/git/brancheswindow.hpp \
+        tabs/git/conflictwindow.hpp \
         tabs/git/errorviewer.hpp \
         tabs/git/tagswindow.hpp \
         tabs/tab.hpp \
@@ -76,6 +78,7 @@ FORMS += \
         tabs/compiler/paramselectionwindow.ui \
         tabs/compiler/sourceswindow.ui \
         tabs/git/brancheswindow.ui \
+        tabs/git/conflictwindow.ui \
         tabs/git/errorviewer.ui \
         tabs/git/tagswindow.ui \
         tabs/tabcompiler.ui \

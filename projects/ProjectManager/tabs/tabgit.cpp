@@ -17,6 +17,7 @@
 #include "errorviewer.hpp"
 #include "tagswindow.hpp"
 #include "brancheswindow.hpp"
+#include "conflictwindow.hpp"
 
 /**
  * @param parent Le QWidget parent de cet onglet
@@ -236,9 +237,8 @@ void TabGit::on_pushButton_tags_clicked()
  */
 void TabGit::on_pushButton_conflicts_clicked()
 {
-    QMessageBox::information(this,
-                             "Info",
-                             "Fonctionnalité en cours de développement.");
+    ConflictWindow* w = new ConflictWindow(this, m_unmerged);
+    w->show();
 }
 
 /**

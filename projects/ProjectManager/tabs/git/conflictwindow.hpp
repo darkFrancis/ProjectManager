@@ -15,13 +15,6 @@
     class ConflictWindow;
     }
 
-    enum ConflictArea
-    {
-        CurrentBranch = 0,
-        ToMergeBranch = 1,
-        OutSide       = 2
-    };
-
     class ConflictTextEdit : public QTextEdit
     {
         Q_OBJECT
@@ -42,7 +35,7 @@
         private:
             QString m_clicked_anchor;
             bool m_modified;
-            QString addLink(QString text, QString branch);
+            QString addLink(QString text, QString branch, bool is_current);
     };
 
     class ConflictWindow : public QMainWindow

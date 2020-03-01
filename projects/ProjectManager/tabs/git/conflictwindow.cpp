@@ -2,33 +2,45 @@
 #include "ui_conflictwindow.h"
 
 #include <QMessageBox>
+#include <QTextBrowser>
+#include <QFile>
 #include <QDebug>
 
-ConflictTextEdit::ConflictTextEdit(QWidget *parent) :
-    QTextEdit(parent)
+ConflictWindow::ConflictWindow(QWidget *parent, QStringList files) :
+    QMainWindow(parent),
+    ui(new Ui::ConflictWindow)
 {
-    setReadOnly(true);
-    setAcceptDrops(false);
+    ui->setupUi(this);
+
+    this->setAttribute(Qt::WA_QuitOnClose);
+    this->setWindowModality(Qt::ApplicationModal);
+
+    m_modified = false;
+
+    // Init list
+    ui->listWidget_files->addItems(files);
+
+    /* Pour test */
+    addDocument("/home/francis/dev/test/test_merge");
+    /* Fin test */
 }
 
-void ConflictTextEdit::mousePressEvent(QMouseEvent *e)
+ConflictWindow::~ConflictWindow()
 {
-    m_clicked_anchor = (e->button() & Qt::LeftButton) ? anchorAt(e->pos()) : QString();
-    QTextEdit::mousePressEvent(e);
+    delete ui;
 }
 
-void ConflictTextEdit::mouseReleaseEvent(QMouseEvent *e)
+void ConflictWindow::on_listWidget_files_itemClicked(QListWidgetItem *item)
 {
-    if (e->button() & Qt::LeftButton
-        && !m_clicked_anchor.isEmpty()
-        && anchorAt(e->pos()) == m_clicked_anchor)
-    {
-        emit linkActivated(m_clicked_anchor);
-    }
-    QTextEdit::mouseReleaseEvent(e);
+    addDocument(item->text());
 }
 
-void ConflictTextEdit::addDocument(QString file_name)
+void ConflictWindow::on_textBrowser_conflict_highlighted(const QString &arg1)
+{
+    showTooltip(arg1);
+}
+
+void ConflictWindow::addDocument(QString file_name)
 {
     if(m_modified)
     {
@@ -42,13 +54,13 @@ void ConflictTextEdit::addDocument(QString file_name)
     }
 
     // Reset text_edit
-    this->clear();
+    ui->textBrowser_conflict->clear();
 
-    QString html = "<!DOCTYPE html>"
-                   "<html><style>"
-                   ".current { background-color:\"lime\" }"
-                   "a:hover a { opacity: 1; }"
-                   "</style><body>";
+    QString html = "<!DOCTYPE HTML>\n"
+                   "<html><head>\n"
+                   "<style>\n"
+                   + getStyle() +
+                   "</style></head><body>";
 
     QString current_branch = "";
     QString text_tmp = "";
@@ -84,16 +96,13 @@ void ConflictTextEdit::addDocument(QString file_name)
             }
             else
             {
-                line = line.replace('<', "&lt;").replace('>', "&gt;").replace(' ', "&nbsp;") + "<br/>";
+                line = line.replace('<', "&lt;").replace('>', "&gt;").replace(' ', "&nbsp;") + "<br/>\n";
                 if(inConflict) text_tmp += line;
                 else html += line;
             }
         }
         html += "</body></html>";
-
-        qDebug() << html;
-        this->setText(html);
-
+        ui->textBrowser_conflict->setHtml(html);
         m_modified = false;
     }
     else
@@ -104,51 +113,71 @@ void ConflictTextEdit::addDocument(QString file_name)
     }
 }
 
-QString ConflictTextEdit::addLink(QString text, QString branch, bool is_current)
+void ConflictWindow::showTooltip(QString link)
 {
-    QString link = "<span title=\"" + branch + "\">";
-    link += "<a class=\"";
-    link += is_current ? "current" : "to_merge";
-    link += "\" href=\"" + branch + "\">" + text + "</a>";
-    link += "</span>";
+    if(link != "")
+    {
+        int idx = link.indexOf('!');
+        QString style = "QToolTip"
+                        "{"
+                        "   padding:2px;"
+                        "   border-width:2px;"
+                        "   border-style:solid;"
+                        "   border-radius:4px;"
+                        "   background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0 ";
+        style += (link.left(idx) == CLASS_CURRENT ? "rgba(0,200,0,0.8)" : "rgba(0,0,200,0.8)");
+        style += ", stop:1 rgba(0, 0, 0, 0));";
+        style += "; }";
+        this->setStyleSheet(style);
+        QToolTip::showText(QCursor::pos(), link.right(link.length()-idx-1), this);
+    }
+}
+
+QString ConflictWindow::addLink(QString text, QString branch, bool is_current)
+{
+    QString class_name = is_current ? CLASS_CURRENT : CLASS_TOMERGE;
+    QString link = "<a class = \"" + class_name + "\""
+                   "href=\"" + class_name + "!" + branch + "\">\n"
+                   + text + "</a>\n";
     return link;
 }
 
-ConflictWindow::ConflictWindow(QWidget *parent, QStringList files) :
-    QMainWindow(parent),
-    ui(new Ui::ConflictWindow)
+QString ConflictWindow::getStyle()
 {
-    ui->setupUi(this);
+    QString style = "";
 
-    this->setAttribute(Qt::WA_QuitOnClose);
-    this->setWindowModality(Qt::ApplicationModal);
+    // Style général
+    style += "body"
+             "{"
+             "  background-color: rgb(150,150,150);"
+             "  color: white;"
+             "}\n";
 
-    // Init list
-    ui->listWidget->addItems(files);
+    // Style des liens
+    style += "a"
+             "{"
+             "  text-decoration: none;"
+             "  color: white;"
+             "}\n";
 
-    // Init text edit
-    m_text_edit = new ConflictTextEdit(this);
-    ui->layout_textEdit->addWidget(m_text_edit);
-    connect(m_text_edit, &ConflictTextEdit::linkActivated, this, &ConflictWindow::linkClicked);
+    // Style de la branche courante
+    style += "." + CLASS_CURRENT +
+             "{"
+             "  background-color: rgba(0,150,0,0.7);"
+             "}\n";
 
-    /* Pour test */
-    m_text_edit->addDocument("/home/francis/dev/test/test_merge");
-    /* Fin test */
+    // Style de la branche de merge
+    style += "." + CLASS_TOMERGE +
+             "{"
+             "  background-color: rgba(0,0,150,0.7);"
+             "}\n";
+
+    return style;
 }
 
-ConflictWindow::~ConflictWindow()
-{
-    delete ui;
-}
-
-void ConflictWindow::linkClicked(QString link)
+void ConflictWindow::on_textBrowser_conflict_anchorClicked(const QUrl &arg1)
 {
     QMessageBox::information(this,
-                             "Clic sur lien",
-                             link);
-}
-
-void ConflictWindow::on_listWidget_itemClicked(QListWidgetItem *item)
-{
-
+                             "Link",
+                             arg1.toString());
 }

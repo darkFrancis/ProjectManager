@@ -3,40 +3,19 @@
 
     #include <QMainWindow>
     #include <QTextEdit>
-    #include <QMouseEvent>
     #include <QListWidgetItem>
+    #include <QToolTip>
 
-    #define KEY_CURRENT QString("<<<<<<<")
-    #define KEY_TOMERGE QString(">>>>>>>")
-    #define KEY_CONTROL QString("=======")
-    #define KEY_LENGTH  7
+    #define KEY_CURRENT     QString("<<<<<<<")
+    #define KEY_TOMERGE     QString(">>>>>>>")
+    #define KEY_CONTROL     QString("=======")
+    #define KEY_LENGTH      7
+    #define CLASS_CURRENT   QString("current")
+    #define CLASS_TOMERGE   QString("to_merge")
 
     namespace Ui {
     class ConflictWindow;
     }
-
-    class ConflictTextEdit : public QTextEdit
-    {
-        Q_OBJECT
-
-        public:
-            ConflictTextEdit(QWidget *parent = nullptr);
-            void mousePressEvent(QMouseEvent *e);
-            void mouseReleaseEvent(QMouseEvent *e);
-            bool isModified() { return m_modified; }
-            bool save();
-
-        public slots:
-            void addDocument(QString file_name);
-
-        signals:
-            void linkActivated(QString link);
-
-        private:
-            QString m_clicked_anchor;
-            bool m_modified;
-            QString addLink(QString text, QString branch, bool is_current);
-    };
 
     class ConflictWindow : public QMainWindow
     {
@@ -47,12 +26,20 @@
             ~ConflictWindow();
 
         private slots:
-            void linkClicked(QString link);
-            void on_listWidget_itemClicked(QListWidgetItem *item);
+            void on_textBrowser_conflict_anchorClicked(const QUrl &arg1);
+            void on_listWidget_files_itemClicked(QListWidgetItem *item);
+            void on_textBrowser_conflict_highlighted(const QString &arg1);
+            void addDocument(QString filename);
+            void showTooltip(QString link);
 
         private:
             Ui::ConflictWindow *ui;
-            ConflictTextEdit* m_text_edit;
+            QString m_clicked_anchor;
+            bool m_modified;
+
+            QString addLink(QString text, QString branch, bool is_current);
+            QString getStyle();
+            bool save();
     };
 
 #endif // CONFLICTWINDOW_HPP

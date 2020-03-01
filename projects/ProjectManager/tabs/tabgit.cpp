@@ -233,12 +233,14 @@ void TabGit::on_pushButton_tags_clicked()
  * Ce connesteur est activé par un clic souris de l'utilisateur sur le bouton
  * Conflit.
  *
- * @todo Créer une fenêtre de gestion des conflit et l'ouvrir
+ * @todo Finir fenêtre de gestion des conflits et l'ouvrir
  */
 void TabGit::on_pushButton_conflicts_clicked()
 {
-    ConflictWindow* w = new ConflictWindow(this, m_unmerged);
-    w->show();
+    QMessageBox::information(this,
+                             "Information",
+                             "Cette fonctionnalité est encore en cours de développement."
+                             "Revenez plus tard.");
 }
 
 /**

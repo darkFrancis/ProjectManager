@@ -63,7 +63,7 @@ void TabCompiler::save()
     logger(__PRETTY_FUNCTION__);
     Context* ctx = Context::Instance();
     QString dir = ui->lineEdit_buildDir->text();
-    if(dir.at(dir.length()-1) != QChar('/')) dir.append('/');
+    if(dir.length() > 0 && dir.at(dir.length()-1) != QChar('/')) dir.append('/');
     ctx->setBuildDir(dir);
     ctx->setOutput(ui->lineEdit_output->text());
     ctx->setProjectType(label2type(ui->comboBox_projectType->currentText()));
@@ -228,15 +228,58 @@ void TabCompiler::action_build_run()
 void TabCompiler::action_build()
 {
     logger(__PRETTY_FUNCTION__);
+
     Context* ctx = Context::Instance();
-    QString compiler = (ctx->projectType()[ctx->projectType().length()-1] == QChar('x') ? "g++" : "gcc");
+    QString compiler = (ctx->projectType() == TYPE_CXX ? "g++" : "gcc");
+    QStringList obj_list;
+
     // Preprocess + Assembleur
-    for(int i = 0; i < ctx->sources().length(); i++)
+    QString obj_tmp;
+    QStringList param_list;
+    param_list << "-c"
+               << ctx->flagOverall()
+               << (ctx->projectType() == TYPE_CXX ? ctx->flagCxx() : ctx->flagC())
+               << ctx->flagDiag()
+               << ctx->flagWarn()
+               << ctx->flagDebug()
+               << ctx->flagOpt()
+               << ctx->flagInst()
+               << ctx->flagDirs()
+               << ctx->flagConvention()
+               << ctx->flagOther()
+               << ctx->flagPreprocess()
+               << ctx->flagAssembler();
+    for(QString source : ctx->sources())
     {
-        QStringList param;
-        param << "-c";
+        QStringList param_tmp = param_list;
+        int idx_last = source.lastIndexOf('.');
+        int idx_first = source.lastIndexOf('/')+1;
+        obj_tmp = source.mid(idx_first, idx_last-idx_first) + ".o";
+        param_tmp << "-o" << obj_tmp << relativePath(source, ctx->buildDir());
+        obj_list << obj_tmp;
+        m_displayer->send_cmd(compiler, param_tmp, ctx->buildDir());
     }
+
     // Linkage
+    param_list.clear();
+    param_list << ctx->flagOverall()
+               << (ctx->projectType() == TYPE_CXX ? ctx->flagCxx() : ctx->flagC())
+               << ctx->flagDiag()
+               << ctx->flagWarn()
+               << ctx->flagDebug()
+               << ctx->flagOpt()
+               << ctx->flagInst()
+               << ctx->flagDirs()
+               << ctx->flagConvention()
+               << ctx->flagOther();
+    param_list << "-o"
+               << ctx->projectName();
+    for(QString obj : obj_list)
+    {
+        param_list << obj;
+    }
+    param_list << ctx->flagLinker();
+    m_displayer->send_cmd(compiler, param_list, ctx->buildDir());
 }
 
 /**
@@ -274,7 +317,11 @@ void TabCompiler::action_clean()
 void TabCompiler::action_install()
 {
     logger(__PRETTY_FUNCTION__);
-    m_displayer->send_cmd("git", QStringList() << "status", "/home/francis");
+    QMessageBox::information(this,
+                             "Information",
+                             "Cette fonctionnalité est encore en cours de développement."
+                             "Revenez plus tard.");
+    ui->pushButton_action->setEnabled(true);
 }
 
 /**
@@ -286,7 +333,11 @@ void TabCompiler::action_install()
 void TabCompiler::action_uninstall()
 {
     logger(__PRETTY_FUNCTION__);
-    m_displayer->send_cmd("git", QStringList() << "status", "/home/francis/dev");
+    QMessageBox::information(this,
+                             "Information",
+                             "Cette fonctionnalité est encore en cours de développement."
+                             "Revenez plus tard.");
+    ui->pushButton_action->setEnabled(true);
 }
 
 /**

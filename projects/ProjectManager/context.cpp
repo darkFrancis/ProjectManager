@@ -59,20 +59,10 @@ void Context::loadProject()
         m_sources = parser->get(KW_SOURCES).split(' ');
         m_headers = parser->get(KW_HEADERS).split(' ');
         m_ressources = parser->get(KW_RESSOURCES).split(' ');
-        m_flag_overall = parser->get(KW_FLAG_OVERALL).split(' ');
-        m_flag_c = parser->get(KW_FLAG_LANGUAGE_C).split(' ');
-        m_flag_cxx = parser->get(KW_FLAG_LANGUAGE_CXX).split(' ');
-        m_flag_diag = parser->get(KW_FLAG_DIAGNOSTIC).split(' ');
-        m_flag_warn = parser->get(KW_FLAG_WARNINGS).split(' ');
-        m_flag_debug = parser->get(KW_FLAG_DEBUG).split(' ');
-        m_flag_opt = parser->get(KW_FLAG_OPTI).split(' ');
-        m_flag_inst = parser->get(KW_FLAG_INSTRU).split(' ');
-        m_flag_preprocess = parser->get(KW_FLAG_PREPROCESSOR).split(' ');
-        m_flag_assembler = parser->get(KW_FLAG_ASSEMBLER).split(' ');
-        m_flag_linker = parser->get(KW_FLAG_LINKER).split(' ');
-        m_flag_dirs = parser->get(KW_FLAG_DIRS).split(' ');
-        m_flag_convention = parser->get(KW_FLAG_CODE_CONV).split(' ');
-        m_flag_other = parser->get(KW_FLAG_OTHER).split(' ');
+        m_defines = parser->get(KW_DEFINES).split(' ');
+        m_include_path = parser->get(KW_INCLUDEPATH).split(' ');
+        m_lib_link = parser->get(KW_LINKS).split(' ');
+        m_compiler_flags = parser->get(KW_COMPILER_FLAGS).split(' ');
         parser->close();
         m_open = true;
     }
@@ -116,20 +106,10 @@ void Context::save()
                << endl;
 
         stream << "# FLAGS pour compilateur GCC" << endl;
-        save_flags(KW_FLAG_OVERALL, &stream);
-        save_flags(KW_FLAG_LANGUAGE_C, &stream);
-        save_flags(KW_FLAG_LANGUAGE_CXX, &stream);
-        save_flags(KW_FLAG_DIAGNOSTIC, &stream);
-        save_flags(KW_FLAG_WARNINGS, &stream);
-        save_flags(KW_FLAG_DEBUG, &stream);
-        save_flags(KW_FLAG_OPTI, &stream);
-        save_flags(KW_FLAG_INSTRU, &stream);
-        save_flags(KW_FLAG_PREPROCESSOR, &stream);
-        save_flags(KW_FLAG_ASSEMBLER, &stream);
-        save_flags(KW_FLAG_LINKER, &stream);
-        save_flags(KW_FLAG_DIRS, &stream);
-        save_flags(KW_FLAG_CODE_CONV, &stream);
-        save_flags(KW_FLAG_OTHER, &stream);
+        save_flags(KW_DEFINES, &stream);
+        save_flags(KW_INCLUDEPATH, &stream);
+        save_flags(KW_LINKS, &stream);
+        save_flags(KW_COMPILER_FLAGS, &stream);
         stream << endl;
 
         stream << "# Fichiers" << endl;
@@ -227,20 +207,10 @@ void Context::save_flags(QString kw, QTextStream* stream)
 {
     logger(__PRETTY_FUNCTION__);
     QStringList* tmp_list;
-    if(kw == KW_FLAG_OVERALL) tmp_list = &m_flag_overall;
-    else if(kw == KW_FLAG_LANGUAGE_C) tmp_list = &m_flag_c;
-    else if(kw == KW_FLAG_LANGUAGE_CXX) tmp_list = &m_flag_cxx;
-    else if(kw == KW_FLAG_DIAGNOSTIC) tmp_list = &m_flag_diag;
-    else if(kw == KW_FLAG_WARNINGS) tmp_list = &m_flag_warn;
-    else if(kw == KW_FLAG_DEBUG) tmp_list = &m_flag_debug;
-    else if(kw == KW_FLAG_OPTI) tmp_list = &m_flag_opt;
-    else if(kw == KW_FLAG_INSTRU) tmp_list = &m_flag_inst;
-    else if(kw == KW_FLAG_PREPROCESSOR) tmp_list = &m_flag_preprocess;
-    else if(kw == KW_FLAG_ASSEMBLER) tmp_list = &m_flag_assembler;
-    else if(kw == KW_FLAG_LINKER) tmp_list = &m_flag_linker;
-    else if(kw == KW_FLAG_DIRS) tmp_list = &m_flag_dirs;
-    else if(kw == KW_FLAG_CODE_CONV) tmp_list = &m_flag_convention;
-    else /* KW_FLAG_OTHER */ tmp_list = &m_flag_other;
+    if(kw == KW_DEFINES) tmp_list = &m_defines;
+    else if(kw == KW_INCLUDEPATH) tmp_list = &m_include_path;
+    else if(kw == KW_LINKS) tmp_list = &m_lib_link;
+    else /* KW_COMPILER_FLAGS */ tmp_list = &m_compiler_flags;
 
     trimList(tmp_list);
     if(tmp_list->length() > 0)

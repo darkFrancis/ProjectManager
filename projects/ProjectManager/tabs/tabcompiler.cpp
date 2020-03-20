@@ -229,7 +229,7 @@ void TabCompiler::action_build()
 {
     logger(__PRETTY_FUNCTION__);
 
-    Context* ctx = Context::Instance();
+    /*Context* ctx = Context::Instance();
     QString compiler = (ctx->projectType() == TYPE_CXX ? "g++" : "gcc");
     QStringList obj_list;
 
@@ -279,7 +279,7 @@ void TabCompiler::action_build()
         param_list << obj;
     }
     param_list << ctx->flagLinker();
-    m_displayer->send_cmd(compiler, param_list, ctx->buildDir());
+    m_displayer->send_cmd(compiler, param_list, ctx->buildDir());*/
 }
 
 /**

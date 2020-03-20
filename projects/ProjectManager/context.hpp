@@ -29,20 +29,25 @@
     #define KW_HEADERS          QString("HEADERS")/**< Flag des headers du projet */
     #define KW_RESSOURCES       QString("RESSOURCES")/**< Flag des ressources du projet */
 
-    #define KW_FLAG_OVERALL      QString("FLAG_OVERALL")/**< Flag des options générales du compilateur */
-    #define KW_FLAG_LANGUAGE_C   QString("FLAG_C")/**< Flag des options de langage C du compilateur */
-    #define KW_FLAG_LANGUAGE_CXX QString("FLAG_CXX")/**< Flag des options de langage C++ du compilateur */
-    #define KW_FLAG_DIAGNOSTIC   QString("FLAG_DIAG")/**< Flag des options de diagnostique du compilateur */
-    #define KW_FLAG_WARNINGS     QString("FLAG_WARN")/**< Flag des options de warnings du compilateur */
-    #define KW_FLAG_DEBUG        QString("FLAG_DEBUG")/**< Flag des options de debug du compilateur */
-    #define KW_FLAG_OPTI         QString("FLAG_OPT")/**< Flag des options d'optimisation du compilateur */
-    #define KW_FLAG_INSTRU       QString("FLAG_INST")/**< Flag des options d'instrumentation du compilateur */
-    #define KW_FLAG_PREPROCESSOR QString("FLAG_PREPROCESS")/**< Flag des options de préprocesseur du compilateur */
-    #define KW_FLAG_ASSEMBLER    QString("FLAG_ASSEMBLER")/**< Flag des options d'assembleur du compilateur */
-    #define KW_FLAG_LINKER       QString("FLAG_LINKER")/**< Flag des options de linker du compilateur */
-    #define KW_FLAG_DIRS         QString("FLAG_DIRS")/**< Flag des options des dossiers du compilateur */
-    #define KW_FLAG_CODE_CONV    QString("FLAG_CONVENTION")/**< Flag des options de convention de code du compilateur */
-    #define KW_FLAG_OTHER        QString("FLAG_OTHER")/**< Flag des autres options du compilateur */
+    #define KW_DEFINES          QString("DEFINES")/**< Flag des defines du projet */
+    #define KW_INCLUDEPATH      QString("INCLUDEPATH")/**< Flag des chemin à inclure au projet */
+    #define KW_LINKS            QString("LIBS")/**< Flag des librairies à lier au projet */
+    #define KW_COMPILER_FLAGS   QString("COMPILER_FLAGS")/**< Flag des options de compilation */
+
+    #define KW_FLAG_OVERALL      QString("FLAG_OVERALL")/**< @deprecated Flag des options générales du compilateur */
+    #define KW_FLAG_LANGUAGE_C   QString("FLAG_C")/**< @deprecated Flag des options de langage C du compilateur */
+    #define KW_FLAG_LANGUAGE_CXX QString("FLAG_CXX")/**< @deprecated Flag des options de langage C++ du compilateur */
+    #define KW_FLAG_DIAGNOSTIC   QString("FLAG_DIAG")/**< @deprecated Flag des options de diagnostique du compilateur */
+    #define KW_FLAG_WARNINGS     QString("FLAG_WARN")/**< @deprecated Flag des options de warnings du compilateur */
+    #define KW_FLAG_DEBUG        QString("FLAG_DEBUG")/**< @deprecated Flag des options de debug du compilateur */
+    #define KW_FLAG_OPTI         QString("FLAG_OPT")/**< @deprecated Flag des options d'optimisation du compilateur */
+    #define KW_FLAG_INSTRU       QString("FLAG_INST")/**< @deprecated Flag des options d'instrumentation du compilateur */
+    #define KW_FLAG_PREPROCESSOR QString("FLAG_PREPROCESS")/**< @deprecated Flag des options de préprocesseur du compilateur */
+    #define KW_FLAG_ASSEMBLER    QString("FLAG_ASSEMBLER")/**< @deprecated Flag des options d'assembleur du compilateur */
+    #define KW_FLAG_LINKER       QString("FLAG_LINKER")/**< @deprecated Flag des options de linker du compilateur */
+    #define KW_FLAG_DIRS         QString("FLAG_DIRS")/**< @deprecated Flag des options des dossiers du compilateur */
+    #define KW_FLAG_CODE_CONV    QString("FLAG_CONVENTION")/**< @deprecated Flag des options de convention de code du compilateur */
+    #define KW_FLAG_OTHER        QString("FLAG_OTHER")/**< @deprecated Flag des autres options du compilateur */
     /** @} */
 
     /** @addtogroup PROJECT_TYPE
@@ -95,20 +100,10 @@
             void setHeaders(QStringList headers){m_headers = headers;}/**< SET : Context::m_headers */
             void setRessources(QStringList ressources){m_ressources = ressources;}/**< SET : Context::m_ressources */
             void setDoxyfile(QString doxyfile){m_doxyfile = doxyfile;}/**< SET : Context::m_doxyfile */
-            void setFlagOverall(QStringList flag){m_flag_overall = flag;}/**< SET : Context::m_flag_overall */
-            void setFlagC(QStringList flag){m_flag_c = flag;}/**< SET : Context::m_flag_c */
-            void setFlagCxx(QStringList flag){m_flag_cxx = flag;}/**< SET : Context::m_flag_cxx */
-            void setFlagDiag(QStringList flag){m_flag_diag = flag;}/**< SET : Context::m_flag_diag */
-            void setFlagWarn(QStringList flag){m_flag_warn = flag;}/**< SET : Context::m_flag_warn */
-            void setFlagDebug(QStringList flag){m_flag_debug = flag;}/**< SET : Context::m_flag_debug */
-            void setFlagOpt(QStringList flag){m_flag_opt = flag;}/**< SET : Context::m_flag_opt */
-            void setFlagInst(QStringList flag){m_flag_inst = flag;}/**< SET : Context::m_flag_inst */
-            void setFlagPreprocess(QStringList flag){m_flag_preprocess = flag;}/**< SET : Context::m_flag_preprocess */
-            void setFlagAssembler(QStringList flag){m_flag_assembler = flag;}/**< SET : Context::m_flag_assembler */
-            void setFlagLinker(QStringList flag){m_flag_linker = flag;}/**< SET : Context::m_flag_linker */
-            void setFlagDirs(QStringList flag){m_flag_dirs = flag;}/**< SET : Context::m_flag_dirs */
-            void setFlagConvention(QStringList flag){m_flag_convention = flag;}/**< SET : Context::m_flag_convention */
-            void setFlagOther(QStringList flag){m_flag_other = flag;}/**< SET : Context::m_flag_other */
+            void setDefines(QStringList defines){m_defines = defines;}/**< SET : Context::m_defines */
+            void setIncludePath(QStringList include_paths){m_include_path = include_paths;}/**< SET : Context::m_include_path */
+            void setLibs(QStringList libs){m_lib_link = libs;}/**< SET : Context::m_lib_link */
+            void setCompilerFlags(QStringList flags){m_compiler_flags = flags;}/**< SET : Context::m_compiler_flags */
             /** @} */
             // Get
             /** @addtogroup CONTEXT_GET
@@ -127,20 +122,10 @@
             QStringList headers(){return m_headers;}/**< GET : Context::m_headers */
             QStringList ressources(){return m_ressources;}/**< GET : Context::m_ressources */
             QString doxyfile(){return m_doxyfile;}/**< GET : Context::m_doxyfile */
-            QStringList flagOverall(){return m_flag_overall;}/**< GET : Context::m_flag_overall */
-            QStringList flagC(){return m_flag_c;}/**< GET : Context::m_flag_c */
-            QStringList flagCxx(){return m_flag_cxx;}/**< GET : Context::m_flag_cxx */
-            QStringList flagDiag(){return m_flag_diag;}/**< GET : Context::m_flag_diag */
-            QStringList flagWarn(){return m_flag_warn;}/**< GET : Context::m_flag_warn */
-            QStringList flagDebug(){return m_flag_debug;}/**< GET : Context::m_flag_debug */
-            QStringList flagOpt(){return m_flag_opt;}/**< GET : Context::m_flag_opt */
-            QStringList flagInst(){return m_flag_inst;}/**< GET : Context::m_flag_inst */
-            QStringList flagPreprocess(){return m_flag_preprocess;}/**< GET : Context::m_flag_preprocess */
-            QStringList flagAssembler(){return m_flag_assembler;}/**< GET : Context::m_flag_assembler */
-            QStringList flagLinker(){return m_flag_linker;}/**< GET : Context::m_flag_linker */
-            QStringList flagDirs(){return m_flag_dirs;}/**< GET : Context::m_flag_dirs */
-            QStringList flagConvention(){return m_flag_convention;}/**< GET : Context::m_flag_convention */
-            QStringList flagOther(){return m_flag_other;}/**< GET : Context::m_flag_other */
+            QStringList defines(){return m_defines;}/**< GET : Context::m_defines */
+            QStringList includePath(){return m_include_path;}/**< GET : Context::m_include_path */
+            QStringList libs(){return m_lib_link;}/**< GET : Context::m_lib_link */
+            QStringList compilerFlags(){return m_compiler_flags;}/**< GET : Context::m_compiler_flags */
             /** @} */
 
         private:
@@ -169,20 +154,10 @@
             QStringList m_headers;/**< Liste des headers */
             QStringList m_ressources;/**< Listes des fichiers ressources (ni sources, ni headers) */
             // Compiler
-            QStringList m_flag_overall;/**< Liste des flags généraux du compilateur */
-            QStringList m_flag_c;/**< Liste des flags C du compilateur */
-            QStringList m_flag_cxx;/**< Liste des flags C++ du compilateur */
-            QStringList m_flag_diag;/**< Liste des flags de diagnostique du compilateur */
-            QStringList m_flag_warn;/**< Liste des flags de warnings du compilateur */
-            QStringList m_flag_debug;/**< Liste des flags de debug du compilateur */
-            QStringList m_flag_opt;/**< Liste des flags d'optimisation du compilateur */
-            QStringList m_flag_inst;/**< Liste des flags d'instrumentation du compilateur */
-            QStringList m_flag_preprocess;/**< Liste des flags du préprocesseur du compilateur */
-            QStringList m_flag_assembler;/**< Liste des flags de l'assembleur du compilateur */
-            QStringList m_flag_linker;/**< Liste des flags du linker du compilateur */
-            QStringList m_flag_dirs;/**< Liste des flags des répertoires du compilateur */
-            QStringList m_flag_convention;/**< Liste des flags de convention de code du compilateur */
-            QStringList m_flag_other;/**< Liste des autres flags du compilateur */
+            QStringList m_defines;/**< Liste des defines définis lors de la compilation */
+            QStringList m_include_path;/**< Liste des chemins à inclure lors de la compilation */
+            QStringList m_lib_link;/**< Liste des librairies à lier lors de la compilation */
+            QStringList m_compiler_flags;/**< Liste des option de compilation */
     };
 
     QString relativePath(QString absolute_path, QString ref_dir);

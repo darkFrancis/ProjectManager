@@ -248,6 +248,7 @@ void TabCompiler::action_build()
     for(QString include : ctx->includePath()) includes << "-I" + include;
     QStringList defines;
     for(QString define : ctx->defines()) defines << "-D" + define;
+    (ui->radioButton_release->isChecked() ? defines << "-DNDEBUG" : defines << "-D_DEBUG");
     QStringList links;
     for(QString lib : ctx->libs()) links << "-l" + lib;
 

@@ -33,6 +33,9 @@
     #define KW_INCLUDEPATH      QString("INCLUDEPATH")/**< Flag des chemin à inclure au projet */
     #define KW_LINKS            QString("LIBS")/**< Flag des librairies à lier au projet */
     #define KW_COMPILER_FLAGS   QString("COMPILER_FLAGS")/**< Flag des options de compilation */
+    #define KW_CMD_PRE_BUILD    QString("PRE_BUILD")/**< Flag des commandes à exécuter avant le build */
+    #define KW_CMD_POST_BUILD   QString("POST_BUILD")/**< Flag des commandes à exécuter après le build */
+    #define KW_CMD_EXTRA_CLEAN  QString("EXTRA_CLEAN")/**< Flag des commandes à exécuter après le nettoyage des fichiers objets */
 
     #define KW_FLAG_OVERALL      QString("FLAG_OVERALL")/**< @deprecated Flag des options générales du compilateur */
     #define KW_FLAG_LANGUAGE_C   QString("FLAG_C")/**< @deprecated Flag des options de langage C du compilateur */
@@ -104,6 +107,9 @@
             void setIncludePath(QStringList include_paths){m_include_path = include_paths;}/**< SET : Context::m_include_path */
             void setLibs(QStringList libs){m_lib_link = libs;}/**< SET : Context::m_lib_link */
             void setCompilerFlags(QStringList flags){m_compiler_flags = flags;}/**< SET : Context::m_compiler_flags */
+            void setCmdPreBuild(QStringList cmds){m_cmd_pre_build = cmds;}/**< SET : Context::m_cmd_pre_build */
+            void setCmdPostBuild(QStringList cmds){m_cmd_post_build = cmds;}/**< SET : Context::m_cmd_post_build */
+            void setCmdExtraClean(QStringList cmds){m_cmd_extra_clean = cmds;}/**< SET : Context::m_cmd_extra_clean */
             /** @} */
             // Get
             /** @addtogroup CONTEXT_GET
@@ -126,6 +132,9 @@
             QStringList includePath(){return m_include_path;}/**< GET : Context::m_include_path */
             QStringList libs(){return m_lib_link;}/**< GET : Context::m_lib_link */
             QStringList compilerFlags(){return m_compiler_flags;}/**< GET : Context::m_compiler_flags */
+            QStringList cmdPreBuild(){return m_cmd_pre_build;}/**< GET : Context::m_cmd_pre_build */
+            QStringList cmdPostBuild(){return m_cmd_post_build;}/**< GET : Context::m_cmd_post_build */
+            QStringList cmdExtraClean(){return m_cmd_extra_clean;}/**< GET : Context::m_cmd_extra_clean */
             /** @} */
 
         private:
@@ -136,6 +145,7 @@
             void save_description(QTextStream* stream);
             void save_sources(QString kw, QTextStream* stream);
             void save_flags(QString kw, QTextStream* stream);
+            void save_cmd(QString kw, QTextStream* stream);
             // Last
             QString m_last_search;/**< Dossier de la dernière recherche effectuée */
             // Files
@@ -158,6 +168,9 @@
             QStringList m_include_path;/**< Liste des chemins à inclure lors de la compilation */
             QStringList m_lib_link;/**< Liste des librairies à lier lors de la compilation */
             QStringList m_compiler_flags;/**< Liste des option de compilation */
+            QStringList m_cmd_pre_build;/**< Liste des commandes à exécuter avant le build */
+            QStringList m_cmd_post_build;/**< Liste des commandes à exécuter après le build */
+            QStringList m_cmd_extra_clean;/**< Liste des commandes à exécuter après un nettoyage des fichier objet */
     };
 
     QString relativePath(QString absolute_path, QString ref_dir);

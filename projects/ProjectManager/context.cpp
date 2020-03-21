@@ -63,6 +63,9 @@ void Context::loadProject()
         m_include_path = parser->get(KW_INCLUDEPATH).split(' ');
         m_lib_link = parser->get(KW_LINKS).split(' ');
         m_compiler_flags = parser->get(KW_COMPILER_FLAGS).split(' ');
+        m_cmd_pre_build = parser->get(KW_CMD_PRE_BUILD).split(';');
+        m_cmd_post_build = parser->get(KW_CMD_POST_BUILD).split(';');
+        m_cmd_extra_clean = parser->get(KW_CMD_EXTRA_CLEAN).split(';');
         parser->close();
         m_open = true;
     }
@@ -110,6 +113,12 @@ void Context::save()
         save_flags(KW_INCLUDEPATH, &stream);
         save_flags(KW_LINKS, &stream);
         save_flags(KW_COMPILER_FLAGS, &stream);
+        stream << endl;
+
+        stream << "# Commandes spéciales" << endl;
+        save_cmd(KW_CMD_PRE_BUILD, &stream);
+        save_cmd(KW_CMD_POST_BUILD, &stream);
+        save_cmd(KW_CMD_EXTRA_CLEAN, &stream);
         stream << endl;
 
         stream << "# Fichiers" << endl;
@@ -228,7 +237,27 @@ void Context::save_flags(QString kw, QTextStream* stream)
                 *stream << " " << tmp_list->at(i);
             }
         }
-        *stream << endl << endl;
+        *stream << endl;
+    }
+}
+
+void Context::save_cmd(QString kw, QTextStream *stream)
+{
+    logger(__PRETTY_FUNCTION__);
+    QStringList* tmp_list;
+    if(kw == KW_CMD_PRE_BUILD) tmp_list = &m_cmd_pre_build;
+    else if(kw == KW_CMD_POST_BUILD) tmp_list = &m_cmd_post_build;
+    else /* KW_CMD_EXTRA_CLEAN */ tmp_list = &m_cmd_extra_clean;
+
+    trimList(tmp_list);
+    if(tmp_list->length() > 0)
+    {
+        *stream << kw << " = " << tmp_list->first();
+        for(QString cmd : *tmp_list)
+        {
+            *stream << "; \\" << endl << cmd;
+        }
+        *stream << endl;
     }
 }
 

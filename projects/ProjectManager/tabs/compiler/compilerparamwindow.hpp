@@ -8,7 +8,11 @@
 #define COMPILERPARAMWINDOW_HPP
 
     #include <QMainWindow>
-    #include <QLineEdit>
+    #include <QListWidget>
+
+    #define IDX_TAB_EXTRA_PRE   0
+    #define IDX_TAB_EXTRA_POST  1
+    #define IDX_TAB_EXTRA_CLEAN 2
 
     namespace Ui {
     class CompilerParamWindow;
@@ -38,12 +42,24 @@
             void on_pushButton_apply_clicked();
             void on_pushButton_close_clicked();
             void selected(QString kw, QString option);
+            void on_pushButton_addDefine_clicked();
+            void on_pushButton_removeDefine_clicked();
+            void on_toolButton_includePath_clicked();
+            void on_pushButton_addIncludePath_clicked();
+            void on_pushButton_removeIncludePath_clicked();
+            void on_toolButton_links_clicked();
+            void on_pushButton_addLinks_clicked();
+            void on_pushButton_removeLinks_clicked();
+            void on_toolButton_compilerOption_clicked();
+            void on_toolButton_addExtraCmd_clicked();
+            void on_pushButton_removeExtraCmd_clicked();
 
         private:
             Ui::CompilerParamWindow *ui;/**< UI de la classe CompilerParamWindow */
             void open_param(QString kw);
             void init();
             void apply();
+            QStringList itemsFromList(QListWidget* widget);
     };
 
 #endif // COMPILERPARAMWINDOW_HPP

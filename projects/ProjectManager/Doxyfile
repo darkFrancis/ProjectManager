@@ -1,5 +1,5 @@
 # Configuration du projet
-PROJECT_NAME=My Project
+PROJECT_NAME=ProjectManager
 OUTPUT_DIRECTORY=doc
 CREATE_SUBDIRS=YES
 OUTPUT_LANGUAGE=French

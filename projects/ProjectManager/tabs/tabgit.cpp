@@ -283,7 +283,7 @@ void TabGit::on_pushButton_rebase_clicked()
 /**
  * Ce connecteur est activé par un clic souris de l'utilisateur sur le
  * bouton Exécuter.@n
- * Exécute la commande @b git @b <cmd> grâce à la fonction TabGit::action.
+ * Exécute la commande @b git @b &lt;cmd> grâce à la fonction TabGit::action.
  * La commande à exécuter est celle renseignée dans la ligne d'édition à la
  * gauche de ce bouton.
  */
@@ -297,6 +297,7 @@ void TabGit::on_pushButton_extra_clicked()
 
 /**
  * @param args Les argument pour la commande @b git
+ * @param b_status Indicateur d'affichage du status de l'action
  * @return Si l'attribut TabGit::m_process est déjà en cours d'utilisation,
  * renvoie @c false, sinon, renvoie true après exécution de la fonction.
  *

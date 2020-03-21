@@ -10,6 +10,7 @@
 
 /**
  * @param parent Le QWidget parent de cette fenêtre
+ * @param tags Liste de tags à afficher
  *
  * Contructeur de la classe TagsWindow.@n
  * Ce constructeur hérite de celui de QMainWindow et utilise le système des fichiers

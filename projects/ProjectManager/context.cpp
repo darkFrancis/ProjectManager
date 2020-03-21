@@ -67,6 +67,16 @@ void Context::loadProject()
         m_cmd_post_build = parser->get(KW_CMD_POST_BUILD).split(';');
         m_cmd_extra_clean = parser->get(KW_CMD_EXTRA_CLEAN).split(';');
         parser->close();
+        trimList(&m_sources);
+        trimList(&m_headers);
+        trimList(&m_ressources);
+        trimList(&m_defines);
+        trimList(&m_include_path);
+        trimList(&m_lib_link);
+        trimList(&m_compiler_flags);
+        trimList(&m_cmd_pre_build);
+        trimList(&m_cmd_post_build);
+        trimList(&m_cmd_extra_clean);
         m_open = true;
     }
     else

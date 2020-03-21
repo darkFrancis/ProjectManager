@@ -15,34 +15,8 @@ BUILD_DIR=
 OUTPUT=
 
 # FLAGS pour compilateur GCC
-FLAG_OVERALL = <opt_over>
 
-FLAG_C = <opt_c>
-
-FLAG_CXX = <opt_cxx>
-
-FLAG_DIAG = <opt_diag>
-
-FLAG_WARN = <opt_warn>
-
-FLAG_DEBUG = <opt_debug>
-
-FLAG_OPT = <opt_opti>
-
-FLAG_INST = <opt_inst>
-
-FLAG_PREPROCESS = <opt_pre>
-
-FLAG_ASSEMBLER = <opt_asse>
-
-FLAG_LINKER = <opt_link>
-
-FLAG_DIRS = <opt_dir>
-
-FLAG_CONVENTION = <opt_conv>
-
-FLAG_OTHER = <opt_other>
-
+# Commandes spÃ©ciales
 
 # Fichiers
 SOURCES = /home/francis/dev/projects/ProjectManager/context.cpp \

@@ -221,7 +221,8 @@ void TabCompiler::action_build_run()
 
 /**
  * Fonction correspondant à l'action #TEXT_BUILD.@n
- * @todo Ecrire cette fonction + la tester
+ * @todo Tester cette fonction
+ * @todo Ajouter un système de vérification (checksum) des sources pour éviter les recompilations inutiles
  *
  * Voir @ref COMPILE_ACTION, @ref TABCOMPILER_ACTION, ProcessDisplayer.
  */
@@ -229,57 +230,52 @@ void TabCompiler::action_build()
 {
     logger(__PRETTY_FUNCTION__);
 
-    /*Context* ctx = Context::Instance();
-    QString compiler = (ctx->projectType() == TYPE_CXX ? "g++" : "gcc");
+    Context* ctx = Context::Instance();
+
+    // Pre-build
+    for(QString cmd : ctx->cmdPreBuild()) m_displayer->send_cmd(cmd, QStringList(), ctx->buildDir());
+
+    // Params
+    QString projectDir = QFileInfo(ctx->projectFile()).absolutePath();
+    QString compiler = (ctx->projectType() == TYPE_C ||
+                        ctx->projectType() == TYPE_LIBC ||
+                        ctx->projectType() == TYPE_SHAREDC ? "gcc" : "g++");
     QStringList obj_list;
+    QStringList flags = ctx->compilerFlags();
+    if((ctx->projectType() == TYPE_SHAREDC || ctx->projectType() == TYPE_SHAREDCXX) && !flags.contains("-fPIC"))
+        flags.insert(0, "-fPIC"); // Ajout flag nécessaire pour librarie dynamique
+    QStringList includes;
+    for(QString include : ctx->includePath()) includes << "-I" + include;
+    QStringList defines;
+    for(QString define : ctx->defines()) defines << "-D" + define;
+    QStringList links;
+    for(QString lib : ctx->libs()) links << "-l" + lib;
 
     // Preprocess + Assembleur
-    QString obj_tmp;
-    QStringList param_list;
-    param_list << "-c"
-               << ctx->flagOverall()
-               << (ctx->projectType() == TYPE_CXX ? ctx->flagCxx() : ctx->flagC())
-               << ctx->flagDiag()
-               << ctx->flagWarn()
-               << ctx->flagDebug()
-               << ctx->flagOpt()
-               << ctx->flagInst()
-               << ctx->flagDirs()
-               << ctx->flagConvention()
-               << ctx->flagOther()
-               << ctx->flagPreprocess()
-               << ctx->flagAssembler();
-    for(QString source : ctx->sources())
+    for(QString source_file : ctx->sources())
     {
-        QStringList param_tmp = param_list;
-        int idx_last = source.lastIndexOf('.');
-        int idx_first = source.lastIndexOf('/')+1;
-        obj_tmp = source.mid(idx_first, idx_last-idx_first) + ".o";
-        param_tmp << "-o" << obj_tmp << relativePath(source, ctx->buildDir());
-        obj_list << obj_tmp;
-        m_displayer->send_cmd(compiler, param_tmp, ctx->buildDir());
+        QFileInfo info(source_file);
+        m_displayer->send_cmd(compiler,
+                              QStringList() << "-c"
+                                            << flags
+                                            << defines
+                                            << includes
+                                            << "-o" << ctx->buildDir() + '/' + info.baseName() + ".o"
+                                            << source_file,
+                              projectDir);
+        obj_list << ctx->buildDir() + '/' + info.baseName() + ".o";
     }
 
-    // Linkage
-    param_list.clear();
-    param_list << ctx->flagOverall()
-               << (ctx->projectType() == TYPE_CXX ? ctx->flagCxx() : ctx->flagC())
-               << ctx->flagDiag()
-               << ctx->flagWarn()
-               << ctx->flagDebug()
-               << ctx->flagOpt()
-               << ctx->flagInst()
-               << ctx->flagDirs()
-               << ctx->flagConvention()
-               << ctx->flagOther();
-    param_list << "-o"
-               << ctx->projectName();
-    for(QString obj : obj_list)
-    {
-        param_list << obj;
-    }
-    param_list << ctx->flagLinker();
-    m_displayer->send_cmd(compiler, param_list, ctx->buildDir());*/
+    // Link
+    m_displayer->send_cmd(compiler,
+                          QStringList() << flags
+                                        << "-o" << ctx->projectName()
+                                        << obj_list
+                                        << links,
+                          projectDir);
+
+    // Post-build
+    for(QString cmd : ctx->cmdPostBuild()) m_displayer->send_cmd(cmd, QStringList(), ctx->buildDir());
 }
 
 /**
@@ -305,7 +301,9 @@ void TabCompiler::action_run()
 void TabCompiler::action_clean()
 {
     logger(__PRETTY_FUNCTION__);
+    Context* ctx = Context::Instance();
     m_displayer->send_cmd("rm", QStringList() << "-rf" << "*.o", Context::Instance()->buildDir());
+    for(QString cmd : ctx->cmdExtraClean()) m_displayer->send_cmd(cmd, QStringList(), ctx->buildDir());
 }
 
 /**

@@ -41,6 +41,42 @@
      */
     class QWidget{};
 
+    /**
+     * @class QTextEdit
+     * @brief Classe Qt
+     *
+     * Cette classe permet de décrire des zone de texte éditable.@n@n
+     * Voir : https://doc.qt.io/qt-5/qtextedit.html.
+     */
+    class QTextEdit{};
+
+    /**
+     * @class QString
+     * @brief Classe Qt
+     *
+     * Cette classe permet de décrire des chaînes de caractères.@n@n
+     * Voir : https://doc.qt.io/qt-5/qstring.html.
+     */
+    class QString{};
+
+    /**
+     * @class QStringList
+     * @brief Classe Qt
+     *
+     * Cette classe permet de décrire des listes de chaînes de caractères.@n@n
+     * Voir : https://doc.qt.io/qt-5/qstringlist.html.
+     */
+    class QStringList{};
+
+    /**
+     * @class QList
+     * @brief Classe Qt
+     *
+     * Cette classe permet de décrire des listes d'objets.@n@n
+     * Voir : https://doc.qt.io/qt-5/qlist.html.
+     */
+    class QList{};
+
     /** @} */
 
 #endif // EXTERN_DOC_HPP

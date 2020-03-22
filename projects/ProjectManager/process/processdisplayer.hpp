@@ -13,6 +13,10 @@
     #include "command.hpp"
 
     /**
+     * @class ProcessDisplayer
+     * @brief La classe ProcessDisplayer permet d'exécuter des commande et afficher leur sortie
+     * en temps réel
+     *
      * La classe ProcessDisplayer hérite de la classe Qt QTextEdit.@n
      * Ce widget permet d'exécuter des commandes et affiche la sortie standard et
      * l'erreur standard. Les couleurs d'affichage peuvent être configurées dans

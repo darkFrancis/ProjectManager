@@ -1,3 +1,9 @@
+/**
+ * @file command.hpp
+ * @brief Définition de la structure Command
+ * @author Dark Francis
+ * @date 21/12/2019
+ */
 #ifndef COMMAND_HPP
 #define COMMAND_HPP
 

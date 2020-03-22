@@ -1,3 +1,9 @@
+/**
+ * @file processdisplayer.cpp
+ * @brief Définition des fonction de la classe ProcessDisplayer
+ * @author Dark Francis
+ * @date 21/12/2019
+ */
 #include "processdisplayer.hpp"
 #include "logger.hpp"
 #include "settings.hpp"

@@ -272,12 +272,11 @@ void TabGit::on_pushButton_fetch_clicked()
  * Ce connecteur est activé par un clic souris de l'utilisateur sur le
  * bouton Rebase.@n
  * Exécute la commande @b git @b rebase grâce à la fonction TabGit::action.
- * Cette commande va réorganiser les commit sur la branche sélectionnée dans
- * la liste déroulante des branches.
+ * Cette commande va réorganiser les commit sur la branche courante.
  */
 void TabGit::on_pushButton_rebase_clicked()
 {
-    action(QStringList() << "rebase" << ui->comboBox_branch->currentText());
+    action(QStringList() << "rebase");
 }
 
 /**

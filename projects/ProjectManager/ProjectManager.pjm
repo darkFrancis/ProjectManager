@@ -5,8 +5,9 @@
 PROJECT_NAME=ProjectManager
 PROJECT_TYPE=cxx
 AUTHOR=Dark Francis
-PROJECT_VERSION=Alpha 0.2
-PROJECT_DESCRIPTION=
+PROJECT_VERSION=0.4
+PROJECT_DESCRIPTION=Outil de gestion de projet
+
 # Gestion Doxygen
 DOXYFILE=/home/francis/dev/projects/ProjectManager/Doxyfile
 

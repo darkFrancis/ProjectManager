@@ -9,6 +9,8 @@
 #include "logger.hpp"
 #include <QFile>
 #include <QTextStream>
+#include <QApplication>
+#include <QStyle>
 
 Settings* Settings::m_instance = nullptr;
 
@@ -46,6 +48,7 @@ Settings::Settings()
 void Settings::init()
 {
     load();
+    applyStyle();
     init_color();
     init_compiler_options();
 }
@@ -81,6 +84,7 @@ void Settings::save()
         stream << "sources_ext=" << m_sources_extensions.join(' ') << endl;
         stream << "headers_ext=" << m_headers_extensions.join(' ') << endl;
         file.close();
+        applyStyle();
     }
     else
     {
@@ -404,5 +408,49 @@ void Settings::add_compiler_option(QString key_word, QString option, QString bri
     else
     {
         throw(QString("Erreur de paramètre pour l'ajout d'option de compilateur."));
+    }
+}
+
+void Settings::applyStyle()
+{
+    logger("Application du style : " + m_style);
+    if(m_style == "darkstyle")
+    {
+        // Set palette
+        QPalette palette = qApp->palette();
+        palette.setColor(QPalette::Window, QColor(53, 53, 53));
+        palette.setColor(QPalette::WindowText, Qt::white);
+        palette.setColor(QPalette::Disabled, QPalette::WindowText, QColor(127, 127, 127));
+        palette.setColor(QPalette::Base, QColor(42, 42, 42));
+        palette.setColor(QPalette::AlternateBase, QColor(66, 66, 66));
+        palette.setColor(QPalette::ToolTipBase, Qt::white);
+        palette.setColor(QPalette::ToolTipText, QColor(53, 53, 53));
+        palette.setColor(QPalette::Text, Qt::white);
+        palette.setColor(QPalette::Disabled, QPalette::Text, QColor(127, 127, 127));
+        palette.setColor(QPalette::Dark, QColor(35, 35, 35));
+        palette.setColor(QPalette::Shadow, QColor(20, 20, 20));
+        palette.setColor(QPalette::Button, QColor(53, 53, 53));
+        palette.setColor(QPalette::ButtonText, Qt::white);
+        palette.setColor(QPalette::Disabled, QPalette::ButtonText, QColor(127, 127, 127));
+        palette.setColor(QPalette::BrightText, Qt::red);
+        palette.setColor(QPalette::Link, QColor(42, 130, 218));
+        palette.setColor(QPalette::Highlight, QColor(42, 130, 218));
+        palette.setColor(QPalette::Disabled, QPalette::Highlight, QColor(80, 80, 80));
+        palette.setColor(QPalette::HighlightedText, Qt::white);
+        palette.setColor(QPalette::Disabled, QPalette::HighlightedText, QColor(127, 127, 127));
+
+        // Set style
+        QFile styleFile(":/darkstyle/darkstyle.qss");
+        if(styleFile.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            qApp->setPalette(palette);
+            qApp->setStyleSheet(QString::fromLatin1(styleFile.readAll()));
+            styleFile.close();
+        }
+    }
+    else // default
+    {
+        qApp->setStyleSheet("");
+        qApp->setPalette(qApp->style()->standardPalette());
     }
 }

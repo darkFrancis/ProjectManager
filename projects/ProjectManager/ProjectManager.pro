@@ -16,7 +16,8 @@ OBJECTS_DIR = $$DESTDIR/objects
 MOC_DIR = $$DESTDIR/moc
 UI_DIR = $$DESTDIR/ui
 
-INCLUDEPATH += inc/process \
+INCLUDEPATH += inc \
+        inc/process \
         inc/settings \
         inc/tabs \
         inc/tabs/compiler\
@@ -86,6 +87,9 @@ FORMS += \
         form/tabs/tabgit.ui \
         form/tabs/tabproject.ui
 
+RESOURCES += \
+    ressources/darkstyle.qrc
+
 QMAKE_POST_LINK += $$quote(cp -rn $$PWD/config $$DESTDIR/$$escape_expand(\n\t))
 QMAKE_POST_LINK += $$quote(rm -f $$OUT_PWD/.qmake.stash$$escape_expand(\n\t))
 
@@ -96,6 +100,3 @@ QMAKE_CLEAN += $$DESTDIR/TARGET \
         $$OUT_PWD/.qmake.stash \
         $$MAKEFILE \
         $$DESTDIR/config/*
-
-RESOURCES += \
-    ressources/darkstyle.qrc

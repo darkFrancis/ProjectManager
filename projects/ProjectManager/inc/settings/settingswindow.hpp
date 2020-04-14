@@ -10,6 +10,8 @@
     #include <QMainWindow>
     #include "settings.hpp"
 
+    #define STYLE_LIST  QStringList() << "default" << "darkstyle" /**< Liste des style de l'application */
+
     namespace Ui {
     class SettingsWindow;
     }

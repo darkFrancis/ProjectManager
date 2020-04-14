@@ -26,6 +26,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
     logger(__PRETTY_FUNCTION__);
 
     QList<Color>* colors;
+    ui->comboBox_viewStyle->addItems(STYLE_LIST);
 
     try
     {
@@ -56,6 +57,7 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
     ui->comboBox_colorSuccess->setCurrentIndex(ui->comboBox_colorSuccess->findText(settings->colorSuccess()));
     ui->lineEdit_sourcesExt->setText(settings->sourcesExtensions().join(' '));
     ui->lineEdit_headersExt->setText(settings->headersExtensions().join(' '));
+    ui->comboBox_viewStyle->setCurrentIndex(ui->comboBox_viewStyle->findText(settings->style()));
     this->setWindowModality(Qt::ApplicationModal);
     this->setAttribute(Qt::WA_QuitOnClose, false);
 }

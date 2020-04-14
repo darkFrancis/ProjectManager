@@ -9,6 +9,7 @@
 
     #include <QString>
     #include <QList>
+    #include <QPalette>
     #include "build.hpp"
 
     /** @addtogroup FILE
@@ -153,6 +154,7 @@
             void init_compiler_options();
             void add_color(QString name, int red, int green, int blue);
             void add_compiler_option(QString key_word, QString option, QString brief, QString tooltip);
+            void applyStyle();
             static Settings* m_instance;/**< Pointeur vers l'instance de la classe Settings */
             // View
             QString m_style;/**< Style d'affichage */

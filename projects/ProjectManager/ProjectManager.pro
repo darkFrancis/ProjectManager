@@ -16,75 +16,75 @@ OBJECTS_DIR = $$DESTDIR/objects
 MOC_DIR = $$DESTDIR/moc
 UI_DIR = $$DESTDIR/ui
 
-INCLUDEPATH += process \
-        settings \
-        tabs \
-        tabs/compiler\
-        tabs/git
+INCLUDEPATH += inc/process \
+        inc/settings \
+        inc/tabs \
+        inc/tabs/compiler\
+        inc/tabs/git
 
 SOURCES += \
-        context.cpp \
-        main.cpp \
-        mainwindow.cpp \
-        newproject.cpp \
-        parser.cpp \
-        process/processdisplayer.cpp \
-        settings/logger.cpp \
-        settings/settings.cpp \
-        settings/settingswindow.cpp \
-        tabs/compiler/compilerparamwindow.cpp \
-        tabs/compiler/paramselectionwindow.cpp \
-        tabs/compiler/sourceswindow.cpp \
-        tabs/git/brancheswindow.cpp \
-        tabs/git/conflictwindow.cpp \
-        tabs/git/errorviewer.cpp \
-        tabs/git/tagswindow.cpp \
-        tabs/tabcompiler.cpp \
-        tabs/tabdoxygen.cpp \
-        tabs/tabgit.cpp \
-        tabs/tabproject.cpp
+        src/context.cpp \
+        src/main.cpp \
+        src/mainwindow.cpp \
+        src/newproject.cpp \
+        src/parser.cpp \
+        src/process/processdisplayer.cpp \
+        src/settings/logger.cpp \
+        src/settings/settings.cpp \
+        src/settings/settingswindow.cpp \
+        src/tabs/compiler/compilerparamwindow.cpp \
+        src/tabs/compiler/paramselectionwindow.cpp \
+        src/tabs/compiler/sourceswindow.cpp \
+        src/tabs/git/brancheswindow.cpp \
+        src/tabs/git/conflictwindow.cpp \
+        src/tabs/git/errorviewer.cpp \
+        src/tabs/git/tagswindow.cpp \
+        src/tabs/tabcompiler.cpp \
+        src/tabs/tabdoxygen.cpp \
+        src/tabs/tabgit.cpp \
+        src/tabs/tabproject.cpp
 
 HEADERS += \
-        context.hpp \
-        mainwindow.hpp \
-        newproject.hpp \
-        parser.hpp \
-        process/command.hpp \
-        process/processdisplayer.hpp \
-        settings/build.hpp \
-        settings/extern_doc.hpp \
-        settings/group_doc.hpp \
-        settings/logger.hpp \
-        settings/settings.hpp \
-        settings/settingswindow.hpp \
-        tabs/compiler/compilerparamwindow.hpp \
-        tabs/compiler/paramselectionwindow.hpp \
-        tabs/compiler/sourceswindow.hpp \
-        tabs/git/brancheswindow.hpp \
-        tabs/git/conflictwindow.hpp \
-        tabs/git/errorviewer.hpp \
-        tabs/git/tagswindow.hpp \
-        tabs/tab.hpp \
-        tabs/tabcompiler.hpp \
-        tabs/tabdoxygen.hpp \
-        tabs/tabgit.hpp \
-        tabs/tabproject.hpp
+        inc/context.hpp \
+        inc/mainwindow.hpp \
+        inc/newproject.hpp \
+        inc/parser.hpp \
+        inc/process/command.hpp \
+        inc/process/processdisplayer.hpp \
+        inc/settings/build.hpp \
+        inc/settings/extern_doc.hpp \
+        inc/settings/group_doc.hpp \
+        inc/settings/logger.hpp \
+        inc/settings/settings.hpp \
+        inc/settings/settingswindow.hpp \
+        inc/tabs/compiler/compilerparamwindow.hpp \
+        inc/tabs/compiler/paramselectionwindow.hpp \
+        inc/tabs/compiler/sourceswindow.hpp \
+        inc/tabs/git/brancheswindow.hpp \
+        inc/tabs/git/conflictwindow.hpp \
+        inc/tabs/git/errorviewer.hpp \
+        inc/tabs/git/tagswindow.hpp \
+        inc/tabs/tab.hpp \
+        inc/tabs/tabcompiler.hpp \
+        inc/tabs/tabdoxygen.hpp \
+        inc/tabs/tabgit.hpp \
+        inc/tabs/tabproject.hpp
 
 FORMS += \
-        mainwindow.ui \
-        newproject.ui \
-        settings/settingswindow.ui \
-        tabs/compiler/compilerparamwindow.ui \
-        tabs/compiler/paramselectionwindow.ui \
-        tabs/compiler/sourceswindow.ui \
-        tabs/git/brancheswindow.ui \
-        tabs/git/conflictwindow.ui \
-        tabs/git/errorviewer.ui \
-        tabs/git/tagswindow.ui \
-        tabs/tabcompiler.ui \
-        tabs/tabdoxygen.ui \
-        tabs/tabgit.ui \
-        tabs/tabproject.ui
+        form/mainwindow.ui \
+        form/newproject.ui \
+        form/settings/settingswindow.ui \
+        form/tabs/compiler/compilerparamwindow.ui \
+        form/tabs/compiler/paramselectionwindow.ui \
+        form/tabs/compiler/sourceswindow.ui \
+        form/tabs/git/brancheswindow.ui \
+        form/tabs/git/conflictwindow.ui \
+        form/tabs/git/errorviewer.ui \
+        form/tabs/git/tagswindow.ui \
+        form/tabs/tabcompiler.ui \
+        form/tabs/tabdoxygen.ui \
+        form/tabs/tabgit.ui \
+        form/tabs/tabproject.ui
 
 QMAKE_POST_LINK += $$quote(cp -rn $$PWD/config $$DESTDIR/$$escape_expand(\n\t))
 QMAKE_POST_LINK += $$quote(rm -f $$OUT_PWD/.qmake.stash$$escape_expand(\n\t))
@@ -96,3 +96,6 @@ QMAKE_CLEAN += $$DESTDIR/TARGET \
         $$OUT_PWD/.qmake.stash \
         $$MAKEFILE \
         $$DESTDIR/config/*
+
+RESOURCES += \
+    ressources/darkstyle.qrc

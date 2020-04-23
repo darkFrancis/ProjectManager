@@ -2157,13 +2157,14 @@ void TabDoxygen::on_pushButton_generateFiles_clicked()
     logger(__PRETTY_FUNCTION__);
     QFileInfo infos(m_doxyfile);
     QString dir = infos.absoluteDir().absolutePath();
-    if(dir.at(dir.length()-1) != QChar('/')) dir.append('/');
+    if(!dir.endsWith('/')) dir.append('/');
 
     try
     {
         QApplication::setOverrideCursor(Qt::WaitCursor);
         // Create Dir
         dir += Settings::Instance()->doxygenTemplateDir();
+        if(!dir.endsWith('/')) dir.append('/');
         command("mkdir " + dir, ".");
         command("mkdir rtf", dir);
         command("mkdir html", dir);
@@ -2249,7 +2250,7 @@ void TabDoxygen::on_pushButton_generateDoc_clicked()
  */
 void TabDoxygen::command(QString cmd, QString workingDir)
 {
-    logger("    cmd: " + cmd);
+    logger("    cmd (" + workingDir + "): " + cmd);
     QProcess process;
     process.setWorkingDirectory(workingDir);
     process.start(cmd);

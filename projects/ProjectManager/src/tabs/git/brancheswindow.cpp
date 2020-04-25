@@ -190,7 +190,7 @@ bool BranchesWindow::check_branch_name(QString name)
         {
             QMessageBox::warning(this,
                                  "Attention",
-                                 "Un nom de branche ne peut contenir que des"
+                                 "Un nom de branche ne peut contenir que des "
                                  "caractères alphanumériques !");
             return false;
         }

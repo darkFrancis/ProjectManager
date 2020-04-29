@@ -85,12 +85,14 @@ bool Parser::load(QString filename)
 
             if(lign.length() > 0)
             {
-                QStringList param = lign.split(QChar('='));
-                if(param.length() > 1)
+                idx = lign.indexOf('=');
+                if(idx != -1)
                 {
-                    while(param[1].right(2) == " \\")
+                    QString key = lign.left(idx).trimmed();
+                    QString value = lign.mid(idx+1).trimmed();
+                    while(value.right(2) == " \\")
                     {
-                        param[1] = param[1].left(param[1].length()-2);
+                        value.chop(2);
                         i++;
                         QString new_param = ligns[i];
                         idx = new_param.indexOf(QChar('#'));
@@ -98,10 +100,9 @@ bool Parser::load(QString filename)
                         {
                             new_param = new_param.left(idx);
                         }
-                        new_param = new_param.simplified();
-                        param[1] += " " + new_param;
+                        value += " " + new_param.trimmed();
                     }
-                    m_map.insert(param[0].simplified(), param[1].simplified());
+                    m_map.insert(key, value);
                 }
             }
         }

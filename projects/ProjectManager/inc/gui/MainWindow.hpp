@@ -15,11 +15,19 @@
 
     class MainWindow : public QMainWindow
     {
-            Q_OBJECT
+        Q_OBJECT
 
         public:
             explicit MainWindow(QWidget *parent = nullptr);
             ~MainWindow();
+
+        private slots:
+            void on_actionPr_f_rences_triggered();
+            void on_actionAbout_triggered();
+            void on_actionNouveau_triggered();
+            void on_actionOuvrir_triggered();
+            void on_actionEnregistrer_triggered();
+            void on_actionQuitter_triggered();
 
         private:
             Ui::MainWindow *ui;

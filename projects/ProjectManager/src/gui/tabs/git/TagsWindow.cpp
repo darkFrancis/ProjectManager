@@ -1,11 +1,11 @@
 /**
- * @file tagswindow.cpp
+ * @file TagsWindow.cpp
  * @brief Definition de la classe TagsWindow
  * @author Dark Francis
  * @date 21/12/2019
  */
-#include "tagswindow.hpp"
-#include "ui_tagswindow.h"
+#include "TagsWindow.hpp"
+#include "ui_TagsWindow.h"
 #include <QMessageBox>
 
 /**
@@ -19,7 +19,7 @@
  * liste des tags et rend ensuite la fenêtre modale.@n
  * Voir Ui.
  */
-TagsWindow::TagsWindow(QWidget *parent, QStringList tags) :
+TagsWindow::TagsWindow(QWidget *parent, const QStringList& tags) :
     QMainWindow(parent),
     ui(new Ui::TagsWindow)
 {

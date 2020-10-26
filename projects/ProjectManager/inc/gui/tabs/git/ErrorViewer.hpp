@@ -1,5 +1,5 @@
 /**
- * @file errorviewer.hpp
+ * @file ErrorViewer.hpp
  * @brief Description de la classe ErrorViewer
  * @author Dark Francis
  * @date 21/12/2019
@@ -20,14 +20,14 @@
      * Cette fenêtre popup permet d'afficher un texte d'erreur suivit d'un détail
      * de cette erreur. Ce détail peut être affiché/masqué à l'aide d'un bouton
      * détail.@n
-     * Header : errorviewer.hpp.
+     * Header : ErrorViewer.hpp.
      */
     class ErrorViewer : public QMainWindow
     {
         Q_OBJECT
 
         public:
-            ErrorViewer(QWidget *parent = nullptr, QString error = "Unknow Error", QString details = "");
+            ErrorViewer(QWidget *parent = nullptr, const QString& error = "Unknow Error", const QString& details = "");
             ~ErrorViewer();
 
         private slots:

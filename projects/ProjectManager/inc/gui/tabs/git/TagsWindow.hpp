@@ -1,5 +1,5 @@
 /**
- * @file tagswindow.hpp
+ * @file TagsWindow.hpp
  * @brief Description de la classe TagsWindow
  * @author Dark Francis
  * @date 21/12/2019
@@ -19,14 +19,14 @@
      *
      * Ces tags peuvent être ajoutés, supprimés ou poussés. Toute autre commande
      * devra se faire manuellement depuis l'onglet Git.@n
-     * Header : tagswindow.hpp
+     * Header : TagsWindow.hpp
      */
     class TagsWindow : public QMainWindow
     {
         Q_OBJECT
 
         public:
-            TagsWindow(QWidget *parent = nullptr, QStringList tags = QStringList());
+            TagsWindow(QWidget *parent = nullptr, const QStringList& tags = QStringList());
             ~TagsWindow();
 
         public slots:
@@ -40,7 +40,7 @@
              * Ce signal est émit pour demander un appel à la commande Git depuis
              * l'onglet Git de la fenêtre principale.
              */
-            void action(QStringList args);
+            void action(const QStringList& args);
 
         private slots:
             void on_pushButton_add_clicked();

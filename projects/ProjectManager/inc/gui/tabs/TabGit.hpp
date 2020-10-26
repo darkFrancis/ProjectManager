@@ -1,5 +1,5 @@
 /**
- * @file tabgit.hpp
+ * @file TabGit.hpp
  * @brief Description de la classe TabGit
  * @author Dark Francis
  * @date 21/12/2019
@@ -7,7 +7,7 @@
 #ifndef TABGIT_HPP
 #define TABGIT_HPP
 
-    #include "tab.hpp"
+    #include "Tab.hpp"
     #include <QProcess>
     #include <QListWidget>
     #include <QTimer>
@@ -34,7 +34,7 @@
      * @brief La classe TabGit défini l'onglet de gestion de Git.
      *
      * Cette fenêtre lance le programme GitKraken pour la gestion de Git. --> Plus maintenant
-     * @n Header : tabgit.hpp
+     * @n Header : TabGit.hpp
      *
      * @todo Remplacement de l'utilisation de GitKraken par des commandes internes
      *
@@ -97,13 +97,6 @@
             void action_branch(QStringList args);
 
         private:
-            Ui::TabGit *ui;/**< UI de la classe TabGit */
-            QProcess* m_process;/**< Processus pour exécution des commandes Git */
-            int m_last_exit_code;/**< Dernier code retour du processus */
-            QString m_output;/**< Sortie standard du dernier processus */
-            QString m_error;/**< Erreur standard du dernier processus */
-            QStringList m_unmerged;/**< Liste des fichiers en conflit */
-            QTimer m_timer;/**< Timer pour la mise à jour du status */
             bool action(QStringList args, bool status = true);
             QStringList getSelected(QListWidget* list_view, bool only_files = true);
             QStringList getAllItems(QListWidget* list_view, bool only_files = true);
@@ -112,6 +105,15 @@
             void update_status();
             void update_branches();
             void update_remote();
+
+        private:
+            Ui::TabGit *ui;/**< UI de la classe TabGit */
+            QProcess* m_process;/**< Processus pour exécution des commandes Git */
+            int m_last_exit_code;/**< Dernier code retour du processus */
+            QString m_output;/**< Sortie standard du dernier processus */
+            QString m_error;/**< Erreur standard du dernier processus */
+            QStringList m_unmerged;/**< Liste des fichiers en conflit */
+            QTimer m_timer;/**< Timer pour la mise à jour du status */
     };
 
 #endif // TABGIT_HPP

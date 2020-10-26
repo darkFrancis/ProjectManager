@@ -1,5 +1,5 @@
 /**
- * @file brancheswindow.hpp
+ * @file BranchesWindow.hpp
  * @brief Description de la classe BranchesWindow
  * @author Dark Francis
  * @date 21/12/2019
@@ -20,7 +20,7 @@
      *
      * Ces branches peuvent être ajoutées, supprimées, renommées ou copiées. Toute
      * autre commande devra se faire manuellement depuis l'onglet Git.@n
-     * Header : brancheswindow.hpp
+     * Header : BranchesWindow.hpp
      */
     class BranchesWindow : public QMainWindow
     {
@@ -40,7 +40,7 @@
              * Ce signal est émit pour demander un appel à la commande Git depuis
              * l'onglet Git de la fenêtre principale.
              */
-            void action(QStringList args);
+            void action(const QStringList& args);
 
         private slots:
             void on_listWidget_branch_currentItemChanged(QListWidgetItem *current, QListWidgetItem*);
@@ -50,9 +50,11 @@
             void on_pushButton_remove_clicked();
 
         private:
-            Ui::BranchesWindow *ui;/**< UI de la classe BranchesWindow */
-            bool check_branch_name(QString name);
+            bool check_branch_name(const QString& name);
             QString get_selected();
+
+        private:
+            Ui::BranchesWindow *ui;/**< UI de la classe BranchesWindow */
     };
 
 #endif // BRANCHESWINDOW_HPP

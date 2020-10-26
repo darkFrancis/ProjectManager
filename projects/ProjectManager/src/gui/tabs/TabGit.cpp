@@ -1,23 +1,20 @@
 /**
- * @file tabgit.cpp
+ * @file TabGit.cpp
  * @brief Définition de la classe TabGit
  * @author Dark Francis
  * @date 21/12/2019
  */
-#include "tabgit.hpp"
-#include "ui_tabgit.h"
+#include "TabGit.hpp"
+#include "ui_TabGit.h"
 
 #include <QDir>
 #include <QProcess>
 #include <QMessageBox>
 #include <QTimer>
-#include "context.hpp"
-#include "logger.hpp"
-#include "context.hpp"
-#include "errorviewer.hpp"
-#include "tagswindow.hpp"
-#include "brancheswindow.hpp"
-#include "conflictwindow.hpp"
+#include "ErrorViewer.hpp"
+#include "TagsWindow.hpp"
+#include "BranchesWindow.hpp"
+#include "Context.hpp"
 
 /**
  * @param parent Le QWidget parent de cet onglet
@@ -32,7 +29,6 @@ TabGit::TabGit(QWidget *parent) :
     ui(new Ui::TabGit)
 {
     ui->setupUi(this);
-    logger(__PRETTY_FUNCTION__);
 
     m_process = new QProcess();
     connect(&m_timer, &QTimer::timeout, this, &TabGit::update_all);
@@ -44,7 +40,6 @@ TabGit::TabGit(QWidget *parent) :
  */
 TabGit::~TabGit()
 {
-    logger(__PRETTY_FUNCTION__);
     clear();
     delete ui;
 }
@@ -58,8 +53,7 @@ TabGit::~TabGit()
  */
 void TabGit::init()
 {
-    Context* ctx = Context::Instance();
-    QFileInfo info(ctx->projectFile());
+    QFileInfo info(qCtx->projectFile());
     m_process->setWorkingDirectory(info.absolutePath());
     this->update_all();
     ui->comboBox_branch->setCurrentIndex(ui->comboBox_branch->findText(ui->label_branch->text().split(':').at(1).simplified()));

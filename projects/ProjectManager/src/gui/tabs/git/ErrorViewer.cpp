@@ -1,11 +1,11 @@
 /**
- * @file errorviewer.cpp
+ * @file ErrorViewer.cpp
  * @brief Définition de la classe ErrorViewer
  * @author Dark Francis
  * @date 21/12/2019
  */
-#include "errorviewer.hpp"
-#include "ui_errorviewer.h"
+#include "ErrorViewer.hpp"
+#include "ui_ErrorViewer.h"
 
 /**
  * @param parent Le QWidget parent de cet onglet
@@ -18,7 +18,7 @@
  * Ajoute les textes passés en arguments aux widgets associés. Cette fenêtre est modale.@n
  * Voir Ui.
  */
-ErrorViewer::ErrorViewer(QWidget *parent, QString error, QString details) :
+ErrorViewer::ErrorViewer(QWidget *parent, const QString& error, const QString& details) :
     QMainWindow(parent),
     ui(new Ui::ErrorViewer)
 {

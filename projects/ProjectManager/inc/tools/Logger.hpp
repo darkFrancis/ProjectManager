@@ -1,3 +1,9 @@
+/**
+ * @file Logger.hpp
+ * @brief Definition de la classe Logger
+ * @author Dark Francis
+ * @date 25/10/2020
+ */
 #ifndef LOGGER_HPP
 #define LOGGER_HPP
 
@@ -12,12 +18,12 @@
      */
     enum LogLvl : int
     {
-        Debug   = 5, /*< Tout est logué */
-        Info    = 4, /*< Seuls les logs d'info, de warning et d'erreur sont logués */
-        Warning = 3, /*< Seuls les logs de warning et d'erreur sont logués */
-        Error   = 2, /*< Seuls les logs d'erreur sont logués */
-        Fatal   = 1, /*< Seuls les logs d'erreur fatale sont logués */
-        Off     = 0  /*< Rien n'est logué */
+        Debug   = 5, /**< Tout est logué */
+        Info    = 4, /**< Seuls les logs d'info, de warning et d'erreur sont logués */
+        Warning = 3, /**< Seuls les logs de warning et d'erreur sont logués */
+        Error   = 2, /**< Seuls les logs d'erreur sont logués */
+        Fatal   = 1, /**< Seuls les logs d'erreur fatale sont logués */
+        Off     = 0  /**< Rien n'est logué */
     };
 
     /**
@@ -49,8 +55,8 @@
             QString rotationFileName(const QString& file, int rotation);
 
         private:
-            static Logger* m_instance;  /*< Instance unique de la classe Logger */
-            LogLvl m_lvl;               /*< Niveau actuel de log */
+            static Logger* m_instance;  /**< Instance unique de la classe Logger */
+            LogLvl m_lvl;               /**< Niveau actuel de log */
     };
 
     #define qLog Logger::Instance()

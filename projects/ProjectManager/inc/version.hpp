@@ -1,3 +1,9 @@
+/**
+ * @file version.hpp
+ * @brief Définition des variable de versionning
+ * @author Dark Francis
+ * @date 25/10/2020
+ */
 #ifndef VERSION_HPP
 #define VERSION_HPP
 

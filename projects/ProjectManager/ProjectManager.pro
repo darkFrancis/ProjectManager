@@ -1,7 +1,7 @@
 QT       += core gui widgets
 
 TARGET = ProjectManager
-VERSION=0.1
+VERSION= 0.1
 TEMPLATE = app
 
 CONFIG += c++17
@@ -12,36 +12,43 @@ DEFINES += APP_VERSION=\"\\\"$${VERSION}\\\"\" \
 CONFIG(debug, release | debug):DEFINES+=_DEBUG
 
 SOURCES += \
-        src/gui/tabs/git/brancheswindow.cpp \
-        src/gui/tabs/git/errorviewer.cpp \
-        src/gui/tabs/git/tagswindow.cpp \
-        src/gui/tabs/tabdoxygen.cpp \
-        src/gui/tabs/tabgit.cpp \
+        src/gui/tabs/TabDoxygen.cpp \
+        src/gui/tabs/TabGit.cpp \
+        src/gui/tabs/git/BranchesWindow.cpp \
+        src/gui/tabs/git/ErrorViewer.cpp \
+        src/gui/tabs/git/TagsWindow.cpp \
         src/main.cpp \
         src/gui/MainWindow.cpp \
+        src/tools/Context.cpp \
+        src/tools/InitParser.cpp \
         src/tools/Logger.cpp
 
 HEADERS += \
         inc/gui/MainWindow.hpp \
-        inc/gui/tabs/git/brancheswindow.hpp \
-        inc/gui/tabs/git/errorviewer.hpp \
-        inc/gui/tabs/git/tagswindow.hpp \
-        inc/gui/tabs/tabdoxygen.hpp \
-        inc/gui/tabs/tabgit.hpp \
+        inc/gui/tabs/Tab.hpp \
+        inc/gui/tabs/TabDoxygen.hpp \
+        inc/gui/tabs/TabGit.hpp \
+        inc/gui/tabs/git/BranchesWindow.hpp \
+        inc/gui/tabs/git/ErrorViewer.hpp \
+        inc/gui/tabs/git/TagsWindow.hpp \
+        inc/tools/Context.hpp \
+        inc/tools/InitParser.hpp \
         inc/tools/Logger.hpp \
         inc/version.hpp
 
 FORMS += \
         form/MainWindow.ui \
-        form/tabs/git/brancheswindow.ui \
-        form/tabs/git/errorviewer.ui \
-        form/tabs/git/tagswindow.ui \
-        form/tabs/tabdoxygen.ui \
-        form/tabs/tabgit.ui
+        form/tabs/TabDoxygen.ui \
+        form/tabs/TabGit.ui \
+        form/tabs/git/BranchesWindow.ui \
+        form/tabs/git/ErrorViewer.ui \
+        form/tabs/git/TagsWindow.ui
 
 INCLUDEPATH += \
         inc \
         inc/gui \
+        inc/gui/tabs \
+        inc/gui/tabs/git \
         inc/tools
 
 RESOURCES += \

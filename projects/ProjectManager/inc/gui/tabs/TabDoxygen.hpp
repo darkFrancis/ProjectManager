@@ -1,5 +1,5 @@
 /**
- * @file tabdoxygen.hpp
+ * @file TabDoxygen.hpp
  * @brief Description de la classe TabDoxygen
  * @author Dark Francis
  * @date 21/12/2019
@@ -7,13 +7,14 @@
 #ifndef TABDOXYGEN_HPP
 #define TABDOXYGEN_HPP
 
-    #include "tab.hpp"
+    #include "Tab.hpp"
     #include <QCheckBox>
     #include <QComboBox>
     #include <QLineEdit>
     #include <QSpinBox>
     #include <QFontComboBox>
     #include <QGroupBox>
+    #include "InitParser.hpp"
 
     #define DOC_YES QString("YES")/**< Valeur @c true pour la configuration Doxygen */
     #define DOC_NO  QString("NO")/**< Valeur @c false pour la configuration Doxygen */
@@ -43,7 +44,7 @@
      * @li de remettre les paramètres par défaut
      * @li d'appliquer les changements
      *
-     * Header : tabdoxygen.hpp
+     * Header : TabDoxygen.hpp
      */
     class TabDoxygen : public Tab
     {
@@ -66,7 +67,7 @@
              * sur un bouton outil de la fenêtre.@n
              * Voir TabDoxygen::writePath.
              */
-            void foundPath(QString path, QLineEdit* lineedit);
+            void foundPath(const QString& path, QLineEdit* lineedit);
 
         private slots:
             // Click ToolButtons
@@ -105,7 +106,7 @@
             void getOpenFile(QLineEdit* lineedit);
             void getOpenFiles(QLineEdit* lineedit);
             void getDir(QLineEdit* lineedit);
-            void writePath(QString path, QLineEdit* lineedit);
+            void writePath(const QString& path, QLineEdit* lineedit);
             // Click PushButtons
             void on_pushButton_apply_clicked();
             void on_pushButton_default_clicked();
@@ -113,10 +114,6 @@
             void on_pushButton_generateDoc_clicked();
 
         private:
-            Ui::TabDoxygen *ui;/**< UI de la classe TabDoxygen */
-            QString m_doxyfile;/**< Fichier Doxyfile à utiliser */
-            QTextStream* m_stream;/**< Flux vers le fichier Doxyfile */
-
             // Init tabs
             /** @addtogroup INIT_DOXYTAB
               * @{ */
@@ -150,27 +147,33 @@
             // Init Widgets
             /** @addtogroup SUB_INIT_DOXYTAB
               * @{ */
-            void initCheckbox(QString key, QCheckBox* checkbox, bool default_value, bool default_cond = false);
-            void initGroupbox(QString key, QGroupBox* groupbox, bool default_value, bool default_cond = false);
-            void initCombobox(QString key, QComboBox* combobox, QString default_value = "", bool default_cond = false);
-            void initFontCbox(QString key, QFontComboBox* fontcombobox, QString default_value = "", bool default_cond = false);
-            void initLineedit(QString key, QLineEdit* lineedit, QString default_value = "", bool default_cond = false);
-            void initSpinbox_(QString key, QSpinBox* spinbox, int default_value = 0, bool default_cond = false);
+            void initCheckbox(const QString& key, QCheckBox* checkbox, bool default_value, bool default_cond = false);
+            void initGroupbox(const QString& key, QGroupBox* groupbox, bool default_value, bool default_cond = false);
+            void initCombobox(const QString& key, QComboBox* combobox, const QString& default_value = "", bool default_cond = false);
+            void initFontCbox(const QString& key, QFontComboBox* fontcombobox, const QString& default_value = "", bool default_cond = false);
+            void initLineedit(const QString& key, QLineEdit* lineedit, const QString& default_value = "", bool default_cond = false);
+            void initSpinbox_(const QString& key, QSpinBox* spinbox, int default_value = 0, bool default_cond = false);
             /** @} */
 
             // Save Widgets
             /** @addtogroup SUB_SAVE_DOXYTAB
               * @{ */
-            void saveCheckbox(QString key, QCheckBox* checkbox, bool default_value);
-            void saveGroupbox(QString key, QGroupBox* groupbox, bool default_value);
-            void saveCombobox(QString key, QComboBox* combobox, QString default_value = "");
-            void saveFontCbox(QString key, QFontComboBox* fontcombobox, QString default_value = "");
-            void saveLineedit(QString key, QLineEdit* lineedit, QString default_value = "");
-            void saveSpinbox_(QString key, QSpinBox* spinbox, int default_value = 0);
+            void saveCheckbox(const QString& key, QCheckBox* checkbox, bool default_value);
+            void saveGroupbox(const QString& key, QGroupBox* groupbox, bool default_value);
+            void saveCombobox(const QString& key, QComboBox* combobox, const QString& default_value = "");
+            void saveFontCbox(const QString& key, QFontComboBox* fontcombobox, const QString& default_value = "");
+            void saveLineedit(const QString& key, QLineEdit* lineedit, const QString& default_value = "");
+            void saveSpinbox_(const QString& key, QSpinBox* spinbox, int default_value = 0);
             /** @} */
 
             // Templates
-            void command(QString cmd, QString workingDir = ".");
+            void command(const QString& cmd, const QString& workingDir = ".");
+
+        private:
+            Ui::TabDoxygen *ui;/**< UI de la classe TabDoxygen */
+            QString m_doxyfile;/**< Fichier Doxyfile à utiliser */
+            QTextStream* m_stream;/**< Flux vers le fichier Doxyfile */
+            InitParser m_parser; /**< Parser de fichier INI */
     };
 
 #endif // TABDOXYGEN_HPP

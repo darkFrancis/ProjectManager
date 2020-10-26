@@ -1,3 +1,9 @@
+/**
+ * @file Logger.cpp
+ * @brief Definition de la classe Logger
+ * @author Dark Francis
+ * @date 25/10/2020
+ */
 #include "Logger.hpp"
 
 #include <QFile>
@@ -7,6 +13,7 @@
 #include <QDateTime>
 #include <QDebug>
 
+Logger* Logger::m_instance = nullptr;
 static QFile* LoggerFile = nullptr;
 static QTextStream* LoggerStream = nullptr;
 
@@ -31,9 +38,9 @@ Logger::Logger()
 Logger::~Logger()
 {
     closeLog();
-    delete m_instance;
-    m_instance = nullptr;
 }
+
+Logger* Logger::Instance() { return m_instance; }
 
 /**
  * @param file Fichier de log à créé
@@ -167,7 +174,7 @@ void Logger::printLog(LogLvl lvl, const QString& msg)
         QStringList msgLines = msg.trimmed().split('\n');
         for(const QString& line : msgLines)
         {
-            *LoggerStream << timestamp + " | " + lvlStr + " | " + line;
+            *LoggerStream << timestamp + " | " + lvlStr + " | " + line << endl;
             lvlStr = "   ";
         }
     }

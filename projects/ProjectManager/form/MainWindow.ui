@@ -57,7 +57,6 @@
    <addaction name="menuFichier"/>
    <addaction name="menuOptions"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionPr_f_rences">
    <property name="text">
     <string>Préférences</string>

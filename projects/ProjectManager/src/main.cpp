@@ -1,3 +1,9 @@
+/**
+ * @file main.cpp
+ * @brief Definition de la fonction principale
+ * @author Dark Francis
+ * @date 25/10/2020
+ */
 #include "MainWindow.hpp"
 
 #include <QApplication>
@@ -27,7 +33,7 @@ int main(int argc, char *argv[])
 #ifdef _DEBUG
     qLog->setLogLevel(Debug);
 #else
-    qLog->setLogLevel(Info);
+    qLog->setLogLevel(Debug);
 #endif
 
     // Style

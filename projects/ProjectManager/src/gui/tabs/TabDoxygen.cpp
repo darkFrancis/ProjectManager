@@ -1,21 +1,19 @@
 /**
- * @file tabdoxygen.cpp
+ * @file TabDoxygen.cpp
  * @brief Définition de la classe TabDoxygen
  * @author Dark Francis
  * @date 21/12/2019
  */
-#include "tabdoxygen.hpp"
-#include "ui_tabdoxygen.h"
+#include "TabDoxygen.hpp"
+#include "ui_TabDoxygen.h"
 #include <QFile>
 #include <QDir>
 #include <QTextStream>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QProcess>
-#include "context.hpp"
-#include "parser.hpp"
-#include "logger.hpp"
-#include "settings.hpp"
+#include "Logger.hpp"
+#include "Context.hpp"
 
 /**
  * @param parent Le QWidget parent de cet onglet
@@ -31,7 +29,7 @@ TabDoxygen::TabDoxygen(QWidget *parent) :
     ui(new Ui::TabDoxygen)
 {
     ui->setupUi(this);
-    logger(__PRETTY_FUNCTION__);
+    qLog->debug("TabDoxygen generated");
 
     // Ajout police d'écriture par défaut de Dot si non présente
     if(ui->fontComboBox_dotFontName->findText("Helvetica") == -1)
@@ -47,8 +45,8 @@ TabDoxygen::TabDoxygen(QWidget *parent) :
  */
 TabDoxygen::~TabDoxygen()
 {
-    logger(__PRETTY_FUNCTION__);
     delete ui;
+    qLog->debug("TabDoxygen destroyed");
 }
 
 /**
@@ -60,14 +58,14 @@ TabDoxygen::~TabDoxygen()
  */
 void TabDoxygen::init()
 {
-    logger(__PRETTY_FUNCTION__);
-    m_doxyfile = Context::Instance()->doxyfile();
+    qLog->debug("TabDoxygen - initialisation...");
+    m_doxyfile = qCtx->doxyfile();
     if(!QFile::exists(m_doxyfile))
     {
         createDoxyfile();
     }
 
-    if(Parser::Instance()->load(m_doxyfile))
+    if(m_parser.loadIni(m_doxyfile))
     {
         init_tabProject();
         init_tabBuild();
@@ -79,7 +77,6 @@ void TabDoxygen::init()
         init_tabProcessor();
         init_tabExternRef();
         init_tabGraph();
-        Parser::Instance()->close();
         ui->toolBox->setCurrentIndex(0);
     }
     else
@@ -96,7 +93,6 @@ void TabDoxygen::init()
  */
 void TabDoxygen::save()
 {
-    logger(__PRETTY_FUNCTION__);
     QFile file(m_doxyfile);
     if(file.open(QIODevice::Text | QIODevice::WriteOnly | QIODevice::Truncate))
     {
@@ -129,13 +125,9 @@ void TabDoxygen::save()
  */
 void TabDoxygen::createDoxyfile()
 {
-    logger(__PRETTY_FUNCTION__);
-    logger("    doxyfile " + m_doxyfile);
     QFile doxyfile(m_doxyfile);
     if(doxyfile.open(QIODevice::Text | QIODevice::Truncate | QIODevice::WriteOnly))
     {
-        logger("    file opened");
-        logger("hey");
         m_stream = new QTextStream(&doxyfile);
         *m_stream << "# Configuration du projet" << endl;
         *m_stream << "DOXYFILE_ENCODING=UTF-8" << endl;
@@ -438,7 +430,6 @@ void TabDoxygen::createDoxyfile()
         *m_stream << "DOT_MULTI_TARGETS=NO" << endl;
         *m_stream << "GENERATE_LEGEND=YES" << endl;
         *m_stream << "DOT_CLEANUP=YES" << endl;
-        logger("end");
         doxyfile.close();
     }
     else
@@ -453,7 +444,6 @@ void TabDoxygen::createDoxyfile()
  */
 void TabDoxygen::init_tabProject()
 {
-    logger(__PRETTY_FUNCTION__);
     initCombobox("DOXYFILE_ENCODING", ui->comboBox_encoding, "UTF-8");
     initLineedit("PROJECT_NAME", ui->lineEdit_projectName, "My Project");
     initLineedit("PROJECT_NUMBER", ui->lineEdit_projectNumber);
@@ -507,7 +497,6 @@ void TabDoxygen::init_tabProject()
  */
 void TabDoxygen::init_tabBuild()
 {
-    logger(__PRETTY_FUNCTION__);
     initCheckbox("EXTRACT_ALL", ui->checkBox_extractAll, false);
     initCheckbox("EXTRACT_PRIVATE", ui->checkBox_extractPrivate, false);
     initCheckbox("EXTRACT_PACKAGE", ui->checkBox_extractPackage, false);
@@ -550,7 +539,6 @@ void TabDoxygen::init_tabBuild()
  */
 void TabDoxygen::init_tabMsg()
 {
-    logger(__PRETTY_FUNCTION__);
     initCheckbox("QUIET", ui->checkBox_quiet, false);
     initCheckbox("WARNINGS", ui->checkBox_warnings, true);
     initCheckbox("WARN_IF_UNDOCUMENTED", ui->checkBox_warnIfUndocumented, true);
@@ -567,7 +555,6 @@ void TabDoxygen::init_tabMsg()
  */
 void TabDoxygen::init_tabInput()
 {
-    logger(__PRETTY_FUNCTION__);
     initLineedit("INPUT", ui->lineEdit_input);
     initCombobox("INPUT_ENCODING", ui->comboBox_inputEncoding, "UTF-8");
     initLineedit("FILE_PATTERNS", ui->lineEdit_filePatterns, "*.c *.cc *.cxx *.cpp *.c++ *.java *.ii *.ixx *.ipp *.i++ *.inl *.idl *.ddl *.odl *.h *.hh *.hxx *.hpp *.h++ *.cs *.d *.php *.php4 *.php5 *.phtml *.inc *.m *.markdown *.md *.mm *.dox *.py *.pyw *.f90 *.f95 *.f03 *.f08 *.f *.for *.tcl *.vhd *.vhdl *.ucf *.qsf");
@@ -593,7 +580,6 @@ void TabDoxygen::init_tabInput()
  */
 void TabDoxygen::init_tabSource()
 {
-    logger(__PRETTY_FUNCTION__);
     initCheckbox("SOURCE_BROWSER", ui->checkBox_sourceBrowser, false);
     initCheckbox("INLINE_SOURCES", ui->checkBox_inlineSources, false);
     initCheckbox("STRIP_CODE_COMMENTS", ui->checkBox_stripCodeComments, true);
@@ -616,7 +602,6 @@ void TabDoxygen::init_tabSource()
  */
 void TabDoxygen::init_tabHtml()
 {
-    logger(__PRETTY_FUNCTION__);
     initGroupbox("GENERATE_HTML", ui->groupBox_generateHtml, true);
     bool html = ui->groupBox_generateHtml->isChecked();
     initLineedit("HTML_OUTPUT", ui->lineEdit_htmlOutput, "html", !html);
@@ -687,7 +672,6 @@ void TabDoxygen::init_tabHtml()
  */
 void TabDoxygen::init_tabOutput()
 {
-    logger(__PRETTY_FUNCTION__);
     initGroupbox("GENERATE_LATEX", ui->groupBox_generateLatex, true);
     bool latex = ui->groupBox_generateLatex->isChecked();
     initLineedit("LATEX_OUTPUT", ui->lineEdit_latexOutput, "latex", !latex);
@@ -743,7 +727,6 @@ void TabDoxygen::init_tabOutput()
  */
 void TabDoxygen::init_tabProcessor()
 {
-    logger(__PRETTY_FUNCTION__);
     initGroupbox("ENABLE_PREPROCESSING", ui->groupBox_enablePreprocessing, true);
     bool preprocess = ui->groupBox_enablePreprocessing->isChecked();
     initCheckbox("MACRO_EXPANSION", ui->checkBox_macroExpansion, false, !preprocess);
@@ -762,7 +745,6 @@ void TabDoxygen::init_tabProcessor()
  */
 void TabDoxygen::init_tabExternRef()
 {
-    logger(__PRETTY_FUNCTION__);
     initLineedit("TAGFILES", ui->lineEdit_tagfiles);
     initLineedit("GENERATE_TAGFILE", ui->lineEdit_generateTagfile);
     initCheckbox("ALLEXTERNALS", ui->checkBox_allexternals, false);
@@ -829,7 +811,7 @@ void TabDoxygen::init_tabGraph()
  * vaut @c true, la valeur par défaut @c default_value est utilisée.@n
  * Voir Ui.
  */
-void TabDoxygen::initCheckbox(QString key, QCheckBox* checkbox, bool default_value, bool default_cond /*= false*/)
+void TabDoxygen::initCheckbox(const QString& key, QCheckBox* checkbox, bool default_value, bool default_cond /*= false*/)
 {
     if(default_cond)
     {
@@ -837,7 +819,7 @@ void TabDoxygen::initCheckbox(QString key, QCheckBox* checkbox, bool default_val
     }
     else
     {
-        QString value = Parser::Instance()->get(key);
+        QString value = m_parser.emptyGroup().get(key);
         QString default_word;
         if(default_value == true)
         {
@@ -871,7 +853,7 @@ void TabDoxygen::initCheckbox(QString key, QCheckBox* checkbox, bool default_val
  * vaut @c true, la valeur par défaut @c default_value est utilisée.@n
  * Voir Ui.
  */
-void TabDoxygen::initGroupbox(QString key, QGroupBox* groupbox, bool default_value, bool default_cond /*= false*/)
+void TabDoxygen::initGroupbox(const QString& key, QGroupBox* groupbox, bool default_value, bool default_cond /*= false*/)
 {
     if(default_cond)
     {
@@ -879,7 +861,7 @@ void TabDoxygen::initGroupbox(QString key, QGroupBox* groupbox, bool default_val
     }
     else
     {
-        QString value = Parser::Instance()->get(key);
+        QString value = m_parser.emptyGroup().get(key);
         QString default_word;
         if(default_value == true)
         {
@@ -913,7 +895,7 @@ void TabDoxygen::initGroupbox(QString key, QGroupBox* groupbox, bool default_val
  * default_cond vaut @c true, la valeur par défaut @c default_value est utilisée.@n
  * Voir Ui.
  */
-void TabDoxygen::initCombobox(QString key, QComboBox* combobox, QString default_value /*= ""*/, bool default_cond /*= false*/)
+void TabDoxygen::initCombobox(const QString& key, QComboBox* combobox, const QString& default_value /*= ""*/, bool default_cond /*= false*/)
 {
     int index;
     if(default_cond)
@@ -926,7 +908,7 @@ void TabDoxygen::initCombobox(QString key, QComboBox* combobox, QString default_
     }
     else
     {
-        QString value = Parser::Instance()->get(key);
+        QString value = m_parser.emptyGroup().get(key);
         index = combobox->findText(value);
         if(index == -1)
         {
@@ -953,7 +935,7 @@ void TabDoxygen::initCombobox(QString key, QComboBox* combobox, QString default_
  * default_cond vaut @c true, la valeur par défaut @c default_value est utilisée.@n
  * Voir Ui.
  */
-void TabDoxygen::initFontCbox(QString key, QFontComboBox* fontcombobox, QString default_value /*= ""*/, bool default_cond /*= false*/)
+void TabDoxygen::initFontCbox(const QString& key, QFontComboBox* fontcombobox, const QString& default_value /*= ""*/, bool default_cond /*= false*/)
 {
     int index;
     if(default_cond)
@@ -966,7 +948,7 @@ void TabDoxygen::initFontCbox(QString key, QFontComboBox* fontcombobox, QString 
     }
     else
     {
-        QString value = Parser::Instance()->get(key);
+        QString value = m_parser.emptyGroup().get(key);
         index = fontcombobox->findText(value);
         if(index == -1)
         {
@@ -993,7 +975,7 @@ void TabDoxygen::initFontCbox(QString key, QFontComboBox* fontcombobox, QString 
  * default_cond vaut @c true, la valeur par défaut @c default_value est utilisée.@n
  * Voir Ui.
  */
-void TabDoxygen::initLineedit(QString key, QLineEdit *lineedit, QString default_value /*= ""*/, bool default_cond /*= false*/)
+void TabDoxygen::initLineedit(const QString& key, QLineEdit *lineedit, const QString& default_value /*= ""*/, bool default_cond /*= false*/)
 {
     if(default_cond)
     {
@@ -1001,7 +983,7 @@ void TabDoxygen::initLineedit(QString key, QLineEdit *lineedit, QString default_
     }
     else
     {
-        QString value = Parser::Instance()->get(key);
+        QString value = m_parser.emptyGroup().get(key);
         if(value.simplified() == QString(""))
         {
             lineedit->setText(default_value);
@@ -1026,7 +1008,7 @@ void TabDoxygen::initLineedit(QString key, QLineEdit *lineedit, QString default_
  * default_cond vaut @c true, la valeur par défaut @c default_value est utilisée.@n
  * Voir Ui.
  */
-void TabDoxygen::initSpinbox_(QString key, QSpinBox* spinbox, int default_value /*= 0*/, bool default_cond /*= false*/)
+void TabDoxygen::initSpinbox_(const QString& key, QSpinBox* spinbox, int default_value /*= 0*/, bool default_cond /*= false*/)
 {
     int value_int;
     if(default_cond)
@@ -1036,7 +1018,7 @@ void TabDoxygen::initSpinbox_(QString key, QSpinBox* spinbox, int default_value 
     else
     {
         bool ok;
-        QString value = Parser::Instance()->get(key);
+        QString value = m_parser.emptyGroup().get(key);
         value_int = value.toInt(&ok);
         if(ok)
         {
@@ -1063,7 +1045,6 @@ void TabDoxygen::initSpinbox_(QString key, QSpinBox* spinbox, int default_value 
  */
 void TabDoxygen::save_tabProject()
 {
-    logger(__PRETTY_FUNCTION__);
     *m_stream << "# Configuration du projet" << endl;
     saveCombobox("DOXYFILE_ENCODING", ui->comboBox_encoding, "UTF-8");
     saveLineedit("PROJECT_NAME", ui->lineEdit_projectName, "\"My Project\"");
@@ -1122,7 +1103,6 @@ void TabDoxygen::save_tabProject()
  */
 void TabDoxygen::save_tabBuild()
 {
-    logger(__PRETTY_FUNCTION__);
     *m_stream << "# Configuration de build" << endl;
     saveCheckbox("EXTRACT_ALL", ui->checkBox_extractAll, false);
     saveCheckbox("EXTRACT_PRIVATE", ui->checkBox_extractPrivate, false);
@@ -1170,7 +1150,6 @@ void TabDoxygen::save_tabBuild()
  */
 void TabDoxygen::save_tabMsg()
 {
-    logger(__PRETTY_FUNCTION__);
     *m_stream << "# Configuration des messages" << endl;
     saveCheckbox("QUIET", ui->checkBox_quiet, false);
     saveCheckbox("WARNINGS", ui->checkBox_warnings, true);
@@ -1189,7 +1168,6 @@ void TabDoxygen::save_tabMsg()
  */
 void TabDoxygen::save_tabInput()
 {
-    logger(__PRETTY_FUNCTION__);
     *m_stream << "# Configuration des entrées" << endl;
     saveLineedit("INPUT", ui->lineEdit_input);
     saveCombobox("INPUT_ENCODING", ui->comboBox_inputEncoding, "UTF-8");
@@ -1217,7 +1195,6 @@ void TabDoxygen::save_tabInput()
  */
 void TabDoxygen::save_tabSource()
 {
-    logger(__PRETTY_FUNCTION__);
     *m_stream << "# Configurartion de la recherche de sources" << endl;
     saveCheckbox("SOURCE_BROWSER", ui->checkBox_sourceBrowser, false);
     saveCheckbox("INLINE_SOURCES", ui->checkBox_inlineSources, false);
@@ -1247,7 +1224,6 @@ void TabDoxygen::save_tabSource()
  */
 void TabDoxygen::save_tabHtml()
 {
-    logger(__PRETTY_FUNCTION__);
     *m_stream << "# Configuration de sortie HTML" << endl;
     saveGroupbox("GENERATE_HTML", ui->groupBox_generateHtml, true);
     if(ui->groupBox_generateHtml->isChecked())
@@ -1334,7 +1310,6 @@ void TabDoxygen::save_tabHtml()
  */
 void TabDoxygen::save_tabOutput()
 {
-    logger(__PRETTY_FUNCTION__);
     *m_stream << "# Configuration de sortie LaTeX" << endl;
     saveGroupbox("GENERATE_LATEX", ui->groupBox_generateLatex, true);
     if(ui->groupBox_generateLatex->isChecked())
@@ -1416,7 +1391,6 @@ void TabDoxygen::save_tabOutput()
  */
 void TabDoxygen::save_tabProcessor()
 {
-    logger(__PRETTY_FUNCTION__);
     *m_stream << "# Configuration du processeur" << endl;
     saveGroupbox("ENABLE_PREPROCESSING", ui->groupBox_enablePreprocessing, true);
     if(ui->groupBox_enablePreprocessing->isChecked())
@@ -1442,7 +1416,6 @@ void TabDoxygen::save_tabProcessor()
  */
 void TabDoxygen::save_tabExternRef()
 {
-    logger(__PRETTY_FUNCTION__);
     *m_stream << "# Configuration des références externes" << endl;
     saveLineedit("TAGFILES", ui->lineEdit_tagfiles);
     saveLineedit("GENERATE_TAGFILE", ui->lineEdit_generateTagfile);
@@ -1459,7 +1432,6 @@ void TabDoxygen::save_tabExternRef()
  */
 void TabDoxygen::save_tabGraph()
 {
-    logger(__PRETTY_FUNCTION__);
     *m_stream << "# Configuration de l'outil DOT" << endl;
     saveCheckbox("CLASS_DIAGRAMS", ui->checkBox_classDiagrams, true);
     saveLineedit("MSCGEN_PATH", ui->lineEdit_mscgenPath);
@@ -1513,7 +1485,7 @@ void TabDoxygen::save_tabGraph()
  * @c key seulement si celui-ci diffère de la valeur par défaut @c default_value.@n
  * Voir Ui.
  */
-void TabDoxygen::saveCheckbox(QString key, QCheckBox* checkbox, bool default_value)
+void TabDoxygen::saveCheckbox(const QString& key, QCheckBox* checkbox, bool default_value)
 {
     if((checkbox->isChecked() && default_value)
        || (!checkbox->isChecked() && !default_value))
@@ -1543,7 +1515,7 @@ void TabDoxygen::saveCheckbox(QString key, QCheckBox* checkbox, bool default_val
  * @c key seulement si celui-ci diffère de la valeur par défaut @c default_value.@n
  * Voir Ui.
  */
-void TabDoxygen::saveGroupbox(QString key, QGroupBox* groupbox, bool default_value)
+void TabDoxygen::saveGroupbox(const QString& key, QGroupBox* groupbox, bool default_value)
 {
     if((groupbox->isChecked() && default_value)
        || (!groupbox->isChecked() && !default_value))
@@ -1573,7 +1545,7 @@ void TabDoxygen::saveGroupbox(QString key, QGroupBox* groupbox, bool default_val
  * @c key seulement si celle-ci diffère de la valeur par défaut @c default_value et n'est pas vide.@n
  * Voir Ui.
  */
-void TabDoxygen::saveCombobox(QString key, QComboBox* combobox, QString default_value /*= ""*/)
+void TabDoxygen::saveCombobox(const QString& key, QComboBox* combobox, const QString& default_value /*= ""*/)
 {
     if(combobox->currentText() != QString("")
        && combobox->currentText() != default_value)
@@ -1592,7 +1564,7 @@ void TabDoxygen::saveCombobox(QString key, QComboBox* combobox, QString default_
  * @c key seulement si celle-ci diffère de la valeur par défaut @c default_value et n'est pas vide.@n
  * Voir Ui.
  */
-void TabDoxygen::saveFontCbox(QString key, QFontComboBox* fontcombobox, QString default_value /*= ""*/)
+void TabDoxygen::saveFontCbox(const QString& key, QFontComboBox* fontcombobox, const QString& default_value /*= ""*/)
 {
     if(fontcombobox->currentText() != QString("")
        && fontcombobox->currentText() != default_value)
@@ -1611,7 +1583,7 @@ void TabDoxygen::saveFontCbox(QString key, QFontComboBox* fontcombobox, QString 
  * @c key seulement si celle-ci diffère de la valeur par défaut @c default_value et n'est pas vide.@n
  * Voir Ui.
  */
-void TabDoxygen::saveLineedit(QString key, QLineEdit* lineedit, QString default_value /*= ""*/)
+void TabDoxygen::saveLineedit(const QString& key, QLineEdit* lineedit, const QString& default_value /*= ""*/)
 {
     if(lineedit->text() != QString("")
        && lineedit->text() != default_value)
@@ -1630,7 +1602,7 @@ void TabDoxygen::saveLineedit(QString key, QLineEdit* lineedit, QString default_
  * @c key seulement si celui-ci diffère de la valeur par défaut @c default_value.@n
  * Voir Ui.
  */
-void TabDoxygen::saveSpinbox_(QString key, QSpinBox* spinbox, int default_value /*= 0*/)
+void TabDoxygen::saveSpinbox_(const QString& key, QSpinBox* spinbox, int default_value /*= 0*/)
 {
     if(spinbox->value() != default_value)
     {
@@ -1646,7 +1618,6 @@ void TabDoxygen::saveSpinbox_(QString key, QSpinBox* spinbox, int default_value 
  */
 void TabDoxygen::on_toolButton_projectLogo_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_projectLogo);
 }
 
@@ -1658,7 +1629,6 @@ void TabDoxygen::on_toolButton_projectLogo_clicked()
  */
 void TabDoxygen::on_toolButton_outputDir_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getDir(ui->lineEdit_outputDir);
 }
 
@@ -1670,7 +1640,6 @@ void TabDoxygen::on_toolButton_outputDir_clicked()
  */
 void TabDoxygen::on_toolButton_fileVersionFilter_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_fileVersionFilter);
 }
 
@@ -1682,7 +1651,6 @@ void TabDoxygen::on_toolButton_fileVersionFilter_clicked()
  */
 void TabDoxygen::on_toolButton_layoutFile_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_layoutFile);
 }
 
@@ -1694,7 +1662,6 @@ void TabDoxygen::on_toolButton_layoutFile_clicked()
  */
 void TabDoxygen::on_toolButton_citeBibFiles_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getOpenFiles(ui->lineEdit_citeBibFiles);
 }
 
@@ -1706,7 +1673,6 @@ void TabDoxygen::on_toolButton_citeBibFiles_clicked()
  */
 void TabDoxygen::on_toolButton_warnLogfile_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getSaveFile(ui->lineEdit_warnLogfile);
 }
 
@@ -1718,7 +1684,6 @@ void TabDoxygen::on_toolButton_warnLogfile_clicked()
  */
 void TabDoxygen::on_toolButton_examplePath_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getOpenFiles(ui->lineEdit_examplePath);
 }
 
@@ -1729,7 +1694,6 @@ void TabDoxygen::on_toolButton_examplePath_clicked()
  */
 void TabDoxygen::on_toolButton_imagePath_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getOpenFiles(ui->lineEdit_imagePath);
 }
 
@@ -1741,7 +1705,6 @@ void TabDoxygen::on_toolButton_imagePath_clicked()
  */
 void TabDoxygen::on_toolButton_inputFilter_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_inputFilter);
 }
 
@@ -1753,7 +1716,6 @@ void TabDoxygen::on_toolButton_inputFilter_clicked()
  */
 void TabDoxygen::on_toolButton_useMdfileAsMainpage_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_useMdfileAsMainpage);
 }
 
@@ -1764,7 +1726,6 @@ void TabDoxygen::on_toolButton_useMdfileAsMainpage_clicked()
  */
 void TabDoxygen::on_toolButton_htmlHeader_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_htmlHeader);
 }
 
@@ -1775,7 +1736,6 @@ void TabDoxygen::on_toolButton_htmlHeader_clicked()
  */
 void TabDoxygen::on_toolButton_htmlFooter_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_htmlFooter);
 }
 
@@ -1786,7 +1746,6 @@ void TabDoxygen::on_toolButton_htmlFooter_clicked()
  */
 void TabDoxygen::on_toolButton_htmlStylesheet_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_htmlStylesheet);
 }
 
@@ -1798,7 +1757,6 @@ void TabDoxygen::on_toolButton_htmlStylesheet_clicked()
  */
 void TabDoxygen::on_toolButton_htmlExtraStylesheet_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_htmlExtraStylesheet);
 }
 
@@ -1810,7 +1768,6 @@ void TabDoxygen::on_toolButton_htmlExtraStylesheet_clicked()
  */
 void TabDoxygen::on_toolButton_hhcLocation_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_hhcLocation);
 }
 
@@ -1822,7 +1779,6 @@ void TabDoxygen::on_toolButton_hhcLocation_clicked()
  */
 void TabDoxygen::on_toolButton_qhgLocation_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_qhgLocation);
 }
 
@@ -1834,7 +1790,6 @@ void TabDoxygen::on_toolButton_qhgLocation_clicked()
  */
 void TabDoxygen::on_toolButton_mathjaxCodefile_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_mathjaxCodefile);
 }
 
@@ -1845,7 +1800,6 @@ void TabDoxygen::on_toolButton_mathjaxCodefile_clicked()
  */
 void TabDoxygen::on_toolButton_latexHeader_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_latexHeader);
 }
 
@@ -1856,7 +1810,6 @@ void TabDoxygen::on_toolButton_latexHeader_clicked()
  */
 void TabDoxygen::on_toolButton_latexFooter_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_latexFooter);
 }
 
@@ -1868,7 +1821,6 @@ void TabDoxygen::on_toolButton_latexFooter_clicked()
  */
 void TabDoxygen::on_toolButton_latexExtraStylesheet_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_latexExtraStylesheet);
 }
 
@@ -1880,7 +1832,6 @@ void TabDoxygen::on_toolButton_latexExtraStylesheet_clicked()
  */
 void TabDoxygen::on_toolButton_latexExtraFiles_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getOpenFiles(ui->lineEdit_latexExtraFiles);
 }
 
@@ -1892,7 +1843,6 @@ void TabDoxygen::on_toolButton_latexExtraFiles_clicked()
  */
 void TabDoxygen::on_toolButton_rtfStylesheetFile_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_rtfStylesheetFile);
 }
 
@@ -1904,7 +1854,6 @@ void TabDoxygen::on_toolButton_rtfStylesheetFile_clicked()
  */
 void TabDoxygen::on_toolButton_rtfExtensionsFile_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_rtfExtensionsFile);
 }
 
@@ -1916,7 +1865,6 @@ void TabDoxygen::on_toolButton_rtfExtensionsFile_clicked()
  */
 void TabDoxygen::on_toolButton_perlPath_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getDir(ui->lineEdit_perlPath);
 }
 
@@ -1928,7 +1876,6 @@ void TabDoxygen::on_toolButton_perlPath_clicked()
  */
 void TabDoxygen::on_toolButton_mscgenPath_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getDir(ui->lineEdit_mscgenPath);
 }
 
@@ -1940,7 +1887,6 @@ void TabDoxygen::on_toolButton_mscgenPath_clicked()
  */
 void TabDoxygen::on_toolButton_diaPath_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getDir(ui->lineEdit_diaPath);
 }
 
@@ -1952,7 +1898,6 @@ void TabDoxygen::on_toolButton_diaPath_clicked()
  */
 void TabDoxygen::on_toolButton_dotFontpath_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getDir(ui->lineEdit_dotFontpath);
 }
 
@@ -1964,7 +1909,6 @@ void TabDoxygen::on_toolButton_dotFontpath_clicked()
  */
 void TabDoxygen::on_toolButton_dotPath_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getDir(ui->lineEdit_dotPath);
 }
 
@@ -1976,7 +1920,6 @@ void TabDoxygen::on_toolButton_dotPath_clicked()
  */
 void TabDoxygen::on_toolButton_plantumlJarPath_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_plantumlJarPath);
 }
 
@@ -1988,7 +1931,6 @@ void TabDoxygen::on_toolButton_plantumlJarPath_clicked()
  */
 void TabDoxygen::on_toolButton_plantumlCfgFile_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     getOpenFile(ui->lineEdit_plantumlCfgFile);
 }
 
@@ -2002,15 +1944,14 @@ void TabDoxygen::on_toolButton_plantumlCfgFile_clicked()
  */
 void TabDoxygen::getSaveFile(QLineEdit* lineedit)
 {
-    logger(__PRETTY_FUNCTION__);
     QString result = "";
     result = QFileDialog::getSaveFileName(this,
                                           "Enregistrer sous",
-                                          Context::Instance()->lastSearch());
+                                          qCtx->lastSearch());
     if(result != QString(""))
     {
         QFileInfo fileInfo(result);
-        Context::Instance()->setLastSearch(fileInfo.absoluteDir().path());
+        qCtx->setLastSearch(fileInfo.absoluteDir().path());
         emit foundPath(fileInfo.absoluteFilePath(), lineedit);
     }
 }
@@ -2025,15 +1966,14 @@ void TabDoxygen::getSaveFile(QLineEdit* lineedit)
  */
 void TabDoxygen::getOpenFile(QLineEdit* lineedit)
 {
-    logger(__PRETTY_FUNCTION__);
     QString result = "";
     result = QFileDialog::getOpenFileName(this,
                                           "Fichier",
-                                          Context::Instance()->lastSearch());
+                                          qCtx->lastSearch());
     if(result != QString(""))
     {
         QFileInfo fileInfo(result);
-        Context::Instance()->setLastSearch(fileInfo.absoluteDir().path());
+        qCtx->setLastSearch(fileInfo.absoluteDir().path());
         emit foundPath(fileInfo.absoluteFilePath(), lineedit);
     }
 }
@@ -2049,11 +1989,10 @@ void TabDoxygen::getOpenFile(QLineEdit* lineedit)
  */
 void TabDoxygen::getOpenFiles(QLineEdit* lineedit)
 {
-    logger(__PRETTY_FUNCTION__);
     QStringList result;
     result = QFileDialog::getOpenFileNames(this,
                                            "Fichiers",
-                                           Context::Instance()->lastSearch());
+                                           qCtx->lastSearch());
     if(result.length() > 0)
     {
         for(int i = 0; i < result.length(); i++)
@@ -2067,7 +2006,7 @@ void TabDoxygen::getOpenFiles(QLineEdit* lineedit)
                 tmp.append(QChar('"'));
             }
             result[i] = tmp;
-            Context::Instance()->setLastSearch(fileInfo.absolutePath());
+            qCtx->setLastSearch(fileInfo.absolutePath());
         }
         emit foundPath(result.join(QChar(' ')), lineedit);
     }
@@ -2083,15 +2022,14 @@ void TabDoxygen::getOpenFiles(QLineEdit* lineedit)
  */
 void TabDoxygen::getDir(QLineEdit* lineedit)
 {
-    logger(__PRETTY_FUNCTION__);
     QString result = "";
     result = QFileDialog::getExistingDirectory(this,
                                                "Dossier",
-                                               Context::Instance()->lastSearch());
+                                               qCtx->lastSearch());
     if(result != QString(""))
     {
         QFileInfo fileInfo(result);
-        Context::Instance()->setLastSearch(fileInfo.absoluteDir().absolutePath());
+        qCtx->setLastSearch(fileInfo.absoluteDir().absolutePath());
         emit foundPath(fileInfo.absoluteFilePath(), lineedit);
     }
 }
@@ -2103,7 +2041,7 @@ void TabDoxygen::getDir(QLineEdit* lineedit)
  * Ecrit le ou les chemin(s) passé(s) en argument @c path dans la ligne
  * d'édition @c lineedit.
  */
-void TabDoxygen::writePath(QString path, QLineEdit* lineedit)
+void TabDoxygen::writePath(const QString& path, QLineEdit* lineedit)
 {
     lineedit->setText(path);
 }
@@ -2116,7 +2054,6 @@ void TabDoxygen::writePath(QString path, QLineEdit* lineedit)
  */
 void TabDoxygen::on_pushButton_apply_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     save();
 }
 
@@ -2130,7 +2067,6 @@ void TabDoxygen::on_pushButton_apply_clicked()
  */
 void TabDoxygen::on_pushButton_default_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     QMessageBox::StandardButton res;
     res = QMessageBox::question(this,
                                 "Remise à zéro",
@@ -2154,7 +2090,6 @@ void TabDoxygen::on_pushButton_default_clicked()
  */
 void TabDoxygen::on_pushButton_generateFiles_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     QFileInfo infos(m_doxyfile);
     QString dir = infos.absoluteDir().absolutePath();
     if(!dir.endsWith('/')) dir.append('/');
@@ -2163,7 +2098,7 @@ void TabDoxygen::on_pushButton_generateFiles_clicked()
     {
         QApplication::setOverrideCursor(Qt::WaitCursor);
         // Create Dir
-        dir += Settings::Instance()->doxygenTemplateDir();
+        dir += qCtx->doxygenTemplateDir();
         if(!dir.endsWith('/')) dir.append('/');
         command("mkdir " + dir, ".");
         command("mkdir rtf", dir);
@@ -2198,9 +2133,8 @@ void TabDoxygen::on_pushButton_generateFiles_clicked()
  */
 void TabDoxygen::on_pushButton_generateDoc_clicked()
 {
-    logger(__PRETTY_FUNCTION__);
     save();
-    QFileInfo info(Context::Instance()->doxyfile());
+    QFileInfo info(qCtx->doxyfile());
     QString dir = info.absoluteDir().absolutePath();
     if(dir.at(dir.length()-1) != QChar('/')) dir.append('/');
     QProcess process;
@@ -2248,14 +2182,14 @@ void TabDoxygen::on_pushButton_generateDoc_clicked()
  * Cette fonction exécute la commande @c cmd dans le dossier @c workingDir
  * à l'aide d'un objet QProcess.
  */
-void TabDoxygen::command(QString cmd, QString workingDir)
+void TabDoxygen::command(const QString& cmd, const QString& workingDir)
 {
-    logger("    cmd (" + workingDir + "): " + cmd);
+    qLog->debug("TabDoxygen - Commande (" + workingDir + ") : " + cmd);
     QProcess process;
     process.setWorkingDirectory(workingDir);
     process.start(cmd);
     if(!process.waitForFinished())
     {
-        throw(QString("Erreur pour la commande : " + cmd));
+        throw QString("Erreur pour la commande : " + cmd);
     }
 }

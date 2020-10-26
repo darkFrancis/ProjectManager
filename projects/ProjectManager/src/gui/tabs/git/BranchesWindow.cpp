@@ -1,14 +1,13 @@
 /**
- * @file brancheswindow.cpp
+ * @file BranchesWindow.cpp
  * @brief Définition de la classe BranchesWindow
  * @author Dark Francis
  * @date 21/12/2019
  */
-#include "brancheswindow.hpp"
-#include "ui_brancheswindow.h"
+#include "BranchesWindow.hpp"
+#include "ui_BranchesWindow.h"
 
 #include <QMessageBox>
-#include <QDebug>
 
 /**
  * @param parent Le QWidget parent de cette fenêtre
@@ -182,7 +181,7 @@ void BranchesWindow::on_pushButton_remove_clicked()
  * Vérifie que le nom de la branche ne contient que des caractères alphanumériques.
  * Sinon, affiche une popup d'erreur.
  */
-bool BranchesWindow::check_branch_name(QString name)
+bool BranchesWindow::check_branch_name(const QString& name)
 {
     for(int i = 0; i < name.length(); i++)
     {

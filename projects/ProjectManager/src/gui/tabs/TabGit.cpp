@@ -77,6 +77,22 @@ void TabGit::clean()
     delete m_process;
 }
 
+void TabGit::updateProjectNames()
+{
+    QStringList projects;
+    for(const QString& pro : qCtx->subProjects())
+    {
+        projects << QFileInfo(pro).baseName();
+    }
+
+    bool bEnable = projects.length() > 0;
+    ui->checkBox_projectName->setVisible(bEnable);
+    ui->comboBox_projectName->setVisible(bEnable);
+    ui->checkBox_projectName->setChecked(bEnable);
+    ui->comboBox_projectName->clear();
+    ui->comboBox_projectName->addItems(projects);
+}
+
 /**
  * Ce connecteur est activé par un clic souris de l'utilisateur sur le
  * bouton Commit.@n
@@ -91,8 +107,12 @@ void TabGit::on_pushButton_commit_clicked()
     if(ui->checkBox_amend->isChecked()) args << "--amend";
     args << "-m";
     QString msg = ui->lineEdit_commit->text().simplified();
-    if(msg == QString("")) args << GIT_COMMIT_DEFAULT_MSG;
-    else args << msg;
+    if(msg.trimmed() == QString("")) msg = GIT_COMMIT_DEFAULT_MSG;
+    if(ui->checkBox_projectName->isChecked())
+    {
+        msg.prepend(ui->comboBox_projectName->currentText() + " - ");
+    }
+    args << msg;
     if(action(args))
     {
         ui->lineEdit_commit->clear();
@@ -114,7 +134,21 @@ void TabGit::on_checkBox_amend_stateChanged(int arg1)
     if(arg1 == Qt::Checked)
     {
         while(!action(QStringList() << "log" << "-n1" << "--pretty=format:%s", false)){}
-        ui->lineEdit_commit->setText(m_output);
+        QString output = m_output;
+        int idx = output.indexOf('-');
+        if(idx >= 0)
+        {
+            for(int i = 0; i < ui->comboBox_projectName->count(); i++)
+            {
+                QString project = ui->comboBox_projectName->itemText(i) + " - ";
+                if(output.startsWith(project))
+                {
+                    output = output.mid(project.length()).trimmed();
+                }
+            }
+        }
+        ui->lineEdit_commit->setText(output);
+
     }
     else
     {

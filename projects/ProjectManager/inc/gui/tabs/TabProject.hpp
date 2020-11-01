@@ -18,6 +18,9 @@
             void clean();
             void save();
 
+        signals:
+            void projectListChange();
+
         private slots:
             void on_pushButton_add_clicked();
             void on_pushButton_delete_clicked();

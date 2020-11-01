@@ -43,12 +43,13 @@ MainWindow::MainWindow(QWidget *parent) :
     // Ajout tabs
     TabProject* tabProject = new TabProject(this);
     TabDoxygen* tabDoxygen = new TabDoxygen(this);
-    TabGit* taGit = new TabGit(this);
+    TabGit* tabGit = new TabGit(this);
     ui->tabWidget->addTab(tabProject, "Projet");
     ui->tabWidget->addTab(tabDoxygen, "Doxygen");
-    ui->tabWidget->addTab(taGit, "Git");
+    ui->tabWidget->addTab(tabGit, "Git");
 
     // Connections
+    connect(tabProject, &TabProject::projectListChange, tabGit, &TabGit::updateProjectNames);
 
     // Init
     if(qCtx->projectDir() != "")
@@ -56,6 +57,7 @@ MainWindow::MainWindow(QWidget *parent) :
         ActionOnTabs(init);
         enable();
     }
+    setWindowTitle(_APPLICATION_NAME_ + " - " + _VERSION_);
 }
 
 MainWindow::~MainWindow()

@@ -50,6 +50,9 @@
             void init();
             void clean();
 
+        public slots:
+            void updateProjectNames();
+
         signals:
             /**
              * Ce signal est émit en cas de création d'un nouveau tag.

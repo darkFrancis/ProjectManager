@@ -23,6 +23,7 @@ void TabProject::init()
     clean();
     qCtx->loadSubProjects();
     ui->listWidget_projects->addItems(qCtx->subProjects());
+    emit projectListChange();
 }
 
 void TabProject::clean()
@@ -58,15 +59,20 @@ void TabProject::on_pushButton_add_clicked()
         qCtx->addSubProject(projectFile);
         ui->listWidget_projects->addItem(projectFile);
         ui->listWidget_projects->sortItems();
+        emit projectListChange();
     }
 }
 
 void TabProject::on_pushButton_delete_clicked()
 {
     QList<QListWidgetItem*> selection = ui->listWidget_projects->selectedItems();
-    for(QListWidgetItem* item : selection)
+    if(selection.length() > 0)
     {
-        if(qCtx->removeSubProject(item->text().trimmed()))
-            delete item;
+        for(QListWidgetItem* item : selection)
+        {
+            if(qCtx->removeSubProject(item->text().trimmed()))
+                delete item;
+        }
+        emit projectListChange();
     }
 }

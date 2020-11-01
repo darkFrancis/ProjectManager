@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>688</width>
-    <height>511</height>
+    <height>517</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -248,6 +248,16 @@
    </item>
    <item row="2" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QCheckBox" name="checkBox_projectName">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboBox_projectName"/>
+     </item>
      <item>
       <widget class="QLineEdit" name="lineEdit_commit"/>
      </item>

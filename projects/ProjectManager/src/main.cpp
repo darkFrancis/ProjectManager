@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 
     // Exécution
     MainWindow w;
-    w.show();
+    w.showMaximized();
     int returnCode = a.exec(); // Bloquant
 
     // Fin d'exécution

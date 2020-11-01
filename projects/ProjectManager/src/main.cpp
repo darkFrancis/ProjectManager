@@ -10,6 +10,7 @@
 #include <QFile>
 
 #include "Logger.hpp"
+#include "Context.hpp"
 #include "version.hpp"
 
 void setStyle();
@@ -37,6 +38,7 @@ int main(int argc, char *argv[])
 #endif
 
     // Style
+    Context ctx;
     setStyle();
 
     // Exécution

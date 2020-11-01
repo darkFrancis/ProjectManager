@@ -12,9 +12,9 @@ DEFINES += APP_VERSION=\"\\\"$${VERSION}\\\"\" \
 CONFIG(debug, release | debug):DEFINES+=_DEBUG
 
 SOURCES += \
-        src/gui/NewWindow.cpp \
         src/gui/tabs/TabDoxygen.cpp \
         src/gui/tabs/TabGit.cpp \
+        src/gui/tabs/TabProject.cpp \
         src/gui/tabs/git/BranchesWindow.cpp \
         src/gui/tabs/git/ErrorViewer.cpp \
         src/gui/tabs/git/TagsWindow.cpp \
@@ -26,10 +26,10 @@ SOURCES += \
 
 HEADERS += \
         inc/gui/MainWindow.hpp \
-        inc/gui/NewWindow.hpp \
         inc/gui/tabs/Tab.hpp \
         inc/gui/tabs/TabDoxygen.hpp \
         inc/gui/tabs/TabGit.hpp \
+        inc/gui/tabs/TabProject.hpp \
         inc/gui/tabs/git/BranchesWindow.hpp \
         inc/gui/tabs/git/ErrorViewer.hpp \
         inc/gui/tabs/git/TagsWindow.hpp \
@@ -40,9 +40,9 @@ HEADERS += \
 
 FORMS += \
         form/MainWindow.ui \
-        form/NewWindow.ui \
         form/tabs/TabDoxygen.ui \
         form/tabs/TabGit.ui \
+        form/tabs/TabProject.ui \
         form/tabs/git/BranchesWindow.ui \
         form/tabs/git/ErrorViewer.ui \
         form/tabs/git/TagsWindow.ui

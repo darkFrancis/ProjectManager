@@ -8,10 +8,28 @@
 #include "ui_MainWindow.h"
 
 #include <QMessageBox>
+#include <QFileDialog>
 
+#include "TabProject.hpp"
 #include "TabDoxygen.hpp"
 #include "TabGit.hpp"
 #include "version.hpp"
+#include "Context.hpp"
+#include "Logger.hpp"
+
+#define ActionOnTabs(action) \
+    { QStringList errList; \
+    for(int i = 0; i < ui->tabWidget->count(); i++) \
+    { \
+        try { reinterpret_cast<Tab*>(ui->tabWidget->widget(i))->action(); } \
+        catch (QString msg) { errList << msg; } \
+    } \
+    if(errList.length() > 0) \
+    { \
+        QString msg = errList.join('\n'); \
+        QMessageBox::critical(this, "Erreur", msg); \
+        qLog->error(msg); \
+    }}
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -19,20 +37,30 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->tabWidget->addTab(new Tab(this), "Projet");
-    ui->tabWidget->addTab(new TabDoxygen(this), "Doxygen");
-    ui->tabWidget->addTab(new TabGit(this), "Git");
-    ui->tabWidget->addTab(new Tab(this), "Infos Qt");
+    ui->tabWidget->setEnabled(false);
+    ui->label_currentProject->setHidden(true);
+
+    // Ajout tabs
+    TabProject* tabProject = new TabProject(this);
+    TabDoxygen* tabDoxygen = new TabDoxygen(this);
+    TabGit* taGit = new TabGit(this);
+    ui->tabWidget->addTab(tabProject, "Projet");
+    ui->tabWidget->addTab(tabDoxygen, "Doxygen");
+    ui->tabWidget->addTab(taGit, "Git");
+
+    // Connections
+
+    // Init
+    if(qCtx->projectDir() != "")
+    {
+        ActionOnTabs(init);
+        enable();
+    }
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void MainWindow::on_actionPr_f_rences_triggered()
-{
-
 }
 
 void MainWindow::on_actionAbout_triggered()
@@ -47,20 +75,57 @@ void MainWindow::on_actionAbout_triggered()
 
 void MainWindow::on_actionNouveau_triggered()
 {
-
+    QString dir = QFileDialog::getExistingDirectory(this,
+                                                    "Répertoire de projet",
+                                                    qCtx->projectDir());
+    if(dir != "")
+    {
+        qCtx->setLastSearch(dir);
+        QDir projectDir(QDir(dir).absoluteFilePath(qCtx->projectHiddenDirName()));
+        if(projectDir.exists())
+        {
+            QMessageBox::warning(this,
+                                 "Attention",
+                                 "Ce dossier contient déjà un projet !\n"
+                                 "Ce projet va s'ouvrir.");
+        }
+        else
+        {
+            projectDir.mkpath(".");
+        }
+        qCtx->setProjectDir(dir);
+        ActionOnTabs(init);
+        enable();
+    }
 }
 
 void MainWindow::on_actionOuvrir_triggered()
 {
-
+    QString dir = QFileDialog::getExistingDirectory(this,
+                                                    "Répertoire de projet",
+                                                    qCtx->projectDir());
+    if(dir != "")
+    {
+        qCtx->setLastSearch(dir);
+        qCtx->setProjectDir(dir);
+        ActionOnTabs(init);
+        enable();
+    }
 }
 
 void MainWindow::on_actionEnregistrer_triggered()
 {
-
+    ActionOnTabs(save);
 }
 
 void MainWindow::on_actionQuitter_triggered()
 {
+    this->close();
+}
 
+void MainWindow::enable()
+{
+    ui->tabWidget->setEnabled(true);
+    ui->label_currentProject->setVisible(true);
+    ui->label_currentProject->setText(qCtx->projectDir());
 }

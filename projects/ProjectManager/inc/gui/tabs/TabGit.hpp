@@ -48,7 +48,7 @@
             TabGit(QWidget *parent = nullptr);
             ~TabGit();
             void init();
-            void clear();
+            void clean();
 
         signals:
             /**
@@ -61,14 +61,14 @@
              * Ce signal est émit pour mettre à jour la liste des tag dans la fenêtre
              * de gestion des tags.
              */
-            void tag_update(QStringList tags);
+            void tag_update(const QStringList& tags);
             /**
              * @param branches Liste des tags
              *
              * Ce signal est émit pour mettre à jour la liste des branches dans la fenêtre
              * de gestion des branches.
              */
-            void branch_update(QStringList branches);
+            void branch_update(const QStringList& branches);
 
         private slots:
             void update_all();
@@ -94,13 +94,13 @@
             void on_pushButton_extra_clicked();
             void on_lineEdit_extra_returnPressed();
             void action_tags(QStringList args);
-            void action_branch(QStringList args);
+            void action_branch(const QStringList& args);
 
         private:
-            bool action(QStringList args, bool status = true);
+            bool action(const QStringList& args, bool status = true);
             QStringList getSelected(QListWidget* list_view, bool only_files = true);
             QStringList getAllItems(QListWidget* list_view, bool only_files = true);
-            QString stateChar2Label(QChar c, bool staged = false);
+            QString stateChar2Label(const QChar& c, bool staged = false);
             // Update
             void update_status();
             void update_branches();

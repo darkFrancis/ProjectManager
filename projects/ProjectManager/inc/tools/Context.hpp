@@ -19,27 +19,31 @@
             Context();
             ~Context();
             static Context* Instance();
+            void loadSubProjects();
+            bool saveSubProjects() const;
+            void save();
 
         public: // GET/SET
             void setLastSearch(const QString& val);
-            void setProjectFile(const QString& file);
-            void setDoxyFile(const QString& file);
-            void setDoxygenTemplateDir(const QString& dir);
+            void setProjectDir(const QString& dir);
+            void addSubProject(const QString& val);
+            bool removeSubProject(const QString& val);
             QString lastSearch() const;
-            QString projectFile() const;
+            QString projectDir() const;
             QString doxyfile() const;
             QString doxygenTemplateDir() const;
+            QStringList subProjects() const;
+            QString projectHiddenDirName() const;
 
         private:
             void init();
-            void save();
+            QString fileInProjectDir(const QString file) const;
 
         private:
             static Context* m_instance; /**< Pointeur vers l'instance de la classe Context. */
             QString m_lastSearch; /**< Dernière recherche effectuée. */
-            QString m_projectFile; /**< Fichier du projet */
-            QString m_doxyfile; /**< Fichier Doxygen du projet */
-            QString m_doxygenTemplateDir; /**< Dossier dans lequel sont créés les templates Doxygen */
+            QString m_projectDir; /**< Fichier du projet */
+            QStringList m_subProjectList; /**< Liste des sous-projets utilisés pour la documentation. */
             InitParser m_parser; /**< Parser de fichier INI */
     };
 

@@ -14,6 +14,7 @@
     #include <QSpinBox>
     #include <QFontComboBox>
     #include <QGroupBox>
+    #include <QDir>
     #include "InitParser.hpp"
 
     #define DOC_YES QString("YES")/**< Valeur @c true pour la configuration Doxygen */
@@ -56,18 +57,6 @@
             void init();
             void save();
             void createDoxyfile();
-
-        signals:
-            /**
-             * @param path Chemin du fichier/dossier sélectionné
-             * @param lineedit La ligne d'édition dans laquelle écrire le chemin
-             *
-             * Ce signal est émit suite à la recherche d'un fichier/dossier par
-             * l'utilisateur. Cette recherche est demandée si l'utilisateur clic
-             * sur un bouton outil de la fenêtre.@n
-             * Voir TabDoxygen::writePath.
-             */
-            void foundPath(const QString& path, QLineEdit* lineedit);
 
         private slots:
             // Click ToolButtons
@@ -168,6 +157,9 @@
 
             // Templates
             void command(const QString& cmd, const QString& workingDir = ".");
+
+            // Doc
+            QString generateDocFromDir(const QDir& dir, const QString& projectName);
 
         private:
             Ui::TabDoxygen *ui;/**< UI de la classe TabDoxygen */

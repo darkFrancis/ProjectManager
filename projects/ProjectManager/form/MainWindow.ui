@@ -50,8 +50,6 @@
     <property name="title">
      <string>Options</string>
     </property>
-    <addaction name="actionPr_f_rences"/>
-    <addaction name="separator"/>
     <addaction name="actionAbout"/>
    </widget>
    <addaction name="menuFichier"/>

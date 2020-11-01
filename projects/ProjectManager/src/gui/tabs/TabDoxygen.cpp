@@ -36,8 +36,6 @@ TabDoxygen::TabDoxygen(QWidget *parent) :
     {
         ui->fontComboBox_dotFontName->addItem("Helvetica");
     }
-
-    connect(this, SIGNAL(foundPath(QString,QLineEdit*)), this, SLOT(writePath(QString,QLineEdit*)));
 }
 
 /**
@@ -97,6 +95,7 @@ void TabDoxygen::save()
     if(file.open(QIODevice::Text | QIODevice::WriteOnly | QIODevice::Truncate))
     {
         m_stream = new QTextStream(&file);
+        m_stream->setCodec("UTF-8");
         save_tabProject();
         save_tabBuild();
         save_tabMsg();
@@ -445,7 +444,7 @@ void TabDoxygen::createDoxyfile()
 void TabDoxygen::init_tabProject()
 {
     initCombobox("DOXYFILE_ENCODING", ui->comboBox_encoding, "UTF-8");
-    initLineedit("PROJECT_NAME", ui->lineEdit_projectName, "My Project");
+    initLineedit("PROJECT_NAME", ui->lineEdit_projectName);
     initLineedit("PROJECT_NUMBER", ui->lineEdit_projectNumber);
     initLineedit("PROJECT_BRIEF", ui->lineEdit_projectBrief);
     initLineedit("PROJECT_LOGO", ui->lineEdit_projectLogo);
@@ -1951,8 +1950,8 @@ void TabDoxygen::getSaveFile(QLineEdit* lineedit)
     if(result != QString(""))
     {
         QFileInfo fileInfo(result);
-        qCtx->setLastSearch(fileInfo.absoluteDir().path());
-        emit foundPath(fileInfo.absoluteFilePath(), lineedit);
+        qCtx->setLastSearch(fileInfo.absoluteFilePath());
+        writePath(fileInfo.absoluteFilePath(), lineedit);
     }
 }
 
@@ -1974,7 +1973,7 @@ void TabDoxygen::getOpenFile(QLineEdit* lineedit)
     {
         QFileInfo fileInfo(result);
         qCtx->setLastSearch(fileInfo.absoluteDir().path());
-        emit foundPath(fileInfo.absoluteFilePath(), lineedit);
+        writePath(fileInfo.absoluteFilePath(), lineedit);
     }
 }
 
@@ -2008,7 +2007,7 @@ void TabDoxygen::getOpenFiles(QLineEdit* lineedit)
             result[i] = tmp;
             qCtx->setLastSearch(fileInfo.absolutePath());
         }
-        emit foundPath(result.join(QChar(' ')), lineedit);
+        writePath(result.join(QChar(' ')), lineedit);
     }
 }
 
@@ -2029,8 +2028,8 @@ void TabDoxygen::getDir(QLineEdit* lineedit)
     if(result != QString(""))
     {
         QFileInfo fileInfo(result);
-        qCtx->setLastSearch(fileInfo.absoluteDir().absolutePath());
-        emit foundPath(fileInfo.absoluteFilePath(), lineedit);
+        qCtx->setLastSearch(fileInfo.absoluteFilePath());
+        writePath(fileInfo.absoluteFilePath(), lineedit);
     }
 }
 
@@ -2113,6 +2112,7 @@ void TabDoxygen::on_pushButton_generateFiles_clicked()
         QMessageBox::information(this,
                                  "Création des templates",
                                  "Les templates ont été créés dans le dossier\n" + dir);
+        command("browse", dir);
     }
     catch(QString msg)
     {
@@ -2133,46 +2133,32 @@ void TabDoxygen::on_pushButton_generateFiles_clicked()
  */
 void TabDoxygen::on_pushButton_generateDoc_clicked()
 {
+    this->setEnabled(false);
     save();
-    QFileInfo info(qCtx->doxyfile());
-    QString dir = info.absoluteDir().absolutePath();
-    if(dir.at(dir.length()-1) != QChar('/')) dir.append('/');
-    QProcess process;
-    process.setWorkingDirectory(dir);
-    process.setStandardOutputFile(dir + "doxygen.log");
-    process.setStandardErrorFile(dir + "doxygen.err");
-    process.start("doxygen", QStringList() << info.fileName());
-    if(process.waitForFinished())
+    QStringList errList;
+    for(const QString& projectFile : qCtx->subProjects())
     {
-        QFile err_file(dir + "doxygen.err");
-        QString extra_info = "";
-        if(err_file.open(QIODevice::Text | QIODevice::ReadOnly))
+        QString err = generateDocFromDir(QFileInfo(projectFile).absoluteDir(), QFileInfo(projectFile).baseName());
+        if(err != "")
         {
-            extra_info ="\n";
-            QString text = err_file.readAll();
-            if(text.simplified() == "")
-            {
-                extra_info += "Aucune erreur détectée.";
-            }
-            else
-            {
-                QStringList ligns = text.split('\n');
-                extra_info += QString::number(ligns.length()-1) + " erreurs détectées !\n\n"
-                              "Voir les erreurs dans le fichier <a href=\"" + dir + "doxygen.err\">"
-                              + dir + "doxygen.err</a>";
-            }
-            err_file.close();
+            errList << err;
         }
-        QMessageBox::information(this,
-                                 "Doxygen",
-                                 "<html><body>La documentation a été générée." + extra_info + "</body></html>");
+    }
+
+    QString result;
+    if(errList.length() == 0)
+    {
+        result = "Aucune erreur détectée.";
     }
     else
     {
-        QMessageBox::critical(this,
-                              "Doxygen",
-                              "Erreur lors de la génération de la Doc");
+        result = "<br/>Des erreurs ont été détectées :<br/>"
+                 + errList.join("<br/>");
     }
+    this->setEnabled(true);
+    QMessageBox::information(this,
+                             "Doxygen",
+                             "<p>La documentation a été générée." + result + "</p>");
 }
 
 /**
@@ -2192,4 +2178,97 @@ void TabDoxygen::command(const QString& cmd, const QString& workingDir)
     {
         throw QString("Erreur pour la commande : " + cmd);
     }
+}
+
+QString TabDoxygen::generateDocFromDir(const QDir &dir, const QString& projectName)
+{
+    try
+    {
+        // Copie du fichier "Doxyfile"
+        QString destFile = dir.absoluteFilePath("Doxyfile");
+        if(QFile::exists(destFile))
+        {
+            QFile::remove(destFile);
+        }
+        if(QFile::copy(qCtx->doxyfile(), destFile))
+        {
+            // Remplacement des informations de projet
+            QFile doxyfile(destFile);
+            if(doxyfile.open(QIODevice::ReadOnly | QIODevice::Text))
+            {
+                QTextStream streamR(&doxyfile);
+                streamR.setCodec("UTF-8");
+                QStringList lines = streamR.readAll().split('\n');
+                doxyfile.close();
+
+                if(doxyfile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
+                {
+                    QTextStream streamW(&doxyfile);
+                    streamW.setCodec("UTF-8");
+                    for(const QString& line : lines)
+                    {
+                        streamW << line;
+                        if(line.trimmed().startsWith("OUTPUT_DIRECTORY"))
+                        {
+                            streamW << "/" << projectName;
+                        }
+                        streamW << endl;
+                    }
+                    doxyfile.close();
+                }
+                else
+                {
+                    throw QString("Impossible de modifier le fichier Doxyfile !");
+                }
+            }
+            else
+            {
+                throw QString("Impossible de modifier le fichier Doxyfile !");
+            }
+
+            // Génération de la doc
+            QProcess process;
+            process.setWorkingDirectory(dir.absolutePath());
+            process.setStandardOutputFile(dir.absoluteFilePath("doxygen.log"));
+            process.setStandardErrorFile(dir.absoluteFilePath("doxygen.err"));
+            process.start("doxygen", QStringList() << "Doxyfile");
+            if(process.waitForFinished())
+            {
+                QFile err_file(dir.absoluteFilePath("doxygen.err"));
+                QString extra_info = "";
+                if(err_file.open(QIODevice::Text | QIODevice::ReadOnly))
+                {
+                    extra_info ="\n";
+                    QString text = err_file.readAll();
+                    if(text.simplified() == "")
+                    {
+                        extra_info += "";
+                    }
+                    else
+                    {
+                        QStringList ligns = text.split('\n');
+                        extra_info += projectName + " - " +
+                                      QString::number(ligns.length()-1) + " erreurs ("
+                                      "Voir les erreurs : <a href=\"" + dir.absoluteFilePath("doxygen.err") + "\">"
+                                      + dir.absoluteFilePath("doxygen.err") + "</a>)";
+                    }
+                    err_file.close();
+                }
+                return extra_info;
+            }
+            else
+            {
+                throw QString("Erreur lors de la génération de la Doc");
+            }
+        }
+        else
+        {
+            throw QString("Impossible de copier le fichier Doxyfile vers " + dir.absolutePath());
+        }
+    }
+    catch(QString msg)
+    {
+        QMessageBox::critical(this, "Doxygen",  msg);
+    }
+    return "";
 }

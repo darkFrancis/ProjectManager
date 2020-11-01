@@ -1,0 +1,82 @@
+# Configuration du projet
+PROJECT_NAME=Projects
+OUTPUT_DIRECTORY=/home/francis/dev/projects/doc/ProjectManager
+CREATE_SUBDIRS=YES
+OUTPUT_LANGUAGE=French
+ABBREVIATE_BRIEF=$name
+ALWAYS_DETAILED_SEC=YES
+INLINE_INHERITED_MEMB=YES
+SHORT_NAMES=YES
+INHERIT_DOCS=NO
+ALIASES="header_table=<table><tr><td>Header</td><td>" "inherits_row=</td></tr><tr><td>Parent</td><td>" "end_table=</td></tr></table>"
+BUILTIN_STL_SUPPORT=YES
+
+# Configuration de build
+EXTRACT_ALL=YES
+EXTRACT_PRIVATE=YES
+EXTRACT_STATIC=YES
+EXTRACT_LOCAL_CLASSES=NO
+EXTRACT_ANON_NSPACES=YES
+INTERNAL_DOCS=YES
+HIDE_SCOPE_NAMES=YES
+HIDE_COMPOUND_REFERENCE=YES
+SHOW_INCLUDE_FILES=NO
+SORT_MEMBER_DOCS=NO
+SORT_BRIEF_DOCS=YES
+STRICT_PROTO_MATCHING=YES
+SHOW_USED_FILES=NO
+LAYOUT_FILE=/home/francis/dev/projects/.projectmanager/layout.xml
+
+# Configuration des messages
+WARN_FORMAT="$file:$line: $text"
+
+# Configuration des entrÃ©es
+FILE_PATTERNS=*.cpp *.hpp *.c *.h
+RECURSIVE=YES
+EXCLUDE=build
+
+# Configurartion de la recherche de sources
+REFERENCES_LINK_SOURCE=NO
+VERBATIM_HEADERS=NO
+
+# Configuration de l'index alphabÃ©tique
+ALPHABETICAL_INDEX=NO
+
+# Configuration de sortie HTML
+HTML_OUTPUT=.
+HTML_HEADER=/home/francis/dev/projects/.projectmanager/html/header.html
+HTML_FOOTER=/home/francis/dev/projects/.projectmanager/html/footer.html
+HTML_STYLESHEET=/home/francis/dev/projects/.projectmanager/html/stylesheet.css
+HTML_TIMESTAMP=YES
+HTML_DYNAMIC_SECTIONS=YES
+ENUM_VALUES_PER_LINE=0
+
+# Configuration de sortie LaTeX
+GENERATE_LATEX=NO
+
+# Configuration de sortie RTF
+
+# Configuration de sortie MAN
+
+# Configuration de sortie XML
+
+# Configuration de sortie DocBook
+
+# Configuration des dÃ©finitions AutoGen
+
+# Configuration du module Perl
+
+# Configuration du processeur
+MACRO_EXPANSION=YES
+EXPAND_ONLY_PREDEF=YES
+
+# Configuration des rÃ©fÃ©rences externes
+ALLEXTERNALS=YES
+
+# Configuration de l'outil DOT
+HIDE_UNDOC_RELATIONS=NO
+TEMPLATE_RELATIONS=YES
+DOT_TRANSPARENT=YES
+DOT_MULTI_TARGETS=YES
+
+

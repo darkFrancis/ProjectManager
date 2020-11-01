@@ -40,7 +40,7 @@ TabGit::TabGit(QWidget *parent) :
  */
 TabGit::~TabGit()
 {
-    clear();
+    clean();
     delete ui;
 }
 
@@ -53,8 +53,7 @@ TabGit::~TabGit()
  */
 void TabGit::init()
 {
-    QFileInfo info(qCtx->projectFile());
-    m_process->setWorkingDirectory(info.absolutePath());
+    m_process->setWorkingDirectory(qCtx->projectDir());
     this->update_all();
     ui->comboBox_branch->setCurrentIndex(ui->comboBox_branch->findText(ui->label_branch->text().split(':').at(1).simplified()));
     ui->comboBox_remote->setCurrentIndex(0);
@@ -66,7 +65,7 @@ void TabGit::init()
  * Vide toute les liste de cet onglet et tue le processus en cours
  * s'il y en a un.
  */
-void TabGit::clear()
+void TabGit::clean()
 {
     ui->listWidget_staged->clear();
     ui->listWidget_unstaged->clear();
@@ -298,7 +297,7 @@ void TabGit::on_pushButton_extra_clicked()
  * arguments ceux passés en paramètres. Attend la fin de l'exécution de la
  * commande pour récupérer le code retour, la sortie et l'erreur.
  */
-bool TabGit::action(QStringList args, bool b_status /*= true*/)
+bool TabGit::action(const QStringList& args, bool b_status /*= true*/)
 {
     if(m_process->state() == QProcess::NotRunning && args.length() > 0)
     {
@@ -495,13 +494,14 @@ void TabGit::update_all()
  * Cette fonction permet de renvoyer le libellé à afficher en fonction du
  * caractère renvoyé par la fonction @b git @b status @b -s.
  */
-QString TabGit::stateChar2Label(QChar c, bool staged /*= false*/)
+QString TabGit::stateChar2Label(const QChar& c, bool staged /*= false*/)
 {
     if(c == QChar('A')) return GIT_STATUS_LABEL_A;
     else if(c == QChar('C')) return GIT_STATUS_LABEL_C;
     else if(c == QChar('D')) return GIT_STATUS_LABEL_D;
     else if(c == QChar('M')) return GIT_STATUS_LABEL_M;
     else if(c == QChar('R')) return GIT_STATUS_LABEL_R;
+    else if(c == QChar('U')) return GIT_STATUS_LABEL_U;
     else if(c == QChar('?') && !staged) return GIT_STATUS_LABEL_1;
     else if(c == QChar('!') && !staged) return GIT_STATUS_LABEL_2;
     else return "";
@@ -641,7 +641,7 @@ void TabGit::action_tags(QStringList args)
  * appel à la fonction TabGit::action. Le signal TabGit::branch_update est
  * émit en fin d'exécution.
  */
-void TabGit::action_branch(QStringList args)
+void TabGit::action_branch(const QStringList& args)
 {
     if(args.length() > 0)
     {

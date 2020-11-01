@@ -34,7 +34,7 @@ bool InitGroup::add(const QString& key, const QString& value)
 
 QString InitGroup::toString() const
 {
-    QString text = '[' + m_title + ']';
+    QString text = (m_title != "" ? '[' + m_title + ']' : "");
     for(const QString& key : m_mapValues.keys())
     {
         text += '\n' + key + '=' + m_mapValues.value(key);
@@ -111,15 +111,11 @@ bool InitParser::saveIni(const QString& file) const
     {
         QTextStream stream(&f);
         stream.setCodec("UTF-8");
-        QStringList lines = stream.readAll().split('\n');
 
-        stream << emptyGroup().toString();
         for(const InitGroup& group : m_groupMap)
         {
-            if(group.title() != "")
-            {
-                stream << "\n\n" + group.toString();
-            }
+            qLog->info(group.toString());
+            stream << "\n\n" + group.toString();
         }
 
         f.close();

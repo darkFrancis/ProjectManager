@@ -9,6 +9,7 @@
 
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QDateTime>
 
 #include "TabProject.hpp"
 #include "TabDoxygen.hpp"
@@ -69,9 +70,15 @@ void MainWindow::on_actionAbout_triggered()
 {
     QMessageBox::about(this,
                        "A propos de " + _APPLICATION_NAME_,
-                       "<p>"
+                       QString("<p>") +
                        "Auteur : Dark Francis<br/>"
-                       "Date de création : 21/12/2019"
+                       "Date de création : 21/12/2019<br/>"
+                       "<br/>"
+                       "Build : " +
+                       D_BUILD_DAY + '/' + D_BUILD_MONTH + '/' + D_BUILD_YEAR +
+                       ' ' + __TIME__[0]+__TIME__[1] + ':' + __TIME__[3]+__TIME__[4] + ':' + __TIME__[6]+__TIME__[7] +
+                       "<br/>"
+                       "Version : " + APP_VERSION +
                        "</p>");
 }
 

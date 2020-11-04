@@ -15,8 +15,37 @@
     /* ======================================================================================================== */
 
     /**
-     * Version 0.1 - DD/MM/YYYY
-     *  - ###
+     * Version 1.0 - 04/11/2020
+     *  - Réorganisation complète de l'IHM
+     *  - 3 onglets : projetS, doxygen, git
+     *  - Simplification de l'IHM
+     *  - Ajout gestion versionning ProjectManager
+     *  - Ajout de documentation
+     */
+
+    /**
+     * Version 0.4 - 22/03/2020
+     *  - Ajout système de build pour onglet compilateur
+     *  - Ajout de documentation
+     */
+
+    /**
+     * Version 0.3 - 01/03/2020
+     *  - Réorganisation projet
+     *  - Ajout fonctions avancées git : gestion branches, gestion conflit (exp)
+     *  - Ajout de documentation
+     */
+
+    /**
+     * Version 0.2 - 06/02/2020
+     *  - Stabilisation des parser
+     *  - Ajout de documentation
+     */
+
+    /**
+     * Version 0.1 - 26/01/2020
+     *  - Première version stable
+     *  - 4 onglets : projet, git, doxygen et compilateur
      */
 
 

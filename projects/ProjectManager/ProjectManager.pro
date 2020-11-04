@@ -1,7 +1,7 @@
 QT       += core gui widgets
 
 TARGET = ProjectManager
-VERSION= 0.1
+VERSION= 1.0
 TEMPLATE = app
 
 CONFIG += c++17

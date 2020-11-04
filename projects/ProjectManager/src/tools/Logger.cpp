@@ -185,7 +185,7 @@ void Logger::printLog(LogLvl lvl, const QString& msg)
  * @param rotation Numéro de fichier de rotation
  * @return Nom du fichier avec rotation
  *
- * Le nom de fichier avec rotation est de la forme @p <file>.<rotation>.<ext>.
+ * Le nom de fichier avec rotation est de la forme @p &lt;file>.&lt;rotation>.&lt;ext>.
  * @note La seul exception à la règle est le fichier de rotation 0 qui est le fichier
  * de log en cours.
  */

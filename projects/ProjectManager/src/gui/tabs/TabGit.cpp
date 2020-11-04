@@ -48,8 +48,7 @@ TabGit::~TabGit()
  * Fonction d'initialisation de l'onglet TabGit.@n
  * Récupère les informations du projet avec les méthodes GET de la classe
  * Context pour charger les informations nécessaires au bon fonctionnement
- * de cet onglet. Puis démarre le timer TabGit::m_timer.@n
- * Voir @ref CONTEXT_GET.
+ * de cet onglet. Puis démarre le timer TabGit::m_timer.
  */
 void TabGit::init()
 {

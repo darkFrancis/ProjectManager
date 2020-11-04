@@ -52,7 +52,7 @@ TabDoxygen::~TabDoxygen()
  * Si le fichier Doxygen n'éxiste pas, le créé avec les valeurs par défaut
  * pour chaque option. Ensuite, les différentes fonctions d'initialisation
  * de cet onglet sont appelées.@n
- * Voir Context::m_doxyfile, @ref INIT_DOXYTAB, @ref FILE.
+ * Voir Context::m_doxyfile, @ref INIT_DOXYTAB.
  */
 void TabDoxygen::init()
 {
@@ -87,7 +87,7 @@ void TabDoxygen::init()
  * Fonction d'enregistrement de la classe TabDoxygen.@n
  * Appelle les différentes fonctions d'enregistrement pour mettre à jour
  * le fichier de configuration de Doxygen.@n
- * Voir @ref SAVE_DOXYTAB, @ref FILE.
+ * Voir @ref SAVE_DOXYTAB.
  */
 void TabDoxygen::save()
 {
@@ -120,7 +120,7 @@ void TabDoxygen::save()
  * dans le fichier Doxyfile choisi par l'utilisateur
  * @warning Si un fichier Doxyfile existe déjà, le supprime.
  *
- * Voir @ref FILE, http://www.doxygen.nl/manual/index.html.
+ * Voir http://www.doxygen.nl/manual/index.html.
  */
 void TabDoxygen::createDoxyfile()
 {

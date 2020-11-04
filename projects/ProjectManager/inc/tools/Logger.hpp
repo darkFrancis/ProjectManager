@@ -13,7 +13,7 @@
      * @brief L'énumération LogLvl défini le niveau de log de référence.
      *
      * Ce niveau de log est utilisé de la façon suivante : si le niveau de log
-     * demandé par une fonction est inférieur ou égale à #m_lvl, le log est
+     * demandé par une fonction est inférieur ou égale à #Logger::m_lvl, le log est
      * écrit, sinon, le log est ignoré.
      */
     enum LogLvl : int

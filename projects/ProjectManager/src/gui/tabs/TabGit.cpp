@@ -335,14 +335,15 @@ bool TabGit::action(const QStringList& args, bool b_status /*= true*/)
 {
     if(m_process->state() == QProcess::NotRunning && args.length() > 0)
     {
-        if(b_status) emit status("Lancement git " + args.at(0), 3);
+        if(b_status) emit status("Lancement git " + args.at(0), 3000);
         m_process->start("git", args);
         m_process->waitForFinished();
         m_error = m_process->readAllStandardError();
         m_output = m_process->readAllStandardOutput();
         m_last_exit_code = m_process->exitCode();
         if(m_process->exitStatus() != QProcess::NormalExit) m_last_exit_code = -1;
-        if(b_status) emit status("Fin d'exécution (code retour : " + QString::number(m_last_exit_code) + ")", 2);
+        if(b_status)
+            emit status("Fin d'exécution (code retour : " + QString::number(m_last_exit_code) + ")", 2000);
         if(b_status && m_last_exit_code > 0)
         {
             ErrorViewer *w = new ErrorViewer(this,

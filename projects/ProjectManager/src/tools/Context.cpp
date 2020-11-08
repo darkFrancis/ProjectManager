@@ -1,6 +1,6 @@
 /**
  * @file Context.cpp
- * @brief Definition de la classe Context
+ * @brief Source du contexte d'utilisation
  * @author Dark Francis
  * @date 26/10/2020
  */
@@ -14,19 +14,19 @@
 #include "version.hpp"
 #include "Logger.hpp"
 
-#define PROJECTMANAGER_DIR ".projectmanager"
-#define PROJECT_FILE "project.list"
-#define INIT_FILE QDir(qApp->applicationDirPath()).absoluteFilePath(_APPLICATION_NAME_ + ".ini")
+#define PROJECTMANAGER_DIR ".projectmanager" /**< Nom du dossier caché de projet. */
+#define PROJECT_FILE "project.list" /**< Nom du fichier contenant la liste des sous-projets du projet. */
+#define INIT_FILE QDir(qApp->applicationDirPath()).absoluteFilePath(_APPLICATION_NAME_ + ".ini") /**< Checmin vers le fichier d'initialisation de l'application. */
 
-#define KW_LASTSEARCH   "last-search"
-#define KW_LASTDIR      "last-dir"
+#define KW_LASTSEARCH   "last-search" /**< Mot clé du fichier d'initialisation pour la dernière recherche */
+#define KW_LASTDIR      "last-dir" /**< Mot clé du fichier d'initialisation pour le dernier dossier de projet */
 
 Context* Context::m_instance = nullptr;
 
 /**
  * Constructeur de la classe Context.@n
  * Initialise le contexte et rend accessible l'instance.@n
- * Voir #qCtx.
+ * @sa #qCtx.
  */
 Context::Context()
 {
@@ -55,6 +55,10 @@ Context* Context::Instance()
     return m_instance;
 }
 
+/**
+ * Charge la liste des fichiers de sous-projets du projet.
+ * @sa #PROJECT_FILE.
+ */
 void Context::loadSubProjects()
 {
     QFile f(fileInProjectDir(PROJECT_FILE));
@@ -74,6 +78,14 @@ void Context::loadSubProjects()
     }
 }
 
+/**
+ * @brief Context::saveSubProjects
+ * @return @li @b false en cas d'erreur
+ *         @li @b true sinon
+ *
+ * Enregistre la liste des sous-projets.
+ * @sa #PROJECT_FILE.
+ */
 bool Context::saveSubProjects() const
 {
     QFile f(fileInProjectDir(PROJECT_FILE));
@@ -96,14 +108,31 @@ bool Context::saveSubProjects() const
  */
 void Context::setLastSearch(const QString& val) { m_lastSearch = val; }
 
+/**
+ * @param dir Nouvelle valeur de #m_projectDir
+ */
 void Context::setProjectDir(const QString& dir) { m_projectDir = dir; }
 
+/**
+ * @param val Nom du projet à ajouter
+ *
+ * Ajoute le projet à la liste des sous-projets sans doublon.
+ * @sa #m_subProjectList.
+ */
 void Context::addSubProject(const QString& val)
 {
     m_subProjectList << val;
     m_subProjectList.removeDuplicates();
 }
 
+/**
+ * @param val Nom du sous-projet à supprimer
+ * @return @li @b true si le sous-projets était effectivement présent
+ *         @li @b false sinon
+ *
+ * Supprime le sous-projet de la liste.
+ * @sa #m_subProjectList.
+ */
 bool Context::removeSubProject(const QString& val)
 {
     if(m_subProjectList.contains(val))
@@ -118,16 +147,36 @@ bool Context::removeSubProject(const QString& val)
  */
 QString Context::lastSearch() const { return m_lastSearch; }
 
+/**
+ * @return #m_projectDir
+ */
 QString Context::projectDir() const { return m_projectDir; }
 
+/**
+ * @return Chemin vers le fichier Doxyfile du projet
+ */
 QString Context::doxyfile() const { return fileInProjectDir("Doxyfile"); }
 
+/**
+ * @return Chemin vers le dossier des templates Doxygen du projet
+ */
 QString Context::doxygenTemplateDir() const { return fileInProjectDir("doxygen-templates"); }
 
+/**
+ * @return #m_subProjectList
+ */
 QStringList Context::subProjects() const { return m_subProjectList; }
 
+/**
+ * @return #PROJECTMANAGER_DIR
+ */
 QString Context::projectHiddenDirName() const { return PROJECTMANAGER_DIR; }
 
+/**
+ * Initialise le contexte en lisant le fichier INI de l'application.
+ * @note Si le fichier n'existe pas, le créé avec la méthode save().
+ * @sa #INIT_FILE, #KW_LASTSEARCH, #KW_LASTDIR.
+ */
 void Context::init()
 {
     qLog->info("Initialisation du contexte");
@@ -145,6 +194,10 @@ void Context::init()
     }
 }
 
+/**
+ * Enregistre le contexte dans le fichier INI.
+ * @sa #INIT_FILE, #KW_LASTSEARCH, #KW_LASTDIR.
+ */
 void Context::save()
 {
     qLog->info("Enregistrement du fichier INI");
@@ -163,6 +216,11 @@ void Context::save()
     }
 }
 
+/**
+ * @param file Nom du fichier à trouver
+ * @return Chemin absolu vers le fichier dans le dosier du projet.
+ * @sa #PROJECTMANAGER_DIR.
+ */
 QString Context::fileInProjectDir(const QString file) const
 {
     return QDir(QDir(m_projectDir).absoluteFilePath(PROJECTMANAGER_DIR)).absoluteFilePath(file);

@@ -1,6 +1,6 @@
 /**
  * @file BranchesWindow.hpp
- * @brief Description de la classe BranchesWindow
+ * @brief Définition de la fenêtre de gestion des branches
  * @author Dark Francis
  * @date 21/12/2019
  */
@@ -15,12 +15,11 @@
     }
 
     /**
-     * @class BranchesWindow
+     * @header_table BranchesWindow.hpp @end_table
      * @brief La classe BranchesWindow défini la fenêtre de gestion des branches GIT.
      *
      * Ces branches peuvent être ajoutées, supprimées, renommées ou copiées. Toute
      * autre commande devra se faire manuellement depuis l'onglet Git.@n
-     * Header : BranchesWindow.hpp
      */
     class BranchesWindow : public QMainWindow
     {
@@ -54,7 +53,7 @@
             QString get_selected();
 
         private:
-            Ui::BranchesWindow *ui;/**< UI de la classe BranchesWindow */
+            Ui::BranchesWindow *ui; /**< UI de la classe BranchesWindow */
     };
 
 #endif // BRANCHESWINDOW_HPP

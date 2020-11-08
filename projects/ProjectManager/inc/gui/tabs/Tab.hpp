@@ -1,6 +1,6 @@
 /**
  * @file Tab.hpp
- * @brief Description de la classe abstraite Tab
+ * @brief Définition de la classe abstraite des onglets
  * @author Dark Francis
  * @date 21/12/2019
  */
@@ -10,13 +10,11 @@
     #include <QWidget>
 
     /**
-     * @class Tab
+     * @header_table Tab.hpp @end_table
      * @brief La classe Tab est une classe abstraite pour les onglets principaux
      *
-     * Cette classe hérite de la classe QWidget.@n
-     * Cette classe défini des fonctions d'initialisation, de nettoyage et de récupération
-     * des informations pour les Widgets des onglets.
-     * @n Header : Tab.hpp
+     * Cette classe défini des fonctions d'initialisation, de nettoyage et d'enregistrement
+     * pour les onglets.
      */
     class Tab : public QWidget
     {
@@ -34,8 +32,7 @@
              * @param timeout Temps d'affichage en secondes
              *
              * Ce signal est émit pour effectuer un affichage de status dans la
-             * fenêtre principale.@n
-             * Voir MainWindow::status.
+             * fenêtre principale.
              */
             void status(const QString& msg, int timeout);
     };

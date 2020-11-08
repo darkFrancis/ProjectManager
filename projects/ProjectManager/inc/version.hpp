@@ -1,6 +1,6 @@
 /**
  * @file version.hpp
- * @brief Définition des variable de versionning
+ * @brief Définition des variables de versionning
  * @author Dark Francis
  * @date 25/10/2020
  */
@@ -13,6 +13,18 @@
     const QString _VERSION_             = APP_VERSION; /*< Version de l'application */
 
     /* ======================================================================================================== */
+
+    /**
+     * @mainpage Documentation de ProjectManager
+     * @author Dark Francis
+     * @date 26/01/2020
+     *
+     * ProjectManager est un outil de gestion de projet.@n
+     * Cet outil se base sur les outils suivant :
+     * @li Doxygen : permet de générer une documentation de code au format
+     * HTML, LaTeX ou autre et des graphique avec Dot.
+     * @li Git : permet la gestion des sources et du versionning.
+     */
 
     /**
      * Version 1.0 - 04/11/2020
@@ -91,5 +103,32 @@
     #define D_BUILD_YEAR    __DATE__[7] + __DATE__[8] + __DATE__[9] + __DATE__[10] /**< Année de compilation */
     #define D_BUILD_DATE    D_BUILD_YEAR + D_BUILD_MONTH + D_BUILD_DAY /**< Date de compilation */
     #define D_BUILD_TIME    __TIME__[0] + __TIME__[1] + __TIME__[3] + __TIME__[4] + __TIME__[6] + __TIME__[7] /**< Horaire de compilation */
+
+    /* ======================================================================================================== */
+
+    /**
+     * @namespace Ui
+     * @brief Namespece QT
+     *
+     * Le namespace Ui permet de définir les objets graphiques construit à
+     * partir du designer de QtCreator.
+     */
+
+    /**
+     * @class QMainWindow
+     * @brief Classe QT
+     *
+     * La classe QMainWindow définie la base des fenêtres principales fournie
+     * par l'API QT.
+     * @sa Ui.
+     */
+
+    /**
+     * @class QWidget
+     * @brief Classe QT
+     *
+     * La classe QWidget définie la base des widgets fournis par l'API QT.
+     * @sa Ui.
+     */
 
 #endif // VERSION_HPP

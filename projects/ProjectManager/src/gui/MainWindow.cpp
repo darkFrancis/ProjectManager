@@ -1,6 +1,6 @@
 /**
  * @file MainWindow.cpp
- * @brief Definition de la fenêtre principale
+ * @brief Source de la fenêtre principale
  * @author Dark Francis
  * @date 25/10/2020
  */
@@ -51,6 +51,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Connections
     connect(tabProject, &TabProject::projectListChange, tabGit, &TabGit::updateProjectNames);
+    connect(tabProject, &Tab::status, ui->statusBar, &QStatusBar::showMessage);
+    connect(tabDoxygen, &Tab::status, ui->statusBar, &QStatusBar::showMessage);
+    connect(tabGit, &Tab::status, ui->statusBar, &QStatusBar::showMessage);
 
     // Init
     if(qCtx->projectDir() != "")

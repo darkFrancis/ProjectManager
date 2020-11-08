@@ -1,6 +1,6 @@
 /**
  * @file Logger.cpp
- * @brief Definition de la classe Logger
+ * @brief Source du logger
  * @author Dark Francis
  * @date 25/10/2020
  */

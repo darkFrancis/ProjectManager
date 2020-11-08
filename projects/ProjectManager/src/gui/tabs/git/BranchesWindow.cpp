@@ -1,6 +1,6 @@
 /**
  * @file BranchesWindow.cpp
- * @brief Définition de la classe BranchesWindow
+ * @brief Source de la fenêtre de gestion des branches
  * @author Dark Francis
  * @date 21/12/2019
  */
@@ -13,10 +13,7 @@
  * @param parent Le QWidget parent de cette fenêtre
  *
  * Contructeur de la classe BranchesWindow.@n
- * Ce constructeur hérite de celui de QMainWindow et utilise le système des fichiers
- * d'interface utilisateur.@n
- * Ce constructeur rend la fenêtre modale.@n
- * Voir Ui.
+ * Ce constructeur rend la fenêtre modale.
  */
 BranchesWindow::BranchesWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -118,22 +115,21 @@ void BranchesWindow::on_listWidget_branch_currentItemChanged(QListWidgetItem *cu
 /**
  * Ce connecteur est activé par un clic souris de l'utilisateur sur le
  * bouton Ajouter.@n
- * Si la fonction BranchesWindow::check_branch_name appliquée au nom de
- * branche renseignée par l'utilisateur renvoie @b true, ajoute une
- * nouvelle branche grâce à l'émission du signal BranchesWindow::action.
+ * Ajoute la branche si le nom est valide.
+ * @sa check_branch_name().
  */
 void BranchesWindow::on_pushButton_add_clicked()
 {
     QString name = ui->lineEdit_add->text().simplified();
-    if(check_branch_name(name)) emit action(QStringList() << "branch" << name);
+    if(check_branch_name(name))
+        emit action(QStringList() << "branch" << name);
 }
 
 /**
  * Ce connecteur est activé par un clic souris de l'utilisateur sur le
  * bouton Renommer.@n
- * Si la fonction BranchesWindow::check_branch_name appliquée au nom de
- * branche renseignée par l'utilisateur renvoie @b true, renomme la
- * branche sélectionnée grâce à l'émission du signal BranchesWindow::action.
+ * Renomme la branche sélectionnée avec le nom demandé si valide.
+ * @sa check_branch_name().
  */
 void BranchesWindow::on_pushButton_rename_clicked()
 {
@@ -141,16 +137,16 @@ void BranchesWindow::on_pushButton_rename_clicked()
     if(check_branch_name(name))
     {
         QString branch = get_selected();
-        if(branch != "") emit action(QStringList() << "branch" << "-m" << branch << name);
+        if(branch != "")
+            emit action(QStringList() << "branch" << "-m" << branch << name);
     }
 }
 
 /**
  * Ce connecteur est activé par un clic souris de l'utilisateur sur le
  * bouton Copier.@n
- * Si la fonction BranchesWindow::check_branch_name appliquée au nom de
- * branche renseignée par l'utilisateur renvoie @b true, copie la branche
- * sélectionnée grâce à l'émission du signal BranchesWindow::action.
+ * Si le nom est valide, copie la branche avec le nom demandé.
+ * @sa check_branch_name().
  */
 void BranchesWindow::on_pushButton_copy_clicked()
 {
@@ -158,15 +154,15 @@ void BranchesWindow::on_pushButton_copy_clicked()
     if(check_branch_name(name))
     {
         QString branch = get_selected();
-        if(branch != "") emit action(QStringList() << "branch" << "-c" << branch << name);
+        if(branch != "")
+            emit action(QStringList() << "branch" << "-c" << branch << name);
     }
 }
 
 /**
  * Ce connecteur est activé par un clic souris de l'utilisateur sur le
  * bouton Supprimer.@n
- * Supprime la branche sélectionnée grâce à l'émission du signal
- * BranchesWindow::action.
+ * Supprime la branche sélectionnée.
  */
 void BranchesWindow::on_pushButton_remove_clicked()
 {
@@ -176,10 +172,11 @@ void BranchesWindow::on_pushButton_remove_clicked()
 
 /**
  * @param name Nom de branche Git
- * @return Booléen de vérification
+ * @return @li @b true si le nom ne contient  que des chiffres ou des lettres
+ *         @li @b false sinon
  *
  * Vérifie que le nom de la branche ne contient que des caractères alphanumériques.
- * Sinon, affiche une popup d'erreur.
+ * @note Une popup d'erreur apparaît en cas de retour @b false.
  */
 bool BranchesWindow::check_branch_name(const QString& name)
 {

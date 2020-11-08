@@ -1,3 +1,9 @@
+/**
+ * @file TabProject.cpp
+ * @brief Source de l'onglet de projet
+ * @author Dark Francis
+ * @date 26/10/2020
+ */
 #include "TabProject.hpp"
 #include "ui_TabProject.h"
 
@@ -6,6 +12,11 @@
 
 #include "Context.hpp"
 
+/**
+ * @param parent QWidget parent
+ *
+ * Constructeur de la classe TabProject.
+ */
 TabProject::TabProject(QWidget *parent) :
     Tab(parent),
     ui(new Ui::TabProject)
@@ -13,11 +24,17 @@ TabProject::TabProject(QWidget *parent) :
     ui->setupUi(this);
 }
 
+/**
+ * Destructeur de la classe TabProject.
+ */
 TabProject::~TabProject()
 {
     delete ui;
 }
 
+/**
+ * Initialise l'onglet projet. Remplit la listes des sous-projets.
+ */
 void TabProject::init()
 {
     clean();
@@ -26,16 +43,27 @@ void TabProject::init()
     emit projectListChange();
 }
 
+/**
+ * Nettoie la liste des sous-projets.
+ */
 void TabProject::clean()
 {
     ui->listWidget_projects->clear();
 }
 
+/**
+ * Enregistre la liste des sous-projets.
+ */
 void TabProject::save()
 {
     qCtx->saveSubProjects();
 }
 
+/**
+ * Cette méthode est appelée par un clic sur le bouton "Ajouter".@n
+ * Permet à l'utilisateur de sélectionner des projets à ajouter à
+ * la liste des sous-projets.
+ */
 void TabProject::on_pushButton_add_clicked()
 {
     QString projectFile = QFileDialog::getOpenFileName(this,
@@ -63,6 +91,9 @@ void TabProject::on_pushButton_add_clicked()
     }
 }
 
+/**
+ * Supprime les sous-projets sélectionnés de la listes des sous-projets.
+ */
 void TabProject::on_pushButton_delete_clicked()
 {
     QList<QListWidgetItem*> selection = ui->listWidget_projects->selectedItems();

@@ -1,6 +1,6 @@
 /**
  * @file Logger.hpp
- * @brief Definition de la classe Logger
+ * @brief Definition du logger
  * @author Dark Francis
  * @date 25/10/2020
  */
@@ -10,6 +10,7 @@
     #include <QString>
 
     /**
+     * @header_table Logger.hpp @end_table
      * @brief L'énumération LogLvl défini le niveau de log de référence.
      *
      * Ce niveau de log est utilisé de la façon suivante : si le niveau de log
@@ -27,6 +28,7 @@
     };
 
     /**
+     * @header_table Logger.hpp @end_table
      * @brief La classe Logger définie l'instance de log.
      *
      * Un objet de cette classe doit être créé dans la fonction principale pour
@@ -59,6 +61,6 @@
             LogLvl m_lvl;               /**< Niveau actuel de log */
     };
 
-    #define qLog Logger::Instance()
+    #define qLog Logger::Instance() /**< Pointeur vers l'instance de la classe Logger. */
 
 #endif // LOGGER_HPP

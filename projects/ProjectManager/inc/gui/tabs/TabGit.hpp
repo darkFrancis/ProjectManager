@@ -1,6 +1,6 @@
 /**
  * @file TabGit.hpp
- * @brief Description de la classe TabGit
+ * @brief Définition de l'onglet Git
  * @author Dark Francis
  * @date 21/12/2019
  */
@@ -30,15 +30,13 @@
     }
 
     /**
-     * @class TabGit
+     * @header_table TabGit.hpp @end_table
      * @brief La classe TabGit défini l'onglet de gestion de Git.
      *
-     * Cette fenêtre lance le programme GitKraken pour la gestion de Git. --> Plus maintenant
-     * @n Header : TabGit.hpp
-     *
-     * @todo Remplacement de l'utilisation de GitKraken par des commandes internes
-     *
-     * @todo Ajout d'option pour la personnalisation des commandes
+     * Cet onglet affiche en permanence l'état actuel du dépôt local Git.
+     * Il permet d'effectuer des commit de façon simplifié et d'acceder aux
+     * différentes fenêtre de gestion Git.
+     * @sa BranchesWindow, ErrorViewer, TagsWindow.
      */
     class TabGit : public Tab
     {

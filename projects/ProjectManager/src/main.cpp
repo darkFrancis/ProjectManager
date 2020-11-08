@@ -1,6 +1,6 @@
 /**
  * @file main.cpp
- * @brief Definition de la fonction principale
+ * @brief Source de la fonction principale
  * @author Dark Francis
  * @date 25/10/2020
  */
@@ -53,7 +53,8 @@ int main(int argc, char *argv[])
 }
 
 /**
- * Fonction de mise en place du style de l'application.
+ * Fonction de mise en place du style de l'application.@n
+ * Le style appliqué est un style sombre.
  */
 void setStyle()
 {

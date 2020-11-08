@@ -1,6 +1,6 @@
 /**
  * @file TagsWindow.hpp
- * @brief Description de la classe TagsWindow
+ * @brief Définition de la fenêtre de gestion des tags
  * @author Dark Francis
  * @date 21/12/2019
  */
@@ -14,12 +14,11 @@
     }
 
     /**
-     * @class TagsWindow
+     * @header_table TagsWindow.hpp @end_table
      * @brief La classe TagsWindow défini la fenêtre de gestion des tags GIT.
      *
      * Ces tags peuvent être ajoutés, supprimés ou poussés. Toute autre commande
-     * devra se faire manuellement depuis l'onglet Git.@n
-     * Header : TagsWindow.hpp
+     * devra se faire manuellement depuis l'onglet Git.
      */
     class TagsWindow : public QMainWindow
     {

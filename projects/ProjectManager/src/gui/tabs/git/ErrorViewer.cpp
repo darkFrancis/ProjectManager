@@ -1,6 +1,6 @@
 /**
  * @file ErrorViewer.cpp
- * @brief Définition de la classe ErrorViewer
+ * @brief Source de la fenêtre de visualisation d'erreur Git
  * @author Dark Francis
  * @date 21/12/2019
  */
@@ -13,10 +13,7 @@
  * @param details Détails de l'erreur
  *
  * Contructeur de la classe ErrorViewer.@n
- * Ce constructeur hérite de celui de QMainWindow et utilise le système des fichiers
- * d'interface utilisateur.@n
- * Ajoute les textes passés en arguments aux widgets associés. Cette fenêtre est modale.@n
- * Voir Ui.
+ * Ajoute les textes passés en arguments aux widgets associés. Cette fenêtre est modale.
  */
 ErrorViewer::ErrorViewer(QWidget *parent, const QString& error, const QString& details) :
     QMainWindow(parent),

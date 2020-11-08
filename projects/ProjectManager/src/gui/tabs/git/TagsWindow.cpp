@@ -1,6 +1,6 @@
 /**
  * @file TagsWindow.cpp
- * @brief Definition de la classe TagsWindow
+ * @brief Source de la fenêtre de gestion des tags
  * @author Dark Francis
  * @date 21/12/2019
  */
@@ -13,11 +13,8 @@
  * @param tags Liste de tags à afficher
  *
  * Contructeur de la classe TagsWindow.@n
- * Ce constructeur hérite de celui de QMainWindow et utilise le système des fichiers
- * d'interface utilisateur.@n
- * Ce constructeur va appeler la fonction TagsWindow::update_tags pour initialiser la
- * liste des tags et rend ensuite la fenêtre modale.@n
- * Voir Ui.
+ * Ce constructeur va appeler la méthode update_tags() pour initialiser la
+ * liste des tags et rend ensuite la fenêtre modale.
  */
 TagsWindow::TagsWindow(QWidget *parent, const QStringList& tags) :
     QMainWindow(parent),
@@ -72,7 +69,7 @@ void TagsWindow::clean_tag_name()
 /**
  * Ce connecteur est activé suite à un clic souris de l'utilisateur sur le
  * bouton Ajouter.@n
- * Ajoute le tag renseigné en émettant le signal TagsWindow::action puis
+ * Ajoute le tag renseigné en émettant le signal action() puis
  * l'ajoute à la liste.
  */
 void TagsWindow::on_pushButton_add_clicked()
@@ -101,7 +98,7 @@ void TagsWindow::on_pushButton_add_clicked()
 /**
  * Ce connecteur est activé suite à un clic souris de l'utilisateur sur le
  * bouton Push.@n
- * Pousse les tags en émettant le signal TagsWindow::action.
+ * Pousse les tags en émettant le signal action().
  */
 void TagsWindow::on_pushButton_push_clicked()
 {
@@ -111,7 +108,7 @@ void TagsWindow::on_pushButton_push_clicked()
 /**
  * Ce connecteur est activé suite à un clic souris de l'utilisateur sur le
  * bouton Push.@n
- * Supprime les tags en émettant le signal TagsWindow::action.
+ * Supprime les tags en émettant le signal action().
  */
 void TagsWindow::on_pushButton_remove_clicked()
 {

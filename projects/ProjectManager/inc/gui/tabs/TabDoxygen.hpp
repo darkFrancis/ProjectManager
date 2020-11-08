@@ -1,6 +1,6 @@
 /**
  * @file TabDoxygen.hpp
- * @brief Description de la classe TabDoxygen
+ * @brief Définition de l'onglet Doxygen
  * @author Dark Francis
  * @date 21/12/2019
  */
@@ -25,7 +25,7 @@
     }
 
     /**
-     * @class TabDoxygen
+     * @header_table TabDoxygen.hpp @end_table
      * @brief La classe TabDoxygen défini l'onglet de configuration de Doxygen.
      *
      * Cette fenêtre est séparée en différentes sections pour la configuration :
@@ -44,8 +44,6 @@
      * @li de générer les templates
      * @li de remettre les paramètres par défaut
      * @li d'appliquer les changements
-     *
-     * Header : TabDoxygen.hpp
      */
     class TabDoxygen : public Tab
     {
@@ -104,8 +102,13 @@
 
         private:
             // Init tabs
-            /** @addtogroup INIT_DOXYTAB
-              * @{ */
+            /**
+             * @addtogroup INIT_DOXYTAB
+             * @brief Groupe de méthodes d'initialisation de l'onglets TabDoxygen.
+             *
+             * Ces méthodes sont toutes appelées lors de l'initialisation de l'onglet.
+             * @sa init().
+             * @{ */
             void init_tabProject();
             void init_tabBuild();
             void init_tabMsg();
@@ -119,8 +122,13 @@
             /** @} */
 
             // Save tabs
-            /** @addtogroup SAVE_DOXYTAB
-              * @{ */
+            /**
+             * @addtogroup SAVE_DOXYTAB
+             * @brief Groupe de méthodes d'enregistrement de l'onglets TabDoxygen.
+             *
+             * Ces méthodes sont toutes appelées lors de l'enregistrement de l'onglet.
+             * @sa save().
+             * @{ */
             void save_tabProject();
             void save_tabBuild();
             void save_tabMsg();
@@ -134,8 +142,14 @@
             /** @} */
 
             // Init Widgets
-            /** @addtogroup SUB_INIT_DOXYTAB
-              * @{ */
+            /**
+             * @addtogroup SUB_INIT_DOXYTAB
+             * @brief Sous-méthodes d'initialisation métier.
+             *
+             * Ces méthodes permettent d'initialiser un composant graphique à partir
+             * d'une clé et d'une valeur par défaut fournies.
+             * @sa init(), @ref INIT_DOXYTAB.
+             * @{ */
             void initCheckbox(const QString& key, QCheckBox* checkbox, bool default_value, bool default_cond = false);
             void initGroupbox(const QString& key, QGroupBox* groupbox, bool default_value, bool default_cond = false);
             void initCombobox(const QString& key, QComboBox* combobox, const QString& default_value = "", bool default_cond = false);
@@ -145,8 +159,14 @@
             /** @} */
 
             // Save Widgets
-            /** @addtogroup SUB_SAVE_DOXYTAB
-              * @{ */
+            /**
+             * @addtogroup SUB_SAVE_DOXYTAB
+             * @brief Sous-méthodes d'enregistrement métier.
+             *
+             * Ces méthodes permettent d'enregistrer un composant graphique à partir
+             * d'une clé et d'une valeur par défaut fournies.
+             * @sa save(), @ref SAVE_DOXYTAB.
+             * @{ */
             void saveCheckbox(const QString& key, QCheckBox* checkbox, bool default_value);
             void saveGroupbox(const QString& key, QGroupBox* groupbox, bool default_value);
             void saveCombobox(const QString& key, QComboBox* combobox, const QString& default_value = "");

@@ -1,6 +1,6 @@
 /**
  * @file MainWindow.hpp
- * @brief Definition de la fenêtre principale
+ * @brief Définition de la fenêtre principale
  * @author Dark Francis
  * @date 25/10/2020
  */
@@ -13,6 +13,13 @@
     class MainWindow;
     }
 
+    /**
+     * @header_table MainWindow.hpp @end_table
+     * @brief La classe MainWindow défini la fenêtre principale.
+     *
+     * Cette fenêtre contient des onglets issus de la classe Tab.
+     * @sa Ui.
+     */
     class MainWindow : public QMainWindow
     {
         Q_OBJECT
@@ -32,7 +39,7 @@
             void enable();
 
         private:
-            Ui::MainWindow *ui;
+            Ui::MainWindow *ui;/**< UI de la classe MainWindow */
     };
 
 #endif // MAINWINDOW_HPP

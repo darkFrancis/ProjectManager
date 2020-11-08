@@ -2234,7 +2234,6 @@ QString TabDoxygen::generateDocFromDir(const QDir &dir, const QString& projectNa
                 QString extra_info = "";
                 if(err_file.open(QIODevice::Text | QIODevice::ReadOnly))
                 {
-                    extra_info ="\n";
                     QString text = err_file.readAll();
                     if(text.simplified() == "")
                     {

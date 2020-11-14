@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 
     // Log
     Logger logger;
-    qLog->createLog("data/log/" + _APPLICATION_NAME_ + ".log", 10);
+    qLog->createLog(qApp->applicationDirPath() + "/data/log/" + _APPLICATION_NAME_ + ".log", 10);
     qLog->info("Démarrage de l'application : " + _APPLICATION_NAME_);
     qLog->info("Version : " + _VERSION_);
 #ifdef _DEBUG

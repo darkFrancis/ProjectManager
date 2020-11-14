@@ -1,15 +1,9 @@
+include(../includes/projects.pri)
 QT       += core gui widgets
 
 TARGET = ProjectManager
 VERSION= 1.0
 TEMPLATE = app
-
-CONFIG += c++17
-
-DEFINES += APP_VERSION=\"\\\"$${VERSION}\\\"\" \
-        APP_NAME=\"\\\"$${TARGET}\\\"\"
-
-CONFIG(debug, release | debug):DEFINES+=_DEBUG
 
 SOURCES += \
         src/gui/tabs/TabDoxygen.cpp \

@@ -81,7 +81,7 @@ void MainWindow::on_actionAbout_triggered()
                        D_BUILD_DAY + '/' + D_BUILD_MONTH + '/' + D_BUILD_YEAR +
                        ' ' + __TIME__[0]+__TIME__[1] + ':' + __TIME__[3]+__TIME__[4] + ':' + __TIME__[6]+__TIME__[7] +
                        "<br/>"
-                       "Version : " + APP_VERSION +
+                       "Version : " + _VERSION_ +
                        "</p>");
 }
 

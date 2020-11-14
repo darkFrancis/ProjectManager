@@ -9,8 +9,8 @@
 
     #include <QString>
 
-    const QString _APPLICATION_NAME_    = APP_NAME; /*< Nom de l'application */
-    const QString _VERSION_             = APP_VERSION; /*< Version de l'application */
+    const QString _APPLICATION_NAME_    = D_APP_NAME; /*< Nom de l'application */
+    const QString _VERSION_             = D_APP_VERSION; /*< Version de l'application */
 
     /* ======================================================================================================== */
 

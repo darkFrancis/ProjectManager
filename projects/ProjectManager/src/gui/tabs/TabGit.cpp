@@ -27,7 +27,7 @@ TabGit::TabGit(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    m_process = new QProcess();
+    m_process = new QProcess;
     connect(&m_timer, &QTimer::timeout, this, &TabGit::update_all);
     ui->lineEdit_commit->setPlaceholderText(GIT_COMMIT_PLACEHOLDER);
 }
@@ -49,6 +49,8 @@ TabGit::~TabGit()
  */
 void TabGit::init()
 {
+    if(!m_process)
+        m_process = new QProcess;
     m_process->setWorkingDirectory(qCtx->projectDir());
     this->update_all();
     ui->comboBox_branch->setCurrentIndex(ui->comboBox_branch->findText(ui->label_branch->text().split(':').at(1).simplified()));
@@ -71,6 +73,7 @@ void TabGit::clean()
     ui->comboBox_remote->clear();
     m_process->kill();
     delete m_process;
+    m_process = nullptr;
 }
 
 /**

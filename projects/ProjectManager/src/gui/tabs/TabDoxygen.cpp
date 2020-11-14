@@ -56,6 +56,7 @@ void TabDoxygen::init()
     m_doxyfile = qCtx->doxyfile();
     if(!QFile::exists(m_doxyfile))
     {
+        qLog->info("Création du fichier Doxyfile :\n" + m_doxyfile);
         createDoxyfile();
     }
 
@@ -428,7 +429,7 @@ void TabDoxygen::createDoxyfile()
     }
     else
     {
-        throw(QString("Impossible de créer le fichier Doxyfile"));
+        throw(QString("Impossible de créer le fichier Doxyfile :\n" + m_doxyfile));
     }
 }
 

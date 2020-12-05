@@ -240,7 +240,8 @@ void TabGit::on_pushButton_checkout_clicked()
 void TabGit::on_pushButton_gitk_clicked()
 {
     QProcess process;
-    process.setWorkingDirectory(m_process->workingDirectory());
+    process.start("cd", QStringList() << qCtx->projectDir());
+    process.waitForFinished();
     process.startDetached("gitk", QStringList() << "--all" << "--date-order");
 }
 

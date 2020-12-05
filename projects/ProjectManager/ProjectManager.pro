@@ -1,9 +1,9 @@
-include(../includes/projects.pri)
 QT       += core gui widgets
 
 TARGET = ProjectManager
 VERSION= 1.0
 TEMPLATE = app
+include(../includes/projects.pri)
 
 SOURCES += \
         src/gui/tabs/TabDoxygen.cpp \

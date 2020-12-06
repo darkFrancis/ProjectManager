@@ -256,7 +256,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBox_projectName"/>
+      <widget class="QComboBox" name="comboBox_projectName">
+       <property name="sizeAdjustPolicy">
+        <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QLineEdit" name="lineEdit_commit"/>

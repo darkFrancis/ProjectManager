@@ -1934,7 +1934,7 @@ void TabDoxygen::getSaveFile(QLineEdit* lineedit)
     {
         QFileInfo fileInfo(result);
         qCtx->setLastSearch(fileInfo.absoluteFilePath());
-        writePath(fileInfo.absoluteFilePath(), lineedit);
+        writePath(qCtx->pathFromProject(fileInfo.absoluteFilePath()), lineedit);
     }
 }
 
@@ -1955,7 +1955,7 @@ void TabDoxygen::getOpenFile(QLineEdit* lineedit)
     {
         QFileInfo fileInfo(result);
         qCtx->setLastSearch(fileInfo.absoluteDir().path());
-        writePath(fileInfo.absoluteFilePath(), lineedit);
+        writePath(qCtx->pathFromProject(fileInfo.absoluteFilePath()), lineedit);
     }
 }
 
@@ -2009,7 +2009,7 @@ void TabDoxygen::getDir(QLineEdit* lineedit)
     {
         QFileInfo fileInfo(result);
         qCtx->setLastSearch(fileInfo.absoluteFilePath());
-        writePath(fileInfo.absoluteFilePath(), lineedit);
+        writePath(qCtx->pathFromProject(fileInfo.absoluteFilePath()), lineedit);
     }
 }
 
@@ -2116,9 +2116,10 @@ void TabDoxygen::on_pushButton_generateDoc_clicked()
     this->setEnabled(false);
     save();
     QStringList errList;
+    QDir projectDir(qCtx->projectDir());
     for(const QString& projectFile : qCtx->subProjects())
     {
-        QString err = generateDocFromDir(QFileInfo(projectFile).absoluteDir(), QFileInfo(projectFile).baseName());
+        QString err = generateDocFromDir(QFileInfo(projectDir.absoluteFilePath(projectFile)).absoluteDir(), QFileInfo(projectFile).baseName());
         if(err != "")
         {
             errList << err;
@@ -2183,45 +2184,7 @@ QString TabDoxygen::generateDocFromDir(const QDir &dir, const QString& projectNa
         if(QFile::copy(qCtx->doxyfile(), destFile))
         {
             // Remplacement des informations de projet
-            QFile doxyfile(destFile);
-            if(doxyfile.open(QIODevice::ReadOnly | QIODevice::Text))
-            {
-                QTextStream streamR(&doxyfile);
-                streamR.setCodec("UTF-8");
-                QStringList lines = streamR.readAll().split('\n');
-                doxyfile.close();
-
-                if(doxyfile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
-                {
-                    QTextStream streamW(&doxyfile);
-                    streamW.setCodec("UTF-8");
-                    for(const QString& line : lines)
-                    {
-                        if(line.trimmed().startsWith("OUTPUT_DIRECTORY"))
-                        {
-                            streamW << line << "/" << projectName;
-                        }
-                        else if(line.trimmed().startsWith("PROJECT_NAME"))
-                        {
-                            streamW << "PROJECT_NAME=" << projectName;
-                        }
-                        else
-                        {
-                            streamW << line;
-                        }
-                        streamW << endl;
-                    }
-                    doxyfile.close();
-                }
-                else
-                {
-                    throw QString("Impossible de modifier le fichier Doxyfile !");
-                }
-            }
-            else
-            {
-                throw QString("Impossible de modifier le fichier Doxyfile !");
-            }
+            changeDoxyfilePaths(destFile, projectName);
 
             // Génération de la doc
             QProcess process;
@@ -2267,4 +2230,102 @@ QString TabDoxygen::generateDocFromDir(const QDir &dir, const QString& projectNa
         QMessageBox::critical(this, "Doxygen",  msg);
     }
     return "";
+}
+
+/**
+ * @param filePath Fichier Doxyfile à modifier
+ * @param projectName Nom du sous-projet associé
+ *
+ * Nomme le sous-projet à documenté d'après le paramètre @p projectName donné.
+ * Puis, modifie tous les chemin relatifs donnés pour qu'il pointe vers les bons
+ * fichiers car initialement enregistrés comme pointant vers un chemin relatif au
+ * dossier de projet général.
+ */
+void TabDoxygen::changeDoxyfilePaths(const QString& filePath, const QString& projectName) const
+{
+    QFile doxyfile(filePath);
+    if(doxyfile.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        QTextStream streamR(&doxyfile);
+        streamR.setCodec("UTF-8");
+        QStringList lines = streamR.readAll().split('\n');
+        doxyfile.close();
+
+        // Préparation du chemin préfixe
+        QDir subProjectDir(QFileInfo(filePath).absoluteDir());
+        QString prefixPath = subProjectDir.relativeFilePath(qCtx->projectDir());
+
+        // Préparation de liste de mots clés pour remplacement simple des chemins
+        QStringList kwList = QStringList()
+                             << "PROJECT_LOGO"
+                             << "FILE_VERSION_FILTER"
+                             << "LAYOUT_FILE"
+                             << "CITE_BIB_FILE"
+                             << "WARN_LOGFILE"
+                             << "EXEMPLE_PATH"
+                             << "IMAGE_PATH"
+                             << "INPUT_FILTER"
+                             << "USE_MDFILE_AS_MAINPAGE"
+                             << "HTML_HEADER"
+                             << "HTML_FOOTER"
+                             << "HTML_STYLESHEET"
+                             << "HTML_EXTRA_STYLESHEET"
+                             << "MATHJAX_CODEFILE"
+                             << "LATEX_HEADER"
+                             << "LATEX_FOOTER"
+                             << "LATEX_STYLESHEET"
+                             << "LATEX_EXTRA_STYLESHEET"
+                             << "RTF_STYLESHEET_FILE"
+                             << "RTF_EXTENTIONS_FILE";
+
+        if(doxyfile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
+        {
+            QTextStream streamW(&doxyfile);
+            streamW.setCodec("UTF-8");
+            for(const QString& line : lines)
+            {
+                int idx = line.indexOf('=');
+                if(idx >= 0)
+                {
+                    QString key = line.left(idx).trimmed();
+                    QString value = line.mid(idx+1).trimmed();
+
+                    if(key == "PROJECT_NAME")
+                    {
+                        streamW << key << '=' << projectName;
+                    }
+                    else if(key == "OUTPUT_DIRECTORY")
+                    {
+                        if(QFileInfo(value).isRelative())
+                        {
+                            value = prefixPath + value;
+                        }
+                        streamW << key << '=' << value << "/" << projectName;
+                    }
+                    else if(kwList.contains(key))
+                    {
+                        if(QFileInfo(value).isRelative())
+                        {
+                            value = prefixPath + value;
+                        }
+                        streamW << key << '=' << value;
+                    }
+                    else
+                    {
+                        streamW << line;
+                    }
+                }
+                streamW << endl;
+            }
+            doxyfile.close();
+        }
+        else
+        {
+            throw QString("Impossible de modifier le fichier Doxyfile !");
+        }
+    }
+    else
+    {
+        throw QString("Impossible de modifier le fichier Doxyfile !");
+    }
 }

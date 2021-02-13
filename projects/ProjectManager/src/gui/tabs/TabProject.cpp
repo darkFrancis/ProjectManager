@@ -73,7 +73,7 @@ void TabProject::on_pushButton_add_clicked()
     if(projectFile != "")
     {
         qCtx->setLastSearch(projectFile);
-        projectFile = QFileInfo(projectFile).absoluteFilePath();
+        projectFile = qCtx->pathFromProject(QFileInfo(projectFile).absoluteFilePath());
         for(int i = 0; i < ui->listWidget_projects->count(); i++)
         {
             if(ui->listWidget_projects->item(i)->text() == projectFile)

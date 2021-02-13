@@ -73,7 +73,7 @@ void Context::loadSubProjects()
         for(const QString& line : lines)
         {
             if(line.trimmed() != "")
-                m_subProjectList << QFileInfo(line).absoluteFilePath();
+                m_subProjectList << qCtx->pathFromProject(QDir(qCtx->projectDir()).absoluteFilePath(line));
         }
     }
 }
@@ -151,6 +151,15 @@ QString Context::lastSearch() const { return m_lastSearch; }
  * @return #m_projectDir
  */
 QString Context::projectDir() const { return m_projectDir; }
+
+/**
+ * @param absolutePath Chemin absolu
+ * @return Chemin relatif par rapport au chemin du dossier projet en cours
+ */
+QString Context::pathFromProject(const QString& absolutePath) const
+{
+    return QDir(m_projectDir).relativeFilePath(absolutePath);
+}
 
 /**
  * @return Chemin vers le fichier Doxyfile du projet

@@ -180,6 +180,7 @@
 
             // Doc
             QString generateDocFromDir(const QDir& dir, const QString& projectName);
+            void changeDoxyfilePaths(const QString& filePath, const QString& projectName) const;
 
         private:
             Ui::TabDoxygen *ui;/**< UI de la classe TabDoxygen */

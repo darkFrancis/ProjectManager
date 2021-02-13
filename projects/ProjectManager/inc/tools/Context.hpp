@@ -36,6 +36,7 @@
             bool removeSubProject(const QString& val);
             QString lastSearch() const;
             QString projectDir() const;
+            QString pathFromProject(const QString& absolutePath) const;
             QString doxyfile() const;
             QString doxygenTemplateDir() const;
             QStringList subProjects() const;
@@ -48,7 +49,7 @@
         private:
             static Context* m_instance; /**< Pointeur vers l'instance de la classe Context. */
             QString m_lastSearch; /**< Dernière recherche effectuée. */
-            QString m_projectDir; /**< Fichier du projet */
+            QString m_projectDir; /**< Dossier du projet */
             QStringList m_subProjectList; /**< Liste des sous-projets utilisés pour la documentation. */
             InitParser m_parser; /**< Parser de fichier INI */
     };

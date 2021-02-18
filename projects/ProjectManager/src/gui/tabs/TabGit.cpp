@@ -156,12 +156,27 @@ void TabGit::on_checkBox_amend_stateChanged(int arg1)
                 }
             }
         }
+        if(output.startsWith("[#"))
+        {
+            idx = output.indexOf(']');
+            if(idx >= 0)
+            {
+                bool bOk;
+                int nbIssue = output.left(idx).mid(2).toInt(&bOk);
+                if(bOk && nbIssue > 0)
+                {
+                    ui->lineEdit_issue->setText(QString::number(nbIssue));
+                    output = output.mid(idx+1).trimmed();
+                }
+            }
+        }
         ui->lineEdit_commit->setText(output);
 
     }
     else
     {
         ui->lineEdit_commit->clear();
+        ui->lineEdit_issue->clear();
     }
 }
 

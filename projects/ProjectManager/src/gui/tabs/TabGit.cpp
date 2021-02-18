@@ -111,6 +111,11 @@ void TabGit::on_pushButton_commit_clicked()
     args << "-m";
     QString msg = ui->lineEdit_commit->text().simplified();
     if(msg.trimmed() == QString("")) msg = GIT_COMMIT_DEFAULT_MSG;
+    QString issueNb = ui->lineEdit_issue->text().trimmed();
+    if(issueNb != "")
+    {
+        msg.prepend("[#" + issueNb + "] ");
+    }
     if(ui->checkBox_projectName->isChecked())
     {
         msg.prepend(ui->comboBox_projectName->currentText() + " - ");
@@ -119,6 +124,7 @@ void TabGit::on_pushButton_commit_clicked()
     if(action(args))
     {
         ui->lineEdit_commit->clear();
+        ui->lineEdit_issue->clear();
         ui->checkBox_amend->setChecked(false);
     }
 }
@@ -157,6 +163,35 @@ void TabGit::on_checkBox_amend_stateChanged(int arg1)
     {
         ui->lineEdit_commit->clear();
     }
+}
+
+/**
+ * Ce connecteur est activé par un retour clavier depuis la ligne d'édition des
+ * messages pour commit.@n
+ * Exécute la même action que la fonction on_pushButton_commit_clicked().
+ */
+void TabGit::on_lineEdit_commit_returnPressed()
+{
+    if(ui->pushButton_commit->isEnabled())
+        on_pushButton_commit_clicked();
+}
+
+/**
+ * @param arg1 Nouveau texte de la ligne de numéro d'issue
+ *
+ * Change le texte affiché pour n'afficher que des numéros.
+ */
+void TabGit::on_lineEdit_issue_textChanged(const QString &arg1)
+{
+    QString text;
+    for(const QChar& c : arg1)
+    {
+        if(c.isNumber())
+        {
+            text.append(c);
+        }
+    }
+    ui->lineEdit_issue->setText(text);
 }
 
 /**
@@ -261,17 +296,18 @@ void TabGit::on_pushButton_tags_clicked()
 }
 
 /**
- * Ce connesteur est activé par un clic souris de l'utilisateur sur le bouton
- * Conflit.
- *
- * @todo Finir fenêtre de gestion des conflits et l'ouvrir
+ * Ce connecteur est activé par un clic souris de l'utilisateur sur le bouton
+ * Conflit.@n
+ * Ouvre l'outil "meld" avec la fonction git mergetool.
  */
 void TabGit::on_pushButton_conflicts_clicked()
 {
-    QMessageBox::information(this,
-                             "Information",
-                             "Cette fonctionnalité est encore en cours de développement."
-                             "Revenez plus tard.");
+    QProcess *p = new QProcess;
+    p->setProgram("git");
+    p->setArguments(QStringList() << "mergetool" << "--tool=meld");
+    p->setWorkingDirectory(qCtx->projectDir());
+    p->start();
+    connect(p, &QProcess::readyRead, this, &TabGit::closeMergeTool);
 }
 
 /**
@@ -689,6 +725,21 @@ void TabGit::action_branch(const QStringList& args)
             while(!action(QStringList() << "branch")){}
             emit branch_update(m_output.split('\n'));
         }
+    }
+}
+
+/**
+ * Ce connecteur est activé par le processus d'activation de l'outil de merge.@n
+ * Il permet de fermer l'outil de merge lorsque celui-ci est fermé sans merge.
+ */
+void TabGit::closeMergeTool()
+{
+    QProcess* p = reinterpret_cast<QProcess*>(sender());
+    QString textReaded = p->readAll();
+    if(textReaded.contains("Was the merge successful [y/n]?")
+       || textReaded.contains("Continue merging other unresolved paths [y/n]?"))
+    {
+        p->write("n\n");
     }
 }
 

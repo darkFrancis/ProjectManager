@@ -77,6 +77,7 @@
             void on_pushButton_commit_clicked();
             void on_checkBox_amend_stateChanged(int arg1);
             void on_lineEdit_commit_returnPressed();
+            void on_lineEdit_issue_textChanged(const QString &arg1);
             // Branches
             void on_toolButton_branch_clicked();
             void on_pushButton_branchMerge_clicked();

@@ -358,7 +358,9 @@ void TabGit::on_pushButton_fetch_clicked()
  */
 void TabGit::on_pushButton_rebase_clicked()
 {
-    action(QStringList() << "rebase");
+    action(QStringList() << "rebase"
+                         << ui->comboBox_remote->currentText() + '/' + ui->comboBox_branch->currentText()
+                         << ui->comboBox_branch->currentText());
 }
 
 /**

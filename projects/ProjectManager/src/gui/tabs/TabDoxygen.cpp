@@ -14,6 +14,7 @@
 #include <QProcess>
 #include "Logger.hpp"
 #include "Context.hpp"
+#include "DoxygenFilesHelper.hpp"
 
 /**
  * @param parent Le QWidget parent de cet onglet
@@ -53,14 +54,14 @@ TabDoxygen::~TabDoxygen()
 void TabDoxygen::init()
 {
     qLog->debug("TabDoxygen - initialisation...");
-    m_doxyfile = qCtx->doxyfile();
-    if(!QFile::exists(m_doxyfile))
+    QString doxyfile = qCtx->doxyfile();
+    if(!QFile::exists(doxyfile))
     {
-        qLog->info("Création du fichier Doxyfile :\n" + m_doxyfile);
+        qLog->info("Création du fichier Doxyfile :\n" + doxyfile);
         createDoxyfile();
     }
 
-    if(m_parser.loadIni(m_doxyfile))
+    if(m_parser.loadIni(doxyfile))
     {
         init_tabProject();
         init_tabBuild();
@@ -88,7 +89,7 @@ void TabDoxygen::init()
  */
 void TabDoxygen::save()
 {
-    QFile file(m_doxyfile);
+    QFile file(qCtx->doxyfile());
     if(file.open(QIODevice::Text | QIODevice::WriteOnly | QIODevice::Truncate))
     {
         m_stream = new QTextStream(&file);
@@ -120,7 +121,7 @@ void TabDoxygen::save()
  */
 void TabDoxygen::createDoxyfile()
 {
-    QFile doxyfile(m_doxyfile);
+    QFile doxyfile(qCtx->doxyfile());
     if(doxyfile.open(QIODevice::Text | QIODevice::Truncate | QIODevice::WriteOnly))
     {
         m_stream = new QTextStream(&doxyfile);
@@ -429,7 +430,7 @@ void TabDoxygen::createDoxyfile()
     }
     else
     {
-        throw(QString("Impossible de créer le fichier Doxyfile :\n" + m_doxyfile));
+        throw(QString("Impossible de créer le fichier Doxyfile :\n" + qCtx->doxyfile()));
     }
 }
 
@@ -2061,48 +2062,7 @@ void TabDoxygen::on_pushButton_default_clicked()
 
 /**
  * Ce connecteur est activé lors d'un clic souris par l'utilisateur sur le
- * bouton "Générer Templates".@n
- * Exécute les commandes de génération des templates Doxygen dans le dossier
- * spécifié dans l'instance Settings à partir du dossier de configuration
- * de Doxygen.
- * @sa Context::doxygenTemplateDir().
- */
-void TabDoxygen::on_pushButton_generateFiles_clicked()
-{
-    QFileInfo infos(m_doxyfile);
-    QString dir = infos.absoluteDir().absolutePath();
-    if(!dir.endsWith('/')) dir.append('/');
-
-    try
-    {
-        QApplication::setOverrideCursor(Qt::WaitCursor);
-        // Create Dir
-        dir += qCtx->doxygenTemplateDir();
-        if(!dir.endsWith('/')) dir.append('/');
-        command("mkdir " + dir, ".");
-        command("mkdir rtf", dir);
-        command("mkdir html", dir);
-        command("mkdir latex", dir);
-        command("doxygen -l layout.xml", dir);
-        command("doxygen -w rtf styleSheetFile", dir + "rtf");
-        command("doxygen -e rtf extensionsFile", dir + "rtf");
-        command("doxygen -w html header.html footer.html stylesheet.css", dir + "html");
-        command("doxygen -w latex header.html footer.html stylesheet.css", dir + "latex");
-        QApplication::restoreOverrideCursor();
-        QMessageBox::information(this,
-                                 "Création des templates",
-                                 "Les templates ont été créés dans le dossier\n" + dir);
-        command("browse", dir);
-    }
-    catch(QString msg)
-    {
-        QMessageBox::critical(this, "Erreur", msg);
-    }
-}
-
-/**
- * Ce connecteur est activé lors d'un clic souris par l'utilisateur sur le
- * bouton "Générer Doc".@n
+ * bouton "Générer".@n
  * Enregistre les modifications apportées par l'utilisateur puis exécute la
  * commande de génération de la documentation du projet. La dernière sortie
  * de la génération de la documentation se trouve dans les fichiers
@@ -2111,7 +2071,7 @@ void TabDoxygen::on_pushButton_generateFiles_clicked()
  * message de réussite.
  * @sa Context::doxyfile(), save().
  */
-void TabDoxygen::on_pushButton_generateDoc_clicked()
+void TabDoxygen::on_pushButton_generate_clicked()
 {
     this->setEnabled(false);
     save();
@@ -2143,22 +2103,14 @@ void TabDoxygen::on_pushButton_generateDoc_clicked()
 }
 
 /**
- * @param cmd Commande à exécuter
- * @param workingDir Dossier de travail
- *
- * Cette fonction exécute la commande @c cmd dans le dossier @c workingDir
- * à l'aide d'un objet QProcess.
+ * Ce connecteur est activé lors d'un clic souris par l'utilisateur sur le
+ * bouton "...".@n
+ * Ouvre la fenêtre de gestion des fichiers Doxygen.
  */
-void TabDoxygen::command(const QString& cmd, const QString& workingDir)
+void TabDoxygen::on_toolButton_help_clicked()
 {
-    qLog->debug("TabDoxygen - Commande (" + workingDir + ") : " + cmd);
-    QProcess process;
-    process.setWorkingDirectory(workingDir);
-    process.start(cmd);
-    if(!process.waitForFinished())
-    {
-        throw QString("Erreur pour la commande : " + cmd);
-    }
+    DoxygenFilesHelper* w = new DoxygenFilesHelper(ui->lineEdit_outputDir->text());
+    w->show();
 }
 
 /**

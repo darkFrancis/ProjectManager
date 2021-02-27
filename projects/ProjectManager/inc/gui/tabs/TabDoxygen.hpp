@@ -97,8 +97,8 @@
             // Click PushButtons
             void on_pushButton_apply_clicked();
             void on_pushButton_default_clicked();
-            void on_pushButton_generateFiles_clicked();
-            void on_pushButton_generateDoc_clicked();
+            void on_pushButton_generate_clicked();
+            void on_toolButton_help_clicked();
 
         private:
             // Init tabs
@@ -175,16 +175,12 @@
             void saveSpinbox_(const QString& key, QSpinBox* spinbox, int default_value = 0);
             /** @} */
 
-            // Templates
-            void command(const QString& cmd, const QString& workingDir = ".");
-
             // Doc
             QString generateDocFromDir(const QDir& dir, const QString& projectName);
             void changeDoxyfilePaths(const QString& filePath, const QString& projectName) const;
 
         private:
             Ui::TabDoxygen *ui;/**< UI de la classe TabDoxygen */
-            QString m_doxyfile;/**< Fichier Doxyfile à utiliser */
             QTextStream* m_stream;/**< Flux vers le fichier Doxyfile */
             InitParser m_parser; /**< Parser de fichier INI */
     };

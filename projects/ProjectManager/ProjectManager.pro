@@ -9,6 +9,7 @@ SOURCES += \
         src/gui/tabs/TabDoxygen.cpp \
         src/gui/tabs/TabGit.cpp \
         src/gui/tabs/TabProject.cpp \
+        src/gui/tabs/doxygen/DoxygenFilesHelper.cpp \
         src/gui/tabs/git/BranchesWindow.cpp \
         src/gui/tabs/git/ErrorViewer.cpp \
         src/gui/tabs/git/TagsWindow.cpp \
@@ -24,6 +25,7 @@ HEADERS += \
         inc/gui/tabs/TabDoxygen.hpp \
         inc/gui/tabs/TabGit.hpp \
         inc/gui/tabs/TabProject.hpp \
+        inc/gui/tabs/doxygen/DoxygenFilesHelper.hpp \
         inc/gui/tabs/git/BranchesWindow.hpp \
         inc/gui/tabs/git/ErrorViewer.hpp \
         inc/gui/tabs/git/TagsWindow.hpp \
@@ -37,6 +39,7 @@ FORMS += \
         form/tabs/TabDoxygen.ui \
         form/tabs/TabGit.ui \
         form/tabs/TabProject.ui \
+        form/tabs/doxygen/DoxygenFilesHelper.ui \
         form/tabs/git/BranchesWindow.ui \
         form/tabs/git/ErrorViewer.ui \
         form/tabs/git/TagsWindow.ui
@@ -46,6 +49,7 @@ INCLUDEPATH += \
         inc/gui \
         inc/gui/tabs \
         inc/gui/tabs/git \
+        inc/gui/tabs/doxygen \
         inc/tools
 
 RESOURCES += \

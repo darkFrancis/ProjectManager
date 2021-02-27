@@ -27,6 +27,13 @@
      */
 
     /**
+     * Version 1.1 - 27/02/2021
+     *  - Gestion des chemin relatifs
+     *  - Ajout système de génération d'index de documentation
+     *  - Corrections mineures
+     */
+
+    /**
      * Version 1.0 - 04/11/2020
      *  - Réorganisation complète de l'IHM
      *  - 3 onglets : projetS, doxygen, git

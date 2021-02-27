@@ -10,6 +10,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QDateTime>
+#include <QShortcut>
 
 #include "TabProject.hpp"
 #include "TabDoxygen.hpp"
@@ -54,6 +55,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(tabProject, &Tab::status, ui->statusBar, &QStatusBar::showMessage);
     connect(tabDoxygen, &Tab::status, ui->statusBar, &QStatusBar::showMessage);
     connect(tabGit, &Tab::status, ui->statusBar, &QStatusBar::showMessage);
+
+    // Gestion shortcut
+    QShortcut* shortAbout = new QShortcut(QKeySequence(Qt::Key_F1), this);
+    QShortcut* shortAbout2 = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_F1), this);
+    connect(shortAbout, &QShortcut::activated, this, &MainWindow::on_actionAbout_triggered);
+    connect(shortAbout2, &QShortcut::activated, this, &MainWindow::on_actionAbout_triggered);
 
     // Init
     if(qCtx->projectDir() != "")

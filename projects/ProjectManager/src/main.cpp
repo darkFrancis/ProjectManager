@@ -8,6 +8,7 @@
 
 #include <QApplication>
 #include <QFile>
+#include <QStyleFactory>
 
 #include "Logger.hpp"
 #include "Context.hpp"
@@ -34,7 +35,7 @@ int main(int argc, char *argv[])
 #ifdef _DEBUG
     qLog->setLogLevel(Debug);
 #else
-    qLog->setLogLevel(Debug);
+    qLog->setLogLevel(Info);
 #endif
 
     // Style
@@ -59,6 +60,7 @@ int main(int argc, char *argv[])
 void setStyle()
 {
     // Set palette
+    qApp->setStyle(QStyleFactory::create("fusion"));
     QPalette palette = qApp->palette();
     palette.setColor(QPalette::Window, QColor(53, 53, 53));
     palette.setColor(QPalette::WindowText, Qt::white);

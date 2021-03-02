@@ -1,7 +1,7 @@
 QT       += core gui widgets
 
 TARGET = ProjectManager
-VERSION= 1.1
+VERSION= 1.1.1
 TEMPLATE = app
 include(../includes/projects.pri)
 

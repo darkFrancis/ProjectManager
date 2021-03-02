@@ -27,6 +27,11 @@
      */
 
     /**
+     * Version 1.1.1 - 02/03/2021 - Patch
+     *  - Correction d'affichage du style pour Windows
+     */
+
+    /**
      * Version 1.1 - 27/02/2021
      *  - Gestion des chemin relatifs
      *  - Ajout système de génération d'index de documentation

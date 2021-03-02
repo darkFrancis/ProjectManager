@@ -1,6 +1,6 @@
 # ProjectManager
 > Outil de gestion de projet
-<br/>V1.0
+<br/>V1.1.1
 
 ## Onglets
 ### Projets

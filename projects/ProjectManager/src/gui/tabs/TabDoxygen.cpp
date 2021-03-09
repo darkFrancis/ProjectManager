@@ -503,7 +503,7 @@ void TabDoxygen::init_tabBuild()
     initCheckbox("HIDE_UNDOC_MEMBERS", ui->checkBox_hideUndocMembers, false, ui->checkBox_extractAll->isChecked());
     initCheckbox("HIDE_UNDOC_CLASSES", ui->checkBox_hideUndocClasses, false, ui->checkBox_extractAll->isChecked());
     initCheckbox("HIDE_FRIEND_COMPOUNDS", ui->checkBox_hideFriendCompounds, false);
-    initCheckbox("HIDE_IN_BODY_DOCS", ui->checkBox_hideFriendCompounds, false);
+    initCheckbox("HIDE_IN_BODY_DOCS", ui->checkBox_hideInBodyDocs, false);
     initCheckbox("INTERNAL_DOCS", ui->checkBox_internalDocs, false);
     initCheckbox("CASE_SENSE_NAMES", ui->checkBox_caseSenseNames, true);
     initCheckbox("HIDE_SCOPE_NAMES", ui->checkBox_hideScopeNames, false);

@@ -2073,10 +2073,21 @@ void TabDoxygen::on_pushButton_default_clicked()
  */
 void TabDoxygen::on_pushButton_generate_clicked()
 {
+    // Enregistrement
     this->setEnabled(false);
     save();
-    QStringList errList;
+
+    // Préparation
     QDir projectDir(qCtx->projectDir());
+    QDir outputDir = projectDir.absoluteFilePath(ui->lineEdit_outputDir->text());
+    if(!outputDir.exists())
+    {
+        // Ajout dossier sortie pour compile doxygen ok
+        outputDir.mkpath(".");
+    }
+
+    // Génération
+    QStringList errList;
     for(const QString& projectFile : qCtx->subProjects())
     {
         QString err = generateDocFromDir(QFileInfo(projectDir.absoluteFilePath(projectFile)).absoluteDir(), QFileInfo(projectFile).baseName());
@@ -2086,6 +2097,7 @@ void TabDoxygen::on_pushButton_generate_clicked()
         }
     }
 
+    // Affichage résultat
     QString result;
     if(errList.length() == 0)
     {

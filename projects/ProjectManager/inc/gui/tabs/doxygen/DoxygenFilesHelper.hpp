@@ -31,7 +31,6 @@
 
         private:
             void command(const QString& cmd, const QString& workingDir = ".");
-            QMap<QString,QString> readIndexFile() const;
 
         private:
             Ui::DoxygenFilesHelper *ui;

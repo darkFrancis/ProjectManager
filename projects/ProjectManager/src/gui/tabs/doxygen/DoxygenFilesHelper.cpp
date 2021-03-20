@@ -32,16 +32,12 @@ DoxygenFilesHelper::DoxygenFilesHelper(const QString& docDir, QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QMap<QString,QString> data = readIndexFile();
     for(const QString& projectFile : qCtx->subProjects())
     {
         QFileInfo info(projectFile);
         QLabel* label = new QLabel(info.baseName());
         QLineEdit* line = new QLineEdit;
-        if(data.contains(info.baseName()))
-        {
-            line->setText(data[info.baseName()]);
-        }
+        line->setText(qCtx->projectDescription(projectFile));
         ui->formLayout_descriptions->addRow(label, line);
         m_labels << label;
         m_lines << line;
@@ -120,6 +116,23 @@ void DoxygenFilesHelper::on_pushButton_openDir_clicked()
  */
 void DoxygenFilesHelper::on_pushButton_generateIndex_clicked()
 {
+    // Enregistrement dans le context
+    for(int i = 0; i < m_lines.length(); i++)
+    {
+        QString subProject = m_labels.at(i)->text();
+        QString description = m_lines.at(i)->text();
+        for(const QString& projectFile : qCtx->subProjects())
+        {
+            if(QFileInfo(projectFile).baseName() == subProject)
+            {
+                qCtx->setProjectDescription(projectFile, description);
+                break;
+            }
+        }
+    }
+    qCtx->saveSubProjects();
+
+    // Ecriture de l'index
     QFile file(QDir(m_docDir).absoluteFilePath(INDEX_FILE_NAME));
     if(file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text))
     {
@@ -181,6 +194,12 @@ void DoxygenFilesHelper::on_pushButton_generateIndex_clicked()
         stream << text;
         file.close();
     }
+    else
+    {
+        QMessageBox::critical(this,
+                              "Erreur",
+                              "Impossible d'ouvrir le fichier " + QFileInfo(file).absoluteFilePath() + " !");
+    }
 }
 
 /**
@@ -217,40 +236,4 @@ void DoxygenFilesHelper::command(const QString& cmd, const QString& workingDir)
     {
         throw QString("Erreur pour la commande : " + cmd + " [" + workingDir + "]");
     }
-}
-
-/**
- * @return Map projet/description
- *
- * Lit le fichier d'indexe s'il existe et retourne ses informations.
- */
-QMap<QString,QString> DoxygenFilesHelper::readIndexFile() const
-{
-    QMap<QString,QString> data;
-    QFile file(QDir(m_docDir).absoluteFilePath(INDEX_FILE_NAME));
-    if(file.exists() && file.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        QTextStream stream(&file);
-        stream.setCodec("UTF-8");
-        QStringList lines = stream.readAll().split('\n');
-        file.close();
-
-        for(const QString& line : lines)
-        {
-            if(line.trimmed().startsWith("<li>"))
-            {
-                // Ligne au format
-                // <li><a href="<projectName>/index.html"><projectName></a> : <Description></li>
-                int idx = line.indexOf("href");
-                QString l = line.mid(idx+1).trimmed();
-                idx = l.indexOf('>');
-                l = l.mid(idx+1);
-                l = l.chopped(5);
-                l.remove("</a>");
-                idx = l.indexOf(":");
-                data[l.left(idx).trimmed()] = l.mid(idx+1).trimmed();
-            }
-        }
-    }
-    return data;
 }

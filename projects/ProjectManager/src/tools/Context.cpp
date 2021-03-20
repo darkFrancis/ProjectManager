@@ -73,7 +73,21 @@ void Context::loadSubProjects()
         for(const QString& line : lines)
         {
             if(line.trimmed() != "")
-                m_subProjectList << qCtx->pathFromProject(QDir(qCtx->projectDir()).absoluteFilePath(line));
+            {
+                int idx = line.indexOf('\t');
+                QDir projectDir = QDir(qCtx->projectDir());
+                if( idx >= 0)
+                {
+                    QString projectName = projectDir.absoluteFilePath(line.left(idx).trimmed());
+                    QString description = line.mid(idx).trimmed();
+                    m_subProjectList[qCtx->pathFromProject(projectName)] = description;
+                }
+                else
+                {
+                    QString projectName = projectDir.absoluteFilePath(line.trimmed());
+                    m_subProjectList[qCtx->pathFromProject(projectName)] = "";
+                }
+            }
         }
     }
 }
@@ -93,9 +107,11 @@ bool Context::saveSubProjects() const
     {
         QTextStream s(&f);
         s.setCodec("UTF-8");
-        for(const QString& pro : m_subProjectList)
+        for(const QString& pro : m_subProjectList.keys())
         {
-             s << pro << endl;
+             s << pro
+               << (m_subProjectList[pro].trimmed() == "" ? "" : '\t' + m_subProjectList[pro])
+               << endl;
         }
         f.close();
         return true;
@@ -121,8 +137,19 @@ void Context::setProjectDir(const QString& dir) { m_projectDir = dir; }
  */
 void Context::addSubProject(const QString& val)
 {
-    m_subProjectList << val;
-    m_subProjectList.removeDuplicates();
+    m_subProjectList[val] = "";
+}
+
+/**
+ * @param project Nom de projet auquel on souhaite ajouter une description
+ * @param description Description du projet
+ */
+void Context::setProjectDescription(const QString& project, const QString& description)
+{
+    if(m_subProjectList.contains(project))
+    {
+        m_subProjectList[project] = description;
+    }
 }
 
 /**
@@ -137,7 +164,7 @@ bool Context::removeSubProject(const QString& val)
 {
     if(m_subProjectList.contains(val))
     {
-        return m_subProjectList.removeAll(val) > 0;
+        return m_subProjectList.remove(val) > 0;
     }
     return false;
 }
@@ -174,7 +201,16 @@ QString Context::doxygenTemplateDir() const { return fileInProjectDir("doxygen-t
 /**
  * @return #m_subProjectList
  */
-QStringList Context::subProjects() const { return m_subProjectList; }
+QStringList Context::subProjects() const { return m_subProjectList.keys(); }
+
+/**
+ * @param project Projet recherché
+ * @return Description du projet
+ */
+QString Context::projectDescription(const QString& project) const
+{
+    return m_subProjectList.value(project, "");
+}
 
 /**
  * @return #PROJECTMANAGER_DIR

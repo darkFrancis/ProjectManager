@@ -101,7 +101,11 @@ void DoxygenFilesHelper::on_pushButton_openDir_clicked()
 {
     try
     {
+#ifdef Q_OS_WIN32
+        command("explorer .", QDir(qCtx->projectDir()).absoluteFilePath(qCtx->projectHiddenDirName()));
+#elif defined(Q_OS_LINUX)
         command("browse .", QDir(qCtx->projectDir()).absoluteFilePath(qCtx->projectHiddenDirName()));
+#endif
     }
     catch(QString msg)
     {
@@ -211,7 +215,11 @@ void DoxygenFilesHelper::on_pushButton_openIndex_clicked()
 {
     try
     {
+#ifdef Q_OS_WIN32
+        command("start " + QString(INDEX_FILE_NAME), m_docDir);
+#elif defined(Q_OS_LINUX)
         command("browse " + QString(INDEX_FILE_NAME), m_docDir);
+#endif
     }
     catch(QString msg)
     {

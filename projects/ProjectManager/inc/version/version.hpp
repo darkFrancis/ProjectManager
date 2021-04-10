@@ -27,6 +27,11 @@
      */
 
     /**
+     * Version 1.1.2 - 10/04/2021 - Logger
+     *  - Liaison avec la lib Logger
+     */
+
+    /**
      * Version 1.1.1 - 02/03/2021 - Patch
      *  - Correction d'affichage du style pour Windows
      */

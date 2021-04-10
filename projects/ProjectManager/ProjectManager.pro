@@ -1,9 +1,10 @@
 QT       += core gui widgets
 
 TARGET = ProjectManager
-VERSION= 1.1.1
+VERSION= 1.1.2
 TEMPLATE = app
 include(../includes/projects.pri)
+include(../includes/Logger.pri)
 
 SOURCES += \
         src/gui/tabs/TabDoxygen.cpp \
@@ -16,8 +17,7 @@ SOURCES += \
         src/main.cpp \
         src/gui/MainWindow.cpp \
         src/tools/Context.cpp \
-        src/tools/InitParser.cpp \
-        src/tools/Logger.cpp
+        src/tools/InitParser.cpp
 
 HEADERS += \
         inc/gui/MainWindow.hpp \
@@ -30,9 +30,8 @@ HEADERS += \
         inc/gui/tabs/git/ErrorViewer.hpp \
         inc/gui/tabs/git/TagsWindow.hpp \
         inc/tools/Context.hpp \
-        inc/tools/InitParser.hpp \
-        inc/tools/Logger.hpp \
-        inc/version.hpp
+        inc/tools/InitParser.hpp
+        inc/version/version.hpp
 
 FORMS += \
         form/MainWindow.ui \
@@ -50,7 +49,8 @@ INCLUDEPATH += \
         inc/gui/tabs \
         inc/gui/tabs/git \
         inc/gui/tabs/doxygen \
-        inc/tools
+        inc/tools \
+        inc/version
 
 RESOURCES += \
     ressources/darkstyle.qrc

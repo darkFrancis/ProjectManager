@@ -97,6 +97,9 @@
             void on_lineEdit_extra_returnPressed();
             void action_tags(QStringList args);
             void action_branch(const QStringList& args);
+            void closeMergeTool();
+            void on_pushButton_stash_clicked();
+            void on_pushButton_pop_clicked();
 
         private:
             bool action(const QStringList& args, bool status = true);
@@ -107,6 +110,7 @@
             void update_status();
             void update_branches();
             void update_remote();
+            void update_stash();
 
         private:
             Ui::TabGit *ui;/**< UI de la classe TabGit */

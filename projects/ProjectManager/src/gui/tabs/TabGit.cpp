@@ -565,6 +565,15 @@ void TabGit::update_remote()
 }
 
 /**
+ * Met à jour l'état du bouton pop en fonction du nombre de stash en cours.
+ */
+void TabGit::update_stash()
+{
+    while(!action(QStringList() << "stash" << "list", false)) {}
+    ui->pushButton_pop->setEnabled(m_output.trimmed() != "");
+}
+
+/**
  * Mise à jour générale.@n
  * Appelle les fonctions update_branches(), update_status() et
  * update_remote() pour mettre à jour les listes de cet onglet.
@@ -574,6 +583,7 @@ void TabGit::update_all()
     update_branches();
     update_status();
     update_remote();
+    update_stash();
     if(ui->listWidget_staged->count() == 0 && !ui->checkBox_amend->isChecked()) ui->pushButton_commit->setEnabled(false);
     else ui->pushButton_commit->setEnabled(true);
 }
@@ -761,12 +771,17 @@ void TabGit::closeMergeTool()
 }
 
 /**
- * Ce connecteur est activé par un retour clavier depuis la ligne d'édition des
- * messages pour commit.@n
- * Exécute la même action que la fonction on_pushButton_commit_clicked().
+ * Effectue l'action git "stash"
  */
-void TabGit::on_lineEdit_commit_returnPressed()
+void TabGit::on_pushButton_stash_clicked()
 {
-    if(ui->pushButton_commit->isEnabled())
-        on_pushButton_commit_clicked();
+    action(QStringList() << "stash");
+}
+
+/**
+ * Effectue l'action git "stash pop"
+ */
+void TabGit::on_pushButton_pop_clicked()
+{
+    action(QStringList() << "stash" << "pop");
 }

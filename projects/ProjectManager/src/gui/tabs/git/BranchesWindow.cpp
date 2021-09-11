@@ -182,7 +182,7 @@ bool BranchesWindow::check_branch_name(const QString& name)
 {
     for(int i = 0; i < name.length(); i++)
     {
-        if(!name[i].isLetterOrNumber())
+        if(!(name[i].isLetterOrNumber() || name[i] == '_'))
         {
             QMessageBox::warning(this,
                                  "Attention",

@@ -69,7 +69,7 @@ void TabProject::on_pushButton_add_clicked()
     QString projectFile = QFileDialog::getOpenFileName(this,
                                                        "Fichier de projet",
                                                        qCtx->lastSearch(),
-                                                       "Projet Qt (*.pro)");
+                                                       "Projet Qt (CMakeLists.txt *.pro)");
     if(projectFile != "")
     {
         qCtx->setLastSearch(projectFile);

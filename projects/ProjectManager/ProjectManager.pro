@@ -1,7 +1,7 @@
 QT       += core gui widgets
 
 TARGET = ProjectManager
-VERSION= 1.1.2
+VERSION= 1.2.0
 TEMPLATE = app
 include(../includes/projects.pri)
 include(../includes/Logger.pri)

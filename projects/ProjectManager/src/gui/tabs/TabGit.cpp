@@ -84,7 +84,7 @@ void TabGit::updateProjectNames()
     QStringList projects;
     for(const QString& pro : qCtx->subProjects())
     {
-        projects << QFileInfo(pro).baseName();
+        projects << QFileInfo(pro).dir().dirName();
     }
 
     bool bEnable = projects.length() > 0;

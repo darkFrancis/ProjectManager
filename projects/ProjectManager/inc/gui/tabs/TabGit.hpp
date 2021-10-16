@@ -100,6 +100,7 @@
             void closeMergeTool();
             void on_pushButton_stash_clicked();
             void on_pushButton_pop_clicked();
+            void on_pushButton_pull_clicked();
 
         private:
             bool action(const QStringList& args, bool status = true);

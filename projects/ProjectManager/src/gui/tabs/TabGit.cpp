@@ -359,7 +359,6 @@ void TabGit::on_pushButton_fetch_clicked()
 void TabGit::on_pushButton_rebase_clicked()
 {
     action(QStringList() << "rebase"
-                         << ui->comboBox_remote->currentText() + '/' + ui->comboBox_branch->currentText()
                          << ui->comboBox_branch->currentText());
 }
 
@@ -784,4 +783,14 @@ void TabGit::on_pushButton_stash_clicked()
 void TabGit::on_pushButton_pop_clicked()
 {
     action(QStringList() << "stash" << "pop");
+}
+
+/**
+ * Effectue une action de pull
+ */
+void TabGit::on_pushButton_pull_clicked()
+{
+    action(QStringList() << "pull"
+                         << ui->comboBox_remote->currentText()
+                         << ui->comboBox_branch->currentText());
 }

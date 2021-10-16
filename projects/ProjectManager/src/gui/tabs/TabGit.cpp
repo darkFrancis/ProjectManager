@@ -698,11 +698,13 @@ void TabGit::on_comboBox_branch_currentIndexChanged(const QString &arg1)
     {
         ui->pushButton_branchSwitch->setEnabled(false);
         ui->pushButton_branchMerge->setEnabled(false);
+        ui->pushButton_rebase->setEnabled(false);
     }
     else
     {
         ui->pushButton_branchSwitch->setEnabled(true);
         ui->pushButton_branchMerge->setEnabled(true);
+        ui->pushButton_rebase->setEnabled(true);
     }
 }
 

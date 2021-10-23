@@ -2137,6 +2137,8 @@ void TabDoxygen::on_toolButton_help_clicked()
  */
 QString TabDoxygen::generateDocFromDir(const QDir &dir, const QString& projectName)
 {
+    QString realProjectName = projectName == "CMakeLists" ? dir.dirName() : projectName;
+
     try
     {
         // Copie du fichier "Doxyfile"
@@ -2148,7 +2150,7 @@ QString TabDoxygen::generateDocFromDir(const QDir &dir, const QString& projectNa
         if(QFile::copy(qCtx->doxyfile(), destFile))
         {
             // Remplacement des informations de projet
-            changeDoxyfilePaths(destFile, projectName);
+            changeDoxyfilePaths(destFile, realProjectName);
 
             // Génération de la doc
             QProcess process;
@@ -2170,7 +2172,7 @@ QString TabDoxygen::generateDocFromDir(const QDir &dir, const QString& projectNa
                     else
                     {
                         QStringList ligns = text.split('\n');
-                        extra_info += projectName + " - " +
+                        extra_info += realProjectName + " - " +
                                       QString::number(ligns.length()-1) + " erreurs ("
                                       "Voir les erreurs : <a href=\"" + dir.absoluteFilePath("doxygen.err") + "\">"
                                       + dir.absoluteFilePath("doxygen.err") + "</a>)";

@@ -2090,7 +2090,11 @@ void TabDoxygen::on_pushButton_generate_clicked()
     QStringList errList;
     for(const QString& projectFile : qCtx->subProjects())
     {
-        QString err = generateDocFromDir(QFileInfo(projectDir.absoluteFilePath(projectFile)).absoluteDir(), QFileInfo(projectFile).baseName());
+        QString err;
+        if(projectFile == "CMakeLists.txt")
+            err = generateDocFromDir(projectDir, projectDir.dirName());
+        else
+            err = generateDocFromDir(QFileInfo(projectDir.absoluteFilePath(projectFile)).absoluteDir(), QFileInfo(projectFile).baseName());
         if(err != "")
         {
             errList << err;
@@ -2138,7 +2142,6 @@ void TabDoxygen::on_toolButton_help_clicked()
 QString TabDoxygen::generateDocFromDir(const QDir &dir, const QString& projectName)
 {
     QString realProjectName = projectName == "CMakeLists" ? dir.dirName() : projectName;
-
     try
     {
         // Copie du fichier "Doxyfile"
@@ -2220,6 +2223,8 @@ void TabDoxygen::changeDoxyfilePaths(const QString& filePath, const QString& pro
         // Préparation du chemin préfixe
         QDir subProjectDir(QFileInfo(filePath).absoluteDir());
         QString prefixPath = subProjectDir.relativeFilePath(qCtx->projectDir());
+        if(prefixPath == ".")
+            prefixPath = "";
 
         // Préparation de liste de mots clés pour remplacement simple des chemins
         QStringList kwList = QStringList()

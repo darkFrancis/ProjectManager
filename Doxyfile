@@ -1,8 +1,7 @@
 
 PROJECT_NAME=ProjectManager
-OUTPUT_DIRECTORY=../doc/ProjectManager
+OUTPUT_DIRECTORY=doc/ProjectManager
 CREATE_SUBDIRS=YES
-OUTPUT_LANGUAGE=French
 REPEAT_BRIEF=NO
 ABBREVIATE_BRIEF=$name
 ALWAYS_DETAILED_SEC=YES
@@ -27,7 +26,7 @@ SORT_BRIEF_DOCS=YES
 SORT_BY_SCOPE_NAME=YES
 STRICT_PROTO_MATCHING=YES
 SHOW_USED_FILES=NO
-LAYOUT_FILE=../.projectmanager/layout.xml
+LAYOUT_FILE=.projectmanager/layout.xml
 
 
 WARN_FORMAT="$file:$line: $text"
@@ -46,9 +45,9 @@ ALPHABETICAL_INDEX=NO
 
 
 HTML_OUTPUT=.
-HTML_HEADER=../.projectmanager/html/header.html
-HTML_FOOTER=../.projectmanager/html/footer.html
-HTML_STYLESHEET=../.projectmanager/html/stylesheet.css
+HTML_HEADER=.projectmanager/html/header.html
+HTML_FOOTER=.projectmanager/html/footer.html
+HTML_STYLESHEET=.projectmanager/html/stylesheet.css
 HTML_TIMESTAMP=YES
 HTML_DYNAMIC_SECTIONS=YES
 ENUM_VALUES_PER_LINE=0

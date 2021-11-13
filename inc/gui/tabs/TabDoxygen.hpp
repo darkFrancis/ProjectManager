@@ -7,7 +7,7 @@
 #ifndef TABDOXYGEN_HPP
 #define TABDOXYGEN_HPP
 
-    #include "Tab.hpp"
+    #include "gui/tabs/Tab.hpp"
     #include <QCheckBox>
     #include <QComboBox>
     #include <QLineEdit>
@@ -15,7 +15,7 @@
     #include <QFontComboBox>
     #include <QGroupBox>
     #include <QDir>
-    #include "InitParser.hpp"
+    #include "tools/InitParser.hpp"
 
     #define DOC_YES QString("YES")/**< Valeur @c true pour la configuration Doxygen */
     #define DOC_NO  QString("NO")/**< Valeur @c false pour la configuration Doxygen */

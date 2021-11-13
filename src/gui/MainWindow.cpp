@@ -4,7 +4,7 @@
  * @author Dark Francis
  * @date 25/10/2020
  */
-#include "MainWindow.hpp"
+#include "gui/MainWindow.hpp"
 #include "ui_MainWindow.h"
 
 #include <QMessageBox>
@@ -12,15 +12,15 @@
 #include <QDateTime>
 #include <QShortcut>
 
-#include "TabProject.hpp"
-#include "TabDoxygen.hpp"
-#include "TabGit.hpp"
-#include "version.hpp"
-#include "Context.hpp"
-#include "Logger.hpp"
+#include "gui/tabs/TabProject.hpp"
+#include "gui/tabs/TabDoxygen.hpp"
+#include "gui/tabs/TabGit.hpp"
+#include "version/version.hpp"
+#include "tools/Context.hpp"
+#include "Logger/Logger.hpp"
 
 #define ActionOnTabs(action) \
-    { QStringList errList; \
+    do { QStringList errList; \
     for(int i = 0; i < ui->tabWidget->count(); i++) \
     { \
         try { reinterpret_cast<Tab*>(ui->tabWidget->widget(i))->action(); } \
@@ -31,7 +31,7 @@
         QString msg = errList.join('\n'); \
         QMessageBox::critical(this, "Erreur", msg); \
         qLog->error(msg); \
-    }}
+    }} while(false)
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),

@@ -7,7 +7,7 @@
 #ifndef TABGIT_HPP
 #define TABGIT_HPP
 
-    #include "Tab.hpp"
+    #include "gui/tabs/Tab.hpp"
     #include <QProcess>
     #include <QListWidget>
     #include <QTimer>

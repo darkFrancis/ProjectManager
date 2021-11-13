@@ -4,15 +4,15 @@
  * @author Dark Francis
  * @date 26/10/2020
  */
-#include "Context.hpp"
+#include "tools/Context.hpp"
 
 #include <QFileInfo>
 #include <QDir>
 #include <QApplication>
 #include <QTextStream>
 
-#include "version.hpp"
-#include "Logger.hpp"
+#include "version/version.hpp"
+#include "Logger/Logger.hpp"
 
 #define PROJECTMANAGER_DIR ".projectmanager" /**< Nom du dossier caché de projet. */
 #define PROJECT_FILE "project.list" /**< Nom du fichier contenant la liste des sous-projets du projet. */

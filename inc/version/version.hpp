@@ -9,8 +9,8 @@
 
     #include <QString>
 
-    const QString _APPLICATION_NAME_    = D_APP_NAME; /*< Nom de l'application */
-    const QString _VERSION_             = D_APP_VERSION; /*< Version de l'application */
+    const QString _APPLICATION_NAME_    = _DEFINED_APPNAME; /*< Nom de l'application */
+    const QString _VERSION_             = _DEFINED_VERSION; /*< Version de l'application */
 
     /* ======================================================================================================== */
 
@@ -24,6 +24,13 @@
      * @li Doxygen : permet de générer une documentation de code au format
      * HTML, LaTeX ou autre et des graphique avec Dot.
      * @li Git : permet la gestion des sources et du versionning.
+     */
+
+    /**
+     * Version 1.2.0 - 13/11/2021 - CMake and Conan
+     *  - Add CMakeLists
+     *  - Add Conanfile
+     *  - Remove QMake file
      */
 
     /**

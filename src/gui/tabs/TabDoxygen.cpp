@@ -4,7 +4,7 @@
  * @author Dark Francis
  * @date 21/12/2019
  */
-#include "TabDoxygen.hpp"
+#include "gui/tabs/TabDoxygen.hpp"
 #include "ui_TabDoxygen.h"
 #include <QFile>
 #include <QDir>
@@ -12,9 +12,9 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QProcess>
-#include "Logger.hpp"
-#include "Context.hpp"
-#include "DoxygenFilesHelper.hpp"
+#include "Logger/Logger.hpp"
+#include "tools/Context.hpp"
+#include "gui/tabs/doxygen/DoxygenFilesHelper.hpp"
 
 /**
  * @param parent Le QWidget parent de cet onglet

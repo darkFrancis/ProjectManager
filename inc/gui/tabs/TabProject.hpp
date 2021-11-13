@@ -7,7 +7,7 @@
 #ifndef TABPROJECT_HPP
 #define TABPROJECT_HPP
 
-    #include "Tab.hpp"
+    #include "gui/tabs/Tab.hpp"
 
     namespace Ui {
     class TabProject;

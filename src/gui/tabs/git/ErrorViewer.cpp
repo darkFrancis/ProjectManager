@@ -4,7 +4,7 @@
  * @author Dark Francis
  * @date 21/12/2019
  */
-#include "ErrorViewer.hpp"
+#include "gui/tabs/git/ErrorViewer.hpp"
 #include "ui_ErrorViewer.h"
 
 /**

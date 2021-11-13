@@ -4,13 +4,13 @@
  * @author Dark Francis
  * @date 26/10/2020
  */
-#include "TabProject.hpp"
+#include "gui/tabs/TabProject.hpp"
 #include "ui_TabProject.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
 
-#include "Context.hpp"
+#include "tools/Context.hpp"
 
 /**
  * @param parent QWidget parent

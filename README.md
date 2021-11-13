@@ -1,6 +1,20 @@
 # ProjectManager
 > Outil de gestion de projet
-<br/>V1.1.1
+<br/>V1.2.0
+
+# Dependencies 
+[Logger](https://github.com/darkFrancis/Logger)
+Add Conan remote https://darkfrancis.jfrog.io/artifactory/api/conan/public-conan
+
+# Build
+```bash
+cd path/to/ProjectManager
+mkdir build
+cd build
+conan install ..
+cmake ..
+make
+```
 
 ## Onglets
 ### Projets

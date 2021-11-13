@@ -4,7 +4,7 @@
  * @author Dark Francis
  * @date 21/12/2019
  */
-#include "BranchesWindow.hpp"
+#include "gui/tabs/git/BranchesWindow.hpp"
 #include "ui_BranchesWindow.h"
 
 #include <QMessageBox>

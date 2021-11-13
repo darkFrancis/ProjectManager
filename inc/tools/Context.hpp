@@ -8,7 +8,7 @@
 #define CONTEXT_HPP
 
     #include <QString>
-    #include "InitParser.hpp"
+    #include "tools/InitParser.hpp"
 
     /**
      * @header_table Context.hpp @end_table

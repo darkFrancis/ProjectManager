@@ -4,7 +4,7 @@
  * @author Dark Francis
  * @date 21/12/2019
  */
-#include "TagsWindow.hpp"
+#include "gui/tabs/git/TagsWindow.hpp"
 #include "ui_TagsWindow.h"
 #include <QMessageBox>
 

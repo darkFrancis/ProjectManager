@@ -4,12 +4,12 @@
  * @author Dark Francis
  * @date 26/10/2020
  */
-#include "InitParser.hpp"
+#include "tools/InitParser.hpp"
 
 #include <QFile>
 #include <QTextStream>
 
-#include "Logger.hpp"
+#include "Logger/Logger.hpp"
 
 /**
  * @param title Titre du groupe

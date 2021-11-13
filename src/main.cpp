@@ -4,15 +4,15 @@
  * @author Dark Francis
  * @date 25/10/2020
  */
-#include "MainWindow.hpp"
+#include "gui/MainWindow.hpp"
 
 #include <QApplication>
 #include <QFile>
 #include <QStyleFactory>
 
-#include "Logger.hpp"
-#include "Context.hpp"
-#include "version.hpp"
+#include "Logger/Logger.hpp"
+#include "tools/Context.hpp"
+#include "version/version.hpp"
 
 void setStyle();
 

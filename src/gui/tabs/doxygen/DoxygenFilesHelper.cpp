@@ -4,7 +4,7 @@
  * @author Dark Francis
  * @date 27/02/2021
  */
-#include "DoxygenFilesHelper.hpp"
+#include "gui/tabs/doxygen/DoxygenFilesHelper.hpp"
 #include "ui_DoxygenFilesHelper.h"
 
 #include <QDir>
@@ -13,8 +13,8 @@
 #include <QProcess>
 #include <QTextStream>
 
-#include "Context.hpp"
-#include "Logger.hpp"
+#include "tools/Context.hpp"
+#include "Logger/Logger.hpp"
 
 #define INDEX_FILE_NAME "index.html"
 #define DEFAULT_DOC_DIR "doc"

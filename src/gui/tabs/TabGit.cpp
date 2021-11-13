@@ -4,17 +4,17 @@
  * @author Dark Francis
  * @date 21/12/2019
  */
-#include "TabGit.hpp"
+#include "gui/tabs/TabGit.hpp"
 #include "ui_TabGit.h"
 
 #include <QDir>
 #include <QProcess>
 #include <QMessageBox>
 #include <QTimer>
-#include "ErrorViewer.hpp"
-#include "TagsWindow.hpp"
-#include "BranchesWindow.hpp"
-#include "Context.hpp"
+#include "gui/tabs/git/ErrorViewer.hpp"
+#include "gui/tabs/git/TagsWindow.hpp"
+#include "gui/tabs/git/BranchesWindow.hpp"
+#include "tools/Context.hpp"
 
 /**
  * @param parent Le QWidget parent de cet onglet

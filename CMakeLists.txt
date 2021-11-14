@@ -1,38 +1,29 @@
 cmake_minimum_required(VERSION 3.21.2)
-project(ProjectManager VERSION 1.2.0)
+project(ProjectManager VERSION 1.2.1)
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
+execute_process(COMMAND conan install ${CMAKE_SOURCE_DIR})
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
+find_file(QtCmake common-qt.cmake)
+include(${QtCmake})
 
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTOUIC_SEARCH_PATHS
+set_ui_paths(
     form
     form/tabs
     form/tabs/git
     form/tabs/doxygen)
 
-find_package(Qt5Core REQUIRED)
-find_package(Qt5Gui REQUIRED)
-find_package(Qt5Widgets REQUIRED)
+set_qt5_modules(Core Gui Widgets)
 
-file(GLOB_RECURSE FILES
+file(GLOB_RECURSE SOURCES
     "src/*.cpp"
     "inc/*.hpp"
     "form/*.ui"
     "ressources/*.qrc")
 
-add_executable(${PROJECT_NAME} ${FILES})
-target_include_directories(${PROJECT_NAME} PUBLIC inc)
-target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
-target_link_libraries(${PROJECT_NAME} Logger Qt5::Core Qt5::Gui Qt5::Widgets)
-if(NOT _DEFINED_VERSION)
-    target_compile_definitions(${PROJECT_NAME} PUBLIC _DEFINED_VERSION="${PROJECT_VERSION}")
-endif()
-if(NOT _DEFINED_APPNAME)
-    target_compile_definitions(${PROJECT_NAME} PUBLIC _DEFINED_APPNAME="${PROJECT}")
-endif()
+add_qt_bin(
+    NAME ${PROJECT_NAME}
+    SOURCES ${SOURCES}
+    LIBS Logger
+    INCLUDES inc)
+set_common_defines()

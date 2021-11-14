@@ -27,6 +27,12 @@
      */
 
     /**
+     * Version 1.2.1 - 14/11/2021 - Merge everything
+     *  - Use CMake with Conan
+     *  - Update README
+     */
+
+    /**
      * Version 1.2.0 - 13/11/2021 - CMake and Conan
      *  - Add CMakeLists
      *  - Add Conanfile

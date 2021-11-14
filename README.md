@@ -11,9 +11,9 @@ Add Conan remote https://darkfrancis.jfrog.io/artifactory/api/conan/public-conan
 cd path/to/ProjectManager
 mkdir build
 cd build
-conan install ..
 cmake ..
 make
+sudo cmake --install .
 ```
 
 ## Onglets

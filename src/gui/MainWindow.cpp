@@ -12,7 +12,6 @@
 #include <QDateTime>
 #include <QShortcut>
 
-#include "gui/tabs/TabProject.hpp"
 #include "gui/tabs/TabDoxygen.hpp"
 #include "gui/tabs/TabGit.hpp"
 #include "version/version.hpp"
@@ -43,18 +42,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->label_currentProject->setHidden(true);
 
     // Ajout tabs
-    TabProject* tabProject = new TabProject(this);
-    TabDoxygen* tabDoxygen = new TabDoxygen(this);
     TabGit* tabGit = new TabGit(this);
-    ui->tabWidget->addTab(tabProject, "Projet");
-    ui->tabWidget->addTab(tabDoxygen, "Doxygen");
+    TabDoxygen* tabDoxygen = new TabDoxygen(this);
     ui->tabWidget->addTab(tabGit, "Git");
+    ui->tabWidget->addTab(tabDoxygen, "Doxygen");
 
     // Connections
-    connect(tabProject, &TabProject::projectListChange, tabGit, &TabGit::updateProjectNames);
-    connect(tabProject, &Tab::status, ui->statusBar, &QStatusBar::showMessage);
-    connect(tabDoxygen, &Tab::status, ui->statusBar, &QStatusBar::showMessage);
     connect(tabGit, &Tab::status, ui->statusBar, &QStatusBar::showMessage);
+    connect(tabDoxygen, &Tab::status, ui->statusBar, &QStatusBar::showMessage);
 
     // Gestion shortcut
     QShortcut* shortAbout = new QShortcut(QKeySequence(Qt::Key_F1), this);

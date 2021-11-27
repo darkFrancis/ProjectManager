@@ -125,7 +125,7 @@ void TabDoxygen::createDoxyfile()
     if(doxyfile.open(QIODevice::Text | QIODevice::Truncate | QIODevice::WriteOnly))
     {
         m_stream = new QTextStream(&doxyfile);
-        *m_stream << "# Configuration du projet" << endl;
+        *m_stream << "# Project configuration" << endl;
         *m_stream << "DOXYFILE_ENCODING=UTF-8" << endl;
         *m_stream << "PROJECT_NAME=\"My Project\"" << endl;
         *m_stream << "PROJECT_NUMBER=" << endl;
@@ -172,7 +172,7 @@ void TabDoxygen::createDoxyfile()
         *m_stream << "TYPEDEF_HIDES_STRUCT=NO" << endl;
         *m_stream << "LOOKUP_CACHE_SIZE=0" << endl;
         *m_stream << endl;
-        *m_stream << "# Configuration de build" << endl;
+        *m_stream << "# Build configuration" << endl;
         *m_stream << "EXTRACT_ALL=NO" << endl;
         *m_stream << "EXTRACT_PRIVATE=NO" << endl;
         *m_stream << "EXTRACT_PACKAGE=NO" << endl;
@@ -211,7 +211,7 @@ void TabDoxygen::createDoxyfile()
         *m_stream << "LAYOUT_FILE=" << endl;
         *m_stream << "CITE_BIB_FILES=" << endl;
         *m_stream << endl;
-        *m_stream << "# Configuration des messages" << endl;
+        *m_stream << "# Outputs configuration" << endl;
         *m_stream << "QUIET=NO" << endl;
         *m_stream << "WARNINGS=YES" << endl;
         *m_stream << "WARN_IF_UNDOCUMENTED=YES" << endl;
@@ -221,7 +221,7 @@ void TabDoxygen::createDoxyfile()
         *m_stream << "WARN_FORMAT=\"$file:$line:$text\"" << endl;
         *m_stream << "WARN_LOGFILE=" << endl;
         *m_stream << endl;
-        *m_stream << "# Configuration des entrées" << endl;
+        *m_stream << "# Inputs configuration" << endl;
         *m_stream << "INPUT=" << endl;
         *m_stream << "INPUT_ENCODING=UTF-8" << endl;
         *m_stream << "FILE_PATTERNS=*.c *.cc *.cxx *.cpp *.c++ *.java *.ii *.ixx *.ipp *.i++ *.inl *.idl *.ddl *.odl *.h *.hh *.hxx *.hpp *.h++ *.cs *.d *.php *.php4 *.php5 *.phtml *.inc *.m *.markdown *.md *.mm *.dox *.py *.pyw *.f90 *.f95 *.f03 *.f08 *.f *.for *.tcl *.vhd *.vhdl *.ucf *.qsf" << endl;
@@ -240,7 +240,7 @@ void TabDoxygen::createDoxyfile()
         *m_stream << "FILTER_SOURCE_PATTERNS=" << endl;
         *m_stream << "USE_MDFILE_AS_MAINPAGE=" << endl;
         *m_stream << endl;
-        *m_stream << "# Configurartion de la recherche de sources" << endl;
+        *m_stream << "# Search engine configuration" << endl;
         *m_stream << "SOURCE_BROWSER=NO" << endl;
         *m_stream << "INLINE_SOURCES=NO" << endl;
         *m_stream << "STRIP_CODE_COMMENTS=YES" << endl;
@@ -253,12 +253,12 @@ void TabDoxygen::createDoxyfile()
         *m_stream << "CLANG_ASSISTED_PARSING=NO" << endl;
         *m_stream << "CLANG_OPTIONS=" << endl;
         *m_stream << endl;
-        *m_stream << "# Configuration de l'index alphabétique" << endl;
+        *m_stream << "# Index configuration" << endl;
         *m_stream << "ALPHABETICAL_INDEX=YES" << endl;
         *m_stream << "COLS_IN_ALPHA_INDEX=5" << endl;
         *m_stream << "IGNORE_PREFIX=" << endl;
         *m_stream << endl;
-        *m_stream << "# Configuration de sortie HTML" << endl;
+        *m_stream << "# HTML output configuration" << endl;
         *m_stream << "GENERATE_HTML=YES" << endl;
         *m_stream << "HTML_OUTPUT=html" << endl;
         *m_stream << "HTML_FILE_EXTENSION=.html" << endl;
@@ -315,7 +315,7 @@ void TabDoxygen::createDoxyfile()
         *m_stream << "EXTERNAL_SEARCH_ID=" << endl;
         *m_stream << "EXTRA_SEARCH_MAPPINGS=" << endl;
         *m_stream << endl;
-        *m_stream << "# Configuration de sortie LaTeX" << endl;
+        *m_stream << "# LaTeX output configuration" << endl;
         *m_stream << "GENERATE_LATEX=YES" << endl;
         *m_stream << "LATEX_OUTPUT=latex" << endl;
         *m_stream << "LATEX_CMD_NAME=latex" << endl;
@@ -335,7 +335,7 @@ void TabDoxygen::createDoxyfile()
         *m_stream << "LATEX_BIB_STYLE=plain" << endl;
         *m_stream << "LATEX_TIMESTAMP=NO" << endl;
         *m_stream << endl;
-        *m_stream << "# Configuration de sortie RTF" << endl;
+        *m_stream << "# RTF output configuration" << endl;
         *m_stream << "GENERATE_RTF=NO" << endl;
         *m_stream << "RTF_OUTPUT=rtf" << endl;
         *m_stream << "COMPACT_RTF=NO" << endl;
@@ -344,33 +344,33 @@ void TabDoxygen::createDoxyfile()
         *m_stream << "RTF_EXTENSIONS_FILE=" << endl;
         *m_stream << "RTF_SOURCE_CODE=NO" << endl;
         *m_stream << endl;
-        *m_stream << "# Configuration de sortie MAN" << endl;
+        *m_stream << "# MAN output configuration" << endl;
         *m_stream << "GENERATE_MAN=NO" << endl;
         *m_stream << "MAN_OUTPUT=man" << endl;
         *m_stream << "MAN_EXTENSION=.3" << endl;
         *m_stream << "MAN_SUBDIR=" << endl;
         *m_stream << "MAN_LINKS=NO" << endl;
         *m_stream << endl;
-        *m_stream << "# Configuration de sortie XML" << endl;
+        *m_stream << "# XML output configuration" << endl;
         *m_stream << "GENERATE_XML=NO" << endl;
         *m_stream << "XML_OUTPUT=xml" << endl;
         *m_stream << "XML_PROGRAMLISTING=YES" << endl;
         *m_stream << endl;
-        *m_stream << "# Configuration de sortie DocBook" << endl;
+        *m_stream << "# DocBook output configuration" << endl;
         *m_stream << "GENERATE_DOCBOOK=NO" << endl;
         *m_stream << "DOCBOOK_OUTPUT=docbook" << endl;
         *m_stream << "DOCBOOK_PROGRAMLISTING=NO" << endl;
         *m_stream << endl;
-        *m_stream << "# Configuration des définitions AutoGen" << endl;
+        *m_stream << "# AutoGen definitions configuration" << endl;
         *m_stream << "GENERATE_AUTOGEN_DEF=NO" << endl;
         *m_stream << endl;
-        *m_stream << "# Configuration du module Perl" << endl;
+        *m_stream << "# Perl module configuration" << endl;
         *m_stream << "GENERATE_PERLMOD=NO" << endl;
         *m_stream << "PERLMOD_LATEX=NO" << endl;
         *m_stream << "PERLMOD_PRETTY=YES" << endl;
         *m_stream << "PERLMOD_MAKEVAR_PREFIX=" << endl;
         *m_stream << endl;
-        *m_stream << "# Configuration du processeur" << endl;
+        *m_stream << "# Preprocessor configuration" << endl;
         *m_stream << "ENABLE_PREPROCESSING=YES" << endl;
         *m_stream << "MACRO_EXPANSION=NO" << endl;
         *m_stream << "EXPAND_ONLY_PREDEF=NO" << endl;
@@ -381,7 +381,7 @@ void TabDoxygen::createDoxyfile()
         *m_stream << "EXPAND_AS_DEFINED=" << endl;
         *m_stream << "SKIP_FUNCTION_MACROS=YES" << endl;
         *m_stream << endl;
-        *m_stream << "# Configuration des références externes" << endl;
+        *m_stream << "# External references configuration" << endl;
         *m_stream << "TAGFILES=" << endl;
         *m_stream << "GENERATE_TAGFILE=" << endl;
         *m_stream << "ALLEXTERNALS=NO" << endl;
@@ -389,7 +389,7 @@ void TabDoxygen::createDoxyfile()
         *m_stream << "EXTERNAL_PAGES=YES" << endl;
         *m_stream << "PERL_PATH=/usr/bin/perl" << endl;
         *m_stream << endl;
-        *m_stream << "# Configuration de l'outil DOT" << endl;
+        *m_stream << "# DOT tool configuration" << endl;
         *m_stream << "CLASS_DIAGRAMS=YES" << endl;
         *m_stream << "MSCGEN_PATH=" << endl;
         *m_stream << "DIA_PATH=" << endl;
@@ -1035,7 +1035,7 @@ void TabDoxygen::initSpinbox_(const QString& key, QSpinBox* spinbox, int default
  */
 void TabDoxygen::save_tabProject()
 {
-    *m_stream << "# Configuration du projet" << endl;
+    *m_stream << "# Project configuration" << endl;
     saveCombobox("DOXYFILE_ENCODING", ui->comboBox_encoding, "UTF-8");
     saveLineedit("PROJECT_NAME", ui->lineEdit_projectName, "\"My Project\"");
     saveLineedit("PROJECT_NUMBER", ui->lineEdit_projectNumber);
@@ -1093,7 +1093,7 @@ void TabDoxygen::save_tabProject()
  */
 void TabDoxygen::save_tabBuild()
 {
-    *m_stream << "# Configuration de build" << endl;
+    *m_stream << "# Build configuration" << endl;
     saveCheckbox("EXTRACT_ALL", ui->checkBox_extractAll, false);
     saveCheckbox("EXTRACT_PRIVATE", ui->checkBox_extractPrivate, false);
     saveCheckbox("EXTRACT_PACKAGE", ui->checkBox_extractPackage, false);
@@ -1140,7 +1140,7 @@ void TabDoxygen::save_tabBuild()
  */
 void TabDoxygen::save_tabMsg()
 {
-    *m_stream << "# Configuration des messages" << endl;
+    *m_stream << "# Outputs configuration" << endl;
     saveCheckbox("QUIET", ui->checkBox_quiet, false);
     saveCheckbox("WARNINGS", ui->checkBox_warnings, true);
     saveCheckbox("WARN_IF_UNDOCUMENTED", ui->checkBox_warnIfUndocumented, true);
@@ -1158,7 +1158,7 @@ void TabDoxygen::save_tabMsg()
  */
 void TabDoxygen::save_tabInput()
 {
-    *m_stream << "# Configuration des entrées" << endl;
+    *m_stream << "# Inputs configuration" << endl;
     saveLineedit("INPUT", ui->lineEdit_input);
     saveCombobox("INPUT_ENCODING", ui->comboBox_inputEncoding, "UTF-8");
     saveLineedit("FILE_PATTERNS", ui->lineEdit_filePatterns, "*.c *.cc *.cxx *.cpp *.c++ *.java *.ii *.ixx *.ipp *.i++ *.inl *.idl *.ddl *.odl *.h *.hh *.hxx *.hpp *.h++ *.cs *.d *.php *.php4 *.php5 *.phtml *.inc *.m *.markdown *.md *.mm *.dox *.py *.pyw *.f90 *.f95 *.f03 *.f08 *.f *.for *.tcl *.vhd *.vhdl *.ucf *.qsf");
@@ -1185,7 +1185,7 @@ void TabDoxygen::save_tabInput()
  */
 void TabDoxygen::save_tabSource()
 {
-    *m_stream << "# Configurartion de la recherche de sources" << endl;
+    *m_stream << "# Search engine configuration" << endl;
     saveCheckbox("SOURCE_BROWSER", ui->checkBox_sourceBrowser, false);
     saveCheckbox("INLINE_SOURCES", ui->checkBox_inlineSources, false);
     saveCheckbox("STRIP_CODE_COMMENTS", ui->checkBox_stripCodeComments, true);
@@ -1201,7 +1201,7 @@ void TabDoxygen::save_tabSource()
     saveCheckbox("CLANG_ASSISTED_PARSING", ui->checkBox_clangAssistedParsing, false);
     saveLineedit("CLANG_OPTIONS", ui->lineEdit_clangOptions);
     *m_stream << endl;
-    *m_stream << "# Configuration de l'index alphabétique" << endl;
+    *m_stream << "# Index configuration" << endl;
     saveGroupbox("ALPHABETICAL_INDEX", ui->groupBox_alphabeticalIndex, true);
     saveSpinbox_("COLS_IN_ALPHA_INDEX", ui->spinBox_colsInAlphaIndex, 5);
     saveLineedit("IGNORE_PREFIX", ui->lineEdit_ignorePrefix);
@@ -1214,7 +1214,7 @@ void TabDoxygen::save_tabSource()
  */
 void TabDoxygen::save_tabHtml()
 {
-    *m_stream << "# Configuration de sortie HTML" << endl;
+    *m_stream << "# HTML output configuration" << endl;
     saveGroupbox("GENERATE_HTML", ui->groupBox_generateHtml, true);
     if(ui->groupBox_generateHtml->isChecked())
     {
@@ -1300,7 +1300,7 @@ void TabDoxygen::save_tabHtml()
  */
 void TabDoxygen::save_tabOutput()
 {
-    *m_stream << "# Configuration de sortie LaTeX" << endl;
+    *m_stream << "# LaTeX output configuration" << endl;
     saveGroupbox("GENERATE_LATEX", ui->groupBox_generateLatex, true);
     if(ui->groupBox_generateLatex->isChecked())
     {
@@ -1323,7 +1323,7 @@ void TabDoxygen::save_tabOutput()
         saveCheckbox("LATEX_TIMESTAMP", ui->checkBox_latexTimestamp, false);
     }
     *m_stream << endl;
-    *m_stream << "# Configuration de sortie RTF" << endl;
+    *m_stream << "# RTF output configuration" << endl;
     saveGroupbox("GENERATE_RTF", ui->groupBox_generateRtf, false);
     if(ui->groupBox_generateRtf->isChecked())
     {
@@ -1335,7 +1335,7 @@ void TabDoxygen::save_tabOutput()
         saveCheckbox("RTF_SOURCE_CODE", ui->checkBox_rtfSourceCode, false);
     }
     *m_stream << endl;
-    *m_stream << "# Configuration de sortie MAN" << endl;
+    *m_stream << "# MAN output configuration" << endl;
     saveGroupbox("GENERATE_MAN", ui->groupBox_generateMan, false);
     if(ui->groupBox_generateMan->isChecked())
     {
@@ -1345,7 +1345,7 @@ void TabDoxygen::save_tabOutput()
         saveCheckbox("MAN_LINKS", ui->checkBox_manLinks, false);
     }
     *m_stream << endl;
-    *m_stream << "# Configuration de sortie XML" << endl;
+    *m_stream << "# XML output configuration" << endl;
     saveGroupbox("GENERATE_XML", ui->groupBox_generateXml, false);
     if(ui->groupBox_generateXml->isChecked())
     {
@@ -1353,7 +1353,7 @@ void TabDoxygen::save_tabOutput()
         saveCheckbox("XML_PROGRAMLISTING", ui->checkBox_xmlProgramlisting, true);
     }
     *m_stream << endl;
-    *m_stream << "# Configuration de sortie DocBook" << endl;
+    *m_stream << "# DocBook output configuration" << endl;
     saveGroupbox("GENERATE_DOCBOOK", ui->groupBox_generateDocbook, false);
     if(ui->groupBox_generateDocbook->isChecked())
     {
@@ -1361,10 +1361,10 @@ void TabDoxygen::save_tabOutput()
         saveCheckbox("DOCBOOK_PROGRAMLISTING", ui->checkBox_docbookProgramlisting, false);
     }
     *m_stream << endl;
-    *m_stream << "# Configuration des définitions AutoGen" << endl;
+    *m_stream << "# AutoGen definitions configuration" << endl;
     saveCheckbox("GENERATE_AUTOGEN_DEF", ui->checkBox_generateAutogenDef, false);
     *m_stream << endl;
-    *m_stream << "# Configuration du module Perl" << endl;
+    *m_stream << "# Perl module configuration" << endl;
     saveGroupbox("GENERATE_PERLMOD", ui->groupBox_generatePerlmod, false);
     if(ui->groupBox_generateXml->isChecked())
     {
@@ -1381,7 +1381,7 @@ void TabDoxygen::save_tabOutput()
  */
 void TabDoxygen::save_tabProcessor()
 {
-    *m_stream << "# Configuration du processeur" << endl;
+    *m_stream << "# Preprocessor configuration" << endl;
     saveGroupbox("ENABLE_PREPROCESSING", ui->groupBox_enablePreprocessing, true);
     if(ui->groupBox_enablePreprocessing->isChecked())
     {
@@ -1406,7 +1406,7 @@ void TabDoxygen::save_tabProcessor()
  */
 void TabDoxygen::save_tabExternRef()
 {
-    *m_stream << "# Configuration des références externes" << endl;
+    *m_stream << "# External references configuration" << endl;
     saveLineedit("TAGFILES", ui->lineEdit_tagfiles);
     saveLineedit("GENERATE_TAGFILE", ui->lineEdit_generateTagfile);
     saveCheckbox("ALLEXTERNALS", ui->checkBox_allexternals, false);
@@ -1422,7 +1422,7 @@ void TabDoxygen::save_tabExternRef()
  */
 void TabDoxygen::save_tabGraph()
 {
-    *m_stream << "# Configuration de l'outil DOT" << endl;
+    *m_stream << "# DOT tool configuration" << endl;
     saveCheckbox("CLASS_DIAGRAMS", ui->checkBox_classDiagrams, true);
     saveLineedit("MSCGEN_PATH", ui->lineEdit_mscgenPath);
     saveLineedit("DIA_PATH", ui->lineEdit_diaPath);
@@ -2087,31 +2087,71 @@ void TabDoxygen::on_pushButton_generate_clicked()
     }
 
     // Génération
-    QStringList errList;
-    for(const QString& projectFile : qCtx->subProjects())
+    QString result;
+    try
     {
-        QString err;
-        if(projectFile == "CMakeLists.txt")
-            err = generateDocFromDir(projectDir, projectDir.dirName());
-        else
-            err = generateDocFromDir(QFileInfo(projectDir.absoluteFilePath(projectFile)).absoluteDir(), QFileInfo(projectFile).baseName());
-        if(err != "")
+        // Copie du fichier "Doxyfile"
+        QString destFile = projectDir.absoluteFilePath("Doxyfile");
+        if(QFile::exists(destFile))
         {
-            errList << err;
+            QFile::remove(destFile);
         }
+        if(QFile::copy(qCtx->doxyfile(), destFile))
+        {
+            // Génération de la doc
+            QProcess process;
+            process.setWorkingDirectory(projectDir.absolutePath());
+            process.setStandardOutputFile(projectDir.absoluteFilePath("doxygen.log"));
+            process.setStandardErrorFile(projectDir.absoluteFilePath("doxygen.err"));
+            process.start("doxygen", QStringList() << "Doxyfile");
+            if(process.waitForFinished())
+            {
+                QFile err_file(projectDir.absoluteFilePath("doxygen.err"));
+                QString err = "";
+                if(err_file.open(QIODevice::Text | QIODevice::ReadOnly))
+                {
+                    QString text = err_file.readAll();
+                    if(text.simplified() == "")
+                    {
+                        err += "";
+                    }
+                    else
+                    {
+                        QStringList ligns = text.split('\n');
+                        err += projectDir.dirName() + " - " +
+                                      QString::number(ligns.length()-1) + " erreurs ("
+                                      "Voir les erreurs : <a href=\"" + projectDir.absoluteFilePath("doxygen.err") + "\">"
+                                      + projectDir.absoluteFilePath("doxygen.err") + "</a>)";
+                    }
+                    err_file.close();
+                }
+
+                // Result
+                if(err.isEmpty())
+                {
+                    result = "Aucune erreur détectée.";
+                }
+                else
+                {
+                    result = "<br/>Des erreurs ont été détectées :<br/>" + err;
+                }
+            }
+            else
+            {
+                throw QString("Erreur lors de la génération de la Doc");
+            }
+        }
+        else
+        {
+            throw QString("Impossible de copier le fichier Doxyfile vers " + projectDir.absolutePath());
+        }
+    }
+    catch(QString msg)
+    {
+        QMessageBox::critical(this, "Doxygen",  msg);
     }
 
     // Affichage résultat
-    QString result;
-    if(errList.length() == 0)
-    {
-        result = "Aucune erreur détectée.";
-    }
-    else
-    {
-        result = "<br/>Des erreurs ont été détectées :<br/>"
-                 + errList.join("<br/>");
-    }
     this->setEnabled(true);
     QMessageBox::information(this,
                              "Doxygen",
@@ -2125,178 +2165,8 @@ void TabDoxygen::on_pushButton_generate_clicked()
  */
 void TabDoxygen::on_toolButton_help_clicked()
 {
-    DoxygenFilesHelper* w = new DoxygenFilesHelper(ui->lineEdit_outputDir->text());
+    DoxygenFilesHelper* w = new DoxygenFilesHelper(
+                                ui->lineEdit_outputDir->text(),
+                                QDir(qCtx->projectDir()).absoluteFilePath(ui->lineEdit_htmlStylesheet->text()));
     w->show();
-}
-
-/**
- * @param dir Dossier du projet à documenter
- * @param projectName Nom du projet à documenter
- * @return Chaîne de caractères contenant un lien vers le fichier d'erreur si des erreurs
- * ont été détectées. Une chaîne de caractères vide sinon.
- *
- * Copie le fichier Doxyfile du projet vers le sous-projet à documenter. L'outil Doxygen est
- * ensuite appelé pour générer la documentation. En cas d'erreur fatale lors de cette génération,
- * une popup d'erreur apparaît.
- */
-QString TabDoxygen::generateDocFromDir(const QDir &dir, const QString& projectName)
-{
-    QString realProjectName = projectName == "CMakeLists" ? dir.dirName() : projectName;
-    try
-    {
-        // Copie du fichier "Doxyfile"
-        QString destFile = dir.absoluteFilePath("Doxyfile");
-        if(QFile::exists(destFile))
-        {
-            QFile::remove(destFile);
-        }
-        if(QFile::copy(qCtx->doxyfile(), destFile))
-        {
-            // Remplacement des informations de projet
-            changeDoxyfilePaths(destFile, realProjectName);
-
-            // Génération de la doc
-            QProcess process;
-            process.setWorkingDirectory(dir.absolutePath());
-            process.setStandardOutputFile(dir.absoluteFilePath("doxygen.log"));
-            process.setStandardErrorFile(dir.absoluteFilePath("doxygen.err"));
-            process.start("doxygen", QStringList() << "Doxyfile");
-            if(process.waitForFinished())
-            {
-                QFile err_file(dir.absoluteFilePath("doxygen.err"));
-                QString extra_info = "";
-                if(err_file.open(QIODevice::Text | QIODevice::ReadOnly))
-                {
-                    QString text = err_file.readAll();
-                    if(text.simplified() == "")
-                    {
-                        extra_info += "";
-                    }
-                    else
-                    {
-                        QStringList ligns = text.split('\n');
-                        extra_info += realProjectName + " - " +
-                                      QString::number(ligns.length()-1) + " erreurs ("
-                                      "Voir les erreurs : <a href=\"" + dir.absoluteFilePath("doxygen.err") + "\">"
-                                      + dir.absoluteFilePath("doxygen.err") + "</a>)";
-                    }
-                    err_file.close();
-                }
-                return extra_info;
-            }
-            else
-            {
-                throw QString("Erreur lors de la génération de la Doc");
-            }
-        }
-        else
-        {
-            throw QString("Impossible de copier le fichier Doxyfile vers " + dir.absolutePath());
-        }
-    }
-    catch(QString msg)
-    {
-        QMessageBox::critical(this, "Doxygen",  msg);
-    }
-    return "";
-}
-
-/**
- * @param filePath Fichier Doxyfile à modifier
- * @param projectName Nom du sous-projet associé
- *
- * Nomme le sous-projet à documenté d'après le paramètre @p projectName donné.
- * Puis, modifie tous les chemin relatifs donnés pour qu'il pointe vers les bons
- * fichiers car initialement enregistrés comme pointant vers un chemin relatif au
- * dossier de projet général.
- */
-void TabDoxygen::changeDoxyfilePaths(const QString& filePath, const QString& projectName) const
-{
-    QFile doxyfile(filePath);
-    if(doxyfile.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        QTextStream streamR(&doxyfile);
-        streamR.setCodec("UTF-8");
-        QStringList lines = streamR.readAll().split('\n');
-        doxyfile.close();
-
-        // Préparation du chemin préfixe
-        QDir subProjectDir(QFileInfo(filePath).absoluteDir());
-        QString prefixPath = subProjectDir.relativeFilePath(qCtx->projectDir());
-        if(prefixPath == ".")
-            prefixPath = "";
-
-        // Préparation de liste de mots clés pour remplacement simple des chemins
-        QStringList kwList = QStringList()
-                             << "PROJECT_LOGO"
-                             << "FILE_VERSION_FILTER"
-                             << "LAYOUT_FILE"
-                             << "CITE_BIB_FILE"
-                             << "WARN_LOGFILE"
-                             << "EXEMPLE_PATH"
-                             << "IMAGE_PATH"
-                             << "INPUT_FILTER"
-                             << "USE_MDFILE_AS_MAINPAGE"
-                             << "HTML_HEADER"
-                             << "HTML_FOOTER"
-                             << "HTML_STYLESHEET"
-                             << "HTML_EXTRA_STYLESHEET"
-                             << "MATHJAX_CODEFILE"
-                             << "LATEX_HEADER"
-                             << "LATEX_FOOTER"
-                             << "LATEX_STYLESHEET"
-                             << "LATEX_EXTRA_STYLESHEET"
-                             << "RTF_STYLESHEET_FILE"
-                             << "RTF_EXTENTIONS_FILE";
-
-        if(doxyfile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
-        {
-            QTextStream streamW(&doxyfile);
-            streamW.setCodec("UTF-8");
-            for(const QString& line : lines)
-            {
-                int idx = line.indexOf('=');
-                if(idx >= 0)
-                {
-                    QString key = line.left(idx).trimmed();
-                    QString value = line.mid(idx+1).trimmed();
-
-                    if(key == "PROJECT_NAME")
-                    {
-                        streamW << key << '=' << projectName;
-                    }
-                    else if(key == "OUTPUT_DIRECTORY")
-                    {
-                        if(QFileInfo(value).isRelative())
-                        {
-                            value = prefixPath + value;
-                        }
-                        streamW << key << '=' << value << "/" << projectName;
-                    }
-                    else if(kwList.contains(key))
-                    {
-                        if(QFileInfo(value).isRelative())
-                        {
-                            value = prefixPath + value;
-                        }
-                        streamW << key << '=' << value;
-                    }
-                    else
-                    {
-                        streamW << line;
-                    }
-                }
-                streamW << endl;
-            }
-            doxyfile.close();
-        }
-        else
-        {
-            throw QString("Impossible de modifier le fichier Doxyfile !");
-        }
-    }
-    else
-    {
-        throw QString("Impossible de modifier le fichier Doxyfile !");
-    }
 }

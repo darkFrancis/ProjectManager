@@ -77,25 +77,6 @@ void TabGit::clean()
 }
 
 /**
- * Met à jour la combobox des nom de projets.
- */
-void TabGit::updateProjectNames()
-{
-    QStringList projects;
-    for(const QString& pro : qCtx->subProjects())
-    {
-        projects << QFileInfo(pro).dir().dirName();
-    }
-
-    bool bEnable = projects.length() > 0;
-    ui->checkBox_projectName->setVisible(bEnable);
-    ui->comboBox_projectName->setVisible(bEnable);
-    ui->checkBox_projectName->setChecked(bEnable);
-    ui->comboBox_projectName->clear();
-    ui->comboBox_projectName->addItems(projects);
-}
-
-/**
  * Ce connecteur est activé par un clic souris de l'utilisateur sur le
  * bouton Commit.@n
  * Exécute la commande @b git @b commit grâce à la fonction action().
@@ -114,11 +95,7 @@ void TabGit::on_pushButton_commit_clicked()
     QString issueNb = ui->lineEdit_issue->text().trimmed();
     if(issueNb != "")
     {
-        msg.prepend("[#" + issueNb + "] ");
-    }
-    if(ui->checkBox_projectName->isChecked())
-    {
-        msg.prepend(ui->comboBox_projectName->currentText() + " - ");
+        msg.prepend("#" + issueNb + " ");
     }
     args << msg;
     if(action(args))
@@ -144,21 +121,9 @@ void TabGit::on_checkBox_amend_stateChanged(int arg1)
     {
         while(!action(QStringList() << "log" << "-n1" << "--pretty=format:%s", false)){}
         QString output = m_output;
-        int idx = output.indexOf('-');
-        if(idx >= 0)
+        if(output.startsWith("#"))
         {
-            for(int i = 0; i < ui->comboBox_projectName->count(); i++)
-            {
-                QString project = ui->comboBox_projectName->itemText(i) + " - ";
-                if(output.startsWith(project))
-                {
-                    output = output.mid(project.length()).trimmed();
-                }
-            }
-        }
-        if(output.startsWith("[#"))
-        {
-            idx = output.indexOf(']');
+            int idx = output.indexOf(' ');
             if(idx >= 0)
             {
                 bool bOk;

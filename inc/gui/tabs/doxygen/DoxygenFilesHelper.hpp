@@ -20,7 +20,7 @@
         Q_OBJECT
 
         public:
-            DoxygenFilesHelper(const QString& docDir, QWidget *parent = nullptr);
+            DoxygenFilesHelper(const QString& docDir, const QString& stylesheet, QWidget *parent = nullptr);
             ~DoxygenFilesHelper();
 
         private slots:
@@ -30,11 +30,14 @@
             void on_pushButton_openIndex_clicked();
 
         private:
+            void readLastIndex();
+            void addProjectLine(const QString& name, const QString& description);
             void command(const QString& cmd, const QString& workingDir = ".");
 
         private:
             Ui::DoxygenFilesHelper *ui;
             QString m_docDir; /**< Dossier principal de documentation */
+            QString m_stylesheet; /**< Stylesheet to use if no one is found */
             QList<QLabel*> m_labels; /**< Liste des noms de projets affichés */
             QList<QLineEdit*> m_lines; /**< Liste des lignes de descriptions de projets */
     };

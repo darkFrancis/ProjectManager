@@ -21,27 +21,19 @@
 
 /**
  * @param docDir Dossier principal de documentation
+ * @param stylesheet Stylesheet to use if no one is found
  * @param parent QWidget parent
  *
  * Constructeur de la classe DoxygenFilesHelper.
  */
-DoxygenFilesHelper::DoxygenFilesHelper(const QString& docDir, QWidget *parent) :
+DoxygenFilesHelper::DoxygenFilesHelper(const QString& docDir, const QString& stylesheet, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::DoxygenFilesHelper),
-    m_docDir(QDir(qCtx->projectDir()).absoluteFilePath(docDir))
+    m_docDir(QDir(QDir(qCtx->projectDir()).absoluteFilePath(docDir)).absoluteFilePath("..")),
+    m_stylesheet(stylesheet)
 {
     ui->setupUi(this);
-
-    for(const QString& projectFile : qCtx->subProjects())
-    {
-        QFileInfo info(projectFile);
-        QLabel* label = new QLabel(info.baseName());
-        QLineEdit* line = new QLineEdit;
-        line->setText(qCtx->projectDescription(projectFile));
-        ui->formLayout_descriptions->addRow(label, line);
-        m_labels << label;
-        m_lines << line;
-    }
+    readLastIndex();
 }
 
 /**
@@ -120,22 +112,6 @@ void DoxygenFilesHelper::on_pushButton_openDir_clicked()
  */
 void DoxygenFilesHelper::on_pushButton_generateIndex_clicked()
 {
-    // Enregistrement dans le context
-    for(int i = 0; i < m_lines.length(); i++)
-    {
-        QString subProject = m_labels.at(i)->text();
-        QString description = m_lines.at(i)->text();
-        for(const QString& projectFile : qCtx->subProjects())
-        {
-            if(QFileInfo(projectFile).baseName() == subProject)
-            {
-                qCtx->setProjectDescription(projectFile, description);
-                break;
-            }
-        }
-    }
-    qCtx->saveSubProjects();
-
     // Ecriture de l'index
     QFile file(QDir(m_docDir).absoluteFilePath(INDEX_FILE_NAME));
     if(file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text))
@@ -144,14 +120,14 @@ void DoxygenFilesHelper::on_pushButton_generateIndex_clicked()
         stream.setCodec("UTF-8");
 
         // Entête
-        QString projectName = QDir(qCtx->projectDir()).dirName();
+        QString projectName = QDir(QDir(qCtx->projectDir()).absoluteFilePath("..")).dirName();
         QString text =
         "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">"
         "\n<html xmlns=\"http://www.w3.org/1999/xhtml\">"
         "\n<head>"
         "\n  <meta http-equiv=\"Content-Type\" content=\"text/xhtml;charset=UTF-8\"/>"
         "\n  <title>" + projectName + " : Documentation</title>"
-        "\n  <link href=\"../.projectmanager/html/stylesheet.css\" rel=\"stylesheet\" type=\"text/css\" />"
+        "\n  <link href=\"stylesheet.css\" rel=\"stylesheet\" type=\"text/css\" />"
         "\n</head>"
         "\n<body>"
         "\n  <div>"
@@ -169,19 +145,19 @@ void DoxygenFilesHelper::on_pushButton_generateIndex_clicked()
         "\n  </div>"
         "\n  <div class=\"header\">"
         "\n    <div class=\"headertitle\">"
-        "\n      <div class=\"title\">Index de " + projectName + "</div>"
+        "\n      <div class=\"title\">Index of " + projectName + "</div>"
         "\n    </div>"
         "\n  </div>"
         "\n  <div class=\"contents\">"
         "\n    <div class=\"textblock\">"
-        "\n      <p>Liste des sous-projets :"
+        "\n      <p>Projects list :"
         "\n        <ul>";
 
         for(int i = 0; i < m_lines.length(); i++)
         {
             QString subProject = m_labels.at(i)->text();
             QString description = m_lines.at(i)->text();
-            text += "\n          <li><a href=\"" + subProject + "/index.html\">"
+            text += "\n          <!--project-entry--><li><a href=\"" + subProject + "/index.html\">"
                     + subProject + "</a> : " + description + "</li>";
         }
 
@@ -204,6 +180,23 @@ void DoxygenFilesHelper::on_pushButton_generateIndex_clicked()
                               "Erreur",
                               "Impossible d'ouvrir le fichier " + QFileInfo(file).absoluteFilePath() + " !");
     }
+
+    if(m_stylesheet.trimmed() != "")
+    {
+        QString stylesheet = QDir(m_docDir).absoluteFilePath("stylesheet.css");
+        if(!QFile::exists(stylesheet))
+        {
+            if(QFile::exists(m_stylesheet))
+            {
+                if(!QFile::copy(m_stylesheet, stylesheet))
+                {
+                    QMessageBox::critical(this,
+                                          "Erreur",
+                                          "Impossible de copier le fichier " + m_stylesheet + " vers l'index !");
+                }
+            }
+        }
+    }
 }
 
 /**
@@ -225,6 +218,62 @@ void DoxygenFilesHelper::on_pushButton_openIndex_clicked()
     {
         QMessageBox::critical(this, "Erreur", msg);
     }
+}
+
+/**
+ * Read last index if exists to initialize projects fields.@n
+ * If index entry doesn't exists for current project, add an empty one.
+ */
+void DoxygenFilesHelper::readLastIndex()
+{
+    QString currentProject = QDir(qCtx->projectDir()).dirName();
+    bool currentProjectFound = false;
+    QFile file(QDir(m_docDir).absoluteFilePath(INDEX_FILE_NAME));
+    if(file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        QTextStream stream(&file);
+        stream.setCodec("UTF-8");
+
+        QString line;
+        while(stream.readLineInto(&line))
+        {
+            if(line.trimmed().startsWith("<!--project-entry-->"))
+            {
+                int idx0 = line.indexOf("href=\"")+6;
+                int idx1 = line.indexOf("/index.html\">");
+                QString projectName = line.mid(idx0, idx1-idx0);
+                int idx2 = line.indexOf("</a> : ")+7;
+                int idx3 = line.lastIndexOf("</li>");
+                QString description = line.mid(idx2, idx3-idx2);
+                addProjectLine(projectName, description);
+                if(projectName == currentProject)
+                    currentProjectFound = true;
+            }
+        }
+        file.close();
+    }
+
+    // Add current project if needed
+    if(!currentProjectFound)
+    {
+        addProjectLine(currentProject, "");
+    }
+}
+
+/**
+ * @param name Name of the project to add into the index
+ * @param description Description of the project
+ *
+ * Add a project field for index generation
+ */
+void DoxygenFilesHelper::addProjectLine(const QString& name, const QString& description)
+{
+    QLabel* label = new QLabel(name);
+    QLineEdit* line = new QLineEdit;
+    line->setText(description);
+    ui->formLayout_descriptions->addRow(label, line);
+    m_labels << label;
+    m_lines << line;
 }
 
 /**

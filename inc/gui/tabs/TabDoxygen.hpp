@@ -175,10 +175,6 @@
             void saveSpinbox_(const QString& key, QSpinBox* spinbox, int default_value = 0);
             /** @} */
 
-            // Doc
-            QString generateDocFromDir(const QDir& dir, const QString& projectName);
-            void changeDoxyfilePaths(const QString& filePath, const QString& projectName) const;
-
         private:
             Ui::TabDoxygen *ui;/**< UI de la classe TabDoxygen */
             QTextStream* m_stream;/**< Flux vers le fichier Doxyfile */

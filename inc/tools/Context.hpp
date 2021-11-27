@@ -25,23 +25,16 @@
             Context();
             ~Context();
             static Context* Instance();
-            void loadSubProjects();
-            bool saveSubProjects() const;
             void save();
 
         public: // GET/SET
             void setLastSearch(const QString& val);
             void setProjectDir(const QString& dir);
-            void addSubProject(const QString& val);
-            void setProjectDescription(const QString& project, const QString& description);
-            bool removeSubProject(const QString& val);
             QString lastSearch() const;
             QString projectDir() const;
             QString pathFromProject(const QString& absolutePath) const;
             QString doxyfile() const;
             QString doxygenTemplateDir() const;
-            QStringList subProjects() const;
-            QString projectDescription(const QString& project) const;
             QString projectHiddenDirName() const;
 
         private:
@@ -52,7 +45,6 @@
             static Context* m_instance; /**< Pointeur vers l'instance de la classe Context. */
             QString m_lastSearch; /**< Dernière recherche effectuée. */
             QString m_projectDir; /**< Dossier du projet */
-            QMap<QString,QString> m_subProjectList; /**< Liste des sous-projets utilisés pour la documentation avec leur description. */
             InitParser m_parser; /**< Parser de fichier INI */
     };
 

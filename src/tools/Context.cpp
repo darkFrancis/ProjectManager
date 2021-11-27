@@ -14,8 +14,7 @@
 #include "version/version.hpp"
 #include "Logger/Logger.hpp"
 
-#define PROJECTMANAGER_DIR ".projectmanager" /**< Nom du dossier caché de projet. */
-#define PROJECT_FILE "project.list" /**< Nom du fichier contenant la liste des sous-projets du projet. */
+#define DOXYGEN_DIR ".doxygen" /**< Nom du dossier caché de projet. */
 #define INIT_FILE QDir(qApp->applicationDirPath()).absoluteFilePath(_APPLICATION_NAME_ + ".ini") /**< Checmin vers le fichier d'initialisation de l'application. */
 
 #define KW_LASTSEARCH   "last-search" /**< Mot clé du fichier d'initialisation pour la dernière recherche */
@@ -56,70 +55,6 @@ Context* Context::Instance()
 }
 
 /**
- * Charge la liste des fichiers de sous-projets du projet.
- * @sa #PROJECT_FILE.
- */
-void Context::loadSubProjects()
-{
-    QFile f(fileInProjectDir(PROJECT_FILE));
-    if(f.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        QTextStream s(&f);
-        s.setCodec("UTF-8");
-        QStringList lines = s.readAll().split('\n');
-        f.close();
-
-        m_subProjectList.clear();
-        for(const QString& line : lines)
-        {
-            if(line.trimmed() != "")
-            {
-                int idx = line.indexOf('\t');
-                QDir projectDir = QDir(qCtx->projectDir());
-                if( idx >= 0)
-                {
-                    QString projectName = projectDir.absoluteFilePath(line.left(idx).trimmed());
-                    QString description = line.mid(idx).trimmed();
-                    m_subProjectList[qCtx->pathFromProject(projectName)] = description;
-                }
-                else
-                {
-                    QString projectName = projectDir.absoluteFilePath(line.trimmed());
-                    m_subProjectList[qCtx->pathFromProject(projectName)] = "";
-                }
-            }
-        }
-    }
-}
-
-/**
- * @brief Context::saveSubProjects
- * @return @li @b false en cas d'erreur
- *         @li @b true sinon
- *
- * Enregistre la liste des sous-projets.
- * @sa #PROJECT_FILE.
- */
-bool Context::saveSubProjects() const
-{
-    QFile f(fileInProjectDir(PROJECT_FILE));
-    if(f.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
-    {
-        QTextStream s(&f);
-        s.setCodec("UTF-8");
-        for(const QString& pro : m_subProjectList.keys())
-        {
-             s << pro
-               << (m_subProjectList[pro].trimmed() == "" ? "" : '\t' + m_subProjectList[pro])
-               << endl;
-        }
-        f.close();
-        return true;
-    }
-    return false;
-}
-
-/**
  * @param val Nouvelle valeur de #m_lastSearch
  */
 void Context::setLastSearch(const QString& val) { m_lastSearch = val; }
@@ -128,46 +63,6 @@ void Context::setLastSearch(const QString& val) { m_lastSearch = val; }
  * @param dir Nouvelle valeur de #m_projectDir
  */
 void Context::setProjectDir(const QString& dir) { m_projectDir = dir; }
-
-/**
- * @param val Nom du projet à ajouter
- *
- * Ajoute le projet à la liste des sous-projets sans doublon.
- * @sa #m_subProjectList.
- */
-void Context::addSubProject(const QString& val)
-{
-    m_subProjectList[val] = "";
-}
-
-/**
- * @param project Nom de projet auquel on souhaite ajouter une description
- * @param description Description du projet
- */
-void Context::setProjectDescription(const QString& project, const QString& description)
-{
-    if(m_subProjectList.contains(project))
-    {
-        m_subProjectList[project] = description;
-    }
-}
-
-/**
- * @param val Nom du sous-projet à supprimer
- * @return @li @b true si le sous-projets était effectivement présent
- *         @li @b false sinon
- *
- * Supprime le sous-projet de la liste.
- * @sa #m_subProjectList.
- */
-bool Context::removeSubProject(const QString& val)
-{
-    if(m_subProjectList.contains(val))
-    {
-        return m_subProjectList.remove(val) > 0;
-    }
-    return false;
-}
 
 /**
  * @return #m_lastSearch
@@ -199,23 +94,9 @@ QString Context::doxyfile() const { return fileInProjectDir("Doxyfile"); }
 QString Context::doxygenTemplateDir() const { return fileInProjectDir("doxygen-templates"); }
 
 /**
- * @return #m_subProjectList
- */
-QStringList Context::subProjects() const { return m_subProjectList.keys(); }
-
-/**
- * @param project Projet recherché
- * @return Description du projet
- */
-QString Context::projectDescription(const QString& project) const
-{
-    return m_subProjectList.value(project, "");
-}
-
-/**
  * @return #PROJECTMANAGER_DIR
  */
-QString Context::projectHiddenDirName() const { return PROJECTMANAGER_DIR; }
+QString Context::projectHiddenDirName() const { return DOXYGEN_DIR; }
 
 /**
  * Initialise le contexte en lisant le fichier INI de l'application.
@@ -268,5 +149,5 @@ void Context::save()
  */
 QString Context::fileInProjectDir(const QString file) const
 {
-    return QDir(QDir(m_projectDir).absoluteFilePath(PROJECTMANAGER_DIR)).absoluteFilePath(file);
+    return QDir(QDir(m_projectDir).absoluteFilePath(DOXYGEN_DIR)).absoluteFilePath(file);
 }

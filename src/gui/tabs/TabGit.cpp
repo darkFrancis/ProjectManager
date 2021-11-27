@@ -255,9 +255,7 @@ void TabGit::on_pushButton_checkout_clicked()
 void TabGit::on_pushButton_gitk_clicked()
 {
     QProcess process;
-    process.start("cd", QStringList() << qCtx->projectDir());
-    process.waitForFinished();
-    process.startDetached("gitk", QStringList() << "--all" << "--date-order");
+    process.startDetached("gitk", QStringList() << "--all" << "--date-order", qCtx->projectDir());
 }
 
 /**

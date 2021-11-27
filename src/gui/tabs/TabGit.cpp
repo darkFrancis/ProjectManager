@@ -127,7 +127,7 @@ void TabGit::on_checkBox_amend_stateChanged(int arg1)
             if(idx >= 0)
             {
                 bool bOk;
-                int nbIssue = output.left(idx).mid(2).toInt(&bOk);
+                int nbIssue = output.left(idx).mid(1).toInt(&bOk);
                 if(bOk && nbIssue > 0)
                 {
                     ui->lineEdit_issue->setText(QString::number(nbIssue));

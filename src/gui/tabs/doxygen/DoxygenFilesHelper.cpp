@@ -120,7 +120,7 @@ void DoxygenFilesHelper::on_pushButton_generateIndex_clicked()
         stream.setCodec("UTF-8");
 
         // Entête
-        QString projectName = QDir(QDir(qCtx->projectDir()).absoluteFilePath("..")).dirName();
+        QString projectName = QDir(QDir(QDir(qCtx->projectDir()).absoluteFilePath("..")).canonicalPath()).dirName();
         QString text =
         "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">"
         "\n<html xmlns=\"http://www.w3.org/1999/xhtml\">"

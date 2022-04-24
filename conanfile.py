@@ -26,7 +26,12 @@ class ProjectManagerConan(ConanFile):
         self.copy("*.dll", dst="bin", keep_path=False)
         self.copy("*.so", dst="lib", keep_path=False)
         self.copy("*.a", dst="lib", keep_path=False)
+        
+    def imports(self):
+        self.copy("*.dll")
+        self.copy("*.so")
+        self.copy("*.a")
 
-    def build_requirements(self):
-        self.build_requires("Logger/0.4@dark/francis")
+    def requirements(self):
+        self.requires("Logger/0.4@dark/francis")
 

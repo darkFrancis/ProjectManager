@@ -3,7 +3,7 @@ from conans import ConanFile, CMake, tools
 
 class ProjectManagerConan(ConanFile):
     name = "ProjectManager"
-    version = "1.2.1"
+    version = "1.2.2"
     license = "Copyright Dark Francis 2021"
     author = "Dark Francis dark.francis.dod@gmail.com"
     url = "https://github.com/darkFrancis/ProjectManager"
@@ -33,5 +33,5 @@ class ProjectManagerConan(ConanFile):
         self.copy("*.a")
 
     def requirements(self):
-        self.requires("Logger/0.4@dark/francis")
+        self.requires("Logger/0.5@yggdrasil/stable")
 
